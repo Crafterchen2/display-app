@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:pionixbox/mqtt.dart';
 
 class PrivateChargingStateScreen extends StatefulWidget {
   const PrivateChargingStateScreen({Key? key, required this.title})
@@ -17,14 +20,29 @@ class _PrivateChargingStateScreenState
   late String _energy;
   late String _duration;
   late bool _online;
+  final mqtt = MQTT();
+
+  void parseSessionInfo(String message) {
+    final sessionInfo = jsonDecode(message);
+    setState(() {
+      _status = sessionInfo["state"];
+      final double chargedEnergy = sessionInfo["charged_energy_wh"] / 1000.0;
+      _energy = chargedEnergy.toStringAsFixed(1) + " kWh";
+      _duration = Duration(seconds: sessionInfo["charging_duration_s"]).toString();
+    });
+  }
 
   @override
-  void initState() {
+  void initState() async {
     _status = 'unplugged';
     _energy = '12.3 kWh';
     _online = false;
     _duration = '05:00:01h';
     _statusInstruction = 'Please plug your car';
+
+    await mqtt.connect();
+
+    mqtt.subscribe("everest_api/evse_0/var/session_info", parseSessionInfo);
 
     super.initState();
   }
