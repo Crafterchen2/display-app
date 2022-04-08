@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
 class PrivateChargingStateScreen extends StatefulWidget {
-  const PrivateChargingStateScreen({Key? key, required this.title}) : super(key: key);
+  const PrivateChargingStateScreen({Key? key, required this.title})
+      : super(key: key);
   final String title;
 
   @override
-  State<PrivateChargingStateScreen> createState() => _PrivateChargingStateScreenState();
+  State<PrivateChargingStateScreen> createState() =>
+      _PrivateChargingStateScreenState();
 }
 
-class _PrivateChargingStateScreenState extends State<PrivateChargingStateScreen> {
+class _PrivateChargingStateScreenState
+    extends State<PrivateChargingStateScreen> {
   late String _status;
   late String _statusInstruction;
   late String _energy;
