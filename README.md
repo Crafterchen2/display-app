@@ -5,6 +5,7 @@ Flutter app for pionix charging box (Linux OS)
 ## Build for Raspberry Pi
 Run the following commands on a x64 Intel/AMD machine, you CAN NOT build the app directly on the Raspberry Pi!
 ```bash
+mkdir build
 cd build
 cmake ..
 make install
