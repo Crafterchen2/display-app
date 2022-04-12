@@ -39,6 +39,7 @@ Here is short summary on how to get flutter-pi to run on your Raspberry Pi, all 
 
 4. Checkout and install flutter-pi
    ```bash
+   cd ..
    git clone https://github.com/ardera/flutter-pi.git
    cd flutter-pi
    git checkout a11107b95920861e4bb8f19c4e71cb870c3aa42e
