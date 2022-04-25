@@ -5,6 +5,7 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 
 class MQTT {
   static final MQTT _instance = MQTT._internal();
+
   factory MQTT() => _instance;
 
   MqttClient _client;
@@ -12,8 +13,9 @@ class MQTT {
   final StreamController _subscriptionController = StreamController<String>();
   final Map _callbacks = {};
 
+  ///todo undo ip address
   MQTT._internal()
-      : _client = MqttServerClient.withPort("localhost", "pionixbox", 1883) {
+      : _client = MqttServerClient.withPort("192.168.10.9", "pionixbox", 1883) {
     _client.onConnected = () {
       _subscriptionController.stream.listen((topic) {
         _client.subscribe(topic, MqttQos.exactlyOnce);
