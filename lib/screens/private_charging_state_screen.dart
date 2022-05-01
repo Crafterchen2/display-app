@@ -43,7 +43,8 @@ class _PrivateChargingStateScreenState
 
     _connectMqtt();
 
-    mqtt.subscribe("everest_api/evse_manager/var/session_info", parseSessionInfo);
+    mqtt.subscribe(
+        "everest_api/evse_manager/var/session_info", parseSessionInfo);
 
     super.initState();
   }
