@@ -15,7 +15,7 @@ class MQTT {
 
   ///todo undo ip address
   MQTT._internal()
-      : _client = MqttServerClient.withPort("192.168.10.9", "pionixbox", 1883) {
+      : _client = MqttServerClient.withPort("192.168.10.11", "pionixbox", 1883) {
     _client.onConnected = () {
       _subscriptionController.stream.listen((topic) {
         _client.subscribe(topic, MqttQos.exactlyOnce);

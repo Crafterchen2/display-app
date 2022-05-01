@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/screens/private_charger_screen.dart';
+import 'package:pionixbox/screens/private_charger_screen_demo.dart';
 import 'package:pionixbox/screens/private_charging_state_screen.dart';
 
 void main() {
-
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -22,9 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const PrivateChargerScreen(),
+      home: const PrivateChargerScreenDemo(),
     );
   }
 }
-
-

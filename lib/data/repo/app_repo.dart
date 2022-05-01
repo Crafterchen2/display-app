@@ -8,5 +8,6 @@ abstract class AppRepo {
   ///
   ///
   ///
-  Future<void> getSessionInfo();
+  Future<SessionInfo> getSessionInfo();
+
 }

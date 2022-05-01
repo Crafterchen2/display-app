@@ -7,10 +7,10 @@ part of 'session_info.dart';
 // **************************************************************************
 
 SessionInfo _$SessionInfoFromJson(Map<String, dynamic> json) => SessionInfo(
-      json['charged_energy_wh'] as int,
-      json['charging_duration_s'] as int,
+      (json['charged_energy_wh'] as num).toDouble(),
+      (json['charging_duration_s'] as num).toDouble(),
       DateTime.parse(json['datetime'] as String),
-      json['latest_total_w'] as int,
+      (json['latest_total_w'] as num).toDouble(),
       json['state'] as String,
     );
 
