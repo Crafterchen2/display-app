@@ -26,6 +26,7 @@ class PrimaryButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
+        // padding:const EdgeInsets.symmetric(horizontal: 20),
         height: height,
         width: width,
         color: color,

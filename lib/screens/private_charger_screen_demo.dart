@@ -1,16 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:pionixbox/data/models/session_info.dart';
-import 'package:pionixbox/data/providers/session_info_provider.dart';
+import 'package:pionixbox/screens/simulation_panel.dart';
 import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
+import 'package:pionixbox/utils/helper.dart';
 
 import '../mqtt.dart';
-import '../widgets/buttons.dart';
+import '../utils/constants/keys.dart';
+import '../widgets/footer_widget.dart';
 import '../widgets/header_widget.dart';
+import '../widgets/session_info_body.dart';
 
 class PrivateChargerScreenDemo extends StatefulWidget {
   const PrivateChargerScreenDemo({Key? key}) : super(key: key);
@@ -26,9 +25,8 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   late double _chargedEnergy;
   late double _latestTotalw;
   late String _duration;
-  late bool _online;
-  late String _statusInstruction;
-  late SessionInfo _info;
+  bool _showSimulationPanel = false;
+  bool _showProgressBar = false;
   final mqtt = MQTT();
 
   @override
@@ -37,10 +35,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     _energyTotal = '12.3';
     _chargedEnergy = 12.3;
     _latestTotalw = 1000;
-    _online = false;
-    _duration = '800';
-    _statusInstruction = 'Please plug your car';
-    // _info = SessionInfo(_energy, _duration, DateTime.now(), _energy, _status);
+    _duration = '00:00:00';
     _connectMqtt();
 
     mqtt.subscribe(
@@ -48,15 +43,6 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
 
     super.initState();
   }
-
-  // SessionInfo prepareInfo(dynamic i) {
-  //   return SessionInfo(
-  //       i["charged_energy_wh"] / 1000.0 as double,
-  //       i["charging_duration_s"],
-  //       DateTime.now(),
-  //       i["charged_energy_wh"].toStringAsFixed(1) + " kWh",
-  //       i["state"]);
-  // }
 
   void parseSessionInfo(String message) {
     final i = jsonDecode(message);
@@ -66,223 +52,120 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
       _chargedEnergy = i["charged_energy_wh"] / 1000.0;
       _latestTotalw = i["latest_total_w"] / 1000.0;
       _energyTotal = (_chargedEnergy.toStringAsFixed(1) + " kWh");
-      _duration = Duration(seconds: i["charging_duration_s"]).toString();
+      _duration = durationFormat(Duration(seconds: i["charging_duration_s"]));
+    });
 
-      // _info = SessionInfo(
-      //     chargedEnergy, _duration, DateTime.now(), _energyTotal, _status);
+    setState(() {
+      _showProgressBar = false;
     });
   }
 
   Future<void> _connectMqtt() async {
+    setState(() {
+      _showProgressBar = true;
+    });
     await mqtt.connect();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          const Header(),
-          const Spacer(flex: 1),
-          SessionInfoBody(
-            state: _status,
-            energy: _chargedEnergy,
-            totalEnergy: _energyTotal,
-            latestTotalw: _latestTotalw.toString(),
-            duration: _duration,
-            onPauseCharging: pauseCharging,
-            onResumeCharging: resumeCharging,
+          Column(
+            children: [
+              Header(
+                onSettingsPressed: () {
+                  setState(() {
+                    _showSimulationPanel = true;
+                  });
+                },
+              ),
+              const Spacer(flex: 1),
+              SessionInfoBody(
+                state: _status,
+                energy: _chargedEnergy,
+                totalEnergy: _energyTotal,
+                latestTotalw: _latestTotalw.toString(),
+                duration: _duration,
+                onPauseCharging: () => performAction(pauseCharging),
+                onResumeCharging: () => performAction(resumeCharging),
+              ),
+              const Spacer(flex: 2),
+              const Footer(),
+            ],
           ),
-          const Spacer(flex: 2),
-          const Footer(),
+          if (_showSimulationPanel)
+            SimulationPanel(
+              plugInPressed: () => performAction(plugIn),
+              plugOutPressed: () => performAction(plugOut),
+              resumeByCarPressed: () => performAction(resumeByCar),
+              pauseByCarPressed: () => performAction(pauseByCar),
+              chargingSimulationPressed: () =>
+                  performAction(chargingSimulation),
+              enableSimulationPressed: () => performAction(plugIn),
+              disableSimulationPressed: () => performAction(plugOut),
+              closePanel: () {
+                setState(() {
+                  _showSimulationPanel = false;
+                });
+              },
+            ),
+          if (_showProgressBar)
+            Center(
+              child: Container(
+                color: Colors.white,
+                child: const Center(
+                  child:
+                      CircularProgressIndicator(color: AppColors.primaryAmber),
+                ),
+              ),
+            )
         ],
       ),
     );
+  }
+
+  void performAction(Function() action) {
+    setState(() {
+      _showProgressBar = true;
+    });
+    action();
+    setState(() {
+      _showProgressBar = false;
+      _showSimulationPanel = false;
+    });
   }
 
   void pauseCharging() {
-    const pauseChargingTopic = '/external/cmd/pause_charging';
-    mqtt.publish(pauseChargingTopic, "");
-    setState(() {});
+    mqtt.publish(Topic.pauseChargingTopic, "");
   }
 
   void resumeCharging() {
-    const resumeChargingTopic = '/external/cmd/resume_charging';
-    mqtt.publish(resumeChargingTopic, "");
+    mqtt.publish(Topic.resumeChargingTopic, "");
+  }
+
+  void pauseByCar() {
+    mqtt.publish(Topic.modifyChargingSessionTopic, Payloads.pausedByCar);
+  }
+
+  void resumeByCar() {
+    mqtt.publish(Topic.modifyChargingSessionTopic, Payloads.resumeByCar);
     setState(() {});
   }
-}
 
-class Footer extends StatelessWidget {
-  const Footer({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Row(
-        children: [
-          PrimaryButton(
-            title: 'Full of charge',
-            onPressed: () {},
-            color: AppColors.successLight,
-          ),
-          PrimaryButton(
-            title: 'Pause by car',
-            onPressed: () {},
-            color: AppColors.errorLight,
-          ),
-          const Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text(
-                'Online',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-              Container(
-                height: 16,
-                width: 16,
-                margin: const EdgeInsets.symmetric(horizontal: 12),
-                decoration: const BoxDecoration(
-                    color: AppColors.successLight, shape: BoxShape.circle),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                DateTime.now().toIso8601String(),
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+  void plugIn() {
+    mqtt.publish(Topic.modifyChargingSessionTopic, Payloads.plugIn);
+    setState(() {});
   }
-}
 
-class SessionInfoBody extends StatelessWidget {
-  final double energy;
-  final String duration;
-  final String totalEnergy;
-  final String state;
-  final String latestTotalw;
-  final VoidCallback onPauseCharging;
-  final VoidCallback onResumeCharging;
+  void plugOut() {
+    mqtt.publish(Topic.modifyChargingSessionTopic, Payloads.plugOut);
+    setState(() {});
+  }
 
-  const SessionInfoBody({
-    Key? key,
-    required this.energy,
-    required this.duration,
-    required this.totalEnergy,
-    required this.state,
-    required this.latestTotalw,
-    required this.onPauseCharging,
-    required this.onResumeCharging,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Spacer(
-          flex: 2,
-        ),
-        Column(
-          children: [
-            Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                  child: SvgPicture.asset('assets/icons/icon_charging.svg'),
-                ),
-                SvgPicture.asset('assets/icons/icon_pausecharging.svg'),
-              ],
-            ),
-            const SizedBox(height: 36),
-            SecondaryButton(
-                title:
-                    state == 'Charging' ? 'Pause Charging' : 'Resume Charging',
-                onPressed:
-                    state == 'Charging' ? onPauseCharging : onResumeCharging),
-          ],
-        ),
-        const Spacer(
-          flex: 1,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const Text(
-              'STATUS',
-              style: AppTextStyles.heading1,
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.3,
-              child: Text(
-                state,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: AppTextStyles.heading6,
-              ),
-            ),
-            const SizedBox(height: 50),
-            Text(
-              'Current Session'.toUpperCase(),
-              style: AppTextStyles.subTitle2,
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.15,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Energy',
-                        style: AppTextStyles.heading1,
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        'Duration',
-                        style: AppTextStyles.heading1,
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        latestTotalw.toString(),
-                        style: AppTextStyles.heading1,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        duration,
-                        style: AppTextStyles.heading1,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        const Spacer(flex: 2),
-      ],
-    );
+  void chargingSimulation() {
+    mqtt.publish(Topic.modifyChargingSessionTopic, Payloads.chargingSimulation);
+    setState(() {});
   }
 }
