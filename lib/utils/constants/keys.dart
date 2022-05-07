@@ -15,6 +15,8 @@ class Topic {
   static const String resumeChargingTopic = '/external/cmd/resume_charging';
   static const String modifyChargingSessionTopic =
       '/carsim/cmd/modify_charging_session';
+  static const String enableSimulationTopic =
+      '/carsim/cmd/enable';
 }
 
 class Payloads {
@@ -25,4 +27,6 @@ class Payloads {
   static const String plugOut = 'sleep 1;unplug;sleep 86400';
   static const String chargingSimulation =
       'sleep 1;iec_wait_pwr_ready;sleep 1;draw_power_regulated 32,3;sleep 86400;unplug';
+  static const String enableSimulation = 'true';
+  static const String disableSimulation = 'false';
 }
