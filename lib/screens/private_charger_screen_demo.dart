@@ -103,8 +103,8 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
               pauseByCarPressed: () => performAction(pauseByCar),
               chargingSimulationPressed: () =>
                   performAction(chargingSimulation),
-              enableSimulationPressed: () => performAction(plugIn),
-              disableSimulationPressed: () => performAction(plugOut),
+              enableSimulationPressed: () => performAction(enableSimulation),
+              disableSimulationPressed: () => performAction(disableSimulation),
               closePanel: () {
                 setState(() {
                   _showSimulationPanel = false;
@@ -166,6 +166,16 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
 
   void chargingSimulation() {
     mqtt.publish(Topic.modifyChargingSessionTopic, Payloads.chargingSimulation);
+    setState(() {});
+  }
+
+  void enableSimulation() {
+    mqtt.publish(Topic.enableSimulationTopic, Payloads.enableSimulation);
+    setState(() {});
+  }
+
+  void disableSimulation() {
+    mqtt.publish(Topic.enableSimulationTopic, Payloads.disableSimulation);
     setState(() {});
   }
 }
