@@ -21,12 +21,14 @@ class PrivateChargerScreen extends ConsumerWidget {
         debugPrint('Data: ${rest.state}');
         return ListView(
           shrinkWrap: true,
-          children: const [
-            Header(),
-            Spacer(flex: 1),
-            SessionInfoBody(),
-            Spacer(flex: 2),
-            Footer(),
+          children: [
+            Header(
+              onSettingsPressed: () {},
+            ),
+            const Spacer(flex: 1),
+            const SessionInfoBody(),
+            const Spacer(flex: 2),
+            const Footer(),
           ],
         );
       }, loading: () {
