@@ -37,7 +37,7 @@ class SessionInfoBody extends StatelessWidget {
           Column(
             children: [
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.4,
+                width: MediaQuery.of(context).size.width * 0.2,
                 height: MediaQuery.of(context).size.height * 0.2,
                 child: Center(
                   child: Stack(
@@ -86,7 +86,7 @@ class SessionInfoBody extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.4,
+                width: MediaQuery.of(context).size.width * 0.5,
                 height: MediaQuery.of(context).size.height * 0.2,
                 child: Text(
                   chargingStateTitle(state).toUpperCase(),
