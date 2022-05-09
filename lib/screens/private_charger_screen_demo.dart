@@ -92,7 +92,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
                 onResumeCharging: () => performAction(resumeCharging),
               ),
               const Spacer(flex: 2),
-              const Footer(),
+               Footer(dateTime: DateTime.now(),),
             ],
           ),
           if (_showSimulationPanel)

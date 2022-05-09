@@ -14,5 +14,5 @@ import 'package:intl/intl.dart';
 // final monthDayDateFormat = DateFormat('MMM\ndd');
 // final monthAndDayDateFormat = DateFormat('dd MMM');
 
-final dateTimeFormat = DateFormat('dd.mm.yyyy hh:mm:ss');
+final dateTimeFormat = DateFormat('dd.MM.yyyy hh:mm:ss');
 
