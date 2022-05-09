@@ -27,6 +27,7 @@ class SimulationPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final buttonWidth = MediaQuery.of(context).size.width * 0.4;
     return Container(
       color: AppColors.primaryBlue,
       child: Stack(
@@ -39,11 +40,13 @@ class SimulationPanel extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   PrimaryButton2(
+                    width: buttonWidth,
                     title: 'Plug In',
                     onPressed: plugInPressed,
                   ),
                   const SizedBox(width: 8),
                   PrimaryButton2(
+                    width: buttonWidth,
                     title: 'Plug Out',
                     onPressed: plugOutPressed,
                   ),
@@ -54,12 +57,14 @@ class SimulationPanel extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   PrimaryButton2(
+                    width: buttonWidth,
                     title: 'Resume by car',
                     onPressed: resumeByCarPressed,
                   ),
                   const SizedBox(width: 8),
 
                   PrimaryButton2(
+                    width: buttonWidth,
                     title: 'Pause by car',
                     onPressed: pauseByCarPressed,
                   ),
@@ -70,12 +75,14 @@ class SimulationPanel extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   PrimaryButton2(
+                    width: buttonWidth,
                     title: 'Enable Simulation',
                     onPressed: enableSimulationPressed,
                   ),
                   const SizedBox(width: 8),
 
                   PrimaryButton2(
+                    width: buttonWidth,
                     title: 'Disable Simulation',
                     onPressed: disableSimulationPressed,
                   ),
@@ -86,6 +93,7 @@ class SimulationPanel extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   PrimaryButton2(
+                    width: buttonWidth,
                     title: 'Charging Simulation',
                     onPressed: chargingSimulationPressed,
                   ),
