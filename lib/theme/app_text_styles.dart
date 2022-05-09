@@ -1,15 +1,17 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 
 class AppTextStyles {
   static const TextStyle primaryButtonText = TextStyle(
-    color: Colors.white,
+    color: AppColors.primaryBlue,
     fontFamily: 'Urbanist',
-    fontSize: 13,
-    fontWeight: FontWeight.w600,
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
     textBaseline: TextBaseline.alphabetic,
     fontStyle: FontStyle.normal,
-    letterSpacing: 1.25,
+    letterSpacing: 1,
   );
 
   static const TextStyle heading1 = TextStyle(
@@ -47,6 +49,9 @@ class AppTextStyles {
     fontSize: 24,
     fontWeight: FontWeight.bold,
     textBaseline: TextBaseline.alphabetic,
+    fontFeatures: [
+      FontFeature.tabularFigures()
+    ],
     fontStyle: FontStyle.normal,
   );
 
