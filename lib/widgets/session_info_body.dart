@@ -116,7 +116,7 @@ class SessionInfoBody extends StatelessWidget {
                     : 'Current Session'.toUpperCase(),
                 style: AppTextStyles.subTitle4,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.5,
                 child: Row(
