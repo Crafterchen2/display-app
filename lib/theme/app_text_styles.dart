@@ -46,8 +46,8 @@ class AppTextStyles {
 
   static const TextStyle digitsHeading3 = TextStyle(
     color: AppColors.primaryBlue,
-    fontFamily: 'NanumGothic',
-    fontSize: 24,
+    fontFamily: 'PTSans',
+    fontSize: 26,
     fontWeight: FontWeight.bold,
     textBaseline: TextBaseline.alphabetic,
     fontFeatures: [

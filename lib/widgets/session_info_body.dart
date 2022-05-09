@@ -109,7 +109,7 @@ class SessionInfoBody extends StatelessWidget {
                   style: AppTextStyles.heading6,
                 ),
               ),
-              const SizedBox(height: 50),
+              // const SizedBox(height: 50),
               Text(
                 state == 'Unplugged'
                     ? 'Last Session'.toUpperCase()
