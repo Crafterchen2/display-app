@@ -93,7 +93,7 @@ class SimulationPanel extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   PrimaryButton2(
-                    width: buttonWidth,
+                    width: MediaQuery.of(context).size.width * 0.6,
                     title: 'Charging Simulation',
                     onPressed: chargingSimulationPressed,
                   ),

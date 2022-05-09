@@ -62,10 +62,10 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     setState(() {
       _showProgressBar = true;
     });
-    try{
+    try {
       await mqtt.connect();
       _online = true;
-    }catch(e){
+    } catch (e) {
       _online = false;
       debugPrint(e.toString());
       _status = 'Connection Error';
@@ -99,11 +99,12 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
                 totalEnergy: _energyTotal,
                 latestTotalw: _latestTotalw.toString(),
                 duration: _duration,
+                online: _online,
                 onPauseCharging: () => performAction(pauseCharging),
                 onResumeCharging: () => performAction(resumeCharging),
               ),
               const Spacer(flex: 2),
-               Footer(isOnline: _online,),
+              //  Footer(isOnline: _online,),
             ],
           ),
           if (_showSimulationPanel)
