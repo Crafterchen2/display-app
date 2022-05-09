@@ -15,6 +15,7 @@ class SessionInfoBody extends StatelessWidget {
   final VoidCallback onPauseCharging;
   final VoidCallback onResumeCharging;
 
+
   const SessionInfoBody({
     Key? key,
     required this.energy,

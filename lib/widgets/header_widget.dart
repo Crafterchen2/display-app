@@ -15,6 +15,7 @@ class Header extends StatelessWidget {
         width: double.infinity,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Image(
               image: AssetImage('assets/images/everest_logo.png'),

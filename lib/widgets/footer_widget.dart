@@ -8,12 +8,10 @@ import '../utils/datetime_formats.dart';
 
 class Footer extends StatefulWidget {
   final bool isOnline;
-  final DateTime dateTime;
 
   const Footer({
     Key? key,
     this.isOnline = true,
-    required this.dateTime,
   }) : super(key: key);
 
   @override
@@ -21,17 +19,23 @@ class Footer extends StatefulWidget {
 }
 
 class _FooterState extends State<Footer> {
-  // late Timer _timer;
-  //
-  // void startTimer() {
-  //   const oneSec = Duration(seconds: 1);
-  //   _timer = Timer.periodic(
-  //     oneSec,
-  //     (Timer timer) {
-  //       setState(() {});
-  //     },
-  //   );
-  // }
+  late Timer _timer;
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        setState(() {});
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    startTimer();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +51,8 @@ class _FooterState extends State<Footer> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
-                  'Online',
+                Text(
+                  widget.isOnline ? 'Online' : 'Offline',
                   style: AppTextStyles.heading3,
                 ),
                 const SizedBox(width: 8),
@@ -56,8 +60,11 @@ class _FooterState extends State<Footer> {
                   height: 16,
                   width: 16,
                   margin: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: const BoxDecoration(
-                      color: AppColors.successLight, shape: BoxShape.circle),
+                  decoration: BoxDecoration(
+                      color: widget.isOnline
+                          ? AppColors.successLight
+                          : Colors.redAccent,
+                      shape: BoxShape.circle),
                 ),
               ],
             ),
@@ -70,7 +77,7 @@ class _FooterState extends State<Footer> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  dateTimeFormat.format(widget.dateTime),
+                  dateTimeFormat.format(DateTime.now()),
                   style: AppTextStyles.digitsHeading3,
                 ),
                 const SizedBox(width: 50),
