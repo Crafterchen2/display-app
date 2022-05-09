@@ -7,7 +7,7 @@ class AppTextStyles {
   static const TextStyle primaryButtonText = TextStyle(
     color: AppColors.primaryBlue,
     fontFamily: 'Urbanist',
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: FontWeight.bold,
     textBaseline: TextBaseline.alphabetic,
     fontStyle: FontStyle.normal,

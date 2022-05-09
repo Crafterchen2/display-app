@@ -29,6 +29,7 @@ class SessionInfoBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.05),
@@ -38,7 +39,7 @@ class SessionInfoBody extends StatelessWidget {
           Column(
             children: [
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.2,
+                width: MediaQuery.of(context).size.width * 0.25,
                 height: MediaQuery.of(context).size.height * 0.3,
                 child: Center(
                   child: Stack(
@@ -48,29 +49,28 @@ class SessionInfoBody extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 20),
                         child: SvgPicture.asset(
-                            getChargingSessionIconByState(state),
-                            height: state == 'Unplugged' ? null : 200,
-                            width: state == 'Unplugged' ? null : 200),
+                          getChargingSessionIconByState(state),
+                          height: state == 'Unplugged' ? null : width * 0.2,
+                        ),
                       ),
                       if (state == 'ChargingPausedEVSE' ||
                           state == 'ChargingPausedEV')
-                        SvgPicture.asset(
-                          'assets/icons/icon_pausecharging.svg',
-                            height: state == 'Unplugged' ? null : 100,
-                            width: state == 'Unplugged' ? null : 100
-                        ),
+                        SvgPicture.asset('assets/icons/icon_pausecharging.svg',
+                            height: state == 'Unplugged' ? null : width * 0.08,
+                            width: state == 'Unplugged' ? null : width * 0.08),
                     ],
                   ),
                 ),
               ),
               const SizedBox(height: 32),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.3,
+
                 height: MediaQuery.of(context).size.height * 0.1,
                 child: Column(
                   children: [
                     if (state == ChargingState.charging)
                       SecondaryButton(
+                          width: MediaQuery.of(context).size.width * 0.32,
                           title: 'Pause Charging',
                           onPressed: onPauseCharging,
                           textColor: AppColors.primaryAmber),
@@ -78,6 +78,7 @@ class SessionInfoBody extends StatelessWidget {
                             ChargingState.charging &&
                         pauseOrResumeChargingTitle(state) != '')
                       PrimaryButton(
+                        width: MediaQuery.of(context).size.width * 0.32,
                         title: 'Resume Charging',
                         onPressed: onResumeCharging,
                         textColor: Colors.white,
