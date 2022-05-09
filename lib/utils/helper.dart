@@ -23,7 +23,7 @@ String getChargingSessionIconByState(String state) {
     case ChargingState.permanentFault:
       return '';
   }
-  return url;
+  return '${base}icon_unplugged.svg';
 }
 
 String chargingStateTitle(String state) {
@@ -47,7 +47,7 @@ String chargingStateTitle(String state) {
     case ChargingState.permanentFault:
       return 'Permanent Fault';
     default:
-      return '';
+      return 'Unplugged';
   }
 }
 

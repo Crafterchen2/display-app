@@ -25,6 +25,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   late double _chargedEnergy;
   late double _latestTotalw;
   late String _duration;
+  bool _online = true;
   bool _showSimulationPanel = false;
   bool _showProgressBar = false;
   final mqtt = MQTT();
@@ -46,14 +47,11 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
 
   void parseSessionInfo(String message) {
     final i = jsonDecode(message);
-    debugPrint(i.toString());
-    setState(() {
-      _status = i["state"];
-      _chargedEnergy = i["charged_energy_wh"] / 1000.0;
-      _latestTotalw = i["latest_total_w"] / 1000.0;
-      _energyTotal = (_chargedEnergy.toStringAsFixed(1) + " kWh");
-      _duration = durationFormat(Duration(seconds: i["charging_duration_s"]));
-    });
+    _status = i["state"];
+    _chargedEnergy = i["charged_energy_wh"] / 1000.0;
+    _latestTotalw = i["latest_total_w"] / 1000.0;
+    _energyTotal = (_chargedEnergy.toStringAsFixed(1) + " kWh");
+    _duration = durationFormat(Duration(seconds: i["charging_duration_s"]));
 
     setState(() {
       _showProgressBar = false;
@@ -64,7 +62,20 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     setState(() {
       _showProgressBar = true;
     });
-    await mqtt.connect();
+    try{
+      await mqtt.connect();
+      _online = true;
+    }catch(e){
+      _online = false;
+      debugPrint(e.toString());
+      _status = 'Connection Error';
+      _chargedEnergy = 0;
+      _latestTotalw = 0;
+      _energyTotal = '';
+      setState(() {
+        _showProgressBar = false;
+      });
+    }
   }
 
   @override
@@ -92,7 +103,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
                 onResumeCharging: () => performAction(resumeCharging),
               ),
               const Spacer(flex: 2),
-               Footer(dateTime: DateTime.now(),),
+               Footer(isOnline: _online,),
             ],
           ),
           if (_showSimulationPanel)
