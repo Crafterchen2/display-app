@@ -31,7 +31,7 @@ class SessionInfoBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.1),
+          horizontal: MediaQuery.of(context).size.width * 0.05),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -65,7 +65,7 @@ class SessionInfoBody extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.25,
+                width: MediaQuery.of(context).size.width * 0.3,
                 height: MediaQuery.of(context).size.height * 0.1,
                 child: Column(
                   children: [
