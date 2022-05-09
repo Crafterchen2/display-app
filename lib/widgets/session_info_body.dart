@@ -142,8 +142,8 @@ class SessionInfoBody extends StatelessWidget {
                               style: AppTextStyles.heading3,
                             ),
                             Container(
-                              height: 16,
-                              width: 16,
+                              height: 24,
+                              width: 24,
                               margin: EdgeInsets.symmetric(
                                   horizontal: width * 0.02),
                               decoration: BoxDecoration(
