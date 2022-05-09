@@ -53,7 +53,7 @@ class _FooterState extends State<Footer> {
               children: [
                 Text(
                   widget.isOnline ? 'Online' : 'Offline',
-                  style: AppTextStyles.heading3,
+                  style: AppTextStyles.subTitle4,
                 ),
                 const SizedBox(width: 8),
                 Container(

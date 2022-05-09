@@ -35,16 +35,16 @@ class AppTextStyles {
   static const TextStyle heading3 = TextStyle(
     color: AppColors.primaryBlue,
     fontFamily: 'Urbanist',
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: FontWeight.bold,
     textBaseline: TextBaseline.alphabetic,
     fontStyle: FontStyle.normal,
-    letterSpacing: 0.12,
+    letterSpacing: 0.13,
   );
 
   static const TextStyle digitsHeading3 = TextStyle(
     color: AppColors.primaryBlue,
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: FontWeight.bold,
     textBaseline: TextBaseline.alphabetic,
     fontStyle: FontStyle.normal,
@@ -64,6 +64,16 @@ class AppTextStyles {
     color: AppColors.primaryBlue,
     fontFamily: 'Urbanist',
     fontSize: 13,
+    fontWeight: FontWeight.w400,
+    textBaseline: TextBaseline.alphabetic,
+    fontStyle: FontStyle.normal,
+    letterSpacing: 0.15,
+  );
+
+  static const TextStyle subTitle4 = TextStyle(
+    color: AppColors.primaryBlue,
+    fontFamily: 'Urbanist',
+    fontSize: 24,
     fontWeight: FontWeight.w400,
     textBaseline: TextBaseline.alphabetic,
     fontStyle: FontStyle.normal,
