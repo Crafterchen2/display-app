@@ -35,7 +35,7 @@ class AppTextStyles {
   );
 
   static const TextStyle heading3 = TextStyle(
-    color: AppColors.primaryAmber,
+    color: AppColors.primaryBlue,
     fontFamily: 'Urbanist',
     fontSize: 24,
     fontWeight: FontWeight.bold,
@@ -45,7 +45,7 @@ class AppTextStyles {
   );
 
   static const TextStyle digitsHeading3 = TextStyle(
-    color: AppColors.primaryAmber,
+    color: AppColors.primaryBlue,
     fontSize: 24,
     fontWeight: FontWeight.bold,
     textBaseline: TextBaseline.alphabetic,

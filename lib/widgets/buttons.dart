@@ -39,7 +39,6 @@ class PrimaryButton extends StatelessWidget {
 
 class SecondaryButton extends StatelessWidget {
   final double height;
-  final double width;
   final String title;
   final Color color;
   final Color textColor;
@@ -48,7 +47,6 @@ class SecondaryButton extends StatelessWidget {
   const SecondaryButton(
       {Key? key,
       this.height = 54,
-      this.width = 200,
       required this.title,
       this.color = Colors.white,
       this.textColor = Colors.white,
