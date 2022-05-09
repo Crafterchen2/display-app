@@ -78,7 +78,7 @@ class _FooterState extends State<Footer> {
               children: [
                 Text(
                   dateTimeFormat.format(DateTime.now()),
-                  style: AppTextStyles.digitsHeading3,
+                  style: AppTextStyles.digitsHeading3.copyWith(color: AppColors.primaryBlue),
                 ),
                 const SizedBox(width: 50),
               ],
