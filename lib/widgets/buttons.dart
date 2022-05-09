@@ -5,7 +5,6 @@ import '../theme/app_text_styles.dart';
 
 class PrimaryButton extends StatelessWidget {
   final double height;
-  final double width;
   final String title;
   final Color color;
   final Color textColor;
@@ -13,8 +12,7 @@ class PrimaryButton extends StatelessWidget {
 
   const PrimaryButton(
       {Key? key,
-      this.height = 48,
-      this.width = 200,
+      this.height = 54,
       required this.title,
       this.color = const Color(0xFFFFAC02),
       this.textColor = Colors.white,
@@ -26,13 +24,15 @@ class PrimaryButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        // padding:const EdgeInsets.symmetric(horizontal: 20),
+        padding:const EdgeInsets.symmetric(horizontal: 20),
         height: height,
-        width: width,
-        color: color,
+        decoration: BoxDecoration(
+            color: color,
+            border: Border.all(width: 3, color: AppColors.primaryAmber)),
         child: Center(
-          child:
-              Text(title.toUpperCase(), style: AppTextStyles.primaryButtonText),
+          child: Text(title.toUpperCase(),
+              style:
+                  AppTextStyles.primaryButtonText.copyWith(color: textColor)),
         ),
       ),
     );
@@ -49,7 +49,7 @@ class SecondaryButton extends StatelessWidget {
 
   const SecondaryButton(
       {Key? key,
-      this.height = 48,
+      this.height = 54,
       this.width = 200,
       required this.title,
       this.color = Colors.white,
@@ -63,14 +63,13 @@ class SecondaryButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         height: height,
-        width: width,
         decoration: BoxDecoration(
             color: color,
-            border: Border.all(width: 1, color: AppColors.primaryAmber)),
+            border: Border.all(width: 3, color: AppColors.primaryAmber)),
         child: Center(
           child: Text(title.toUpperCase(),
-              style: AppTextStyles.primaryButtonText
-                  .copyWith(color: AppColors.primaryAmber)),
+              style:
+                  AppTextStyles.primaryButtonText.copyWith(color: textColor)),
         ),
       ),
     );

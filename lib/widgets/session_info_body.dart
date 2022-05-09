@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pionixbox/theme/app_colors.dart';
 
 import '../theme/app_text_styles.dart';
 import '../utils/constants/keys.dart';
@@ -38,7 +39,7 @@ class SessionInfoBody extends StatelessWidget {
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.2,
-                height: MediaQuery.of(context).size.height * 0.2,
+                height: MediaQuery.of(context).size.height * 0.3,
                 child: Center(
                   child: Stack(
                     alignment: Alignment.bottomRight,
@@ -47,30 +48,40 @@ class SessionInfoBody extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 20),
                         child: SvgPicture.asset(
-                            getChargingSessionIconByState(state)),
+                            getChargingSessionIconByState(state),
+                            height: state == 'Unplugged' ? null : 200,
+                            width: state == 'Unplugged' ? null : 200),
                       ),
                       if (state == 'ChargingPausedEVSE' ||
                           state == 'ChargingPausedEV')
-                        SvgPicture.asset('assets/icons/icon_pausecharging.svg'),
+                        SvgPicture.asset(
+                          'assets/icons/icon_pausecharging.svg',
+                            height: state == 'Unplugged' ? null : 100,
+                            width: state == 'Unplugged' ? null : 100
+                        ),
                     ],
                   ),
                 ),
               ),
               const SizedBox(height: 32),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.2,
+                width: MediaQuery.of(context).size.width * 0.25,
                 height: MediaQuery.of(context).size.height * 0.1,
                 child: Column(
                   children: [
                     if (state == ChargingState.charging)
                       SecondaryButton(
-                          title: 'Pause Charging', onPressed: onPauseCharging),
+                          title: 'Pause Charging',
+                          onPressed: onPauseCharging,
+                          textColor: AppColors.primaryAmber),
                     if (pauseOrResumeChargingTitle(state) !=
                             ChargingState.charging &&
                         pauseOrResumeChargingTitle(state) != '')
                       PrimaryButton(
-                          title: 'Resume Charging',
-                          onPressed: onResumeCharging),
+                        title: 'Resume Charging',
+                        onPressed: onResumeCharging,
+                        textColor: Colors.white,
+                      ),
                   ],
                 ),
               ),
