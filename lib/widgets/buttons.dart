@@ -18,7 +18,7 @@ class PrimaryButton extends StatelessWidget {
       this.color = AppColors.primaryAmber,
       this.textColor = Colors.white,
       required this.onPressed,
-      this.width = 300})
+      this.width = 400})
       : super(key: key);
 
   @override
@@ -34,6 +34,43 @@ class PrimaryButton extends StatelessWidget {
           child: Text(title.toUpperCase(),
               style:
                   AppTextStyles.primaryButtonText.copyWith(color: textColor)),
+        ),
+      ),
+    );
+  }
+}
+
+class PrimaryButton2 extends StatelessWidget {
+  final double height;
+  final double width;
+  final String title;
+  final Color color;
+  final Color textColor;
+  final VoidCallback onPressed;
+
+  const PrimaryButton2(
+      {Key? key,
+        this.height = 64,
+        required this.title,
+        this.color = AppColors.primaryAmber,
+        this.textColor = Colors.white,
+        required this.onPressed,
+        this.width = 400})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        width: width,
+        height: height,
+        color: color,
+        child: Center(
+          child: Text(title.toUpperCase(),
+              style:
+              AppTextStyles.primaryButtonText.copyWith(color: textColor, fontSize: 24)),
         ),
       ),
     );
