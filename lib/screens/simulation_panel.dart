@@ -29,15 +29,12 @@ class SimulationPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.primaryBlue,
-      width: double.infinity,
-      height: double.infinity,
       child: Stack(
-        alignment: Alignment.topRight,
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -96,7 +93,6 @@ class SimulationPanel extends StatelessWidget {
                   ),
                 ],
               ),
-
               const SizedBox(height: 30),
               InkWell(
                 onTap: closePanel,
@@ -117,7 +113,6 @@ class SimulationPanel extends StatelessWidget {
               ),
             ],
           ),
-
         ],
       ),
     );
