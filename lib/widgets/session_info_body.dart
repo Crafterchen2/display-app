@@ -4,6 +4,7 @@ import 'package:pionixbox/theme/app_colors.dart';
 
 import '../theme/app_text_styles.dart';
 import '../utils/constants/keys.dart';
+import '../utils/datetime_formats.dart';
 import '../utils/helper.dart';
 import 'buttons.dart';
 
@@ -13,6 +14,7 @@ class SessionInfoBody extends StatelessWidget {
   final String totalEnergy;
   final String state;
   final String latestTotalw;
+  final bool online;
   final VoidCallback onPauseCharging;
   final VoidCallback onResumeCharging;
 
@@ -25,6 +27,7 @@ class SessionInfoBody extends StatelessWidget {
     required this.latestTotalw,
     required this.onPauseCharging,
     required this.onResumeCharging,
+    this.online = true,
   }) : super(key: key);
 
   @override
@@ -64,7 +67,6 @@ class SessionInfoBody extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               SizedBox(
-
                 height: MediaQuery.of(context).size.height * 0.1,
                 child: Column(
                   children: [
@@ -116,21 +118,41 @@ class SessionInfoBody extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.4,
+                width: MediaQuery.of(context).size.width * 0.5,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           'Energy',
                           style: AppTextStyles.heading3,
                         ),
-                        SizedBox(height: 4),
-                        Text(
+                        const SizedBox(height: 8),
+                        const Text(
                           'Duration',
                           style: AppTextStyles.heading3,
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Text(
+                              online ? 'Online' : 'Offline',
+                              style: AppTextStyles.heading3,
+                            ),
+                            Container(
+                              height: 16,
+                              width: 16,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: width * 0.02),
+                              decoration: BoxDecoration(
+                                  color: online
+                                      ? AppColors.successLight
+                                      : Colors.redAccent,
+                                  shape: BoxShape.circle),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -145,9 +167,14 @@ class SessionInfoBody extends StatelessWidget {
                             textAlign: TextAlign.start,
                             style: AppTextStyles.digitsHeading3,
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 8),
                           Text(
                             duration + ' h',
+                            style: AppTextStyles.digitsHeading3,
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            dateTimeFormat.format(DateTime.now()),
                             style: AppTextStyles.digitsHeading3,
                           ),
                         ],
