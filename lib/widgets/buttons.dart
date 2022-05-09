@@ -50,12 +50,12 @@ class PrimaryButton2 extends StatelessWidget {
 
   const PrimaryButton2(
       {Key? key,
-        this.height = 64,
+        this.height = 78,
         required this.title,
         this.color = AppColors.primaryAmber,
         this.textColor = Colors.white,
         required this.onPressed,
-        this.width = 400})
+        this.width = 500})
       : super(key: key);
 
   @override
