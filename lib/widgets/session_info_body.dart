@@ -158,7 +158,7 @@ class SessionInfoBody extends StatelessWidget {
                     ),
                     const Spacer(),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.2,
+                      width: MediaQuery.of(context).size.width * 0.35,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
