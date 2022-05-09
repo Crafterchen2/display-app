@@ -68,15 +68,15 @@ class SessionInfoBody extends StatelessWidget {
           children: <Widget>[
             const Text(
               'STATUS',
-              style: AppTextStyles.heading1,
+              style: AppTextStyles.heading2,
             ),
             const SizedBox(height: 8),
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.3,
+              width: MediaQuery.of(context).size.width * 0.4,
               child: Text(
                 chargingStateTitle(state).toUpperCase(),
                 overflow: TextOverflow.ellipsis,
-                maxLines: 2,
+                maxLines: 3,
                 style: AppTextStyles.heading6,
               ),
             ),
@@ -85,7 +85,7 @@ class SessionInfoBody extends StatelessWidget {
               state == 'Unplugged'
                   ? 'Last Session'.toUpperCase()
                   : 'Current Session'.toUpperCase(),
-              style: AppTextStyles.subTitle2,
+              style: AppTextStyles.heading2,
             ),
             const SizedBox(height: 8),
             SizedBox(
@@ -98,30 +98,31 @@ class SessionInfoBody extends StatelessWidget {
                     children: const [
                       Text(
                         'Energy',
-                        style: AppTextStyles.heading1,
+                        style: AppTextStyles.heading3,
                       ),
                       SizedBox(height: 4),
                       Text(
                         'Duration',
-                        style: AppTextStyles.heading1,
+                        style: AppTextStyles.heading3,
                       ),
                     ],
                   ),
                   const Spacer(),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.08,
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.12,
                     // color: Colors.black,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          energy.toString() + ' kWh',
-                          style: AppTextStyles.heading1,
+                          energy.toStringAsFixed(2) + ' kWh',
+                          textAlign: TextAlign.start,
+                          style: AppTextStyles.digitsHeading3,
                         ),
                         const SizedBox(height: 4),
                         Text(
                           duration + ' h',
-                          style: AppTextStyles.heading1,
+                          style: AppTextStyles.digitsHeading3,
                         ),
                       ],
                     ),

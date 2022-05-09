@@ -22,6 +22,34 @@ class AppTextStyles {
     letterSpacing: 0.1,
   );
 
+  static const TextStyle heading2 = TextStyle(
+    color: AppColors.primaryBlue,
+    fontFamily: 'Urbanist',
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+    textBaseline: TextBaseline.alphabetic,
+    fontStyle: FontStyle.normal,
+    letterSpacing: 0.11,
+  );
+
+  static const TextStyle heading3 = TextStyle(
+    color: AppColors.primaryBlue,
+    fontFamily: 'Urbanist',
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    textBaseline: TextBaseline.alphabetic,
+    fontStyle: FontStyle.normal,
+    letterSpacing: 0.12,
+  );
+
+  static const TextStyle digitsHeading3 = TextStyle(
+    color: AppColors.primaryBlue,
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    textBaseline: TextBaseline.alphabetic,
+    fontStyle: FontStyle.normal,
+  );
+
   static const TextStyle heading6 = TextStyle(
     color: AppColors.primaryAmber,
     fontFamily: 'Urbanist',
