@@ -38,15 +38,14 @@ class SimulationPanel extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  PrimaryButton(
+                  PrimaryButton2(
                     title: 'Plug In',
                     onPressed: plugInPressed,
-                    color: AppColors.successLight,
                   ),
-                  PrimaryButton(
+                  const SizedBox(width: 8),
+                  PrimaryButton2(
                     title: 'Plug Out',
                     onPressed: plugOutPressed,
-                    color: AppColors.errorLight,
                   ),
                 ],
               ),
@@ -54,15 +53,15 @@ class SimulationPanel extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  PrimaryButton(
+                  PrimaryButton2(
                     title: 'Resume by car',
                     onPressed: resumeByCarPressed,
-                    color: AppColors.successLight,
                   ),
-                  PrimaryButton(
+                  const SizedBox(width: 8),
+
+                  PrimaryButton2(
                     title: 'Pause by car',
                     onPressed: pauseByCarPressed,
-                    color: AppColors.errorLight,
                   ),
                 ],
               ),
@@ -70,15 +69,15 @@ class SimulationPanel extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  PrimaryButton(
+                  PrimaryButton2(
                     title: 'Enable Simulation',
                     onPressed: enableSimulationPressed,
-                    color: AppColors.successLight,
                   ),
-                  PrimaryButton(
+                  const SizedBox(width: 8),
+
+                  PrimaryButton2(
                     title: 'Disable Simulation',
                     onPressed: disableSimulationPressed,
-                    color: AppColors.errorLight,
                   ),
                 ],
               ),
@@ -86,10 +85,9 @@ class SimulationPanel extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  PrimaryButton(
+                  PrimaryButton2(
                     title: 'Charging Simulation',
                     onPressed: chargingSimulationPressed,
-                    color: AppColors.errorLight,
                   ),
                 ],
               ),
