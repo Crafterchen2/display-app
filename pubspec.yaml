@@ -100,7 +100,10 @@ flutter:
           weight: 600
         - asset: assets/fonts/NanumGothic-ExtraBold.ttf
           weight: 700
-
+    - family: PTSans
+      fonts:
+        - asset: assets/fonts/PTSans-Bold.ttf
+          weight: 700
 
   #   - family: Trajan Pro
   #     fonts:
