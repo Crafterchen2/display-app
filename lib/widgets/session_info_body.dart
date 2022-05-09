@@ -90,7 +90,7 @@ class SessionInfoBody extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.2,
+              width: MediaQuery.of(context).size.width * 0.4,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -109,9 +109,8 @@ class SessionInfoBody extends StatelessWidget {
                     ],
                   ),
                   const Spacer(),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.12,
-                    // color: Colors.black,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.2,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
