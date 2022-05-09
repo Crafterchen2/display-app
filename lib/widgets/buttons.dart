@@ -24,11 +24,9 @@ class PrimaryButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        padding:const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         height: height,
-        decoration: BoxDecoration(
-            color: color,
-            border: Border.all(width: 3, color: AppColors.primaryAmber)),
+        color: color,
         child: Center(
           child: Text(title.toUpperCase(),
               style:
