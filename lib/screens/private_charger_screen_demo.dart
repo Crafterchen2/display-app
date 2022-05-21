@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:pionixbox/screens/simulation_panel.dart';
+
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/utils/helper.dart';
 
 import '../mqtt.dart';
+import '../routing/app_router.dart';
 import '../utils/constants/keys.dart';
-import '../widgets/footer_widget.dart';
 import '../widgets/header_widget.dart';
 import '../widgets/session_info_body.dart';
 
@@ -87,9 +87,10 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
             children: [
               Header(
                 onSettingsPressed: () {
-                  setState(() {
-                    _showSimulationPanel = true;
-                  });
+                  Navigator.of(context).pushNamed(AppRoutes.settingScreen);
+                  // setState(() {
+                  //   _showSimulationPanel = true;
+                  // });
                 },
               ),
               const Spacer(flex: 1),
@@ -107,22 +108,22 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
               //  Footer(isOnline: _online,),
             ],
           ),
-          if (_showSimulationPanel)
-            SimulationPanel(
-              plugInPressed: () => performAction(plugIn),
-              plugOutPressed: () => performAction(plugOut),
-              resumeByCarPressed: () => performAction(resumeByCar),
-              pauseByCarPressed: () => performAction(pauseByCar),
-              chargingSimulationPressed: () =>
-                  performAction(chargingSimulation),
-              enableSimulationPressed: () => performAction(enableSimulation),
-              disableSimulationPressed: () => performAction(disableSimulation),
-              closePanel: () {
-                setState(() {
-                  _showSimulationPanel = false;
-                });
-              },
-            ),
+          // if (_showSimulationPanel) SettingsScreen(),
+          // SimulationPanel(
+          //   plugInPressed: () => performAction(plugIn),
+          //   plugOutPressed: () => performAction(plugOut),
+          //   resumeByCarPressed: () => performAction(resumeByCar),
+          //   pauseByCarPressed: () => performAction(pauseByCar),
+          //   chargingSimulationPressed: () =>
+          //       performAction(chargingSimulation),
+          //   enableSimulationPressed: () => performAction(enableSimulation),
+          //   disableSimulationPressed: () => performAction(disableSimulation),
+          //   closePanel: () {
+          //     setState(() {
+          //       _showSimulationPanel = false;
+          //     });
+          //   },
+          // ),
           if (_showProgressBar)
             Center(
               child: Container(
