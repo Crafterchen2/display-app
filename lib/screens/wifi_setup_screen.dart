@@ -8,6 +8,7 @@ import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/widgets/buttons.dart';
 
 import '../mqtt.dart';
+import '../utils/constants/keys.dart';
 
 class WifiSetupScreen extends StatefulWidget {
   const WifiSetupScreen({
@@ -219,4 +220,13 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       ),
     );
   }
+
+  // void connectToNetwork() {
+  //   mqtt.publish(Topic.addNetwork, {
+  //     "interface" : "wlan0",
+  //     "ssid": "wifi_ssid_name",
+  //     "psk": "wifi_pre_shared_key"
+  //   });
+  //   setState(() {});
+  // }
 }

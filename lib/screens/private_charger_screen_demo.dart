@@ -191,4 +191,10 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     mqtt.publish(Topic.enableSimulationTopic, Payloads.disableSimulation);
     setState(() {});
   }
+
+
+  // void blockWifi() {
+  //   mqtt.publish(Topic.blockWifi, Payloads.disableSimulation);
+  //   setState(() {});
+  // }
 }

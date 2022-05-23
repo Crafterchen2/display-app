@@ -17,6 +17,11 @@ class Topic {
       '/carsim/cmd/modify_charging_session';
   static const String enableSimulationTopic =
       '/carsim/cmd/enable';
+
+  static const String blockWifi = 'everest_api/setup/cmd/rfkill_block';
+  static const String addNetwork = 'everest_api/setup/cmd/add_network';
+
+
 }
 
 class Payloads {
