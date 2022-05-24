@@ -25,6 +25,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   bool _wifi = true;
   bool _showPasswordScreen = false;
   final mqtt = MQTT();
+  String _selectedSSID = '';
   List<String> _ssids = [];
   TextEditingController _passwordController = TextEditingController();
   FocusNode _passwordFocusNode = FocusNode();
@@ -162,7 +163,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
               ? WifiPasswordScreen(
                   passwordController: _passwordController,
                   passwordFocusNode: _passwordFocusNode,
-                  onConnectPressed: (){
+                  onConnectPressed: () {
                     connectToNetwork();
                     _passwordController.clear();
                     setState(() {
@@ -185,6 +186,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   Widget _networkCardWidget(String ssid) {
     return InkWell(
       onTap: () {
+        _selectedSSID = ssid;
         setState(() {
           _showPasswordScreen = true;
         });
@@ -233,10 +235,14 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   }
 
   void connectToNetwork() async {
-    final psk = await _generatePSK(_passwordController.text);
-    final payload =
-        {"interface": "wlan0", "ssid": "Network issue", "psk": psk}.toString();
-    mqtt.publish(Topic.addNetwork, payload);
+    if (_passwordController.text.isEmpty) {
+      debugPrint('Please enter passworkd');
+    } else {
+      final psk = await _generatePSK(_passwordController.text);
+      final payload =
+          {"interface": "wlan0", "ssid": _selectedSSID, "psk": psk}.toString();
+      mqtt.publish(Topic.addNetwork, payload);
+    }
   }
 
   Future<String> _generatePSK(String password) async {
@@ -244,9 +250,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
         Pbkdf2(macAlgorithm: Hmac(Sha1()), iterations: 4096, bits: 256);
 
     List<int> password_bytes = utf8.encode(password);
-
-    String ssid = "Network issue";
-    List<int> ssid_bytes = utf8.encode(ssid);
+    List<int> ssid_bytes = utf8.encode(_selectedSSID);
 
     final psk = await pbkdf2.deriveKey(
         secretKey: SecretKey(password_bytes), nonce: ssid_bytes);
