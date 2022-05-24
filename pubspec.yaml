@@ -38,7 +38,9 @@ dependencies:
   state_notifier: ^0.7.2+1
   flutter_svg: ^1.0.3
   shared_preferences: ^2.0.8
-
+  virtual_keyboard_multi_language: ^0.2.4
+  cryptography: 2.0.5
+  convert: 3.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

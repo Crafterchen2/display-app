@@ -5,8 +5,10 @@ import 'package:pionixbox/theme/app_text_styles.dart';
 class IconTextField extends StatelessWidget {
   final Icon icon;
   final TextEditingController controller;
+  final FocusNode? focusNode;
   final String hintText;
   final TextInputType keyboardType;
+  final VoidCallback? onTap;
 
   const IconTextField({
     Key? key,
@@ -14,6 +16,7 @@ class IconTextField extends StatelessWidget {
     required this.controller,
     this.hintText = '',
     this.keyboardType = TextInputType.text,
+    this.focusNode, this.onTap,
   }) : super(key: key);
 
   @override
@@ -33,8 +36,12 @@ class IconTextField extends StatelessWidget {
           icon,
           Expanded(
             child: TextField(
+              readOnly:  true,
+              onTap: onTap,
               controller: controller,
-              style: AppTextStyles.heading6.copyWith(color: AppColors.primaryBlue),
+              focusNode: focusNode,
+              style:
+                  AppTextStyles.heading6.copyWith(color: AppColors.primaryBlue, fontSize: MediaQuery.of(context).size.height * 0.08),
               decoration: InputDecoration(
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:convert/convert.dart';
+import 'package:cryptography/cryptography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pionixbox/screens/wifi_password_screen.dart';
@@ -20,15 +22,17 @@ class WifiSetupScreen extends StatefulWidget {
 }
 
 class _WifiSetupScreenState extends State<WifiSetupScreen> {
-  bool _wifi = false;
+  bool _wifi = true;
+  bool _showPasswordScreen = false;
   final mqtt = MQTT();
   List<String> _ssids = [];
   TextEditingController _passwordController = TextEditingController();
+  FocusNode _passwordFocusNode = FocusNode();
 
   @override
   void initState() {
-    mqtt.subscribe("everest_api/setup/var/wifi_info",
-        parseAvailableNetworksInfo);
+    mqtt.subscribe(
+        "everest_api/setup/var/wifi_info", parseAvailableNetworksInfo);
     super.initState();
   }
 
@@ -127,7 +131,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                 Expanded(
                   child: ListView.builder(
                       physics: const AlwaysScrollableScrollPhysics(),
-                    shrinkWrap: true,
+                      shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       itemCount: _ssids.length,
                       itemBuilder: (context, index) {
@@ -154,6 +158,25 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
               ),
             ),
           ),
+          _showPasswordScreen
+              ? WifiPasswordScreen(
+                  passwordController: _passwordController,
+                  passwordFocusNode: _passwordFocusNode,
+                  onConnectPressed: (){
+                    connectToNetwork();
+                    _passwordController.clear();
+                    setState(() {
+                      _showPasswordScreen = false;
+                    });
+                  },
+                  onBackPressed: () {
+                    _passwordController.clear();
+                    setState(() {
+                      _showPasswordScreen = false;
+                    });
+                  },
+                )
+              : const SizedBox(),
         ],
       ),
     );
@@ -161,22 +184,10 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
 
   Widget _networkCardWidget(String ssid) {
     return InkWell(
-      onTap: () async {
-        final result = await showModalBottomSheet(
-          isDismissible: false,
-          enableDrag: false,
-          isScrollControlled: true,
-          context: context,
-          builder: (ctz) {
-            return StatefulBuilder(
-              builder: (context, setCoach) {
-                return WifiPasswordScreen(
-                  passwordController: _passwordController,
-                );
-              },
-            );
-          },
-        );
+      onTap: () {
+        setState(() {
+          _showPasswordScreen = true;
+        });
       },
       child: Column(
         children: [
@@ -221,12 +232,28 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     );
   }
 
-  // void connectToNetwork() {
-  //   mqtt.publish(Topic.addNetwork, {
-  //     "interface" : "wlan0",
-  //     "ssid": "wifi_ssid_name",
-  //     "psk": "wifi_pre_shared_key"
-  //   });
-  //   setState(() {});
-  // }
+  void connectToNetwork() async {
+    final psk = await _generatePSK(_passwordController.text);
+    final payload =
+        {"interface": "wlan0", "ssid": "Network issue", "psk": psk}.toString();
+    mqtt.publish(Topic.addNetwork, payload);
+  }
+
+  Future<String> _generatePSK(String password) async {
+    final pbkdf2 =
+        Pbkdf2(macAlgorithm: Hmac(Sha1()), iterations: 4096, bits: 256);
+
+    List<int> password_bytes = utf8.encode(password);
+
+    String ssid = "Network issue";
+    List<int> ssid_bytes = utf8.encode(ssid);
+
+    final psk = await pbkdf2.deriveKey(
+        secretKey: SecretKey(password_bytes), nonce: ssid_bytes);
+    final psk_bytes = await psk.extractBytes();
+    final psk_string = hex.encode(psk_bytes);
+
+    print("PSK: " + psk_string);
+    return psk_string;
+  }
 }
