@@ -121,7 +121,6 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
     if (key.keyType == VirtualKeyboardKeyType.String) {
     } else if (key.keyType == VirtualKeyboardKeyType.Action) {
       switch (key.action) {
-        case VirtualKeyboardKeyAction.Backspace:
         case VirtualKeyboardKeyAction.Return:
           setState(() {
             _showKeyboard = false;
