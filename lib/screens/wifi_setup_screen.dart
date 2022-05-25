@@ -268,7 +268,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     } else {
       final psk = await _generatePSK(_passwordController.text);
       final payload =
-          {"interface": "wlan0", "ssid": _selectedSSID, "psk": psk}.toString();
+          "{'interface': 'wlan0', 'ssid': $_selectedSSID, 'psk': $psk}";
       mqtt.publish(Topic.addNetwork, payload);
     }
   }
