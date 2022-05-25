@@ -192,7 +192,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                   passwordController: _passwordController,
                   passwordFocusNode: _passwordFocusNode,
                   onConnectPressed: () {
-                    connectToNetwork();
+                    connectToNetwork(context);
                     _passwordController.clear();
                     setState(() {
                       _showPasswordScreen = false;
@@ -262,7 +262,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     );
   }
 
-  void connectToNetwork() async {
+  void connectToNetwork(BuildContext context) async {
     if (_passwordController.text.isEmpty) {
       debugPrint('Please enter passworkd');
     } else {
@@ -270,6 +270,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       final payload =
           "{\"interface\": \"wlan0\", \"ssid\": \"$_selectedSSID\", \"psk\": \"$psk\"}";
       mqtt.publish(Topic.addNetwork, payload);
+      Navigator.pop(context);
     }
   }
 
