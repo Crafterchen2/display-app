@@ -26,7 +26,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   bool _showPasswordScreen = false;
   final mqtt = MQTT();
   String _selectedSSID = '';
-  List<String> _ssids = [];
+  Map<String, dynamic> _ssids = Map<String, dynamic>();
   TextEditingController _passwordController = TextEditingController();
   FocusNode _passwordFocusNode = FocusNode();
 
@@ -39,9 +39,37 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
 
   void parseAvailableNetworksInfo(String message) {
     _ssids.clear();
+    var signalStrength = -1;
     final networks = jsonDecode(message);
     for (final n in networks) {
-      _ssids.add(n['ssid']);
+      // debugPrint('Signal level of ${n['ssid']} is: ${signalStrength}');
+      if (_ssids.containsKey(n["ssid"])) {
+        final existing = _ssids.keys.where((element) => element == n['ssid']);
+        debugPrint('existing ssid: ${existing.first}');
+
+        debugPrint(
+            'Existing same SSID signal: ${_ssids[existing.first]} New signal Strength: ${n['signal_level']}');
+        final existingSignal = _ssids[existing.first];
+        if (existingSignal < n['signal_level']) {
+          debugPrint(
+              '\n\n Replaced Existing same SSID: ${n["ssid"]} with signal Strength: ${n['signal_level']}\n');
+          _ssids[existing.first] = n['signal_level'];
+        }
+      } else {
+        debugPrint(
+            'New Network SSID: ${n["ssid"]} with signal Strength: ${n['signal_level']} is added');
+
+        _ssids.addAll({n["ssid"]: n['signal_level']});
+      }
+      // if (_ssids.contains(n['ssid'])) {
+      //   final existingSSID =
+      //       _ssids.firstWhere((element) => n["ssid"] == element);
+      //   for(final s in networks){
+      //
+      //   }
+      // } else {
+      //   _ssids.add(n['ssid']);
+      // }
     }
     setState(() {});
   }
@@ -136,7 +164,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                       scrollDirection: Axis.vertical,
                       itemCount: _ssids.length,
                       itemBuilder: (context, index) {
-                        return _networkCardWidget(_ssids[index]);
+                        return _networkCardWidget(_ssids.keys.elementAt(index));
                       }),
                 ),
                 SizedBox(height: screenHeight * 0.03),

@@ -102,15 +102,11 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                   color: AppColors.primaryBlue,
                   child: VirtualKeyboard(
                       height: screenHeight * 0.6,
-                      //width: 500,
                       textColor: Colors.white,
                       textController: widget.passwordController,
-                      //customLayoutKeys: _customLayoutKeys,
                       defaultLayouts: const [
-                        VirtualKeyboardDefaultLayouts.Arabic,
                         VirtualKeyboardDefaultLayouts.English
                       ],
-                      //reverseLayout :true,
                       type: VirtualKeyboardType.Alphanumeric,
                       onKeyPress: (key) => _onKeyPress(key)),
                 )
