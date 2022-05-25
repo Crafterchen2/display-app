@@ -666,10 +666,12 @@ packages:
   virtual_keyboard_multi_language:
     dependency: "direct main"
     description:
-      name: virtual_keyboard_multi_language
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.4"
+      path: "."
+      ref: "1664495de69b16761dbcf9a8da285883706a4375"
+      resolved-ref: "1664495de69b16761dbcf9a8da285883706a4375"
+      url: "https://github.com/hassaanalansary/virtual_keyboard_multi_language.git"
+    source: git
+    version: "0.2.2"
   watcher:
     dependency: transitive
     description:

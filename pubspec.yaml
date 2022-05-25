@@ -38,7 +38,10 @@ dependencies:
   state_notifier: ^0.7.2+1
   flutter_svg: ^1.0.3
   shared_preferences: ^2.0.8
-  virtual_keyboard_multi_language: ^0.2.4
+  virtual_keyboard_multi_language:
+    git:
+      url: https://github.com/hassaanalansary/virtual_keyboard_multi_language.git
+      ref: 1664495de69b16761dbcf9a8da285883706a4375
   cryptography: 2.0.5
   convert: 3.0.1
 
