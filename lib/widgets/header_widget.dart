@@ -3,8 +3,13 @@ import 'package:pionixbox/theme/app_colors.dart';
 
 class Header extends StatelessWidget {
   final VoidCallback onSettingsPressed;
+  final bool showSettingsIcon;
 
-  const Header({Key? key, required this.onSettingsPressed}) : super(key: key);
+  const Header(
+      {Key? key,
+      required this.onSettingsPressed,
+      this.showSettingsIcon = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +27,15 @@ class Header extends StatelessWidget {
               width: 200,
               height: 100,
             ),
-            IconButton(
-                onPressed: onSettingsPressed,
-                icon: const Icon(
-                  Icons.settings,
-                  color: AppColors.primaryBlue,
-                  size: 40,
-                ))
+            showSettingsIcon
+                ? IconButton(
+                    onPressed: onSettingsPressed,
+                    icon: const Icon(
+                      Icons.settings,
+                      color: AppColors.primaryBlue,
+                      size: 40,
+                    ))
+                : const SizedBox(),
           ],
         ),
       ),
