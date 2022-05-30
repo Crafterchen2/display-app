@@ -61,15 +61,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
 
         _ssids.addAll({n["ssid"]: n['signal_level']});
       }
-      // if (_ssids.contains(n['ssid'])) {
-      //   final existingSSID =
-      //       _ssids.firstWhere((element) => n["ssid"] == element);
-      //   for(final s in networks){
-      //
-      //   }
-      // } else {
-      //   _ssids.add(n['ssid']);
-      // }
     }
     setState(() {});
   }
