@@ -6,25 +6,9 @@ import '../utils/constants/keys.dart';
 import '../widgets/buttons.dart';
 
 class SimulationPanel extends StatefulWidget {
-  // final VoidCallback plugInPressed;
-  // final VoidCallback plugOutPressed;
-  // final VoidCallback resumeByCarPressed;
-  // final VoidCallback pauseByCarPressed;
-  // final VoidCallback chargingSimulationPressed;
-  // final VoidCallback enableSimulationPressed;
-  // final VoidCallback disableSimulationPressed;
-  // final VoidCallback closePanel;
 
   const SimulationPanel({
     Key? key,
-    // required this.plugInPressed,
-    // required this.plugOutPressed,
-    // required this.resumeByCarPressed,
-    // required this.pauseByCarPressed,
-    // required this.chargingSimulationPressed,
-    // required this.enableSimulationPressed,
-    // required this.disableSimulationPressed,
-    // required this.closePanel,
   }) : super(key: key);
 
   @override
@@ -37,6 +21,7 @@ class _SimulationPanelState extends State<SimulationPanel> {
   @override
   Widget build(BuildContext context) {
     final buttonWidth = MediaQuery.of(context).size.width * 0.4;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
         color: AppColors.primaryBlue,
@@ -62,7 +47,7 @@ class _SimulationPanelState extends State<SimulationPanel> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: height * 0.02),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -79,7 +64,7 @@ class _SimulationPanelState extends State<SimulationPanel> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: height * 0.02),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -96,7 +81,7 @@ class _SimulationPanelState extends State<SimulationPanel> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: height * 0.02),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -107,7 +92,7 @@ class _SimulationPanelState extends State<SimulationPanel> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 30),
+                SizedBox(height: height * 0.02),
                 InkWell(
                   onTap: (){
                     Navigator.pop(context);
