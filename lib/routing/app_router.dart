@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pionixbox/screens/language_picker_screen.dart';
 import 'package:pionixbox/screens/settings_screen.dart';
 import 'package:pionixbox/screens/simulation_panel.dart';
+import 'package:pionixbox/screens/system_info.dart';
 import 'package:pionixbox/screens/wifi_setup_screen.dart';
 
 class AppRoutes {
@@ -9,6 +10,7 @@ class AppRoutes {
   static const settingScreen = '/settings_screen';
   static const simulationScreen = '/simulation_screen';
   static const wifiSetupScreen = '/wifi_setup_screen';
+  static const systemInfo = '/system_info';
 }
 
 class AppRouter {
@@ -38,6 +40,12 @@ class AppRouter {
       case AppRoutes.wifiSetupScreen:
         return MaterialPageRoute<dynamic>(
           builder: (_) => const WifiSetupScreen(),
+          settings: settings,
+          fullscreenDialog: true,
+        );
+      case AppRoutes.systemInfo:
+        return MaterialPageRoute<dynamic>(
+          builder: (_) => const SystemInfo(),
           settings: settings,
           fullscreenDialog: true,
         );
