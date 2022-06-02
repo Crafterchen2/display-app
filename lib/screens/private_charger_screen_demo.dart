@@ -1,13 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:pionixbox/screens/simulation_panel.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/utils/helper.dart';
 
 import '../mqtt.dart';
+import '../routing/app_router.dart';
 import '../utils/constants/keys.dart';
-import '../widgets/footer_widget.dart';
 import '../widgets/header_widget.dart';
 import '../widgets/session_info_body.dart';
 
@@ -28,6 +27,10 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   bool _online = true;
   bool _showSimulationPanel = false;
   bool _showProgressBar = false;
+  bool showSettingsIcon = false;
+  bool simulation = false;
+  bool wifi = false;
+  bool localization = false;
   final mqtt = MQTT();
 
   @override
@@ -41,8 +44,21 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
 
     mqtt.subscribe(
         "everest_api/evse_manager/var/session_info", parseSessionInfo);
+    mqtt.subscribe(
+        "everest_api/setup/var/supported_setup_features", parseConfigInfo);
 
     super.initState();
+  }
+
+  void parseConfigInfo(String message) {
+    final i = jsonDecode(message);
+    localization = i["localization"];
+    wifi = i["setup_wifi"];
+    simulation = i["setup_simulation"];
+    if (localization || simulation || wifi) {
+      showSettingsIcon = true;
+      setState(() {});
+    }
   }
 
   void parseSessionInfo(String message) {
@@ -86,9 +102,13 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
           Column(
             children: [
               Header(
+                showSettingsIcon: showSettingsIcon,
                 onSettingsPressed: () {
-                  setState(() {
-                    _showSimulationPanel = true;
+                  Navigator.of(context)
+                      .pushNamed(AppRoutes.settingScreen, arguments: {
+                    'localization': localization,
+                    'setup_simulation': simulation,
+                    'setup_wifi': wifi,
                   });
                 },
               ),
@@ -107,22 +127,6 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
               //  Footer(isOnline: _online,),
             ],
           ),
-          if (_showSimulationPanel)
-            SimulationPanel(
-              plugInPressed: () => performAction(plugIn),
-              plugOutPressed: () => performAction(plugOut),
-              resumeByCarPressed: () => performAction(resumeByCar),
-              pauseByCarPressed: () => performAction(pauseByCar),
-              chargingSimulationPressed: () =>
-                  performAction(chargingSimulation),
-              enableSimulationPressed: () => performAction(enableSimulation),
-              disableSimulationPressed: () => performAction(disableSimulation),
-              closePanel: () {
-                setState(() {
-                  _showSimulationPanel = false;
-                });
-              },
-            ),
           if (_showProgressBar)
             Center(
               child: Container(

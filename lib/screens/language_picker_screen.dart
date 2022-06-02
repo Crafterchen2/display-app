@@ -7,6 +7,7 @@ import '../data/models/locale/locale_providers.dart';
 import '../data/models/locale/locale_state.dart';
 import 'language_picker.dart';
 
+
 class LanguagePickerScreen extends ConsumerStatefulWidget {
   const LanguagePickerScreen({Key? key}) : super(key: key);
 

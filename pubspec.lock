@@ -142,7 +142,7 @@ packages:
     source: hosted
     version: "1.15.0"
   convert:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: convert
       url: "https://pub.dartlang.org"
@@ -155,6 +155,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
+  cryptography:
+    dependency: "direct main"
+    description:
+      name: cryptography
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.5"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -656,6 +663,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  virtual_keyboard_multi_language:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "1664495de69b16761dbcf9a8da285883706a4375"
+      resolved-ref: "1664495de69b16761dbcf9a8da285883706a4375"
+      url: "https://github.com/hassaanalansary/virtual_keyboard_multi_language.git"
+    source: git
+    version: "0.2.2"
   watcher:
     dependency: transitive
     description:
