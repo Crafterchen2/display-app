@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pionixbox/screens/simulation_panel.dart';
+import 'package:pionixbox/screens/system_info.dart';
 import 'package:pionixbox/screens/wifi_setup_screen.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/widgets/settings_menu_button.dart';
@@ -76,6 +77,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           },
                         ),
                       ),
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.05),
+                      child: SettingMenuButton(
+                        icon: Icons.info_outline,
+                        title: 'System Info',
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (context) {
+                                return const SystemInfo();
+                              }));
+                        },
+                      ),
+                    ),
                     if (localization)
                       Container(
                         margin: EdgeInsets.symmetric(

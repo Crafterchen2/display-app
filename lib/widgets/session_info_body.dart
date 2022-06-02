@@ -33,6 +33,7 @@ class SessionInfoBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.05),
@@ -98,7 +99,6 @@ class SessionInfoBody extends StatelessWidget {
                 'STATUS',
                 style: AppTextStyles.subTitle4,
               ),
-              const SizedBox(height: 8),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.5,
                 height: MediaQuery.of(context).size.height * 0.2,
@@ -109,16 +109,15 @@ class SessionInfoBody extends StatelessWidget {
                   style: AppTextStyles.heading6,
                 ),
               ),
-              // const SizedBox(height: 50),
+              SizedBox(height: height * 0.1),
               Text(
                 state == 'Unplugged'
                     ? 'Last Session'.toUpperCase()
                     : 'Current Session'.toUpperCase(),
                 style: AppTextStyles.subTitle4,
               ),
-              const SizedBox(height: 12),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.5,
+                width: MediaQuery.of(context).size.width * 0.52,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -129,12 +128,12 @@ class SessionInfoBody extends StatelessWidget {
                           'Energy',
                           style: AppTextStyles.heading3,
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: height * 0.02),
                         const Text(
                           'Duration',
                           style: AppTextStyles.heading3,
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: height * 0.02),
                         Row(
                           children: [
                             Text(
@@ -167,12 +166,12 @@ class SessionInfoBody extends StatelessWidget {
                             textAlign: TextAlign.start,
                             style: AppTextStyles.digitsHeading3,
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: height * 0.02),
                           Text(
                             duration + ' h',
                             style: AppTextStyles.digitsHeading3,
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: height * 0.02),
                           Text(
                             dateTimeFormat.format(DateTime.now()),
                             style: AppTextStyles.digitsHeading3,
