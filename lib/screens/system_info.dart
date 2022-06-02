@@ -62,31 +62,33 @@ class _SystemInfoState extends State<SystemInfo> {
         color: Colors.white,
         child: Stack(
           children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: height * 0.03),
-                child: const Text(
-                  'System Info',
-                  style: AppTextStyles.heading6,
-                ),
-              ),
-            ),
             _showProgress
                 ? const Center(
                     child: CircularProgressIndicator(
                       color: AppColors.primaryBlue,
                     ),
                   )
-                : Padding(
-                    padding: EdgeInsets.only(top: height * 0.04),
-                    child: ListView.builder(
-                        itemCount: devices.length,
-                        itemBuilder: (builder, index) {
-                          return NetworkDeviceInfoWidget(
-                            info: devices[index],
-                          );
-                        }),
+                : Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: height * 0.02,
+                        ),
+                        child: const Text(
+                          'System Info',
+                          style: AppTextStyles.heading6,
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                            itemCount: devices.length,
+                            itemBuilder: (builder, index) {
+                              return NetworkDeviceInfoWidget(
+                                info: devices[index],
+                              );
+                            }),
+                      ),
+                    ],
                   ),
             Container(
               alignment: Alignment.bottomCenter,
