@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pionixbox/data/models/network_device_info.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
+import 'package:pionixbox/widgets/buttons.dart';
 
 import '../mqtt.dart';
 
@@ -35,9 +36,9 @@ class _SystemInfoState extends State<SystemInfo> {
       final device = NetworkDeviceInfo.fromJson(d);
       devices.add(device);
     }
-    setState(() {
-      _showProgress = false;
-    });
+    if (mounted) {
+      setState(() { _showProgress = false;});
+    }
   }
 
   void _connect() async {
@@ -90,29 +91,7 @@ class _SystemInfoState extends State<SystemInfo> {
                       ),
                     ],
                   ),
-            Container(
-              alignment: Alignment.bottomCenter,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  width: 60,
-                  height: 60,
-                  decoration: const BoxDecoration(
-                      color: AppColors.primaryAmber, shape: BoxShape.circle),
-                  child: const Center(
-                    child: Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 32,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            const PionixCloseButton(),
           ],
         ),
       ),

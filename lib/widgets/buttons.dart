@@ -182,7 +182,7 @@ class ActionButtonWithTitleBar extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final EdgeInsets padding;
   final String title;
-  final ValueChanged<bool> onChanged;
+  final VoidCallback onPressed;
   final TextStyle titleStyle;
   final Color textColor;
   final double height;
@@ -193,7 +193,7 @@ class ActionButtonWithTitleBar extends StatelessWidget {
     Key? key,
     this.margin = const EdgeInsets.only(left: 16.0, right: 8.0),
     required this.title,
-    required this.onChanged,
+    required this.onPressed,
     this.titleStyle = AppTextStyles.subTitle4,
     this.padding = const EdgeInsets.only(
       left: 16.0,
@@ -208,6 +208,8 @@ class ActionButtonWithTitleBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onPressed,
       child: Container(
         margin: margin,
         child: Container(
@@ -230,6 +232,62 @@ class ActionButtonWithTitleBar extends StatelessWidget {
                 icon,
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PionixCloseButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+  final Color color;
+
+  const PionixCloseButton(
+      {Key? key, this.onPressed, this.color = AppColors.primaryBlue})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => onPressed ?? Navigator.pop(context),
+        child: Container(
+          width: width * 0.2,
+          height: height * 0.1,
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(
+              horizontal: width * 0.02, vertical: height * 0.015),
+          margin: EdgeInsets.symmetric(vertical: height * 0.02),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Close'.toUpperCase(),
+                style: AppTextStyles.heading3.copyWith(
+                    color: color == Colors.white
+                        ? AppColors.primaryBlue
+                        : Colors.white,
+                    fontSize: height * 0.05),
+              ),
+              SizedBox(width: width * 0.01),
+              Icon(
+                Icons.cancel,
+                color: color == Colors.white
+                    ? AppColors.primaryBlue
+                    : Colors.white,
+                size: height * 0.05,
+              ),
+            ],
           ),
         ),
       ),

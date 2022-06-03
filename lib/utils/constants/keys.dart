@@ -19,7 +19,10 @@ class Topic {
       '/carsim/cmd/enable';
 
   static const String blockWifi = 'everest_api/setup/cmd/rfkill_block';
+  static const String unblockWifi = 'everest_api/setup/cmd/rfkill_unblock';
   static const String addNetwork = 'everest_api/setup/cmd/add_network';
+  static const String removeAllNetworks = 'everest_api/setup/cmd/remove_all_networks';
+  static const String listConfiguredNetworks = 'everest_api/setup/cmd/list_configured_networks';
 
 
 }

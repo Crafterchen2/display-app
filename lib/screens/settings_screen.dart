@@ -3,10 +3,10 @@ import 'package:pionixbox/screens/simulation_panel.dart';
 import 'package:pionixbox/screens/system_info.dart';
 import 'package:pionixbox/screens/wifi_setup_screen.dart';
 import 'package:pionixbox/theme/app_colors.dart';
+import 'package:pionixbox/widgets/buttons.dart';
 import 'package:pionixbox/widgets/settings_menu_button.dart';
 
 class SettingsScreen extends StatefulWidget {
-
   const SettingsScreen({
     Key? key,
   }) : super(key: key);
@@ -26,9 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     localization = i["localization"];
     setup_simulation = i["setup_simulation"];
     setup_wifi = i["setup_wifi"];
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   @override
@@ -78,16 +76,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                     Container(
-                      margin: EdgeInsets.symmetric(
-                          horizontal: screenWidth * 0.05),
+                      margin:
+                          EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                       child: SettingMenuButton(
                         icon: Icons.info_outline,
                         title: 'System Info',
                         onPressed: () {
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(builder: (context) {
-                                return const SystemInfo();
-                              }));
+                            return const SystemInfo();
+                          }));
                         },
                       ),
                     ),
@@ -108,28 +106,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ],
             ),
-            Container(
-              alignment: Alignment.bottomCenter,
-              padding: EdgeInsets.only(bottom: screenWidth * 0.02),
-              child: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  width: 60,
-                  height: 60,
-                  decoration: const BoxDecoration(
-                      color: Colors.white, shape: BoxShape.circle),
-                  child: const Center(
-                    child: Icon(
-                      Icons.close,
-                      color: AppColors.primaryBlue,
-                      size: 32,
-                    ),
-                  ),
-                ),
-              ),
+            const PionixCloseButton(
+              color: Colors.white,
             ),
           ],
         ),

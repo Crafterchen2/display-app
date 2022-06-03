@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
     ]);
     return MaterialApp(
       title: 'Pionix Box',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
 

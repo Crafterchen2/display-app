@@ -57,7 +57,9 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     simulation = i["setup_simulation"];
     if (localization || simulation || wifi) {
       showSettingsIcon = true;
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     }
   }
 
@@ -68,10 +70,11 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     _latestTotalw = i["latest_total_w"] / 1000.0;
     _energyTotal = (_chargedEnergy.toStringAsFixed(1) + " kWh");
     _duration = durationFormat(Duration(seconds: i["charging_duration_s"]));
-
-    setState(() {
-      _showProgressBar = false;
-    });
+    if (mounted) {
+      setState(() {
+        _showProgressBar = false;
+      });
+    }
   }
 
   Future<void> _connectMqtt() async {

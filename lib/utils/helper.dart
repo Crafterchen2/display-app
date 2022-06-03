@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:convert/convert.dart';
+import 'package:cryptography/cryptography.dart';
 import 'package:pionixbox/utils/constants/keys.dart';
 
 String getChargingSessionIconByState(String state) {
@@ -74,6 +78,22 @@ String pauseOrResumeChargingTitle(String state) {
       return '';
   }
   return title;
+}
+
+Future<String> generatePSK(String ssid, String password) async {
+  final pbkdf2 =
+  Pbkdf2(macAlgorithm: Hmac(Sha1()), iterations: 4096, bits: 256);
+
+  List<int> password_bytes = utf8.encode(password);
+  List<int> ssid_bytes = utf8.encode(ssid);
+
+  final psk = await pbkdf2.deriveKey(
+      secretKey: SecretKey(password_bytes), nonce: ssid_bytes);
+  final psk_bytes = await psk.extractBytes();
+  final psk_string = hex.encode(psk_bytes);
+
+  print("PSK: " + psk_string);
+  return psk_string;
 }
 
 String durationFormat(Duration duration) {

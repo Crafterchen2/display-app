@@ -6,7 +6,6 @@ import '../utils/constants/keys.dart';
 import '../widgets/buttons.dart';
 
 class SimulationPanel extends StatefulWidget {
-
   const SimulationPanel({
     Key? key,
   }) : super(key: key);
@@ -93,26 +92,10 @@ class _SimulationPanelState extends State<SimulationPanel> {
                   ],
                 ),
                 SizedBox(height: height * 0.02),
-                InkWell(
-                  onTap: (){
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    width: 60,
-                    height: 60,
-                    decoration: const BoxDecoration(
-                        color: AppColors.primaryAmber, shape: BoxShape.circle),
-                    child: const Center(
-                      child: Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 32,
-                      ),
-                    ),
-                  ),
-                ),
               ],
+            ),
+            const PionixCloseButton(
+              color: AppColors.primaryAmber,
             ),
           ],
         ),
