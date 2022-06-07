@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:convert/convert.dart';
 import 'package:cryptography/cryptography.dart';
@@ -82,7 +83,7 @@ String pauseOrResumeChargingTitle(String state) {
 
 Future<String> generatePSK(String ssid, String password) async {
   final pbkdf2 =
-  Pbkdf2(macAlgorithm: Hmac(Sha1()), iterations: 4096, bits: 256);
+      Pbkdf2(macAlgorithm: Hmac(Sha1()), iterations: 4096, bits: 256);
 
   List<int> password_bytes = utf8.encode(password);
   List<int> ssid_bytes = utf8.encode(ssid);
@@ -101,4 +102,14 @@ String durationFormat(Duration duration) {
   String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
   String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
   return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+}
+
+Future<bool> isOnline() async {
+  try {
+    final result = await InternetAddress.lookup('google.com');
+    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+      return true;
+    }
+  } on SocketException catch (_) {}
+  return false;
 }

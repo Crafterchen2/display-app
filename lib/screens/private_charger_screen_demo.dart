@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/utils/helper.dart';
@@ -19,12 +21,15 @@ class PrivateChargerScreenDemo extends StatefulWidget {
 }
 
 class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
+  ConnectivityResult? _connectivityResult;
+  late StreamSubscription _connectivitySubscription;
+
   late String _status;
   late String _energyTotal;
   late double _chargedEnergy;
   late double _latestTotalw;
   late String _duration;
-  bool _online = true;
+  bool _online = false;
   bool _showSimulationPanel = false;
   bool _showProgressBar = false;
   bool showSettingsIcon = false;
@@ -40,6 +45,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     _chargedEnergy = 12.3;
     _latestTotalw = 1000;
     _duration = '00:00:00';
+    _checkConnectivityState();
     _connectMqtt();
 
     mqtt.subscribe(
@@ -48,6 +54,24 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
         "everest_api/setup/var/supported_setup_features", parseConfigInfo);
 
     super.initState();
+  }
+
+  Future<void> _checkConnectivityState() async {
+    _connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      print('Current connectivity status: $result');
+      _connectivityResult = result;
+     setState(() {
+
+     });
+    });
+  }
+
+  @override
+  void dispose() {
+    _connectivitySubscription.cancel();
+    super.dispose();
   }
 
   void parseConfigInfo(String message) {
@@ -83,9 +107,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     });
     try {
       await mqtt.connect();
-      _online = true;
     } catch (e) {
-      _online = false;
       debugPrint(e.toString());
       _status = 'Connection Error';
       _chargedEnergy = 0;
@@ -122,12 +144,11 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
                 totalEnergy: _energyTotal,
                 latestTotalw: _latestTotalw.toString(),
                 duration: _duration,
-                online: _online,
+                online: _connectivityResult == ConnectivityResult.wifi || _connectivityResult == ConnectivityResult.wifi,
                 onPauseCharging: () => performAction(pauseCharging),
                 onResumeCharging: () => performAction(resumeCharging),
               ),
               const Spacer(flex: 2),
-              //  Footer(isOnline: _online,),
             ],
           ),
           if (_showProgressBar)

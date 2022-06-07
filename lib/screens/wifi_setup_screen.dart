@@ -25,7 +25,7 @@ class WifiSetupScreen extends StatefulWidget {
 }
 
 class _WifiSetupScreenState extends State<WifiSetupScreen> {
-  bool _wifi = true;
+  bool _wifi = false;
   bool _showPasswordScreen = false;
   final mqtt = MQTT();
   String _selectedSSID = '';
@@ -202,6 +202,8 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     List<Widget> items = [];
     if (configuredNetworks.isNotEmpty) {
       items.add(const ListSectionLabel(label: 'Configured Networks'));
+      final ids = configuredNetworks.map((e) => e.ssid).toSet();
+      configuredNetworks.retainWhere((element) => ids.remove(element.ssid));
       for (final cn in configuredNetworks) {
         items.add(NetworkCardWidget(
           ssid: cn.ssid,
@@ -216,6 +218,8 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     }
     if (availableNetworks.isNotEmpty) {
       items.add(const ListSectionLabel(label: 'Available Networks'));
+      final ids = availableNetworks.map((e) => e.ssid).toSet();
+      availableNetworks.retainWhere((element) => ids.remove(element.ssid));
       for (final cn in availableNetworks) {
         items.add(NetworkCardWidget(
           ssid: cn.ssid,
