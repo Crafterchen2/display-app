@@ -250,8 +250,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     if (availableNetworks.isNotEmpty) {
 
       items.add(const ListSectionLabel(label: 'Available Networks'));
-      final existing = configuredNetworks.firstWhere((element) => element.ssid == 'Network issue');
-      debugPrint('Value of exiting ssid: ${existing.ssid}');
       final ids = availableNetworks.map((e) => e.ssid).toSet();
       availableNetworks.retainWhere((element) => ids.remove(element.ssid));
       for (final an in availableNetworks) {
