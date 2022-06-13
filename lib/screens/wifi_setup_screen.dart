@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:pionixbox/data/local/app_shared_preferences.dart';
 import 'package:pionixbox/data/models/available_network.dart';
 import 'package:pionixbox/data/models/configured_network.dart';
 import 'package:pionixbox/data/repo/prod_repo.dart';
@@ -46,7 +45,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   }
 
   void _connect() async {
-    connectedSsid = await AppSharedPreferences().getConnectedSSID();
+    // connectedSsid = await AppSharedPreferences().getConnectedSSID();
     try {
       localCNs = await appRepo.fetchConfiguredNetworks();
       await mqtt.connect();
@@ -136,8 +135,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 16.0, horizontal: 20),
                             onPressed: () {
-                              debugPrint('Pressed');
-                              // removeAllNetworks();
+                              removeAllNetworks();
                             },
                             titleStyle: AppTextStyles.heading6
                                 .copyWith(color: AppColors.primaryBlue),
@@ -183,7 +181,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   }
 
   void connectToNetwork(BuildContext context) async {
-    final pref = AppSharedPreferences();
+    // final pref = AppSharedPreferences();
     if (passwordController.text.isEmpty) {
       debugPrint('Please enter passworkd');
     } else {
@@ -191,7 +189,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       final payload =
           "{\"interface\": \"wlan0\", \"ssid\": \"$_selectedSSID\", \"psk\": \"$psk\"}";
       mqtt.publish(Topic.addNetwork, payload);
-      pref.updateWifiConnection(_selectedSSID);
+      // pref.updateWifiConnection(_selectedSSID);
       // final existing =
       //     localCNs.firstWhere((element) => element.ssid == _selectedSSID);
       // if (existing == null) {
@@ -250,7 +248,10 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       }
     }
     if (availableNetworks.isNotEmpty) {
+
       items.add(const ListSectionLabel(label: 'Available Networks'));
+      final existing = configuredNetworks.firstWhere((element) => element.ssid == 'Network issue');
+      debugPrint('Value of exiting ssid: ${existing.ssid}');
       final ids = availableNetworks.map((e) => e.ssid).toSet();
       availableNetworks.retainWhere((element) => ids.remove(element.ssid));
       for (final an in availableNetworks) {
