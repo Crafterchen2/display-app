@@ -37,7 +37,9 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
         children: [
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: screenWidth * 0.05, vertical: screenHeight * 0.1),
+                horizontal: screenWidth * 0.02,
+                vertical:
+                    _showKeyboard ? screenHeight * 0.04 : screenHeight * 0.1),
             child: Column(
               children: [
                 SizedBox(
@@ -59,9 +61,7 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                 ),
                 !_showKeyboard
                     ? const Spacer()
-                    : SizedBox(
-                        height: screenHeight * 0.02,
-                      ),
+                    : SizedBox(height: screenHeight * 0.02),
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Container(
@@ -69,14 +69,13 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                     color: AppColors.primaryBlue,
                     width: double.infinity,
                     height: screenHeight * 0.1,
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         PrimaryButton(
-                          width: 200,
+                          width: screenWidth * 0.25,
                           color: AppColors.primaryAmber,
-                          onPressed: (){
+                          onPressed: () {
                             _showKeyboard = false;
                             widget.onBackPressed();
                             debugPrint('on back Pressed');
@@ -85,7 +84,7 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                         ),
                         const SizedBox(width: 12),
                         PrimaryButton(
-                          width: 200,
+                          width: screenWidth * 0.25,
                           color: AppColors.primaryAmber,
                           onPressed: widget.onConnectPressed,
                           title: 'Connect',
@@ -99,10 +98,11 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
           ),
           _showKeyboard
               ? Container(
-                  color: AppColors.primaryBlue,
+                  color: Colors.white,
                   child: VirtualKeyboard(
                       height: screenHeight * 0.6,
-                      textColor: Colors.white,
+                      fontSize: screenHeight * 0.06,
+                      textColor: AppColors.primaryBlue,
                       textController: widget.passwordController,
                       defaultLayouts: const [
                         VirtualKeyboardDefaultLayouts.English

@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:pionixbox/data/local/app_shared_preferences.dart';
 import 'package:pionixbox/data/models/available_network.dart';
 import 'package:pionixbox/data/models/configured_network.dart';
+import 'package:pionixbox/data/repo/prod_repo.dart';
 import 'package:pionixbox/screens/wifi_password_screen.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
@@ -25,9 +27,12 @@ class WifiSetupScreen extends StatefulWidget {
 }
 
 class _WifiSetupScreenState extends State<WifiSetupScreen> {
+  String connectedSsid = 'Not Specified';
   bool _wifi = false;
   bool _showPasswordScreen = false;
   final mqtt = MQTT();
+  final appRepo = ProdRepo();
+  List<ConfiguredNetwork> localCNs = [];
   String _selectedSSID = '';
   List<AvailableNetwork> availableNetworks = [];
   List<ConfiguredNetwork> configuredNetworks = [];
@@ -41,7 +46,9 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   }
 
   void _connect() async {
+    connectedSsid = await AppSharedPreferences().getConnectedSSID();
     try {
+      localCNs = await appRepo.fetchConfiguredNetworks();
       await mqtt.connect();
       mqtt.subscribe(
           "everest_api/setup/var/wifi_info", parseAvailableNetworksInfo);
@@ -57,7 +64,13 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     configuredNetworks.clear();
     final networks = jsonDecode(message);
     for (final n in networks) {
-      configuredNetworks.add(ConfiguredNetwork(n['network_id'], n["ssid"]));
+      final cn = ConfiguredNetwork(networkId: n['network_id'], ssid: n["ssid"]);
+      configuredNetworks.add(cn);
+      final existing =
+          localCNs.firstWhere((element) => element.ssid == cn.ssid);
+      if (existing == null) {
+        appRepo.saveConfiguredNetworkLocally(cn);
+      }
     }
     if (mounted) {
       setState(() {});
@@ -170,6 +183,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   }
 
   void connectToNetwork(BuildContext context) async {
+    final pref = AppSharedPreferences();
     if (passwordController.text.isEmpty) {
       debugPrint('Please enter passworkd');
     } else {
@@ -177,6 +191,24 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       final payload =
           "{\"interface\": \"wlan0\", \"ssid\": \"$_selectedSSID\", \"psk\": \"$psk\"}";
       mqtt.publish(Topic.addNetwork, payload);
+      pref.updateWifiConnection(_selectedSSID);
+      // final existing =
+      //     localCNs.firstWhere((element) => element.ssid == _selectedSSID);
+      // if (existing == null) {
+      //   appRepo.saveConfiguredNetworkLocally(ConfiguredNetwork(
+      //       networkId: localCNs.length,
+      //       ssid: _selectedSSID,
+      //       password: passwordController.text,
+      //       psk: psk,
+      //       isConnected: 1));
+      // } else {
+      //   appRepo.saveConfiguredNetworkLocally(ConfiguredNetwork(
+      //       networkId: existing.networkId,
+      //       ssid: existing.ssid,
+      //       password: passwordController.text,
+      //       psk: psk,
+      //       isConnected: 1));
+      // }
       Navigator.pop(context);
     }
   }
@@ -206,7 +238,8 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       configuredNetworks.retainWhere((element) => ids.remove(element.ssid));
       for (final cn in configuredNetworks) {
         items.add(NetworkCardWidget(
-          ssid: cn.ssid,
+          ssid: cn.ssid.isNotEmpty ? cn.ssid : 'Hidden SSID',
+          isConnected: cn.ssid == connectedSsid,
           onPressed: () {
             _selectedSSID = cn.ssid;
             setState(() {
@@ -220,11 +253,12 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       items.add(const ListSectionLabel(label: 'Available Networks'));
       final ids = availableNetworks.map((e) => e.ssid).toSet();
       availableNetworks.retainWhere((element) => ids.remove(element.ssid));
-      for (final cn in availableNetworks) {
+      for (final an in availableNetworks) {
         items.add(NetworkCardWidget(
-          ssid: cn.ssid,
+          ssid: an.ssid.isNotEmpty ? an.ssid : 'Hidden SSID',
+          isConnected: an.ssid == connectedSsid,
           onPressed: () {
-            _selectedSSID = cn.ssid;
+            _selectedSSID = an.ssid;
             setState(() {
               _showPasswordScreen = true;
             });

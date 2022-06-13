@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
 import '../data/models/locale/locale_providers.dart';
@@ -56,21 +56,21 @@ class _HomeScreenState extends ConsumerState<LanguagePickerScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Platform Locale: " + _platformLocale),
-                    const SizedBox(height: 5),
-                    Text("Locale via Localizations: " + Localizations.localeOf(context).toString()),
-                    const SizedBox(height: 5),
-                    Text("Locale via Riverpod State: " + _currentLocale),
-                    const SizedBox(height: 20.0),
-                    Text(AppLocalizations.of(context)!.resumeCharging),
-                    const SizedBox(height: 20.0),
-                    Text(dateFormat.format(DateTime.now())),
-                    const SizedBox(height: 20.0),
-                    Text(AppLocalizations.of(context)!.currentSession),
-                    const SizedBox(height: 20.0),
-                    Text(AppLocalizations.of(context)!.status),
-                    const SizedBox(height: 20.0),
-                    const LanguagePicker(),
+                    // Text("Platform Locale: " + _platformLocale),
+                    // const SizedBox(height: 5),
+                    // Text("Locale via Localizations: " + Localizations.localeOf(context).toString()),
+                    // const SizedBox(height: 5),
+                    // Text("Locale via Riverpod State: " + _currentLocale),
+                    // const SizedBox(height: 20.0),
+                    // Text(AppLocalizations.of(context)!.resumeCharging),
+                    // const SizedBox(height: 20.0),
+                    // Text(dateFormat.format(DateTime.now())),
+                    // const SizedBox(height: 20.0),
+                    // Text(AppLocalizations.of(context)!.currentSession),
+                    // const SizedBox(height: 20.0),
+                    // Text(AppLocalizations.of(context)!.status),
+                    // const SizedBox(height: 20.0),
+                    // const LanguagePicker(),
                   ],
                 ),
               ),

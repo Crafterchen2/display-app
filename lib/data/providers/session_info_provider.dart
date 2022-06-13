@@ -15,12 +15,11 @@ final sessionInfoProvider =
   await mqtt.connect();
   mqtt.subscribe("everest_api/evse_manager/var/session_info", (m) async* {
     debugPrint("Values starting");
-    try{
+    try {
       yield jsonDecode(m);
-    } catch(e){
+    } catch (e) {
       debugPrint(e.toString());
     }
-
   });
 
   // await for (final val in result) {

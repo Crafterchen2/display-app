@@ -4,10 +4,18 @@ part 'configured_network.g.dart';
 
 @JsonSerializable()
 class ConfiguredNetwork {
-  final int network_id;
+  final int networkId;
   final String ssid;
+  final String password;
+  final String psk;
+  final int isConnected;
 
-  ConfiguredNetwork(this.network_id, this.ssid);
+  ConfiguredNetwork(
+      {required this.networkId,
+      required this.ssid,
+      this.password = '',
+      this.psk = '',
+      this.isConnected = 0});
 
   factory ConfiguredNetwork.fromJson(Map<String, dynamic> json) =>
       _$ConfiguredNetworkFromJson(json);

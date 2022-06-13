@@ -37,7 +37,6 @@ dependencies:
   rxdart: ^0.27.3
   state_notifier: ^0.7.2+1
   flutter_svg: ^1.0.3
-  shared_preferences: ^2.0.8
   virtual_keyboard_multi_language:
     git:
       url: https://github.com/hassaanalansary/virtual_keyboard_multi_language.git
@@ -45,6 +44,10 @@ dependencies:
   cryptography: 2.0.5
   convert: 3.0.1
   connectivity_plus: ^1.0.6
+  sqflite: ^2.0.2+1
+  path_provider: ^2.0.11
+  get: ^4.6.5
+  shared_preferences: ^2.0.15
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

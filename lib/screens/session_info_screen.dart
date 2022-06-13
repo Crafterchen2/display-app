@@ -9,6 +9,8 @@ class SessionInfoScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Demo session info'),
@@ -80,7 +82,7 @@ class SessionInfoScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 40),
+               SizedBox(height: height * 0.04),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,

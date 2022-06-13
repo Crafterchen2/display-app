@@ -8,12 +8,18 @@ part of 'configured_network.dart';
 
 ConfiguredNetwork _$ConfiguredNetworkFromJson(Map<String, dynamic> json) =>
     ConfiguredNetwork(
-      json['network_id'] as int,
-      json['ssid'] as String,
+      networkId: json['networkId'] as int,
+      ssid: json['ssid'] as String,
+      password: json['password'] as String? ?? '',
+      psk: json['psk'] as String? ?? '',
+      isConnected: json['isConnected'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$ConfiguredNetworkToJson(ConfiguredNetwork instance) =>
     <String, dynamic>{
-      'network_id': instance.network_id,
+      'networkId': instance.networkId,
       'ssid': instance.ssid,
+      'password': instance.password,
+      'psk': instance.psk,
+      'isConnected': instance.isConnected,
     };
