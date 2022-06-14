@@ -28,19 +28,17 @@ class Header extends StatelessWidget {
               height: 80,
             ),
             showSettingsIcon
-                ? Material(
-                  child: GestureDetector(
+                ? GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: onSettingsPressed,
-                    child: Container(
+                  child: Container(
               alignment: Alignment.center,
-                      padding:  EdgeInsets.symmetric(vertical: height * 0.04, horizontal: height * 0.05),
-                      child:  Icon(
-                        Icons.settings,
-                        color: AppColors.primaryBlue,
-                        size: height * 0.08,
+                    padding:  EdgeInsets.symmetric(vertical: height * 0.04, horizontal: height * 0.05),
+                    child:  Icon(
+                      Icons.settings,
+                      color: AppColors.primaryBlue,
+                      size: height * 0.08,
 
-                      ),
                     ),
                   ),
                 )

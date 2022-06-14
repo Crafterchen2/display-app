@@ -29,6 +29,8 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   String connectedSsid = 'Not Specified';
   bool _wifi = false;
   bool _showPasswordScreen = false;
+  bool optionsMenu = false;
+  bool showLoader = false;
   final mqtt = MQTT();
   final appRepo = ProdRepo();
   String _selectedSSID = '';
@@ -44,7 +46,10 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   }
 
   void _connect() async {
-    // connectedSsid = await AppSharedPreferences().getConnectedSSID();
+    setState(() {
+      showLoader = true;
+    });
+
     try {
       await mqtt.connect();
       mqtt.subscribe(
@@ -89,66 +94,126 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Container(
-            margin: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: screenWidth * 0.3,
-                        child: SwitchSettingsButton(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 16.0, horizontal: 20),
-                          onChanged: (val) {
-                            _wifi = val;
-                            if (val) {
-                              unblockWifi();
-                            } else {
-                              blockWifi();
-                            }
-                            setState(() {});
-                          },
-                          titleStyle: AppTextStyles.heading6
-                              .copyWith(color: AppColors.primaryBlue),
-                          title: 'Wifi',
-                          value: _wifi,
-                        ),
-                      ),
-                      AbsorbPointer(
-                        absorbing: _wifi,
-                        child: SizedBox(
-                          width: screenWidth * 0.3,
-                          child: ActionButtonWithTitleBar(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 16.0, horizontal: 20),
-                            onPressed: () {
-                              removeAllNetworks();
-                            },
-                            titleStyle: AppTextStyles.heading6
-                                .copyWith(color: AppColors.primaryBlue),
-                            title: 'Reset',
-                            icon: Icon(
-                              Icons.reset_tv,
-                              size: screenWidth * 0.03,
-                              color: AppColors.primaryBlue,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(child: sectionedListView()),
+            ],
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                setState(() {
+                  optionsMenu = true;
+                });
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle, color: AppColors.primaryBlue),
+                margin: EdgeInsets.symmetric(
+                    vertical: screenHeight * 0.04,
+                    horizontal: screenHeight * 0.05),
+                padding: EdgeInsets.symmetric(
+                    vertical: screenHeight * 0.04,
+                    horizontal: screenHeight * 0.05),
+                child: Icon(
+                  Icons.menu,
+                  color: Colors.white,
+                  size: screenHeight * 0.06,
                 ),
-                Expanded(child: sectionedListView()),
-              ],
+              ),
             ),
           ),
           const PionixCloseButton(),
+          optionsMenu
+              ? Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    color: AppColors.primaryBlue,
+                    width: screenWidth * 0.4,
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              setState(() {
+                                optionsMenu = false;
+                              });
+                            },
+                            child: Container(
+                              alignment: Alignment.topRight,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: screenHeight * 0.04,
+                                  horizontal: screenWidth * 0.01),
+                              child: Icon(
+                                Icons.cancel,
+                                color: Colors.white,
+                                size: screenHeight * 0.08,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            child: SwitchSettingsButton(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 16.0, horizontal: 20),
+                              onChanged: (val) {
+                                _wifi = val;
+                                if (val) {
+                                  debugPrint('Unblocking the rfKill value');
+                                  unblockWifi();
+                                } else {
+                                  debugPrint('blocking the rfKill value');
+                                  blockWifi();
+                                }
+                                setState(() {});
+                              },
+                              titleStyle: AppTextStyles.heading6
+                                  .copyWith(color: AppColors.primaryBlue),
+                              title: 'Wifi',
+                              value: _wifi,
+                            ),
+                          ),
+                          SizedBox(
+                            height: screenHeight * 0.01,
+                          ),
+                          SizedBox(
+                            child: ActionButtonWithTitleBar(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 16.0, horizontal: 20),
+                              onPressed: () {
+                                removeAllNetworks();
+                              },
+                              titleStyle: AppTextStyles.heading6
+                                  .copyWith(color: AppColors.primaryBlue),
+                              title: 'Reset',
+                              icon: Icon(
+                                Icons.reset_tv,
+                                size: screenWidth * 0.03,
+                                color: AppColors.primaryBlue,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : const SizedBox(),
+          showLoader
+              ? const Center(
+                  child: CircularProgressIndicator(
+                    color: AppColors.primaryAmber,
+                  ),
+                )
+              : const SizedBox(),
           _showPasswordScreen
               ? WifiPasswordScreen(
                   passwordController: passwordController,
@@ -241,6 +306,9 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       }
     }
     if (availableNetworks.isNotEmpty) {
+      setState(() {
+        showLoader = true;
+      });
       items.add(const ListSectionLabel(label: 'Available Networks'));
       final ids = availableNetworks.map((e) => e.ssid).toSet();
       availableNetworks.retainWhere((element) => ids.remove(element.ssid));
@@ -256,6 +324,9 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
           },
         ));
       }
+      setState(() {
+        showLoader = false;
+      });
     }
     return _wifi
         ? ListView.builder(
@@ -263,19 +334,22 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
             itemBuilder: (builder, index) {
               return items[index];
             })
-        : GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: (){
-              _wifi = true;
-              setState(() {
-
-              });
-            },
-            child: Center(
-              child: Text(
-                'Tap here to turn the Wifi ON',
-                style:
-                    AppTextStyles.subTitle4.copyWith(color: Colors.lightBlue),
+        : Center(
+            child: Container(
+              alignment: Alignment.center,
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  _wifi = true;
+                  unblockWifi();
+                  setState(() {});
+                },
+                child: Text(
+                  'Tap here to turn the Wifi ON'.toUpperCase(),
+                  style: AppTextStyles.subTitle4
+                      .copyWith(color: AppColors.primaryAmber),
+                ),
               ),
             ),
           );
