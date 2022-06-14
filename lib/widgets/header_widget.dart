@@ -13,28 +13,37 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
-      margin: const EdgeInsets.only(top: 24),
+      padding:  EdgeInsets.only(left: width * 0.02),
       child: SizedBox(
         width: double.infinity,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Image(
               image: AssetImage('assets/images/everest_logo.png'),
-              width: 200,
-              height: 100,
+              width: 160,
+              height: 80,
             ),
             showSettingsIcon
-                ? IconButton(
-                    onPressed: onSettingsPressed,
-                    icon: const Icon(
-                      Icons.settings,
-                      color: AppColors.primaryBlue,
-                      size: 40,
-                    ))
+                ? Material(
+                  child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: onSettingsPressed,
+                    child: Container(
+              alignment: Alignment.center,
+                      padding:  EdgeInsets.symmetric(vertical: height * 0.04, horizontal: height * 0.05),
+                      child:  Icon(
+                        Icons.settings,
+                        color: AppColors.primaryBlue,
+                        size: height * 0.08,
+
+                      ),
+                    ),
+                  ),
+                )
                 : const SizedBox(),
           ],
         ),

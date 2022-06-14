@@ -31,7 +31,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   bool _showPasswordScreen = false;
   final mqtt = MQTT();
   final appRepo = ProdRepo();
-  List<ConfiguredNetwork> localCNs = [];
   String _selectedSSID = '';
   List<AvailableNetwork> availableNetworks = [];
   List<ConfiguredNetwork> configuredNetworks = [];
@@ -47,7 +46,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   void _connect() async {
     // connectedSsid = await AppSharedPreferences().getConnectedSSID();
     try {
-      localCNs = await appRepo.fetchConfiguredNetworks();
       await mqtt.connect();
       mqtt.subscribe(
           "everest_api/setup/var/wifi_info", parseAvailableNetworksInfo);
@@ -65,11 +63,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     for (final n in networks) {
       final cn = ConfiguredNetwork(networkId: n['network_id'], ssid: n["ssid"]);
       configuredNetworks.add(cn);
-      final existing =
-          localCNs.firstWhere((element) => element.ssid == cn.ssid);
-      if (existing == null) {
-        appRepo.saveConfiguredNetworkLocally(cn);
-      }
     }
     if (mounted) {
       setState(() {});
@@ -248,7 +241,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       }
     }
     if (availableNetworks.isNotEmpty) {
-
       items.add(const ListSectionLabel(label: 'Available Networks'));
       final ids = availableNetworks.map((e) => e.ssid).toSet();
       availableNetworks.retainWhere((element) => ids.remove(element.ssid));
@@ -271,10 +263,20 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
             itemBuilder: (builder, index) {
               return items[index];
             })
-        : Center(
-            child: Text(
-              'Please turn on wifi',
-              style: AppTextStyles.subTitle4.copyWith(color: Colors.grey),
+        : GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: (){
+              _wifi = true;
+              setState(() {
+
+              });
+            },
+            child: Center(
+              child: Text(
+                'Tap here to turn the Wifi ON',
+                style:
+                    AppTextStyles.subTitle4.copyWith(color: Colors.lightBlue),
+              ),
             ),
           );
   }

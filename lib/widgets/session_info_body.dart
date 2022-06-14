@@ -41,6 +41,7 @@ class SessionInfoBody extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.25,
@@ -66,9 +67,9 @@ class SessionInfoBody extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
+               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.1,
+                height: MediaQuery.of(context).size.height * 0.15,
                 child: Column(
                   children: [
                     if (state == ChargingState.charging)
