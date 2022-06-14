@@ -30,7 +30,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   bool _wifi = false;
   bool _showPasswordScreen = false;
   bool optionsMenu = false;
-  bool showLoader = false;
   final mqtt = MQTT();
   final appRepo = ProdRepo();
   String _selectedSSID = '';
@@ -46,10 +45,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   }
 
   void _connect() async {
-    setState(() {
-      showLoader = true;
-    });
-
     try {
       await mqtt.connect();
       mqtt.subscribe(
@@ -207,13 +202,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                   ),
                 )
               : const SizedBox(),
-          showLoader
-              ? const Center(
-                  child: CircularProgressIndicator(
-                    color: AppColors.primaryAmber,
-                  ),
-                )
-              : const SizedBox(),
           _showPasswordScreen
               ? WifiPasswordScreen(
                   passwordController: passwordController,
@@ -306,9 +294,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       }
     }
     if (availableNetworks.isNotEmpty) {
-      setState(() {
-        showLoader = true;
-      });
       items.add(const ListSectionLabel(label: 'Available Networks'));
       final ids = availableNetworks.map((e) => e.ssid).toSet();
       availableNetworks.retainWhere((element) => ids.remove(element.ssid));
@@ -324,9 +309,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
           },
         ));
       }
-      setState(() {
-        showLoader = false;
-      });
     }
     return _wifi
         ? ListView.builder(
