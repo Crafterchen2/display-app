@@ -75,20 +75,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           },
                         ),
                       ),
-                    Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-                      child: SettingMenuButton(
-                        icon: Icons.info_outline,
-                        title: 'System Info',
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) {
-                            return const SystemInfo();
-                          }));
-                        },
-                      ),
-                    ),
+
                     if (localization)
                       Container(
                         margin: EdgeInsets.symmetric(
@@ -102,6 +89,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           },
                         ),
                       ),
+                    Container(
+                      margin:
+                      EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                      child: SettingMenuButton(
+                        icon: Icons.info_outline,
+                        title: 'System Info',
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (context) {
+                                return const SystemInfo();
+                              }));
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ],

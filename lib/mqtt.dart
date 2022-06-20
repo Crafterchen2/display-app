@@ -6,7 +6,7 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 class MQTT {
   static final MQTT _instance = MQTT._internal();
   static const String localHost = 'localhost';
-  static const String testing = '192.168.10.10';
+  static const String testing = '192.168.10.8';
 
   factory MQTT() => _instance;
 
@@ -15,7 +15,6 @@ class MQTT {
   final StreamController _subscriptionController = StreamController<String>();
   final Map _callbacks = {};
 
-  ///todo undo ip address
   MQTT._internal()
       : _client = MqttServerClient.withPort(localHost, "pionixbox", 1883) {
     _client.onConnected = () {

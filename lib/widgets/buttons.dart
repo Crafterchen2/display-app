@@ -141,7 +141,7 @@ class SwitchSettingsButton extends StatelessWidget {
     ),
     this.textColor = Colors.black,
     this.height = 56.0,
-    this.backgroundColor = Colors.white,
+    this.backgroundColor = AppColors.primaryBlue,
   }) : super(key: key);
 
   @override
@@ -152,7 +152,7 @@ class SwitchSettingsButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(8.0),
-          border: Border.all(color: AppColors.primaryBlue),
+          border: Border.all(color: Colors.white10),
         ),
         child: Container(
           padding: padding,
@@ -166,7 +166,7 @@ class SwitchSettingsButton extends StatelessWidget {
                 ),
               ),
               CupertinoSwitch(
-                activeColor: AppColors.primaryBlue,
+                activeColor: AppColors.primaryAmber,
                 value: value,
                 onChanged: onChanged,
               ),
@@ -201,7 +201,7 @@ class ActionButtonWithTitleBar extends StatelessWidget {
     ),
     this.textColor = Colors.black,
     this.height = 56.0,
-    this.backgroundColor = Colors.white,
+    this.backgroundColor = AppColors.primaryBlue,
     required this.icon,
   }) : super(key: key);
 
@@ -216,7 +216,7 @@ class ActionButtonWithTitleBar extends StatelessWidget {
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(color: AppColors.primaryBlue),
+            border: Border.all(color: Colors.white10),
           ),
           child: Container(
             padding: padding,

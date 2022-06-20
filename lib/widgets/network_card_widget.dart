@@ -40,24 +40,32 @@ class NetworkCardWidget extends StatelessWidget {
                     color: AppColors.primaryBlue,
                   ),
                 )),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                isConnected
+                    ? Center(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 8),
+                          decoration: BoxDecoration(
+                              color: AppColors.successLight,
+                              borderRadius: BorderRadius.circular(4)),
+                          child: Text('Connected',
+                              style: AppTextStyles.heading3
+                                  .copyWith(fontSize: 18, color: Colors.white)),
+                        ),
+                      )
+                    : const SizedBox(),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Icon(
-                    isConnected
-                        ? Icons.signal_cellular_alt
-                        : Icons.chevron_right,
+                    Icons.chevron_right,
                     size: 40,
-                    color: isConnected
-                        ? AppColors.successLight
-                        : AppColors.primaryBlue,
+                    color: AppColors.primaryBlue,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(
-            height: 4,
-          ),
+          const SizedBox(height: 4),
           Container(
             height: 0.2,
             width: double.infinity,

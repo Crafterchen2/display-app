@@ -6,16 +6,18 @@ part 'configured_network.g.dart';
 class ConfiguredNetwork {
   final int networkId;
   final String ssid;
+  final String interface;
   final String password;
   final String psk;
-  final int isConnected;
+  final bool isConnected;
 
   ConfiguredNetwork(
       {required this.networkId,
       required this.ssid,
+      required this.interface,
       this.password = '',
       this.psk = '',
-      this.isConnected = 0});
+      this.isConnected = false});
 
   factory ConfiguredNetwork.fromJson(Map<String, dynamic> json) =>
       _$ConfiguredNetworkFromJson(json);

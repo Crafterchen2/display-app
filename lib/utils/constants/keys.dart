@@ -23,6 +23,12 @@ class Topic {
   static const String addNetwork = 'everest_api/setup/cmd/add_network';
   static const String removeAllNetworks = 'everest_api/setup/cmd/remove_all_networks';
   static const String listConfiguredNetworks = 'everest_api/setup/cmd/list_configured_networks';
+  static const String scanWifi = 'everest_api/setup/cmd/scan_wifi';
+  static const String enableWifiScanning = 'everest_api/setup/cmd/enable_wifi_scanning';
+  static const String disableWifiScanning = 'everest_api/setup/cmd/disable_wifi_scanning';
+  static const String removeNetwork = 'everest_api/setup/cmd/remove_network';
+  static const String checkOnlineStatus = 'everest_api/setup/cmd/check_online_status';
+  static const String onlineStatus = 'everest_api/setup/var/online_status';
 
 
 }

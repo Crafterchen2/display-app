@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/routing/app_router.dart';
 import 'package:pionixbox/screens/private_charger_screen_demo.dart';
+import 'package:pionixbox/utils/routing/app_router.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

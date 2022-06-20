@@ -7,8 +7,8 @@ import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/utils/helper.dart';
 
 import '../mqtt.dart';
-import '../routing/app_router.dart';
 import '../utils/constants/keys.dart';
+import '../utils/routing/app_router.dart';
 import '../widgets/header_widget.dart';
 import '../widgets/session_info_body.dart';
 
@@ -32,7 +32,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   bool _online = false;
   bool _showSimulationPanel = false;
   bool _showProgressBar = false;
-  bool showSettingsIcon = false;
+  bool showSettingsIcon = true;
   bool simulation = false;
   bool wifi = false;
   bool localization = false;
@@ -62,9 +62,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
         .listen((ConnectivityResult result) {
       print('Current connectivity status: $result');
       _connectivityResult = result;
-     setState(() {
-
-     });
+      setState(() {});
     });
   }
 
@@ -85,6 +83,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
         setState(() {});
       }
     }
+
   }
 
   void parseSessionInfo(String message) {
@@ -144,7 +143,8 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
                 totalEnergy: _energyTotal,
                 latestTotalw: _latestTotalw.toString(),
                 duration: _duration,
-                online: _connectivityResult == ConnectivityResult.wifi || _connectivityResult == ConnectivityResult.wifi,
+                online: _connectivityResult == ConnectivityResult.wifi ||
+                    _connectivityResult == ConnectivityResult.wifi,
                 onPauseCharging: () => performAction(pauseCharging),
                 onResumeCharging: () => performAction(resumeCharging),
               ),
