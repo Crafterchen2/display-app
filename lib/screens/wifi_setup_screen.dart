@@ -32,6 +32,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   bool _autoScan = false;
   bool _showPasswordScreen = false;
   bool optionsMenu = false;
+  bool showConnectedDetails = false;
   final mqtt = MQTT();
   final appRepo = ProdRepo();
   String _selectedSSID = '';
@@ -49,18 +50,20 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   @override
   void dispose() {
     disableWifiScanning();
+    blockWifi();
     super.dispose();
   }
 
   void _connect() async {
     try {
       await mqtt.connect();
+      scanWifi();
       mqtt.subscribe(
           "everest_api/setup/var/wifi_info", parseAvailableNetworksInfo);
       listConfiguredNetworks();
       mqtt.subscribe("everest_api/setup/var/configured_networks",
           parseConfiguredNetworksInfo);
-      scanWifi();
+
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
     }
@@ -398,6 +401,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                 onTap: () {
                   _wifi = true;
                   unblockWifi();
+                  scanWifi();
                   setState(() {});
                 },
                 child: Text(

@@ -16,7 +16,8 @@ class IconTextField extends StatelessWidget {
     required this.controller,
     this.hintText = '',
     this.keyboardType = TextInputType.text,
-    this.focusNode, this.onTap,
+    this.focusNode,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -24,11 +25,9 @@ class IconTextField extends StatelessWidget {
     return Container(
       height: 54,
       width: double.infinity,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(20.00),
-        ),
+      decoration: BoxDecoration(
+        color: Colors.grey.withOpacity(0.1),
+        borderRadius: const BorderRadius.all(Radius.circular(20.00)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
@@ -36,21 +35,23 @@ class IconTextField extends StatelessWidget {
           icon,
           Expanded(
             child: TextField(
-              readOnly:  true,
+              readOnly: true,
               onTap: onTap,
               controller: controller,
               focusNode: focusNode,
-              style:
-                  AppTextStyles.heading6.copyWith(color: AppColors.primaryBlue, fontSize: MediaQuery.of(context).size.height * 0.08),
+              style: AppTextStyles.heading6.copyWith(
+                  color: AppColors.primaryBlue,
+                  fontSize: MediaQuery.of(context).size.height * 0.08),
               decoration: InputDecoration(
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                contentPadding: const EdgeInsets.only(
-                  left: 16.0,
-                  right: 16.0,
-                ),
-                hintText: hintText,
-              ),
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  contentPadding: const EdgeInsets.only(
+                    left: 16.0,
+                    right: 16.0,
+                  ),
+                  hintText: hintText,
+                  hintStyle: AppTextStyles.heading6
+                      .copyWith(color: Colors.grey.shade400)),
             ),
           ),
         ],

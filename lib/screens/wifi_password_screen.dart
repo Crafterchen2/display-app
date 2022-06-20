@@ -31,7 +31,7 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: AppColors.primaryBlue,
+      backgroundColor: Colors.white,
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -52,21 +52,22 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                         _showKeyboard = true;
                       });
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.vpn_key,
                       size: 40,
+                      color: Colors.grey.shade400,
                     ),
                     controller: widget.passwordController,
                   ),
                 ),
                 !_showKeyboard
                     ? const Spacer()
-                    : SizedBox(height: screenHeight * 0.02),
+                    : SizedBox(height: screenHeight * 0.05),
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Container(
                     alignment: Alignment.bottomRight,
-                    color: AppColors.primaryBlue,
+
                     width: double.infinity,
                     height: screenHeight * 0.1,
                     child: Row(
@@ -98,11 +99,11 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
           ),
           _showKeyboard
               ? Container(
-                  color: Colors.white,
+                  color: AppColors.primaryBlue,
                   child: VirtualKeyboard(
                       height: screenHeight * 0.6,
                       fontSize: screenHeight * 0.06,
-                      textColor: AppColors.primaryBlue,
+                      textColor: Colors.white,
                       textController: widget.passwordController,
                       defaultLayouts: const [
                         VirtualKeyboardDefaultLayouts.English
