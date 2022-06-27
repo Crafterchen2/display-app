@@ -6,13 +6,16 @@ import '../theme/app_text_styles.dart';
 class NetworkCardWidget extends StatelessWidget {
   final String ssid;
   final bool isConnected;
+  final String strength;
+  final Color strengthColor;
   final VoidCallback onPressed;
 
   const NetworkCardWidget(
       {Key? key,
       required this.ssid,
       required this.onPressed,
-      this.isConnected = false})
+      this.isConnected = false,
+      this.strength = '', this.strengthColor = Colors.white})
       : super(key: key);
 
   @override
@@ -28,7 +31,9 @@ class NetworkCardWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Icon(
-                    ssid == 'Hidden SSID' ? Icons.block_rounded : Icons.wifi,
+                    ssid == 'Hidden SSID'
+                        ? Icons.block_rounded
+                        : Icons.wifi,
                     size: 40,
                     color: AppColors.primaryBlue,
                   ),
@@ -40,20 +45,18 @@ class NetworkCardWidget extends StatelessWidget {
                     color: AppColors.primaryBlue,
                   ),
                 )),
-                isConnected
-                    ? Center(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 4, horizontal: 8),
-                          decoration: BoxDecoration(
-                              color: AppColors.successLight,
-                              borderRadius: BorderRadius.circular(4)),
-                          child: Text('Connected',
-                              style: AppTextStyles.heading3
-                                  .copyWith(fontSize: 18, color: Colors.white)),
-                        ),
-                      )
-                    : const SizedBox(),
+                Center(
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                    decoration: BoxDecoration(
+                        color: strengthColor,
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Text(strength,
+                        style: AppTextStyles.heading3
+                            .copyWith(fontSize: 18, color: Colors.white)),
+                  ),
+                ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Icon(

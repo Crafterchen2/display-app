@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:convert/convert.dart';
 import 'package:cryptography/cryptography.dart';
+import 'package:flutter/material.dart';
 import 'package:pionixbox/utils/constants/keys.dart';
 
 String getChargingSessionIconByState(String state) {
@@ -81,6 +81,33 @@ String pauseOrResumeChargingTitle(String state) {
   return title;
 }
 
+String checkSignalStrength(int signalLevel) {
+  String strength = '';
+  if (signalLevel >= -50 && signalLevel <= -30) {
+    return 'Strong';
+  } else if (signalLevel >= -60 && signalLevel <= -51) {
+    return 'Good';
+  } else if (signalLevel >= -79 && signalLevel <= -61) {
+    return 'Poor';
+  } else if (signalLevel >= -90 && signalLevel <= -80) {
+    return 'Unstable';
+  }
+  return strength;
+}
+
+Color checkSignalStrengthColor(int signalLevel) {
+  if (signalLevel >= -50 && signalLevel <= -30) {
+    return Colors.green;
+  } else if (signalLevel >= -60 && signalLevel <= -51) {
+    return Colors.lightGreen;
+  } else if (signalLevel >= -79 && signalLevel <= -61) {
+    return Colors.yellow;
+  } else if (signalLevel >= -90 && signalLevel <= -80) {
+    return Colors.redAccent;
+  }
+  return Colors.white;
+}
+
 Future<String> generatePSK(String ssid, String password) async {
   final pbkdf2 =
       Pbkdf2(macAlgorithm: Hmac(Sha1()), iterations: 4096, bits: 256);
@@ -104,12 +131,6 @@ String durationFormat(Duration duration) {
   return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
 }
 
-Future<bool> isOnline() async {
-  try {
-    final result = await InternetAddress.lookup('google.com');
-    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-      return true;
-    }
-  } on SocketException catch (_) {}
-  return false;
-}
+// String signalStrength(int ) {
+//   return;
+// }

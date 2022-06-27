@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:mqtt_client/mqtt_client.dart' hide Topic;
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/utils/helper.dart';
 
@@ -21,7 +22,6 @@ class PrivateChargerScreenDemo extends StatefulWidget {
 }
 
 class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
-  ConnectivityResult? _connectivityResult;
   late StreamSubscription _connectivitySubscription;
 
   late String _status;
@@ -45,25 +45,11 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     _chargedEnergy = 12.3;
     _latestTotalw = 1000;
     _duration = '00:00:00';
-    _checkConnectivityState();
     _connectMqtt();
 
-    mqtt.subscribe(
-        "everest_api/evse_manager/var/session_info", parseSessionInfo);
-    mqtt.subscribe(
-        "everest_api/setup/var/supported_setup_features", parseConfigInfo);
+
 
     super.initState();
-  }
-
-  Future<void> _checkConnectivityState() async {
-    _connectivitySubscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) {
-      print('Current connectivity status: $result');
-      _connectivityResult = result;
-      setState(() {});
-    });
   }
 
   @override
@@ -86,6 +72,15 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
 
   }
 
+
+  void parseOnlineStatus(String message) {
+    debugPrint('\n\nchecking status: $message\n\n');
+    _online = message == "online";
+      if (mounted) {
+        setState(() {});
+      }
+    }
+
   void parseSessionInfo(String message) {
     final i = jsonDecode(message);
     _status = i["state"];
@@ -106,6 +101,13 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     });
     try {
       await mqtt.connect();
+      mqtt.subscribe(
+          "everest_api/evse_manager/var/session_info", parseSessionInfo);
+      mqtt.subscribe(
+          "everest_api/setup/var/supported_setup_features", parseConfigInfo);
+      checkOnlineStatus();
+      mqtt.subscribe(
+          "everest_api/setup/var/online_status", parseOnlineStatus);
     } catch (e) {
       debugPrint(e.toString());
       _status = 'Connection Error';
@@ -143,8 +145,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
                 totalEnergy: _energyTotal,
                 latestTotalw: _latestTotalw.toString(),
                 duration: _duration,
-                online: _connectivityResult == ConnectivityResult.wifi ||
-                    _connectivityResult == ConnectivityResult.wifi,
+                online: _online,
                 onPauseCharging: () => performAction(pauseCharging),
                 onResumeCharging: () => performAction(resumeCharging),
               ),
@@ -216,6 +217,10 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
 
   void disableSimulation() {
     mqtt.publish(Topic.enableSimulationTopic, Payloads.disableSimulation);
+    setState(() {});
+  }
+  void checkOnlineStatus() {
+    mqtt.publish(Topic.checkOnlineStatus, '');
     setState(() {});
   }
 }

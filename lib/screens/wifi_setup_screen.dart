@@ -63,7 +63,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       listConfiguredNetworks();
       mqtt.subscribe("everest_api/setup/var/configured_networks",
           parseConfiguredNetworksInfo);
-
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
     }
@@ -368,10 +367,17 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       items.add(const ListSectionLabel(label: 'Available Networks'));
       final ids = availableNetworks.map((e) => e.ssid).toSet();
       availableNetworks.retainWhere((element) => ids.remove(element.ssid));
+      availableNetworks.sort((a, b) => b.signal_level.compareTo(a.signal_level));
       for (final an in availableNetworks) {
         items.add(NetworkCardWidget(
           ssid: an.ssid.isNotEmpty ? an.ssid : 'Hidden SSID',
           isConnected: an.ssid == connectedSsid,
+          strengthColor: checkSignalStrengthColor(an.signal_level),
+          strength: checkSignalStrength(an.signal_level) +
+              ' ' +
+              '(' +
+              an.signal_level.toString() +
+              ')',
           onPressed: () {
             _selectedSSID = an.ssid;
             setState(() {
