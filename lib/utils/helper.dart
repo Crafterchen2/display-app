@@ -95,6 +95,20 @@ String checkSignalStrength(int signalLevel) {
   return strength;
 }
 
+String getWifiIcon(int signalLevel) {
+  String base = 'assets/icons/';
+  if (signalLevel >= -50 && signalLevel <= -30) {
+    return '${base}signal_full.svg';
+  } else if (signalLevel >= -60 && signalLevel <= -51) {
+    return '${base}signal_3.svg';
+  } else if (signalLevel >= -79 && signalLevel <= -61) {
+    return '${base}signal_2.svg';
+  } else if (signalLevel >= -90 && signalLevel <= -80) {
+    return '${base}signal_1.svg';
+  }
+  return '${base}signal_0.svg';
+}
+
 Color checkSignalStrengthColor(int signalLevel) {
   if (signalLevel >= -50 && signalLevel <= -30) {
     return Colors.green;

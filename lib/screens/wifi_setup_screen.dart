@@ -8,11 +8,12 @@ import 'package:pionixbox/data/repo/prod_repo.dart';
 import 'package:pionixbox/screens/wifi_password_screen.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
-import 'package:pionixbox/utils/constants/common.dart';
 import 'package:pionixbox/widgets/buttons.dart';
+import 'package:pionixbox/widgets/dialogs.dart';
 import 'package:pionixbox/widgets/network_card_widget.dart';
 
 import '../mqtt.dart';
+import '../utils/constants/common.dart';
 import '../utils/constants/keys.dart';
 import '../utils/helper.dart';
 import '../widgets/list_section_label.dart';
@@ -322,6 +323,27 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     mqtt.publish(Topic.scanWifi, '');
   }
 
+  Future<void> confirmationDialog(BuildContext context,
+      {required ConfiguredNetwork cn}) async {
+    showDialog(
+        context: context,
+        builder: (ctz) {
+          return BasicDialog(
+              title: cn.ssid,
+              positiveText: 'Disconnect',
+              negativeText: 'Cancel',
+              content: 'Disconnecting this network',
+              onPositivePressed: () {
+                removeNetworks(cn.interface, cn.networkId);
+                Navigator.pop(context);
+                PionixSnackBar.errorSnackBar(context, '$_selectedSSID disconnected');
+              },
+              onNegativePressed: () {
+                Navigator.pop(context);
+              });
+        });
+  }
+
   Widget sectionedListView() {
     List<Widget> items = [];
     if (configuredNetworks.isNotEmpty) {
@@ -350,11 +372,12 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
         items.add(NetworkCardWidget(
           ssid: cn.ssid.isNotEmpty ? cn.ssid : 'Hidden SSID',
           isConnected: cn.isConnected,
-          onPressed: () {
+          onPressed: () async {
             _selectedSSID = cn.ssid;
             if (cn.isConnected) {
-              removeNetworks(cn.interface, cn.networkId);
-              PionixSnackBar.errorSnackBar(context, 'Removing Network');
+              await confirmationDialog(context, cn: cn);
+              // removeNetworks(cn.interface, cn.networkId);
+              // PionixSnackBar.errorSnackBar(context, 'Removing Network');
             } else {
               _showPasswordScreen = true;
             }
@@ -367,11 +390,13 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       items.add(const ListSectionLabel(label: 'Available Networks'));
       final ids = availableNetworks.map((e) => e.ssid).toSet();
       availableNetworks.retainWhere((element) => ids.remove(element.ssid));
-      availableNetworks.sort((a, b) => b.signal_level.compareTo(a.signal_level));
+      availableNetworks
+          .sort((a, b) => b.signal_level.compareTo(a.signal_level));
       for (final an in availableNetworks) {
         items.add(NetworkCardWidget(
           ssid: an.ssid.isNotEmpty ? an.ssid : 'Hidden SSID',
           isConnected: an.ssid == connectedSsid,
+          signalLevel: an.signal_level,
           strengthColor: checkSignalStrengthColor(an.signal_level),
           strength: checkSignalStrength(an.signal_level) +
               ' ' +

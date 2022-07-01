@@ -51,7 +51,7 @@ class MQTT {
     _subscriptionController.sink.add(topic);
   }
 
-  void publish(String topic, String payload) {
+  void publish(String topic, String payload) async{
     _client.publishMessage(topic, MqttQos.exactlyOnce,
         MqttClientPayloadBuilder().addString(payload).payload!);
   }
