@@ -24,8 +24,8 @@ class Header extends StatelessWidget {
           children: [
             const Image(
               image: AssetImage('assets/images/everest_logo.png'),
-              width: 160,
-              height: 80,
+              width: 200,
+              height: 100,
             ),
             showSettingsIcon
                 ? GestureDetector(
