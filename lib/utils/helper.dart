@@ -104,7 +104,7 @@ String getWifiIcon(int signalLevel) {
   } else if (signalLevel >= -79 && signalLevel <= -61) {
     return '${base}signal_2.svg';
   } else if (signalLevel >= -90 && signalLevel <= -80) {
-    return '${base}signal_1.svg';
+    return '${base}signal_0.svg';
   }
   return '${base}signal_0.svg';
 }

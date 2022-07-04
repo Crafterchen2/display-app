@@ -8,7 +8,7 @@ import '../theme/app_text_styles.dart';
 class NetworkCardWidget extends StatelessWidget {
   final String ssid;
   final bool isConnected;
-  final int signalLevel;
+  final int? signalLevel;
   final String strength;
   final Color strengthColor;
   final VoidCallback onPressed;
@@ -20,7 +20,7 @@ class NetworkCardWidget extends StatelessWidget {
       this.isConnected = false,
       this.strength = '',
       this.strengthColor = Colors.white,
-      this.signalLevel = -50})
+      this.signalLevel})
       : super(key: key);
 
   @override
@@ -33,24 +33,45 @@ class NetworkCardWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 12),
             child: Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: SvgPicture.asset(
-                    getWifiIcon(signalLevel),
-                  ),
-
-                  // Icon(
-                  //   ssid == 'Hidden SSID' ? Icons.block_rounded : Icons.wifi,
-                  //   size: 40,
-                  //   color: AppColors.primaryBlue,
-                  // ),
+                ssid != 'Hidden SSID'
+                    ? SvgPicture.asset(
+                        getWifiIcon(signalLevel ?? -50),
+                        height: 40,
+                        width: 40,
+                      )
+                    : const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Icon(
+                          Icons.block_rounded,
+                          size: 40,
+                          color: AppColors.primaryBlue,
+                        ),
+                      ),
+                const SizedBox(
+                  width: 12,
                 ),
                 Expanded(
-                    child: Text(
-                  ssid,
-                  style: AppTextStyles.heading3.copyWith(
-                    color: AppColors.primaryBlue,
-                  ),
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      ssid,
+                      style: AppTextStyles.heading3.copyWith(
+                        color: AppColors.primaryBlue,
+                      ),
+                    ),
+                    (signalLevel == null && !isConnected)
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Text(
+                              'Saved',
+                              style: AppTextStyles.subTitle2.copyWith(
+                                color: AppColors.primaryBlue,
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
+                  ],
                 )),
                 isConnected
                     ? Center(
@@ -66,18 +87,20 @@ class NetworkCardWidget extends StatelessWidget {
                         ),
                       )
                     : const SizedBox(),
-                Center(
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                    decoration: BoxDecoration(
-                        color: strengthColor,
-                        borderRadius: BorderRadius.circular(4)),
-                    child: Text(strength,
-                        style: AppTextStyles.heading3
-                            .copyWith(fontSize: 18, color: Colors.white)),
-                  ),
-                ),
+                strength.isNotEmpty
+                    ? Center(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 8),
+                          decoration: BoxDecoration(
+                              color: strengthColor,
+                              borderRadius: BorderRadius.circular(4)),
+                          child: Text(strength,
+                              style: AppTextStyles.heading3
+                                  .copyWith(fontSize: 18, color: Colors.white)),
+                        ),
+                      )
+                    : const SizedBox(),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Icon(

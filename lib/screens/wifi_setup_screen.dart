@@ -365,7 +365,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
           ),
         ),
       ));
-      items.add(const ListSectionLabel(label: 'Configured Networks'));
+      // items.add(const ListSectionLabel(label: 'Configured Networks'));
       final ids = configuredNetworks.map((e) => e.ssid).toSet();
       configuredNetworks.retainWhere((element) => ids.remove(element.ssid));
       for (final cn in configuredNetworks) {
@@ -387,7 +387,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       }
     }
     if (availableNetworks.isNotEmpty) {
-      items.add(const ListSectionLabel(label: 'Available Networks'));
+      // items.add(const ListSectionLabel(label: 'Available Networks'));
       final ids = availableNetworks.map((e) => e.ssid).toSet();
       availableNetworks.retainWhere((element) => ids.remove(element.ssid));
       availableNetworks
@@ -398,11 +398,11 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
           isConnected: an.ssid == connectedSsid,
           signalLevel: an.signal_level,
           strengthColor: checkSignalStrengthColor(an.signal_level),
-          strength: checkSignalStrength(an.signal_level) +
-              ' ' +
-              '(' +
-              an.signal_level.toString() +
-              ')',
+          // strength: checkSignalStrength(an.signal_level) +
+          //     ' ' +
+          //     '(' +
+          //     an.signal_level.toString() +
+          //     ')',
           onPressed: () {
             _selectedSSID = an.ssid;
             setState(() {

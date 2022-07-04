@@ -1,18 +1,12 @@
-<svg width="60" height="30" viewBox="0 0 60 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_652_4084)">
-<circle cx="30" cy="30" r="30" fill="white"/>
-<circle cx="30" cy="30" r="28.5" stroke="#092551" stroke-opacity="0.3" stroke-width="3"/>
-<circle cx="30" cy="30" r="24" fill="white"/>
-<circle cx="30" cy="30" r="22.5" stroke="#092551" stroke-opacity="0.3" stroke-width="3"/>
-<circle cx="30" cy="30" r="18" fill="white"/>
-<circle cx="30" cy="30" r="16.5" stroke="#092551" stroke-opacity="0.3" stroke-width="3"/>
-<circle cx="30" cy="30" r="10.5" fill="white" stroke="#092551" stroke-width="3"/>
-<circle cx="30" cy="30" r="6" fill="#092551"/>
-<path d="M51.2132 8.78679C55.4088 12.9824 58.266 18.3279 59.4236 24.1473C60.5811 29.9667 59.987 35.9987 57.7164 41.4805C55.4458 46.9623 51.6006 51.6476 46.6671 54.9441C41.7337 58.2405 35.9335 60 30 60C24.0666 60 18.2664 58.2405 13.3329 54.9441C8.39946 51.6477 4.55427 46.9623 2.28364 41.4806C0.0129977 35.9988 -0.581115 29.9668 0.576429 24.1474C1.73397 18.3279 4.59118 12.9824 8.78674 8.78685L30 30L51.2132 8.78679Z" fill="white"/>
+<svg width="100" height="58" viewBox="0 0 100 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_665_4034" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-2" y="-1" width="104" height="59">
+<path d="M100 0L50 57L0 0H100Z" fill="#D9D9D9" stroke="black"/>
+</mask>
+<g mask="url(#mask0_665_4034)">
+<circle cx="50" cy="54" r="47" stroke="#092551" stroke-opacity="0.3" stroke-width="6"/>
+<circle cx="50" cy="54" r="37" stroke="#092551" stroke-opacity="0.3" stroke-width="6"/>
+<circle cx="50" cy="54" r="27" stroke="#092551" stroke-opacity="0.3" stroke-width="6"/>
+<circle cx="50" cy="54" r="17" stroke="#092551" stroke-width="6"/>
+<circle cx="50" cy="54" r="8.5" fill="#092551" stroke="#092551" stroke-width="3"/>
 </g>
-<defs>
-<clipPath id="clip0_652_4084">
-<rect width="60" height="30" fill="white"/>
-</clipPath>
-</defs>
 </svg>
