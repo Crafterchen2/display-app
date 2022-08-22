@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:convert/convert.dart';
 import 'package:cryptography/cryptography.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:pionixbox/utils/constants/keys.dart';
 
@@ -34,25 +35,25 @@ String getChargingSessionIconByState(String state) {
 String chargingStateTitle(String state) {
   switch (state) {
     case ChargingState.authRequired:
-      return 'Auth Required';
+      return 'auth_required'.tr();
     case ChargingState.disable:
-      return 'Disable';
+      return 'disable'.tr();
     case ChargingState.pluggedIn:
-      return 'PluggedIn';
+      return 'pluggedIn'.tr();
     case ChargingState.unplugged:
-      return 'Unplugged';
+      return 'unplugged'.tr();
     case ChargingState.charging:
-      return 'Charging';
+      return 'charging'.tr();
     case ChargingState.chargingPausedEV:
-      return 'Charging Paused By Car';
+      return tr('charging_paused_by_car');
     case ChargingState.chargingPausedEVSE:
-      return 'Charging Paused';
+      return 'charging_paused'.tr();
     case ChargingState.error:
-      return 'Error';
+      return 'error'.tr();
     case ChargingState.permanentFault:
-      return 'Permanent Fault';
+      return 'permanent_fault'.tr();
     default:
-      return 'Unplugged';
+      return 'unplugged'.tr();
   }
 }
 

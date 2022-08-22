@@ -1,10 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:pionixbox/screens/simulation_panel.dart';
 import 'package:pionixbox/screens/system_info.dart';
 import 'package:pionixbox/screens/wifi_setup_screen.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/widgets/buttons.dart';
+import 'package:pionixbox/widgets/restart_widget.dart';
 import 'package:pionixbox/widgets/settings_menu_button.dart';
+
+import '../mqtt.dart';
+import '../utils/constants/keys.dart';
+import '../utils/routing/app_router.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({
@@ -16,9 +22,11 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  final mqtt = MQTT();
   bool localization = false;
   bool setup_simulation = false;
   bool setup_wifi = false;
+  String selectedLanguage = 'english';
 
   void extractArguments(BuildContext context) {
     final i = (ModalRoute.of(context)?.settings.arguments ??
@@ -42,68 +50,84 @@ class _SettingsScreenState extends State<SettingsScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (setup_wifi)
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.05),
-                        child: SettingMenuButton(
-                          icon: Icons.wifi_protected_setup,
-                          title: 'Wifi Setup',
-                          onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (context) {
-                              return const WifiSetupScreen();
-                            }));
-                          },
-                        ),
-                      ),
-                    if (setup_simulation)
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.05),
-                        child: SettingMenuButton(
-                          icon: Icons.settings,
-                          title: 'Simulation',
-                          onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (context) {
-                              return const SimulationPanel();
-                            }));
-                          },
-                        ),
-                      ),
-
-                    if (localization)
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.05),
-                        child: SettingMenuButton(
-                          icon: Icons.language,
-                          title: 'Language',
-                          onPressed: () {
-                            // Navigator.of(context)
-                            //     .pushNamed(AppRoutes.languagePickerScreen);
-                          },
-                        ),
-                      ),
-                    Container(
-                      margin:
-                      EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-                      child: SettingMenuButton(
-                        icon: Icons.info_outline,
-                        title: 'System Info',
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) {
-                                return const SystemInfo();
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (setup_wifi)
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.05),
+                          child: SettingMenuButton(
+                            icon: Icons.wifi_protected_setup,
+                            title: tr('wifi_setup'),
+                            onPressed: () {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(builder: (context) {
+                                return const WifiSetupScreen();
                               }));
-                        },
+                            },
+                          ),
+                        ),
+                      if (setup_simulation)
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.05),
+                          child: SettingMenuButton(
+                            icon: Icons.settings,
+                            title: tr('simulation'),
+                            onPressed: () {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(builder: (context) {
+                                return const SimulationPanel();
+                              }));
+                            },
+                          ),
+                        ),
+                      if (localization)
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.05),
+                          child: SettingMenuButton(
+                            icon: Icons.language,
+                            title: tr('language'),
+                            onPressed: () async {
+                              debugPrint('Before');
+                              final result = await Navigator.of(context)
+                                  .pushNamed(AppRoutes.languagePickerScreen);
+                              debugPrint(result.toString());
+                              setState(() {});
+                            },
+                          ),
+                        ),
+                      Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                        child: SettingMenuButton(
+                          icon: Icons.info_outline,
+                          title: tr('system_info'),
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (context) {
+                              return const SystemInfo();
+                            }));
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                      Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                        child: SettingMenuButton(
+                          icon: Icons.info_outline,
+                          title: tr('reset'),
+                          onPressed: () {
+                            resetInitialised();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -114,5 +138,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
     );
+  }
+
+  void resetInitialised() {
+    mqtt.publish(Topic.resetInitialized, '');
+    RestartWidget.restartApp(context);
   }
 }

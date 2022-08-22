@@ -9,7 +9,7 @@ import 'app_repo_provider.dart';
 
 final sessionInfoProvider =
     StreamProvider.autoDispose<SessionInfo>((ref) async* {
-  final repo = ref.read(appRepoProvider);
+  // final repo = ref.read(appRepoProvider);
   debugPrint("Values starting");
   final mqtt = MQTT();
   await mqtt.connect();

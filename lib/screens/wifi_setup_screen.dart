@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pionixbox/data/models/available_network.dart';
 import 'package:pionixbox/data/models/configured_network.dart';
-import 'package:pionixbox/data/repo/prod_repo.dart';
+import 'package:pionixbox/screens/lan_info_screen.dart';
+import 'package:pionixbox/screens/private_charger_screen_demo.dart';
 import 'package:pionixbox/screens/wifi_password_screen.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
@@ -12,11 +13,12 @@ import 'package:pionixbox/widgets/buttons.dart';
 import 'package:pionixbox/widgets/dialogs.dart';
 import 'package:pionixbox/widgets/network_card_widget.dart';
 
+import '../data/models/network_device_info.dart';
 import '../mqtt.dart';
 import '../utils/constants/common.dart';
 import '../utils/constants/keys.dart';
 import '../utils/helper.dart';
-import '../widgets/list_section_label.dart';
+import 'landing_screen.dart';
 
 class WifiSetupScreen extends StatefulWidget {
   const WifiSetupScreen({
@@ -35,12 +37,12 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   bool optionsMenu = false;
   bool showConnectedDetails = false;
   final mqtt = MQTT();
-  final appRepo = ProdRepo();
   String _selectedSSID = '';
   List<AvailableNetwork> availableNetworks = [];
   List<ConfiguredNetwork> configuredNetworks = [];
   TextEditingController passwordController = TextEditingController();
   FocusNode passwordFocusNode = FocusNode();
+  List<NetworkDeviceInfo> devices = [];
 
   @override
   void initState() {
@@ -51,7 +53,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   @override
   void dispose() {
     disableWifiScanning();
-    blockWifi();
     super.dispose();
   }
 
@@ -64,8 +65,27 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       listConfiguredNetworks();
       mqtt.subscribe("everest_api/setup/var/configured_networks",
           parseConfiguredNetworksInfo);
+
+      mqtt.subscribe(
+          "everest_api/setup/var/network_device_info", networkDeviceInfo);
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
+    }
+  }
+
+  void networkDeviceInfo(String message) {
+    final deviceInfo = jsonDecode(message);
+    devices.clear();
+    for (final d in deviceInfo) {
+      final device = NetworkDeviceInfo.fromJson(d);
+      if (device.interface == 'wlan0' && device.blocked == false) {
+        setState(() {
+          _wifi = true;
+        });
+        break;
+      }
+
+      devices.add(device);
     }
   }
 
@@ -138,7 +158,57 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
               ),
             ),
           ),
-          const PionixCloseButton(),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Container(
+              color: Colors.white,
+              height: screenHeight * 0.2,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.02,
+                    vertical: screenHeight * 0.01),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SecondaryButton(
+                      title: 'Close',
+                      borderColor: AppColors.errorLight,
+                      textColor: AppColors.errorLight,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      width: screenWidth * 0.2,
+                    ),
+                    SizedBox(width: screenWidth * 0.03),
+                    PrimaryButton(
+                      title: 'Add LAN',
+                      color: AppColors.errorLight,
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) {
+                              return const LanInfoScreen();
+                            }));
+                      },
+                      width: screenWidth * 0.3,
+                    ),
+                    SizedBox(width: screenWidth * 0.03),
+                    PrimaryButton(
+                      title: 'Done with SETUP',
+                      color: AppColors.successLight,
+                      onPressed: () {
+                       setInitialized();
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) {
+                              return const LandingScreen();
+                            }), (Route<dynamic> route) => false);
+                      },
+                      width: screenWidth * 0.3,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
           optionsMenu
               ? Container(
                   color: Colors.white.withOpacity(0.8),
@@ -312,6 +382,10 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     configuredNetworks.clear();
   }
 
+  void setInitialized() {
+    mqtt.publish(Topic.setInitialized, 'true');
+  }
+
   void removeNetworks(String interface, int networkId) {
     final payload = "{\"interface\": \"wlan0\", \"network_id\": $networkId}";
     mqtt.publish(Topic.removeNetwork, payload);
@@ -336,7 +410,8 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
               onPositivePressed: () {
                 removeNetworks(cn.interface, cn.networkId);
                 Navigator.pop(context);
-                PionixSnackBar.errorSnackBar(context, '$_selectedSSID disconnected');
+                PionixSnackBar.errorSnackBar(
+                    context, '$_selectedSSID disconnected');
               },
               onNegativePressed: () {
                 Navigator.pop(context);

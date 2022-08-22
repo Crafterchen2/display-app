@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pionixbox/screens/language_picker_screen.dart';
+import 'package:pionixbox/screens/private_charger_screen_demo.dart';
 import 'package:pionixbox/screens/settings_screen.dart';
 import 'package:pionixbox/screens/simulation_panel.dart';
 import 'package:pionixbox/screens/system_info.dart';
@@ -11,6 +12,7 @@ class AppRoutes {
   static const simulationScreen = '/simulation_screen';
   static const wifiSetupScreen = '/wifi_setup_screen';
   static const systemInfo = '/system_info';
+  static const privateChargerScreenDemo = '/private_charger_screen_demo';
 }
 
 class AppRouter {
@@ -22,6 +24,12 @@ class AppRouter {
       case AppRoutes.settingScreen:
         return MaterialPageRoute<dynamic>(
           builder: (_) => const SettingsScreen(),
+          settings: settings,
+          fullscreenDialog: true,
+        );
+      case AppRoutes.privateChargerScreenDemo:
+        return MaterialPageRoute<dynamic>(
+          builder: (_) => const PrivateChargerScreenDemo(),
           settings: settings,
           fullscreenDialog: true,
         );

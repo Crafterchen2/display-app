@@ -10,6 +10,12 @@ class ChargingState {
   static const String permanentFault = 'PermanentFault';
 }
 
+class Language {
+  static const String english = 'english';
+  static const String german = 'german';
+  static const String unknown = 'unknown';
+}
+
 class Topic {
   static const String pauseChargingTopic = '/external/cmd/pause_charging';
   static const String resumeChargingTopic = '/external/cmd/resume_charging';
@@ -29,6 +35,12 @@ class Topic {
   static const String removeNetwork = 'everest_api/setup/cmd/remove_network';
   static const String checkOnlineStatus = 'everest_api/setup/cmd/check_online_status';
   static const String onlineStatus = 'everest_api/setup/var/online_status';
+  static const String applicationInfo = 'everest_api/setup/var/application_info';
+  static const String updateCurrentLanguage = 'everest_api/setup/cmd/change_current_language';
+  static const String updateDefaultLanguage = 'everest_api/setup/cmd/change_default_language';
+  static const String resetInitialized = 'everest_api/setup/cmd/reset_initialized';
+  static const String setInitialized = 'everest_api/setup/cmd/set_initialized';
+  static const String setAppMode = 'everest_api/setup/cmd/set_mode';
 
 
 }
@@ -43,4 +55,8 @@ class Payloads {
       'sleep 1;iec_wait_pwr_ready;sleep 1;draw_power_regulated 32,3;sleep 86400;unplug';
   static const String enableSimulation = 'true';
   static const String disableSimulation = 'false';
+}
+class AppAssets {
+  static const String everestLogo = 'assets/images/everest_logo.png';
+
 }

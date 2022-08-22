@@ -1,12 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pionixbox/main.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 
 import '../theme/app_text_styles.dart';
 
 class PrimaryButton extends StatelessWidget {
-  final double height;
-  final double width;
+  final double? height;
+  final double? width;
   final String title;
   final Color color;
   final Color textColor;
@@ -14,12 +16,12 @@ class PrimaryButton extends StatelessWidget {
 
   const PrimaryButton(
       {Key? key,
-      this.height = 64,
+      this.height,
       required this.title,
       this.color = AppColors.primaryAmber,
       this.textColor = Colors.white,
       required this.onPressed,
-      this.width = 400})
+      this.width})
       : super(key: key);
 
   @override
@@ -29,10 +31,11 @@ class PrimaryButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
         width: width,
-        height: height,
+        height: height ?? screenHeight * 0.12,
         color: color,
         child: Center(
           child: Text(title.toUpperCase(),
+              overflow: TextOverflow.ellipsis,
               style:
                   AppTextStyles.primaryButtonText.copyWith(color: textColor)),
         ),
@@ -79,36 +82,38 @@ class PrimaryButton2 extends StatelessWidget {
 }
 
 class SecondaryButton extends StatelessWidget {
-  final double height;
+  final double? height;
   final String title;
   final Color color;
-  final double width;
-
+  final double? width;
   final Color textColor;
+  final Color borderColor;
   final VoidCallback onPressed;
 
-  const SecondaryButton(
-      {Key? key,
-      this.height = 64,
-      this.width = 300,
-      required this.title,
-      this.color = Colors.white,
-      this.textColor = Colors.white,
-      required this.onPressed})
-      : super(key: key);
+  const SecondaryButton({
+    Key? key,
+    this.height,
+    this.width,
+    required this.title,
+    this.color = Colors.white,
+    this.textColor = Colors.white,
+    required this.onPressed,
+    this.borderColor = AppColors.primaryAmber,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        height: height,
+        height: height ?? screenHeight * 0.12,
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
         width: width,
         decoration: BoxDecoration(
-            color: color,
-            border: Border.all(width: 3, color: AppColors.primaryAmber)),
+            color: color, border: Border.all(width: 3, color: borderColor)),
         child: Center(
           child: Text(title.toUpperCase(),
+              overflow: TextOverflow.ellipsis,
               style:
                   AppTextStyles.primaryButtonText.copyWith(color: textColor)),
         ),
@@ -241,10 +246,14 @@ class ActionButtonWithTitleBar extends StatelessWidget {
 
 class PionixCloseButton extends StatelessWidget {
   final VoidCallback? onPressed;
+  final String title;
   final Color color;
 
   const PionixCloseButton(
-      {Key? key, this.onPressed, this.color = AppColors.primaryBlue})
+      {Key? key,
+      this.onPressed,
+      this.color = AppColors.primaryBlue,
+      this.title = 'close'})
       : super(key: key);
 
   @override
@@ -272,7 +281,7 @@ class PionixCloseButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Close'.toUpperCase(),
+                title.tr(),
                 style: AppTextStyles.heading3.copyWith(
                     color: color == Colors.white
                         ? AppColors.primaryBlue

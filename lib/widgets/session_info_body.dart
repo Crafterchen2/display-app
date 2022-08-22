@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/theme/app_colors.dart';
@@ -75,7 +76,7 @@ class SessionInfoBody extends StatelessWidget {
                     if (state == ChargingState.charging)
                       SecondaryButton(
                           width: MediaQuery.of(context).size.width * 0.32,
-                          title: 'Pause Charging',
+                          title: 'paused_charging'.tr(),
                           onPressed: onPauseCharging,
                           textColor: AppColors.primaryAmber),
                     if (pauseOrResumeChargingTitle(state) !=
@@ -83,7 +84,7 @@ class SessionInfoBody extends StatelessWidget {
                         pauseOrResumeChargingTitle(state) != '')
                       PrimaryButton(
                         width: MediaQuery.of(context).size.width * 0.32,
-                        title: 'Resume Charging',
+                        title: 'resume_charging'.tr(),
                         onPressed: onResumeCharging,
                         textColor: Colors.white,
                       ),
@@ -96,8 +97,8 @@ class SessionInfoBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
-                'STATUS',
+               Text(
+                'status'.tr(),
                 style: AppTextStyles.subTitle4,
               ),
               SizedBox(
@@ -112,9 +113,9 @@ class SessionInfoBody extends StatelessWidget {
               ),
               SizedBox(height: height * 0.1),
               Text(
-                state == 'Unplugged'
-                    ? 'Last Session'.toUpperCase()
-                    : 'Current Session'.toUpperCase(),
+                state == 'unplugged'.tr()
+                    ? 'last_session'.tr()
+                    : 'current_session'.tr(),
                 style: AppTextStyles.subTitle4,
               ),
               SizedBox(
@@ -125,20 +126,20 @@ class SessionInfoBody extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Energy',
+                         Text(
+                          'energy'.tr(),
                           style: AppTextStyles.heading3,
                         ),
                         SizedBox(height: height * 0.02),
-                        const Text(
-                          'Duration',
+                         Text(
+                          'duration'.tr(),
                           style: AppTextStyles.heading3,
                         ),
                         SizedBox(height: height * 0.02),
                         Row(
                           children: [
                             Text(
-                              online ? 'Online' : 'Offline',
+                              online ? 'online'.tr() : 'offline'.tr(),
                               style: AppTextStyles.heading3,
                             ),
                             Container(

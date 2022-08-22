@@ -14,9 +14,10 @@ class PionixSnackBar {
       ),
     ));
   }
+
   static errorSnackBar(BuildContext context, String message,
       {Color backgroundColor = AppColors.errorLight,
-        Color textColor = Colors.white}) {
+      Color textColor = Colors.white}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       backgroundColor: backgroundColor,
       content: Text(
@@ -25,9 +26,10 @@ class PionixSnackBar {
       ),
     ));
   }
+
   static successSnackBar(BuildContext context, String message,
       {Color backgroundColor = AppColors.successLight,
-        Color textColor = Colors.white}) {
+      Color textColor = Colors.white}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       backgroundColor: backgroundColor,
       content: Text(

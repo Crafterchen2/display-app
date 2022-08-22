@@ -31,7 +31,7 @@ class _SystemInfoState extends State<SystemInfo> {
 
   void networkDeviceInfo(String message) {
     final deviceInfo = jsonDecode(message);
-    devices.clear();
+    // devices.clear();
     for (final d in deviceInfo) {
       final device = NetworkDeviceInfo.fromJson(d);
       devices.add(device);
@@ -48,10 +48,11 @@ class _SystemInfoState extends State<SystemInfo> {
           "everest_api/setup/var/network_device_info", networkDeviceInfo);
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
-      setState(() {
-        _showProgress = false;
-      });
+
     }
+    setState(() {
+      _showProgress = false;
+    });
   }
 
   @override
