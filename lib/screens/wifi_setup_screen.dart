@@ -168,8 +168,11 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                     horizontal: screenWidth * 0.02,
                     vertical: screenHeight * 0.01),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_cross.svg', onPressed: () {  }, label: 'Close',),
+                    // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_wifi.svg', onPressed: () {  }, label: 'Add Wifi',),
+                    // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_finish_setup.svg', onPressed: () {  }, label: 'Finish Setup',),
                     SecondaryButton(
                       title: 'Close',
                       borderColor: AppColors.errorLight,

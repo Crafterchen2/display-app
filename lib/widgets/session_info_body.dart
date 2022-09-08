@@ -13,8 +13,9 @@ class SessionInfoBody extends StatelessWidget {
   final double energy;
   final String duration;
   final String totalEnergy;
+  final double maxCurrent;
   final String state;
-  final String latestTotalw;
+  final double latestTotalw;
   final bool online;
   final VoidCallback onPauseCharging;
   final VoidCallback onResumeCharging;
@@ -28,7 +29,7 @@ class SessionInfoBody extends StatelessWidget {
     required this.latestTotalw,
     required this.onPauseCharging,
     required this.onResumeCharging,
-    this.online = true,
+    this.online = true, this.maxCurrent = 0.0,
   }) : super(key: key);
 
   @override
@@ -131,6 +132,12 @@ class SessionInfoBody extends StatelessWidget {
                           style: AppTextStyles.heading3,
                         ),
                         SizedBox(height: height * 0.02),
+                        Text(
+                          'max_current'.tr(),
+                          style: AppTextStyles.heading3,
+                        ),
+
+                        SizedBox(height: height * 0.02),
                          Text(
                           'duration'.tr(),
                           style: AppTextStyles.heading3,
@@ -165,6 +172,12 @@ class SessionInfoBody extends StatelessWidget {
                         children: [
                           Text(
                             energy.toStringAsFixed(2) + ' kWh',
+                            textAlign: TextAlign.start,
+                            style: AppTextStyles.digitsHeading3,
+                          ),
+                          SizedBox(height: height * 0.02),
+                         const Text(
+                           'Unkown',
                             textAlign: TextAlign.start,
                             style: AppTextStyles.digitsHeading3,
                           ),

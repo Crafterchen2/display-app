@@ -36,5 +36,9 @@
   "charging_simulation": "Ladesimulation",
   "current_session": "Current Session",
   "online": "Online",
-  "status": "Status"
+  "status": "Status",
+  "configure_your_network": "Configure your network",
+  "max_current": "Max Current"
+
+
 }

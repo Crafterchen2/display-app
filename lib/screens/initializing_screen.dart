@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/data/models/application_info.dart';
@@ -79,7 +80,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.scaffoldBackground,
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -88,12 +89,11 @@ class _InitializingScreenState extends State<InitializingScreen> {
             _progress > 0.9
                 ? Expanded(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SquareButtonWidget(
-
-                            iconUrl: 'assets/icons/signal_full.svg',
+                            iconUrl: 'assets/icons/icon_wifi.svg',
                             text: 'WIFI',
                             onPressed: () {
                               Navigator.of(context)
@@ -101,7 +101,6 @@ class _InitializingScreenState extends State<InitializingScreen> {
                                 return const WifiSetupScreen();
                               }));
                             }),
-                        SizedBox(width: screenWidth * 0.1),
                         SquareButtonWidget(
                             iconUrl: 'assets/icons/icon_lan.svg',
                             text: 'LAN',
@@ -202,27 +201,26 @@ class SquareButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPressed,
-      child: Container(
+      child: SizedBox(
         height: screenWidth * 0.4,
         width: screenWidth * 0.4,
-        decoration: BoxDecoration(
+        child: Material(
+          elevation: 3,
           color: AppColors.white,
-          border: Border.all(width: 2, color: Colors.grey.shade300),
           borderRadius: const BorderRadius.all(Radius.circular(16)),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            SvgPicture.asset(
-              iconUrl,
-              height: screenHeight * 0.2,
-              width: screenHeight * 0.2,
-              color: AppColors.primaryBlue,
-            ),
-            Text(text,
-                style: AppTextStyles.heading3
-                    .copyWith(color: AppColors.primaryBlue)),
-          ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SvgPicture.asset(
+                iconUrl,
+                height: screenWidth * 0.2,
+                width: screenWidth * 0.2,
+              ),
+              Text(text,
+                  style: AppTextStyles.heading6
+                      .copyWith(color: AppColors.primaryBlue)),
+            ],
+          ),
         ),
       ),
     );

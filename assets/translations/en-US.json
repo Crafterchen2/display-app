@@ -36,6 +36,7 @@
   "enable_simulation": "ENABLE SIMULATION",
   "disable_simulation": "DISABLE SIMULATION",
   "charging_simulation": "CHARGING SIMULATION",
-  "lan_info": "LAN INFO"
-
+  "lan_info": "LAN INFO",
+  "configure_your_network": "Configure your network",
+  "max_current": "Max Current"
 }

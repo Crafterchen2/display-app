@@ -143,7 +143,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
                 state: _status,
                 energy: _chargedEnergy,
                 totalEnergy: _energyTotal,
-                latestTotalw: _latestTotalw.toString(),
+                latestTotalw: _latestTotalw,
                 duration: _duration,
                 online: _online,
                 onPauseCharging: () => performAction(pauseCharging),

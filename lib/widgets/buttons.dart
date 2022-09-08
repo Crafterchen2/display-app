@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pionixbox/main.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 
@@ -300,6 +301,43 @@ class PionixCloseButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class CircularLabeledIconButton extends StatelessWidget {
+  final String iconUrl;
+  final String label;
+  final VoidCallback onPressed;
+
+  const CircularLabeledIconButton({
+    Key? key,
+    required this.iconUrl,
+    required this.label,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          decoration: const BoxDecoration(shape: BoxShape.circle),
+          child: Material(
+            elevation: 2,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: SvgPicture.asset(
+                iconUrl,
+                width: screenHeight * 0.02,
+                height: screenHeight * 0.02,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(label, style: AppTextStyles.subTitle2,)
+      ],
     );
   }
 }
