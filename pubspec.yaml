@@ -50,6 +50,10 @@ dependencies:
   mqtt_client: 9.6.6
   easy_localization: ^3.0.0
 
+dependency_overrides:
+  shared_preferences:
+    path: packages/shared_preferences
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
