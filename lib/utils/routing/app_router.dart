@@ -6,12 +6,15 @@ import 'package:pionixbox/screens/simulation_panel.dart';
 import 'package:pionixbox/screens/system_info.dart';
 import 'package:pionixbox/screens/wifi_setup_screen.dart';
 
+import '../../screens/session_detail_screen.dart';
+
 class AppRoutes {
   static const languagePickerScreen = '/language_picker_screen';
   static const settingScreen = '/settings_screen';
   static const simulationScreen = '/simulation_screen';
   static const wifiSetupScreen = '/wifi_setup_screen';
   static const systemInfo = '/system_info';
+  static const sessionDetailScreen = '/session_detail_screen';
   static const privateChargerScreenDemo = '/private_charger_screen_demo';
 }
 
@@ -42,6 +45,12 @@ class AppRouter {
       case AppRoutes.languagePickerScreen:
         return MaterialPageRoute<dynamic>(
           builder: (_) => const LanguagePickerScreen(),
+          settings: settings,
+          fullscreenDialog: true,
+        );
+      case AppRoutes.sessionDetailScreen:
+        return MaterialPageRoute<dynamic>(
+          builder: (_) => const SessionDetailScreen(),
           settings: settings,
           fullscreenDialog: true,
         );

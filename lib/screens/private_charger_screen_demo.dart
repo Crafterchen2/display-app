@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:mqtt_client/mqtt_client.dart' hide Topic;
+import 'package:pionixbox/data/models/limits.dart';
+import 'package:pionixbox/data/models/power_meter.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/utils/helper.dart';
 
@@ -29,7 +29,11 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   late double _chargedEnergy;
   late double _latestTotalw;
   late String _duration;
+  late double _power;
+  late PowerMeter powerMeter;
+  late Limits limits;
   bool _online = false;
+
   bool _showSimulationPanel = false;
   bool _showProgressBar = false;
   bool showSettingsIcon = true;
@@ -42,12 +46,11 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   void initState() {
     _status = 'unplugged';
     _energyTotal = '12.3';
+    _power = 0;
     _chargedEnergy = 12.3;
     _latestTotalw = 1000;
     _duration = '00:00:00';
     _connectMqtt();
-
-
 
     super.initState();
   }
@@ -69,25 +72,45 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
         setState(() {});
       }
     }
-
   }
-
 
   void parseOnlineStatus(String message) {
     debugPrint('\n\nchecking status: $message\n\n');
     _online = message == "online";
-      if (mounted) {
-        setState(() {});
-      }
+    if (mounted) {
+      setState(() {});
     }
+  }
 
   void parseSessionInfo(String message) {
     final i = jsonDecode(message);
-    _status = i["state"];
+    _status = i["state"] ?? '';
     _chargedEnergy = i["charged_energy_wh"] / 1000.0;
     _latestTotalw = i["latest_total_w"] / 1000.0;
     _energyTotal = (_chargedEnergy.toStringAsFixed(1) + " kWh");
     _duration = durationFormat(Duration(seconds: i["charging_duration_s"]));
+    if (mounted) {
+      setState(() {
+        _showProgressBar = false;
+      });
+    }
+  }
+
+  void parsePowermeterDetails(String powermtere) {
+    final i = jsonDecode(powermtere);
+    powerMeter = PowerMeter.fromJson(i);
+    _power = powerMeter.power_W.total / 1000;
+
+    if (mounted) {
+      setState(() {
+        _showProgressBar = false;
+      });
+    }
+  }
+
+  void parseLimits(String message) {
+    final i = jsonDecode(message);
+    limits = Limits.fromJson(i);
     if (mounted) {
       setState(() {
         _showProgressBar = false;
@@ -103,11 +126,13 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
       await mqtt.connect();
       mqtt.subscribe(
           "everest_api/evse_manager/var/session_info", parseSessionInfo);
+      mqtt.subscribe("everest_api/evse_manager/var/limits", parseLimits);
+      mqtt.subscribe(
+          "everest_api/evse_manager/var/powermeter", parsePowermeterDetails);
       mqtt.subscribe(
           "everest_api/setup/var/supported_setup_features", parseConfigInfo);
       checkOnlineStatus();
-      mqtt.subscribe(
-          "everest_api/setup/var/online_status", parseOnlineStatus);
+      mqtt.subscribe("everest_api/setup/var/online_status", parseOnlineStatus);
     } catch (e) {
       debugPrint(e.toString());
       _status = 'Connection Error';
@@ -143,9 +168,17 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
                 state: _status,
                 energy: _chargedEnergy,
                 totalEnergy: _energyTotal,
+                power: _power,
                 latestTotalw: _latestTotalw,
                 duration: _duration,
                 online: _online,
+                seeMorePressed: () {
+                  Navigator.of(context)
+                      .pushNamed(AppRoutes.sessionDetailScreen, arguments: {
+                    'powerMeter': powerMeter,
+                    'limits': limits,
+                  });
+                },
                 onPauseCharging: () => performAction(pauseCharging),
                 onResumeCharging: () => performAction(resumeCharging),
               ),
@@ -219,6 +252,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     mqtt.publish(Topic.enableSimulationTopic, Payloads.disableSimulation);
     setState(() {});
   }
+
   void checkOnlineStatus() {
     mqtt.publish(Topic.checkOnlineStatus, '');
     setState(() {});

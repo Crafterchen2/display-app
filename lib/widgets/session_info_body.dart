@@ -13,10 +13,11 @@ class SessionInfoBody extends StatelessWidget {
   final double energy;
   final String duration;
   final String totalEnergy;
-  final double maxCurrent;
+  final double power;
   final String state;
   final double latestTotalw;
   final bool online;
+  final VoidCallback? seeMorePressed;
   final VoidCallback onPauseCharging;
   final VoidCallback onResumeCharging;
 
@@ -29,7 +30,9 @@ class SessionInfoBody extends StatelessWidget {
     required this.latestTotalw,
     required this.onPauseCharging,
     required this.onResumeCharging,
-    this.online = true, this.maxCurrent = 0.0,
+    this.online = true,
+    this.power = 0.0,
+    this.seeMorePressed,
   }) : super(key: key);
 
   @override
@@ -69,7 +72,7 @@ class SessionInfoBody extends StatelessWidget {
                   ),
                 ),
               ),
-               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.15,
                 child: Column(
@@ -77,7 +80,7 @@ class SessionInfoBody extends StatelessWidget {
                     if (state == ChargingState.charging)
                       SecondaryButton(
                           width: MediaQuery.of(context).size.width * 0.32,
-                          title: 'paused_charging'.tr(),
+                          title: 'pause_charging'.tr(),
                           onPressed: onPauseCharging,
                           textColor: AppColors.primaryAmber),
                     if (pauseOrResumeChargingTitle(state) !=
@@ -98,26 +101,34 @@ class SessionInfoBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-               Text(
-                'status'.tr(),
-                style: AppTextStyles.subTitle4,
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.5,
-                height: MediaQuery.of(context).size.height * 0.2,
-                child: Text(
-                  chargingStateTitle(state).toUpperCase(),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: AppTextStyles.heading6,
+              GestureDetector(
+                onTap: seeMorePressed,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'status'.tr(),
+                      style: AppTextStyles.subTitle4,
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      child: Text(
+                        chargingStateTitle(state).toUpperCase(),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                        style: AppTextStyles.heading6,
+                      ),
+                    ),
+                    SizedBox(height: height * 0.1),
+                    Text(
+                      state == 'unplugged'.tr()
+                          ? 'last_session'.tr()
+                          : 'current_session'.tr(),
+                      style: AppTextStyles.subTitle4,
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(height: height * 0.1),
-              Text(
-                state == 'unplugged'.tr()
-                    ? 'last_session'.tr()
-                    : 'current_session'.tr(),
-                style: AppTextStyles.subTitle4,
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.52,
@@ -127,18 +138,17 @@ class SessionInfoBody extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         Text(
+                        Text(
                           'energy'.tr(),
                           style: AppTextStyles.heading3,
                         ),
                         SizedBox(height: height * 0.02),
                         Text(
-                          'max_current'.tr(),
+                          'power'.tr(),
                           style: AppTextStyles.heading3,
                         ),
-
                         SizedBox(height: height * 0.02),
-                         Text(
+                        Text(
                           'duration'.tr(),
                           style: AppTextStyles.heading3,
                         ),
@@ -176,8 +186,8 @@ class SessionInfoBody extends StatelessWidget {
                             style: AppTextStyles.digitsHeading3,
                           ),
                           SizedBox(height: height * 0.02),
-                         const Text(
-                           'Unkown',
+                          Text(
+                            power.toStringAsFixed(2) + ' kW',
                             textAlign: TextAlign.start,
                             style: AppTextStyles.digitsHeading3,
                           ),
