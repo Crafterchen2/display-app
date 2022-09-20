@@ -173,11 +173,11 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
                 duration: _duration,
                 online: _online,
                 seeMorePressed: () {
-                  Navigator.of(context)
-                      .pushNamed(AppRoutes.sessionDetailScreen, arguments: {
-                    'powerMeter': powerMeter,
-                    'limits': limits,
-                  });
+                  // Navigator.of(context)
+                  //     .pushNamed(AppRoutes.sessionDetailScreen, arguments: {
+                  //   'powerMeter': powerMeter,
+                  //   'limits': limits,
+                  // });
                 },
                 onPauseCharging: () => performAction(pauseCharging),
                 onResumeCharging: () => performAction(resumeCharging),
