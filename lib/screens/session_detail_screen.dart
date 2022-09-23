@@ -1,7 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:pionixbox/data/models/limits.dart';
 import 'package:pionixbox/data/models/power_meter.dart';
+import 'package:pionixbox/main.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/widgets/buttons.dart';
 
@@ -23,6 +25,23 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
   late Limits limits;
   String selectedLanguage = 'english';
   bool showLoader = true;
+  bool currentListExpanded = true;
+  bool powerListExpanded = true;
+  bool frequencyListExpanded = true;
+  bool energyListExpanded = true;
+  bool voltageListExpanded = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    extractArguments(context);
+    _connectMqtt();
+    super.didChangeDependencies();
+  }
 
   void extractArguments(BuildContext context) {
     final i = (ModalRoute.of(context)?.settings.arguments ??
@@ -41,104 +60,252 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
     });
   }
 
+  void parsePowermeterDetails(String powermtere) {
+    final i = jsonDecode(powermtere);
+    powerMeter = PowerMeter.fromJson(i);
+
+    if (mounted) {
+      setState(() {
+        showLoader = false;
+      });
+    }
+  }
+
+  void parseLimits(String message) {
+    final i = jsonDecode(message);
+    limits = Limits.fromJson(i);
+    if (mounted) {
+      setState(() {
+        showLoader = false;
+      });
+    }
+  }
+
+  Future<void> _connectMqtt() async {
+    setState(() {
+      showLoader = true;
+    });
+    try {
+      await mqtt.connect();
+
+      mqtt.subscribe("everest_api/evse_manager/var/limits", parseLimits);
+      mqtt.subscribe(
+          "everest_api/evse_manager/var/powermeter", parsePowermeterDetails);
+      setState(() {
+        showLoader = false;
+      });
+    } catch (e) {
+      debugPrint(e.toString());
+      setState(() {
+        showLoader = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    extractArguments(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.primaryBlue,
       body: Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: Colors.white),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: AppColors.primaryBlue,
+        ),
         padding: EdgeInsets.all(12),
         child: Stack(
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Powermeter',
-                      style: AppTextStyles.subTitle4,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.52,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
+            showLoader || powerMeter == null || limits == null
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'L1'.tr(),
-                            style: AppTextStyles.heading3,
-                          ),
-                          SizedBox(height: height * 0.02),
-                          Text(
-                            'L1'.tr(),
-                            style: AppTextStyles.heading3,
-                          ),
-                          SizedBox(height: height * 0.02),
-                          Text(
-                            'L1'.tr(),
-                            style: AppTextStyles.heading3,
-                          ),
-                          SizedBox(height: height * 0.02),
-                          Row(
-                            children: [
-                              Text(
-                               'total',
-                                style: AppTextStyles.heading3,
-                              ),
-                            ],
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              'Powermeter',
+                              style: AppTextStyles.heading3
+                                  .copyWith(color: Colors.white),
+                            ),
                           ),
                         ],
                       ),
-                      const Spacer(),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              powerMeter.current_A.L1.toStringAsFixed(2),
-                              textAlign: TextAlign.start,
-                              style: AppTextStyles.digitsHeading3,
-                            ),
-                            SizedBox(height: height * 0.02),
-                            Text(
-                              powerMeter.current_A.L2.toStringAsFixed(2),
-                              textAlign: TextAlign.start,
-                              style: AppTextStyles.digitsHeading3,
-                            ),
-                            SizedBox(height: height * 0.02),
-                            Text(
-                              powerMeter.current_A.L3.toStringAsFixed(2),
-                              style: AppTextStyles.digitsHeading3,
-                            ),
-                            SizedBox(height: height * 0.02),
-                            Text(
-                              powerMeter.current_A.N.toStringAsFixed(2),
-                              style: AppTextStyles.digitsHeading3,
-                            ),
-                          ],
-                        ),
+                      SessionDetailCardWidget(
+                        sectionTitle: 'Current A',
+                        map: powerMeter.current_A.toJson(),
+                        onExpendPressed: () {
+                          setState(() {
+                            currentListExpanded = !currentListExpanded;
+                          });
+                        },
                       ),
+                      SessionDetailCardWidget(
+                        sectionTitle: 'Power w',
+                        map: powerMeter.power_W.toJson(),
+                        onExpendPressed: () {
+                          setState(() {
+                            powerListExpanded = !powerListExpanded;
+                          });
+                        },
+                      ),
+                      SessionDetailCardWidget(
+                        sectionTitle: 'Energy',
+                        map: powerMeter.energy_Wh_import.toJson(),
+                        onExpendPressed: () {
+                          setState(() {
+                            energyListExpanded = !energyListExpanded;
+                          });
+                        },
+                      ),
+                      SessionDetailCardWidget(
+                        sectionTitle: 'Frequency',
+                        map: powerMeter.frequency_Hz.toJson(),
+                        onExpendPressed: () {
+                          setState(() {
+                            frequencyListExpanded = !frequencyListExpanded;
+                          });
+                        },
+                      ),
+                      SessionDetailCardWidget(
+                        sectionTitle: 'Voltage',
+                        map: powerMeter.voltage_V.toJson(),
+                        onExpendPressed: () {
+                          setState(() {
+                            voltageListExpanded = !voltageListExpanded;
+                          });
+                        },
+                      ),
+                      SizedBox(
+                        height: screenHeight * 0.15,
+                      )
                     ],
                   ),
-                ),
-              ],
-            ),
             const PionixCloseButton(
               color: Colors.white,
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SessionDetailCardWidget extends StatelessWidget {
+  final bool expanded;
+  final String sectionTitle;
+  final Map<String, dynamic> map;
+  final VoidCallback? onExpendPressed;
+
+  const SessionDetailCardWidget(
+      {Key? key,
+      required this.sectionTitle,
+      required this.map,
+      this.expanded = true,
+      this.onExpendPressed})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(12),
+      margin: EdgeInsets.symmetric(vertical: 8),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(width: 2, color: Colors.white30)),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      sectionTitle,
+                      style:
+                          AppTextStyles.subTitle4.copyWith(color: Colors.white),
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: onExpendPressed ?? () {},
+                      icon: Icon(
+                        expanded
+                            ? Icons.keyboard_arrow_down_sharp
+                            : Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                        size: screenHeight * 0.08,
+                      ))
+                ],
+              ),
+              expanded
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 12, top: 8),
+                      child: Container(
+                        height: 2,
+                        color: Colors.white10,
+                      ),
+                    )
+                  : SizedBox(),
+              if (expanded) ...populateList(context),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> populateList(BuildContext context) {
+    List<Widget> items = [];
+    for (final item in map.entries) {
+      items.add(buildItem(context,
+          key: item.key, value: item.value.toStringAsFixed(2)));
+    }
+    return items;
+  }
+
+  Widget buildItem(BuildContext context, {String key = '', String value = ''}) {
+    return SizedBox(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                key,
+                style: AppTextStyles.heading3.copyWith(color: Colors.white),
+              ),
+              SizedBox(height: screenHeight * 0.02),
+            ],
+          ),
+          const Spacer(),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.35,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  value,
+                  textAlign: TextAlign.start,
+                  style: AppTextStyles.digitsHeading3
+                      .copyWith(color: Colors.white),
+                ),
+                SizedBox(height: screenHeight * 0.02),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -28,7 +28,7 @@ class PowerMeter {
       this.frequency_Hz,
       this.power_W,
       this.voltage_V);
-
+ 
   factory PowerMeter.fromJson(Map<String, dynamic> json) =>
       _$PowerMeterFromJson(json);
 
