@@ -293,7 +293,7 @@ class SessionDetailCardWidget extends StatelessWidget {
     List<Widget> items = [];
     for (final item in map.entries) {
       var val = item.value;
-      if(item.value.runtimeType == 'double'){
+      if(item.value.runtimeType == double){
         val = val.toStringAsFixed(2);
       }else{
         val = val.toString();
