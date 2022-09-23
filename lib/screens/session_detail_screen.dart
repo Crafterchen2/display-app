@@ -138,6 +138,19 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                           ),
                         ],
                       ),
+                      SingleInfoCard(
+                          title: 'Meter ID',
+                          value: powerMeter.meter_id.toString()),
+                      SingleInfoCard(
+                          title: 'Phase sequence error',
+                          value: powerMeter.phase_seq_error
+                              ? 'Error state'
+                              : 'No Error'),
+                      SingleInfoCard(
+                          title: 'Time',
+                          value: DateTime.fromMillisecondsSinceEpoch(
+                                  powerMeter.timestamp.round() * 1000)
+                              .toString()),
                       SessionDetailCardWidget(
                         expanded: currentListExpanded,
                         sectionTitle: 'Current A',
@@ -250,27 +263,28 @@ class SessionDetailCardWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Text(
-                      sectionTitle,
-                      style:
-                          AppTextStyles.subTitle4.copyWith(color: Colors.white),
+              GestureDetector(
+                onTap: onExpendPressed ?? () {},
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        sectionTitle,
+                        style: AppTextStyles.subTitle4
+                            .copyWith(color: Colors.white),
+                      ),
                     ),
-                  ),
-                  IconButton(
-                      onPressed: onExpendPressed ?? () {},
-                      icon: Icon(
-                        expanded
-                            ? Icons.keyboard_arrow_down_sharp
-                            : Icons.keyboard_arrow_right,
-                        color: Colors.white,
-                        size: screenHeight * 0.08,
-                      ))
-                ],
+                    Icon(
+                      expanded
+                          ? Icons.keyboard_arrow_down_sharp
+                          : Icons.keyboard_arrow_right,
+                      color: Colors.white,
+                      size: screenHeight * 0.08,
+                    )
+                  ],
+                ),
               ),
               expanded
                   ? Padding(
@@ -293,18 +307,26 @@ class SessionDetailCardWidget extends StatelessWidget {
     List<Widget> items = [];
     for (final item in map.entries) {
       var val = item.value;
-      if(item.value.runtimeType == double){
+      if (item.value.runtimeType == double) {
         val = val.toStringAsFixed(2);
-      }else{
+      } else {
         val = val.toString();
       }
-      items.add(buildItem(context,
-          key: item.key, value: val));
+      items.add(SingleInfoCard(title: item.key, value: val));
     }
     return items;
   }
+}
 
-  Widget buildItem(BuildContext context, {String key = '', String value = ''}) {
+class SingleInfoCard extends StatelessWidget {
+  final String title;
+  final String value;
+
+  const SingleInfoCard({Key? key, required this.title, required this.value})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -313,7 +335,7 @@ class SessionDetailCardWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                key,
+                title,
                 style: AppTextStyles.heading3.copyWith(color: Colors.white),
               ),
               SizedBox(height: screenHeight * 0.02),
