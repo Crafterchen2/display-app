@@ -188,6 +188,14 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                           });
                         },
                       ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
+                          'Limits',
+                          style: AppTextStyles.heading3
+                              .copyWith(color: Colors.white),
+                        ),
+                      ),
                       SessionDetailCardWidget(
                         expanded: limitsListExpanded,
                         sectionTitle: 'Limits',
