@@ -25,11 +25,12 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
   late Limits limits;
   String selectedLanguage = 'english';
   bool showLoader = true;
-  bool currentListExpanded = true;
-  bool powerListExpanded = true;
-  bool frequencyListExpanded = true;
-  bool energyListExpanded = true;
-  bool voltageListExpanded = true;
+  bool currentListExpanded = false;
+  bool powerListExpanded = false;
+  bool frequencyListExpanded = false;
+  bool energyListExpanded = false;
+  bool voltageListExpanded = false;
+  bool limitsListExpanded = false;
 
   @override
   void initState() {
@@ -138,6 +139,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                         ],
                       ),
                       SessionDetailCardWidget(
+                        expanded: currentListExpanded,
                         sectionTitle: 'Current A',
                         map: powerMeter.current_A.toJson(),
                         onExpendPressed: () {
@@ -147,6 +149,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                         },
                       ),
                       SessionDetailCardWidget(
+                        expanded: powerListExpanded,
                         sectionTitle: 'Power w',
                         map: powerMeter.power_W.toJson(),
                         onExpendPressed: () {
@@ -156,6 +159,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                         },
                       ),
                       SessionDetailCardWidget(
+                        expanded: energyListExpanded,
                         sectionTitle: 'Energy',
                         map: powerMeter.energy_Wh_import.toJson(),
                         onExpendPressed: () {
@@ -165,6 +169,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                         },
                       ),
                       SessionDetailCardWidget(
+                        expanded: frequencyListExpanded,
                         sectionTitle: 'Frequency',
                         map: powerMeter.frequency_Hz.toJson(),
                         onExpendPressed: () {
@@ -174,11 +179,22 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                         },
                       ),
                       SessionDetailCardWidget(
+                        expanded: voltageListExpanded,
                         sectionTitle: 'Voltage',
                         map: powerMeter.voltage_V.toJson(),
                         onExpendPressed: () {
                           setState(() {
                             voltageListExpanded = !voltageListExpanded;
+                          });
+                        },
+                      ),
+                      SessionDetailCardWidget(
+                        expanded: limitsListExpanded,
+                        sectionTitle: 'Limits',
+                        map: limits.toJson(),
+                        onExpendPressed: () {
+                          setState(() {
+                            limitsListExpanded = !limitsListExpanded;
                           });
                         },
                       ),
@@ -207,7 +223,7 @@ class SessionDetailCardWidget extends StatelessWidget {
       {Key? key,
       required this.sectionTitle,
       required this.map,
-      this.expanded = true,
+      this.expanded = false,
       this.onExpendPressed})
       : super(key: key);
 
@@ -268,8 +284,14 @@ class SessionDetailCardWidget extends StatelessWidget {
   List<Widget> populateList(BuildContext context) {
     List<Widget> items = [];
     for (final item in map.entries) {
+      var val = item.value;
+      if(item.value.runtimeType == 'double'){
+        val = val.toStringAsFixed(2);
+      }else{
+        val = val.toString();
+      }
       items.add(buildItem(context,
-          key: item.key, value: item.value.toStringAsFixed(2)));
+          key: item.key, value: val));
     }
     return items;
   }
