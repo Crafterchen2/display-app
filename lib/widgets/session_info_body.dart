@@ -102,7 +102,7 @@ class SessionInfoBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               GestureDetector(
-                onTap: seeMorePressed,
+                onTap: state == 'unplugged'.tr() ? () {} : seeMorePressed,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
