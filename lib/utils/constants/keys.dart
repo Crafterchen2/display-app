@@ -20,9 +20,9 @@ class Topic {
   static const String pauseChargingTopic = '/external/cmd/pause_charging';
   static const String resumeChargingTopic = '/external/cmd/resume_charging';
   static const String modifyChargingSessionTopic =
-      '/carsim/cmd/modify_charging_session';
+      'everest_external/nodered/1/carsim/cmd/modify_charging_session';
   static const String enableSimulationTopic =
-      '/carsim/cmd/enable';
+      'everest_external/nodered/carsim/1/cmd/enable';
 
   static const String blockWifi = 'everest_api/setup/cmd/rfkill_block';
   static const String unblockWifi = 'everest_api/setup/cmd/rfkill_unblock';
