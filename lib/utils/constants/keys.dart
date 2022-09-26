@@ -17,8 +17,8 @@ class Language {
 }
 
 class Topic {
-  static const String pauseChargingTopic = '/external/cmd/pause_charging';
-  static const String resumeChargingTopic = '/external/cmd/resume_charging';
+  static const String pauseChargingTopic = 'everest_external/nodered/1/cmd/pause_charging';
+  static const String resumeChargingTopic = 'everest_external/nodered/1/cmd/resume_charging';
   static const String modifyChargingSessionTopic =
       'everest_external/nodered/1/carsim/cmd/modify_charging_session';
   static const String enableSimulationTopic =
