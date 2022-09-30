@@ -64,7 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             title: tr('wifi_setup'),
                             onPressed: () {
                               Navigator.of(context)
-                                  .pushNamed(AppRoutes.settingScreen, arguments: {
+                                  .pushNamed(AppRoutes.wifiSetupScreen, arguments: {
                                 'init': false,
                               });
                             },

@@ -167,35 +167,34 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              color: Colors.white,
-              height: screenHeight * 0.2,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 0.02,
-                    vertical: screenHeight * 0.01),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_cross.svg', onPressed: () {  }, label: 'Close',),
-                    // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_wifi.svg', onPressed: () {  }, label: 'Add Wifi',),
-                    // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_finish_setup.svg', onPressed: () {  }, label: 'Finish Setup',),
-                    SecondaryButton(
-                      title: 'Close',
-                      borderColor: AppColors.errorLight,
-                      textColor: AppColors.errorLight,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      width: screenWidth * 0.2,
-                    ),
-                    initialisingScreen
-                        ? SizedBox(width: screenWidth * 0.03)
-                        : SizedBox(),
-                    initialisingScreen
-                        ? PrimaryButton(
+          initialisingScreen
+              ? Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    color: Colors.white,
+                    height: screenHeight * 0.2,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.02,
+                          vertical: screenHeight * 0.01),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_cross.svg', onPressed: () {  }, label: 'Close',),
+                          // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_wifi.svg', onPressed: () {  }, label: 'Add Wifi',),
+                          // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_finish_setup.svg', onPressed: () {  }, label: 'Finish Setup',),
+                          SecondaryButton(
+                            title: 'Close',
+                            borderColor: AppColors.errorLight,
+                            textColor: AppColors.errorLight,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            width: screenWidth * 0.2,
+                          ),
+                          SizedBox(width: screenWidth * 0.03),
+
+                          PrimaryButton(
                             title: 'Add LAN',
                             color: AppColors.errorLight,
                             onPressed: () {
@@ -206,26 +205,26 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                                   });
                             },
                             width: screenWidth * 0.3,
-                          )
-                        : SizedBox(),
-                    SizedBox(width: screenWidth * 0.03),
-                    PrimaryButton(
-                      title: 'Done with SETUP',
-                      color: AppColors.successLight,
-                      onPressed: () {
-                        setInitialized();
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) {
-                          return const LandingScreen();
-                        }), (Route<dynamic> route) => false);
-                      },
-                      width: screenWidth * 0.3,
+                          ),
+                          SizedBox(width: screenWidth * 0.03),
+                          PrimaryButton(
+                            title: 'Done with SETUP',
+                            color: AppColors.successLight,
+                            onPressed: () {
+                              setInitialized();
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(builder: (context) {
+                                return const LandingScreen();
+                              }), (Route<dynamic> route) => false);
+                            },
+                            width: screenWidth * 0.3,
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+                  ),
+                )
+              : const PionixCloseButton(),
           optionsMenu
               ? Container(
                   color: Colors.white.withOpacity(0.8),
