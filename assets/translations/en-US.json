@@ -41,7 +41,9 @@
   "power": "Power",
   "pause_charging": "Pause Charging",
   "current_session": "Current Session (Tap for details)",
-  "swipe_your_card_please": "Swipe your card, Please."
+  "swipe_your_card_please": "Swipe your card, Please.",
+  "connection_failed": "Connection Failed"
+
 
 
 
