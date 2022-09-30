@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pionixbox/data/models/available_network.dart';
 import 'package:pionixbox/data/models/configured_network.dart';
+import 'package:pionixbox/data/models/saved_network.dart';
 import 'package:pionixbox/screens/lan_info_screen.dart';
-import 'package:pionixbox/screens/private_charger_screen_demo.dart';
 import 'package:pionixbox/screens/wifi_password_screen.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
@@ -189,8 +189,8 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                       onPressed: () {
                         Navigator.of(context).pushReplacement(
                             MaterialPageRoute(builder: (context) {
-                              return const LanInfoScreen();
-                            }));
+                          return const LanInfoScreen();
+                        }));
                       },
                       width: screenWidth * 0.3,
                     ),
@@ -199,11 +199,11 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                       title: 'Done with SETUP',
                       color: AppColors.successLight,
                       onPressed: () {
-                       setInitialized();
+                        setInitialized();
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(builder: (context) {
-                              return const LandingScreen();
-                            }), (Route<dynamic> route) => false);
+                          return const LandingScreen();
+                        }), (Route<dynamic> route) => false);
                       },
                       width: screenWidth * 0.3,
                     ),
@@ -356,8 +356,31 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       final payload =
           "{\"interface\": \"wlan0\", \"ssid\": \"$_selectedSSID\", \"psk\": \"$psk\"}";
       mqtt.publish(Topic.addNetwork, payload);
-      Navigator.pop(context);
+      final savedNetwork = getsavedNetworkFromSSID(_selectedSSID);
+      final payloadSelectNetwork =
+          "{\"interface\": \"${savedNetwork.interface}\", \"network_id\": ${savedNetwork.network_id}}";
+      selectNetwork(payloadSelectNetwork);
+      // Navigator.pop(context);
     }
+  }
+
+  SavedNetwork getsavedNetworkFromSSID(String ssid) {
+    final network =
+        configuredNetworks.firstWhere((element) => element.ssid == ssid);
+    return SavedNetwork(
+        network_id: network.networkId, interface: network.interface);
+  }
+
+  void enableNetwork(String payload) {
+    mqtt.publish(Topic.enableNetwork, payload);
+  }
+
+  void disableNetwork(String payload) {
+    mqtt.publish(Topic.disableNetwork, payload);
+  }
+
+  void selectNetwork(String payload) {
+    mqtt.publish(Topic.selectNetwork, payload);
   }
 
   void enableWifiScanning() {
@@ -457,7 +480,11 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
               // removeNetworks(cn.interface, cn.networkId);
               // PionixSnackBar.errorSnackBar(context, 'Removing Network');
             } else {
-              _showPasswordScreen = true;
+              final payload =
+                  "{\"interface\": \"${cn.interface}\", \"network_id\": ${cn.networkId}}";
+              enableNetwork(payload);
+              selectNetwork(payload);
+              Navigator.pop(context);
             }
             setState(() {});
           },

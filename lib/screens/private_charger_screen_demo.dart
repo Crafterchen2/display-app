@@ -22,8 +22,6 @@ class PrivateChargerScreenDemo extends StatefulWidget {
 }
 
 class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
-  late StreamSubscription _connectivitySubscription;
-
   late String _status;
   late String _energyTotal;
   late double _chargedEnergy;
@@ -40,25 +38,42 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   bool simulation = false;
   bool wifi = false;
   bool localization = false;
+  bool privateMode = false;
   final mqtt = MQTT();
 
   @override
-  void initState() {
+  void didChangeDependencies() {
     _status = 'unplugged';
     _energyTotal = '12.3';
     _power = 0;
     _chargedEnergy = 12.3;
     _latestTotalw = 1000;
     _duration = '00:00:00';
-    _connectMqtt();
 
-    super.initState();
+    _connectMqtt();
+    extractArguments(context);
+    super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    _connectivitySubscription.cancel();
     super.dispose();
+  }
+
+  void extractArguments(BuildContext context) {
+    setState(() {
+      _showProgressBar = true;
+    });
+    final i = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    privateMode = i["private_mode"] ?? false;
+    if (!privateMode) {
+      debugPrint("Entering public mode");
+      // _status = 'AuthRequired';
+    }
+    setState(() {
+      _showProgressBar = false;
+    });
   }
 
   void parseConfigInfo(String message) {
@@ -84,7 +99,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
 
   void parseSessionInfo(String message) {
     final i = jsonDecode(message);
-    _status = i["state"] ?? '';
+    _status =  i["state"] ??'';
     _chargedEnergy = i["charged_energy_wh"] / 1000.0;
     _latestTotalw = i["latest_total_w"] / 1000.0;
     _energyTotal = (_chargedEnergy.toStringAsFixed(1) + " kWh");
@@ -147,20 +162,29 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
 
   @override
   Widget build(BuildContext context) {
+    extractArguments(context);
     return Scaffold(
       body: Stack(
         children: [
           Column(
             children: [
               Header(
-                showSettingsIcon: showSettingsIcon,
-                onSettingsPressed: () {
-                  Navigator.of(context)
-                      .pushNamed(AppRoutes.settingScreen, arguments: {
-                    'localization': localization,
-                    'setup_simulation': simulation,
-                    'setup_wifi': wifi,
-                  });
+                privateMode: privateMode,
+                onSettingsPressed: () async {
+                  if (privateMode) {
+                    Navigator.of(context)
+                        .pushNamed(AppRoutes.settingScreen, arguments: {
+                      'localization': localization,
+                      'setup_simulation': simulation,
+                      'setup_wifi': wifi,
+                    });
+                  } else {
+                    debugPrint('Before');
+                    final result = await Navigator.of(context)
+                        .pushNamed(AppRoutes.languagePickerScreen);
+                    debugPrint(result.toString());
+                    setState(() {});
+                  }
                 },
               ),
               const Spacer(flex: 1),

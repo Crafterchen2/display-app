@@ -11,7 +11,7 @@ String getChargingSessionIconByState(String state) {
   String url = '';
   switch (state) {
     case ChargingState.authRequired:
-      return '';
+      return '${base}icon_cardswipe.svg';
     case ChargingState.disable:
       return '';
     case ChargingState.pluggedIn:
@@ -61,7 +61,7 @@ String pauseOrResumeChargingTitle(String state) {
   String title = '';
   switch (state) {
     case ChargingState.authRequired:
-      return '';
+      return 'Auth Required';
     case ChargingState.disable:
       return '';
     case ChargingState.pluggedIn:

@@ -155,6 +155,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                         expanded: currentListExpanded,
                         sectionTitle: 'Current A',
                         map: powerMeter.current_A.toJson(),
+                        unit: 'A',
                         onExpendPressed: () {
                           setState(() {
                             currentListExpanded = !currentListExpanded;
@@ -165,6 +166,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                         expanded: powerListExpanded,
                         sectionTitle: 'Power w',
                         map: powerMeter.power_W.toJson(),
+                        unit: 'W',
                         onExpendPressed: () {
                           setState(() {
                             powerListExpanded = !powerListExpanded;
@@ -174,6 +176,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                       SessionDetailCardWidget(
                         expanded: energyListExpanded,
                         sectionTitle: 'Energy',
+                        unit: 'W',
                         map: powerMeter.energy_Wh_import.toJson(),
                         onExpendPressed: () {
                           setState(() {
@@ -184,6 +187,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                       SessionDetailCardWidget(
                         expanded: frequencyListExpanded,
                         sectionTitle: 'Frequency',
+                        unit: 'Hz',
                         map: powerMeter.frequency_Hz.toJson(),
                         onExpendPressed: () {
                           setState(() {
@@ -194,6 +198,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                       SessionDetailCardWidget(
                         expanded: voltageListExpanded,
                         sectionTitle: 'Voltage',
+                        unit: 'V',
                         map: powerMeter.voltage_V.toJson(),
                         onExpendPressed: () {
                           setState(() {
@@ -237,6 +242,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
 class SessionDetailCardWidget extends StatelessWidget {
   final bool expanded;
   final String sectionTitle;
+  final String unit;
   final Map<String, dynamic> map;
   final VoidCallback? onExpendPressed;
 
@@ -245,7 +251,7 @@ class SessionDetailCardWidget extends StatelessWidget {
       required this.sectionTitle,
       required this.map,
       this.expanded = false,
-      this.onExpendPressed})
+      this.onExpendPressed, this.unit = ''})
       : super(key: key);
 
   @override
@@ -312,7 +318,7 @@ class SessionDetailCardWidget extends StatelessWidget {
       } else {
         val = val.toString();
       }
-      items.add(SingleInfoCard(title: item.key, value: val));
+      items.add(SingleInfoCard(title: item.key, value: val + ' $unit'));
     }
     return items;
   }

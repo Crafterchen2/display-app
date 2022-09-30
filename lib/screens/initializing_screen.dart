@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/data/models/application_info.dart';
@@ -14,6 +13,7 @@ import 'package:pionixbox/theme/app_text_styles.dart';
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
 import 'lan_info_screen.dart';
+import 'landing_screen.dart';
 
 class InitializingScreen extends StatefulWidget {
   const InitializingScreen({
@@ -146,11 +146,15 @@ class _InitializingScreenState extends State<InitializingScreen> {
       updateDefaultLanguage();
       updateCurrentLanguage();
     }
-    if (_appInfo.initialized) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) {
-        return const PrivateChargerScreenDemo();
-      }), (Route<dynamic> route) => false);
+    if (mounted) {
+      if (_appInfo.initialized) {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) {
+          return _appInfo.mode == 'unknown'
+              ? const LandingScreen()
+              : const PrivateChargerScreenDemo();
+        }), (Route<dynamic> route) => false);
+      }
     }
 
     if (mounted) {

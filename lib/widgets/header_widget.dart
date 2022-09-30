@@ -4,11 +4,13 @@ import 'package:pionixbox/theme/app_colors.dart';
 class Header extends StatelessWidget {
   final VoidCallback onSettingsPressed;
   final bool showSettingsIcon;
+  final bool privateMode;
 
   const Header(
       {Key? key,
       required this.onSettingsPressed,
-      this.showSettingsIcon = false})
+      this.showSettingsIcon = false,
+      this.privateMode = true})
       : super(key: key);
 
   @override
@@ -16,7 +18,7 @@ class Header extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Container(
-      padding:  EdgeInsets.only(left: width * 0.02),
+      padding: EdgeInsets.only(left: width * 0.02),
       child: SizedBox(
         width: double.infinity,
         child: Row(
@@ -27,22 +29,20 @@ class Header extends StatelessWidget {
               width: 200,
               height: 100,
             ),
-            showSettingsIcon
-                ? GestureDetector(
+            GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: onSettingsPressed,
-                  child: Container(
-              alignment: Alignment.center,
-                    padding:  EdgeInsets.symmetric(vertical: height * 0.04, horizontal: height * 0.05),
-                    child:  Icon(
-                      Icons.settings,
-                      color: AppColors.primaryBlue,
-                      size: height * 0.08,
-
-                    ),
-                  ),
-                )
-                : const SizedBox(),
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(
+                    vertical: height * 0.04, horizontal: height * 0.05),
+                child: Icon(
+                  privateMode ? Icons.settings : Icons.language,
+                  color: AppColors.primaryBlue,
+                  size: height * 0.08,
+                ),
+              ),
+            )
           ],
         ),
       ),

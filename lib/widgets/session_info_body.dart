@@ -80,15 +80,16 @@ class SessionInfoBody extends StatelessWidget {
                     if (state == ChargingState.charging)
                       SecondaryButton(
                           width: MediaQuery.of(context).size.width * 0.32,
-                          title: 'pause_charging'.tr(),
+                          title: 'pause'.tr(),
                           onPressed: onPauseCharging,
                           textColor: AppColors.primaryAmber),
                     if (pauseOrResumeChargingTitle(state) !=
                             ChargingState.charging &&
+                        state != ChargingState.authRequired &&
                         pauseOrResumeChargingTitle(state) != '')
                       PrimaryButton(
                         width: MediaQuery.of(context).size.width * 0.32,
-                        title: 'resume_charging'.tr(),
+                        title: 'resume'.tr(),
                         onPressed: onResumeCharging,
                         textColor: Colors.white,
                       ),
@@ -120,93 +121,102 @@ class SessionInfoBody extends StatelessWidget {
                         style: AppTextStyles.heading6,
                       ),
                     ),
-                    SizedBox(height: height * 0.1),
-                    Text(
-                      state == 'unplugged'.tr()
-                          ? 'last_session'.tr()
-                          : 'current_session'.tr(),
-                      style: AppTextStyles.subTitle4,
-                    ),
+                    state == ChargingState.authRequired
+                        ? SizedBox()
+                        : SizedBox(height: height * 0.1),
+                    state == ChargingState.authRequired
+                        ? Text(
+                            'swipe_your_card_please'.tr(),
+                            style: AppTextStyles.subTitle4,
+                          )
+                        : Text(
+                            state == 'unplugged'.tr()
+                                ? 'last_session'.tr()
+                                : 'current_session'.tr(),
+                            style: AppTextStyles.subTitle4,
+                          ),
                   ],
                 ),
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.52,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'energy'.tr(),
-                          style: AppTextStyles.heading3,
-                        ),
-                        SizedBox(height: height * 0.02),
-                        Text(
-                          'power'.tr(),
-                          style: AppTextStyles.heading3,
-                        ),
-                        SizedBox(height: height * 0.02),
-                        Text(
-                          'duration'.tr(),
-                          style: AppTextStyles.heading3,
-                        ),
-                        SizedBox(height: height * 0.02),
-                        Row(
-                          children: [
-                            Text(
-                              online ? 'online'.tr() : 'offline'.tr(),
-                              style: AppTextStyles.heading3,
-                            ),
-                            Container(
-                              height: 24,
-                              width: 24,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: width * 0.02),
-                              decoration: BoxDecoration(
-                                  color: online
-                                      ? AppColors.successLight
-                                      : Colors.redAccent,
-                                  shape: BoxShape.circle),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.35,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+              state == ChargingState.authRequired
+                  ? SizedBox()
+                  : SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.52,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            energy.toStringAsFixed(2) + ' kWh',
-                            textAlign: TextAlign.start,
-                            style: AppTextStyles.digitsHeading3,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'energy'.tr(),
+                                style: AppTextStyles.heading3,
+                              ),
+                              SizedBox(height: height * 0.02),
+                              Text(
+                                'power'.tr(),
+                                style: AppTextStyles.heading3,
+                              ),
+                              SizedBox(height: height * 0.02),
+                              Text(
+                                'duration'.tr(),
+                                style: AppTextStyles.heading3,
+                              ),
+                              SizedBox(height: height * 0.02),
+                              Row(
+                                children: [
+                                  Text(
+                                    online ? 'online'.tr() : 'offline'.tr(),
+                                    style: AppTextStyles.heading3,
+                                  ),
+                                  Container(
+                                    height: 24,
+                                    width: 24,
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: width * 0.02),
+                                    decoration: BoxDecoration(
+                                        color: online
+                                            ? AppColors.successLight
+                                            : Colors.redAccent,
+                                        shape: BoxShape.circle),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          SizedBox(height: height * 0.02),
-                          Text(
-                            power.toStringAsFixed(2) + ' kW',
-                            textAlign: TextAlign.start,
-                            style: AppTextStyles.digitsHeading3,
-                          ),
-                          SizedBox(height: height * 0.02),
-                          Text(
-                            duration + ' h',
-                            style: AppTextStyles.digitsHeading3,
-                          ),
-                          SizedBox(height: height * 0.02),
-                          Text(
-                            dateTimeFormat.format(DateTime.now()),
-                            style: AppTextStyles.digitsHeading3,
+                          const Spacer(),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  energy.toStringAsFixed(2) + ' kWh',
+                                  textAlign: TextAlign.start,
+                                  style: AppTextStyles.digitsHeading3,
+                                ),
+                                SizedBox(height: height * 0.02),
+                                Text(
+                                  power.toStringAsFixed(2) + ' kW',
+                                  textAlign: TextAlign.start,
+                                  style: AppTextStyles.digitsHeading3,
+                                ),
+                                SizedBox(height: height * 0.02),
+                                Text(
+                                  duration + ' h',
+                                  style: AppTextStyles.digitsHeading3,
+                                ),
+                                SizedBox(height: height * 0.02),
+                                Text(
+                                  dateTimeFormat.format(DateTime.now()),
+                                  style: AppTextStyles.digitsHeading3,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
             ],
           ),
         ],
