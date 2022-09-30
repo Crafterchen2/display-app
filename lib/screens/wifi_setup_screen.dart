@@ -43,11 +43,20 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   TextEditingController passwordController = TextEditingController();
   FocusNode passwordFocusNode = FocusNode();
   List<NetworkDeviceInfo> devices = [];
+  bool initialisingScreen = false;
 
   @override
-  void initState() {
+  void didChangeDependencies() {
+    extractArguments(context);
     _connect();
-    super.initState();
+    super.didChangeDependencies();
+  }
+
+  void extractArguments(BuildContext context) {
+    final i = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    initialisingScreen = i["init"];
+    setState(() {});
   }
 
   @override

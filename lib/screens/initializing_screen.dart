@@ -6,15 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/data/models/application_info.dart';
 import 'package:pionixbox/main.dart';
-import 'package:pionixbox/screens/private_charger_screen_demo.dart';
-import 'package:pionixbox/screens/wifi_setup_screen.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
-import 'lan_info_screen.dart';
-import 'landing_screen.dart';
+import '../utils/routing/app_router.dart';
 
 class InitializingScreen extends StatefulWidget {
   const InitializingScreen({
@@ -95,7 +92,10 @@ class _InitializingScreenState extends State<InitializingScreen> {
                           EverestLogoWidget(
                             width: screenHeight * 0.6,
                           ),
-                          InitializingProgressWidget(progress: _progress, message: progressMessage,),
+                          InitializingProgressWidget(
+                            progress: _progress,
+                            message: progressMessage,
+                          ),
                         ],
                       ),
                     ),
@@ -109,19 +109,21 @@ class _InitializingScreenState extends State<InitializingScreen> {
                             iconUrl: 'assets/icons/icon_wifi.svg',
                             text: 'WIFI',
                             onPressed: () {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(builder: (context) {
-                                return const WifiSetupScreen();
-                              }));
+                              Navigator.of(context).pushNamed(
+                                  AppRoutes.settingScreen,
+                                  arguments: {
+                                    'init': true,
+                                  });
                             }),
                         SquareButtonWidget(
                             iconUrl: 'assets/icons/icon_lan.svg',
                             text: 'LAN',
                             onPressed: () {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(builder: (context) {
-                                return const LanInfoScreen();
-                              }));
+                              Navigator.of(context).pushNamed(
+                                  AppRoutes.settingScreen,
+                                  arguments: {
+                                    'init': true,
+                                  });
                             })
                       ],
                     ),
@@ -139,27 +141,45 @@ class _InitializingScreenState extends State<InitializingScreen> {
     debugPrint('Mode: ${_appInfo.mode}');
     debugPrint('Default Lang: ${_appInfo.default_language}');
     debugPrint('INIT: ${_appInfo.initialized}\n\n');
-    if(_appInfo.mode != 'null'){
-      setState(() {
-        waitingIndicator = false;
-      });
+    if (_appInfo.mode != 'null') {
+      // waitingIndicator = false;
     }
     if (_appInfo.current_language == 'unknown') {
       //
       updateDefaultLanguage();
       updateCurrentLanguage();
     }
-    if (_appInfo.mode != 'null') {
-      if (_appInfo.initialized) {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) {
-          return _appInfo.mode == 'unknown'
-              ? const LandingScreen()
-              : const PrivateChargerScreenDemo();
-        }), (Route<dynamic> route) => false);
+    if (mounted) {
+
+      if (_appInfo.mode != 'null') {
+        if (_appInfo.initialized) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              _appInfo.mode == 'unkown'
+                  ? AppRoutes.landingScreen
+                  : AppRoutes.privateChargerScreenDemo,
+              (Route<dynamic> route) => false,
+              arguments: {
+                'private_mode': _appInfo.mode == 'private',
+              });
+
+          // Navigator.of(context).pushAndRemoveUntil(
+          //     MaterialPageRoute(builder: (context) {
+          //   return const LandingScreen();
+          // }), (Route<dynamic> route) => false);
+          // if(_appInfo.mode == 'unknown'){
+          //
+          // }else{
+          //   Navigator.of(context).pushNamedAndRemoveUntil(
+          //       AppRoutes.privateChargerScreenDemo,
+          //           (Route<dynamic> route) => false,
+          //       arguments: {
+          //         'private_mode': _appInfo.mode == 'private',
+          //       });
+          // }
+
+        }
       }
     }
-
     if (mounted) {
       setState(() {
         // _showProgress = false;
@@ -170,8 +190,6 @@ class _InitializingScreenState extends State<InitializingScreen> {
   void getAppInfo(BuildContext context, MQTT mqtt) {
     mqtt.publish("everest_api/setup/cmd/get_application_info", '');
     mqtt.subscribe("everest_api/setup/var/application_info", applicationInfo);
-
-
   }
 
   void updateCurrentLanguage() {
@@ -240,7 +258,9 @@ class InitializingProgressWidget extends StatelessWidget {
   final double? progress;
   final String message;
 
-  const InitializingProgressWidget({Key? key, this.progress, this.message = 'INITIALIZING...'}) : super(key: key);
+  const InitializingProgressWidget(
+      {Key? key, this.progress, this.message = 'INITIALIZING...'})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

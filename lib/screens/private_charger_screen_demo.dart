@@ -41,8 +41,9 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   bool privateMode = false;
   final mqtt = MQTT();
 
+
   @override
-  void didChangeDependencies() {
+  void initState() {
     _status = 'unplugged';
     _energyTotal = '12.3';
     _power = 0;
@@ -51,6 +52,11 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     _duration = '00:00:00';
 
     _connectMqtt();
+    super.initState();
+  }
+  @override
+  void didChangeDependencies() {
+
     extractArguments(context);
     super.didChangeDependencies();
   }

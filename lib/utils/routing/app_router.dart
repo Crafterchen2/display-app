@@ -11,6 +11,7 @@ import '../../screens/session_detail_screen.dart';
 class AppRoutes {
   static const languagePickerScreen = '/language_picker_screen';
   static const settingScreen = '/settings_screen';
+  static const landingScreen = '/landing_screen';
   static const simulationScreen = '/simulation_screen';
   static const wifiSetupScreen = '/wifi_setup_screen';
   static const systemInfo = '/system_info';

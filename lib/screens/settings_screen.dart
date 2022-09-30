@@ -63,10 +63,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             icon: Icons.wifi_protected_setup,
                             title: tr('wifi_setup'),
                             onPressed: () {
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(builder: (context) {
-                                return const WifiSetupScreen();
-                              }));
+                              Navigator.of(context)
+                                  .pushNamed(AppRoutes.settingScreen, arguments: {
+                                'init': false,
+                              });
                             },
                           ),
                         ),
