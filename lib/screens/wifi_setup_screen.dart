@@ -5,7 +5,6 @@ import 'package:flutter/rendering.dart';
 import 'package:pionixbox/data/models/available_network.dart';
 import 'package:pionixbox/data/models/configured_network.dart';
 import 'package:pionixbox/data/models/saved_network.dart';
-import 'package:pionixbox/screens/lan_info_screen.dart';
 import 'package:pionixbox/screens/wifi_password_screen.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
@@ -18,6 +17,7 @@ import '../mqtt.dart';
 import '../utils/constants/common.dart';
 import '../utils/constants/keys.dart';
 import '../utils/helper.dart';
+import '../utils/routing/app_router.dart';
 import 'landing_screen.dart';
 
 class WifiSetupScreen extends StatefulWidget {
@@ -191,18 +191,23 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                       },
                       width: screenWidth * 0.2,
                     ),
-                    SizedBox(width: screenWidth * 0.03),
-                    PrimaryButton(
-                      title: 'Add LAN',
-                      color: AppColors.errorLight,
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) {
-                          return const LanInfoScreen();
-                        }));
-                      },
-                      width: screenWidth * 0.3,
-                    ),
+                    initialisingScreen
+                        ? SizedBox(width: screenWidth * 0.03)
+                        : SizedBox(),
+                    initialisingScreen
+                        ? PrimaryButton(
+                            title: 'Add LAN',
+                            color: AppColors.errorLight,
+                            onPressed: () {
+                              Navigator.of(context).pushNamed(
+                                  AppRoutes.lanInfoScreen,
+                                  arguments: {
+                                    'init': true,
+                                  });
+                            },
+                            width: screenWidth * 0.3,
+                          )
+                        : SizedBox(),
                     SizedBox(width: screenWidth * 0.03),
                     PrimaryButton(
                       title: 'Done with SETUP',

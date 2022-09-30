@@ -110,7 +110,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
                             text: 'WIFI',
                             onPressed: () {
                               Navigator.of(context).pushNamed(
-                                  AppRoutes.settingScreen,
+                                  AppRoutes.wifiSetupScreen,
                                   arguments: {
                                     'init': true,
                                   });
@@ -120,7 +120,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
                             text: 'LAN',
                             onPressed: () {
                               Navigator.of(context).pushNamed(
-                                  AppRoutes.settingScreen,
+                                  AppRoutes.lanInfoScreen,
                                   arguments: {
                                     'init': true,
                                   });
@@ -141,13 +141,15 @@ class _InitializingScreenState extends State<InitializingScreen> {
     debugPrint('Mode: ${_appInfo.mode}');
     debugPrint('Default Lang: ${_appInfo.default_language}');
     debugPrint('INIT: ${_appInfo.initialized}\n\n');
-    if (_appInfo.mode != 'null') {
-      // waitingIndicator = false;
-    }
+    // if (_appInfo.mode != 'null') {
+    //   waitingIndicator = false;
+    // }
+
     if (_appInfo.current_language == 'unknown') {
       //
       updateDefaultLanguage();
       updateCurrentLanguage();
+
     }
     if (mounted) {
 
@@ -162,21 +164,8 @@ class _InitializingScreenState extends State<InitializingScreen> {
                 'private_mode': _appInfo.mode == 'private',
               });
 
-          // Navigator.of(context).pushAndRemoveUntil(
-          //     MaterialPageRoute(builder: (context) {
-          //   return const LandingScreen();
-          // }), (Route<dynamic> route) => false);
-          // if(_appInfo.mode == 'unknown'){
-          //
-          // }else{
-          //   Navigator.of(context).pushNamedAndRemoveUntil(
-          //       AppRoutes.privateChargerScreenDemo,
-          //           (Route<dynamic> route) => false,
-          //       arguments: {
-          //         'private_mode': _appInfo.mode == 'private',
-          //       });
-          // }
-
+        }else{
+          waitingIndicator = false;
         }
       }
     }

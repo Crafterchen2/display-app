@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pionixbox/screens/lan_info_screen.dart';
+import 'package:pionixbox/screens/landing_screen.dart';
 import 'package:pionixbox/screens/language_picker_screen.dart';
 import 'package:pionixbox/screens/private_charger_screen_demo.dart';
 import 'package:pionixbox/screens/settings_screen.dart';
@@ -12,6 +14,7 @@ class AppRoutes {
   static const languagePickerScreen = '/language_picker_screen';
   static const settingScreen = '/settings_screen';
   static const landingScreen = '/landing_screen';
+  static const lanInfoScreen = '/lan_info_screen';
   static const simulationScreen = '/simulation_screen';
   static const wifiSetupScreen = '/wifi_setup_screen';
   static const systemInfo = '/system_info';
@@ -28,6 +31,18 @@ class AppRouter {
       case AppRoutes.settingScreen:
         return MaterialPageRoute<dynamic>(
           builder: (_) => const SettingsScreen(),
+          settings: settings,
+          fullscreenDialog: true,
+        );
+      case AppRoutes.landingScreen:
+        return MaterialPageRoute<dynamic>(
+          builder: (_) => const LandingScreen(),
+          settings: settings,
+          fullscreenDialog: true,
+        );
+      case AppRoutes.lanInfoScreen:
+        return MaterialPageRoute<dynamic>(
+          builder: (_) => const LanInfoScreen(),
           settings: settings,
           fullscreenDialog: true,
         );

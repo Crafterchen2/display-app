@@ -13,6 +13,7 @@ import 'package:pionixbox/widgets/buttons.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
+import '../utils/routing/app_router.dart';
 
 class LanInfoScreen extends StatefulWidget {
   const LanInfoScreen({
@@ -151,10 +152,11 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                                   title: 'Add WIFI',
                                   color: AppColors.errorLight,
                                   onPressed: () {
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(builder: (context) {
-                                      return const WifiSetupScreen();
-                                    }));
+                                    Navigator.of(context).pushNamed(
+                                        AppRoutes.wifiSetupScreen,
+                                        arguments: {
+                                          'init': true,
+                                        });
                                   },
                                   width: screenWidth * 0.3,
                                 ),
