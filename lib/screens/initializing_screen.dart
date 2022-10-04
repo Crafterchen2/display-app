@@ -97,9 +97,9 @@ class _InitializingScreenState extends State<InitializingScreen> {
                               SizedBox(
                                   width: screenWidth * 0.3,
                                   child: LinearProgressIndicator(
-                                    color: Colors.green,
+                                    color: AppColors.primaryBlue,
                                     minHeight: screenHeight * 0.02,
-                                    backgroundColor: Colors.green.shade100,
+                                    backgroundColor: Colors.grey.shade300,
                                   )),
                               SizedBox(height: screenHeight * 0.01),
                               Padding(
