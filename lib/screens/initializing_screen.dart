@@ -92,9 +92,26 @@ class _InitializingScreenState extends State<InitializingScreen> {
                           EverestLogoWidget(
                             width: screenHeight * 0.6,
                           ),
-                          InitializingProgressWidget(
-                            progress: _progress,
-                            message: progressMessage,
+                          Column(
+                            children: [
+                              SizedBox(
+                                  width: screenWidth * 0.3,
+                                  child: LinearProgressIndicator(
+                                    color: Colors.green,
+                                    backgroundColor: Colors.green.shade100,
+                                  )),
+                              SizedBox(height: screenHeight * 0.01),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: screenHeight * 0.02,
+                                ),
+                                child: Text(
+                                  progressMessage.toUpperCase(),
+                                  style: AppTextStyles.subTitle4
+                                      .copyWith(fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -146,10 +163,8 @@ class _InitializingScreenState extends State<InitializingScreen> {
       //
       updateDefaultLanguage();
       updateCurrentLanguage();
-
     }
     if (mounted) {
-
       if (_appInfo.mode != 'null') {
         if (_appInfo.initialized) {
           Navigator.of(context).pushNamedAndRemoveUntil(
@@ -160,8 +175,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
               arguments: {
                 'private_mode': _appInfo.mode == 'private',
               });
-
-        }else{
+        } else {
           waitingIndicator = false;
         }
       }
