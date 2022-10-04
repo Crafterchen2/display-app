@@ -140,8 +140,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  void setMode(String mode) {
+    mqtt.publish(Topic.setAppMode, mode);
+    setState(() {});
+  }
+
   void resetInitialised() {
     mqtt.publish(Topic.resetInitialized, '');
+    setMode('unkown');
     RestartWidget.restartApp(context);
   }
 }

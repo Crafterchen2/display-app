@@ -132,7 +132,8 @@ class _LanguagePickerScreenState extends State<LanguagePickerScreen> {
             updateCurrentLanguage("ger");
             selectedLanguage = Language.german;
           }
-          RestartWidget.restartApp(context);
+          Navigator.pop(context);
+          // RestartWidget.restartApp(context);
         });
         // Navigator.of(context).pop({"selectedLanguage": language});
       },

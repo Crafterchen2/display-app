@@ -75,11 +75,17 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     privateMode = i["private_mode"] ?? false;
     if (!privateMode) {
       debugPrint("Entering public mode");
+      updateCurrentLanguage();
       // _status = 'AuthRequired';
     }
     setState(() {
       _showProgressBar = false;
     });
+  }
+
+  void updateCurrentLanguage() {
+    mqtt.publish(Topic.updateCurrentLanguage, "eng");
+    setState(() {});
   }
 
   void parseConfigInfo(String message) {

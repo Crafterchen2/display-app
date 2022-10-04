@@ -28,7 +28,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
   double _progress = 0.0;
   bool waitingIndicator = true;
   late Timer _timer;
-  String progressMessage = 'Initializing...';
+  String progressMessage = 'Initializing...'.tr();
 
   @override
   void didChangeDependencies() {
@@ -107,7 +107,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
                       children: [
                         SquareButtonWidget(
                             iconUrl: 'assets/icons/icon_wifi.svg',
-                            text: 'WIFI',
+                            text: 'wifi'.tr(),
                             onPressed: () {
                               Navigator.of(context).pushNamed(
                                   AppRoutes.wifiSetupScreen,
@@ -117,7 +117,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
                             }),
                         SquareButtonWidget(
                             iconUrl: 'assets/icons/icon_lan.svg',
-                            text: 'LAN',
+                            text: 'lan'.tr(),
                             onPressed: () {
                               Navigator.of(context).pushNamed(
                                   AppRoutes.lanInfoScreen,
@@ -141,9 +141,6 @@ class _InitializingScreenState extends State<InitializingScreen> {
     debugPrint('Mode: ${_appInfo.mode}');
     debugPrint('Default Lang: ${_appInfo.default_language}');
     debugPrint('INIT: ${_appInfo.initialized}\n\n');
-    // if (_appInfo.mode != 'null') {
-    //   waitingIndicator = false;
-    // }
 
     if (_appInfo.current_language == 'unknown') {
       //
