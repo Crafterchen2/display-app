@@ -165,11 +165,12 @@ class _InitializingScreenState extends State<InitializingScreen> {
       updateDefaultLanguage();
       updateCurrentLanguage();
     }
+
     if (mounted) {
       if (_appInfo.mode != 'null') {
         if (_appInfo.initialized) {
           Navigator.of(context).pushNamedAndRemoveUntil(
-              _appInfo.mode == 'unkown'
+              _appInfo.mode == 'unknown'
                   ? AppRoutes.landingScreen
                   : AppRoutes.privateChargerScreenDemo,
               (Route<dynamic> route) => false,
