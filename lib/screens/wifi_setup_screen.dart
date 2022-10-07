@@ -13,6 +13,7 @@ import 'package:pionixbox/widgets/dialogs.dart';
 import 'package:pionixbox/widgets/network_card_widget.dart';
 
 import '../data/models/network_device_info.dart';
+import '../main.dart';
 import '../mqtt.dart';
 import '../utils/constants/common.dart';
 import '../utils/constants/keys.dart';
@@ -87,10 +88,14 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     devices.clear();
     for (final d in deviceInfo) {
       final device = NetworkDeviceInfo.fromJson(d);
+
       if (device.interface == 'wlan0' && device.blocked == false) {
-        setState(() {
-          _wifi = true;
-        });
+        if(mounted){
+          setState(() {
+            _wifi = true;
+          });
+        }
+
         break;
       }
 
@@ -114,6 +119,14 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     }
   }
 
+  void filterAvailableNetworks() {
+    for (final item in configuredNetworks) {
+      availableNetworks.removeWhere((element) => element.ssid == item.ssid);
+    }
+  }
+
+  void filterConfiguredNetworks() {}
+
   void parseAvailableNetworksInfo(String message) {
     availableNetworks.clear();
     final networks = jsonDecode(message);
@@ -121,6 +134,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       availableNetworks
           .add(AvailableNetwork(n['ssid'], n["frequency"], n['signal_level']));
     }
+    filterAvailableNetworks();
     if (mounted) {
       setState(() {});
     }
@@ -529,6 +543,9 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
           },
         ));
       }
+      items.add(SizedBox(
+        height: screenHeight * 0.3,
+      ));
     }
     return _wifi
         ? RefreshIndicator(

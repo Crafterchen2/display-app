@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pionixbox/screens/lan_info_screen.dart';
 import 'package:pionixbox/screens/landing_screen.dart';
 import 'package:pionixbox/screens/language_picker_screen.dart';
-import 'package:pionixbox/screens/private_charger_screen_demo.dart';
+import 'package:pionixbox/screens/charging_dashboard_screen.dart';
 import 'package:pionixbox/screens/settings_screen.dart';
 import 'package:pionixbox/screens/simulation_panel.dart';
 import 'package:pionixbox/screens/system_info.dart';
