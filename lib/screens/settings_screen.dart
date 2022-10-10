@@ -63,10 +63,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             icon: Icons.wifi_protected_setup,
                             title: tr('wifi_setup'),
                             onPressed: () {
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(builder: (context) {
-                                return const WifiSetupScreen();
-                              }));
+                              Navigator.of(context)
+                                  .pushNamed(AppRoutes.wifiSetupScreen, arguments: {
+                                'init': false,
+                              });
                             },
                           ),
                         ),
@@ -140,8 +140,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  void setMode(String mode) {
+    mqtt.publish(Topic.setAppMode, mode);
+    setState(() {});
+  }
+
   void resetInitialised() {
     mqtt.publish(Topic.resetInitialized, '');
+    setMode('unknown');
     RestartWidget.restartApp(context);
   }
 }

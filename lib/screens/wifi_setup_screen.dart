@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pionixbox/data/models/available_network.dart';
 import 'package:pionixbox/data/models/configured_network.dart';
-import 'package:pionixbox/screens/lan_info_screen.dart';
-import 'package:pionixbox/screens/private_charger_screen_demo.dart';
+import 'package:pionixbox/data/models/saved_network.dart';
 import 'package:pionixbox/screens/wifi_password_screen.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
@@ -14,10 +13,12 @@ import 'package:pionixbox/widgets/dialogs.dart';
 import 'package:pionixbox/widgets/network_card_widget.dart';
 
 import '../data/models/network_device_info.dart';
+import '../main.dart';
 import '../mqtt.dart';
 import '../utils/constants/common.dart';
 import '../utils/constants/keys.dart';
 import '../utils/helper.dart';
+import '../utils/routing/app_router.dart';
 import 'landing_screen.dart';
 
 class WifiSetupScreen extends StatefulWidget {
@@ -43,11 +44,20 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   TextEditingController passwordController = TextEditingController();
   FocusNode passwordFocusNode = FocusNode();
   List<NetworkDeviceInfo> devices = [];
+  bool initialisingScreen = false;
 
   @override
-  void initState() {
+  void didChangeDependencies() {
+    extractArguments(context);
     _connect();
-    super.initState();
+    super.didChangeDependencies();
+  }
+
+  void extractArguments(BuildContext context) {
+    final i = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    initialisingScreen = i["init"];
+    setState(() {});
   }
 
   @override
@@ -78,10 +88,14 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     devices.clear();
     for (final d in deviceInfo) {
       final device = NetworkDeviceInfo.fromJson(d);
+
       if (device.interface == 'wlan0' && device.blocked == false) {
-        setState(() {
-          _wifi = true;
-        });
+        if(mounted){
+          setState(() {
+            _wifi = true;
+          });
+        }
+
         break;
       }
 
@@ -105,6 +119,14 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     }
   }
 
+  void filterAvailableNetworks() {
+    for (final item in configuredNetworks) {
+      availableNetworks.removeWhere((element) => element.ssid == item.ssid);
+    }
+  }
+
+  void filterConfiguredNetworks() {}
+
   void parseAvailableNetworksInfo(String message) {
     availableNetworks.clear();
     final networks = jsonDecode(message);
@@ -112,6 +134,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       availableNetworks
           .add(AvailableNetwork(n['ssid'], n["frequency"], n['signal_level']));
     }
+    filterAvailableNetworks();
     if (mounted) {
       setState(() {});
     }
@@ -158,60 +181,64 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              color: Colors.white,
-              height: screenHeight * 0.2,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 0.02,
-                    vertical: screenHeight * 0.01),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_cross.svg', onPressed: () {  }, label: 'Close',),
-                    // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_wifi.svg', onPressed: () {  }, label: 'Add Wifi',),
-                    // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_finish_setup.svg', onPressed: () {  }, label: 'Finish Setup',),
-                    SecondaryButton(
-                      title: 'Close',
-                      borderColor: AppColors.errorLight,
-                      textColor: AppColors.errorLight,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      width: screenWidth * 0.2,
+          initialisingScreen
+              ? Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    color: Colors.white,
+                    height: screenHeight * 0.2,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.02,
+                          vertical: screenHeight * 0.01),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_cross.svg', onPressed: () {  }, label: 'Close',),
+                          // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_wifi.svg', onPressed: () {  }, label: 'Add Wifi',),
+                          // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_finish_setup.svg', onPressed: () {  }, label: 'Finish Setup',),
+                          SecondaryButton(
+                            title: 'Close',
+                            borderColor: AppColors.errorLight,
+                            textColor: AppColors.errorLight,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            width: screenWidth * 0.2,
+                          ),
+                          SizedBox(width: screenWidth * 0.03),
+
+                          PrimaryButton(
+                            title: 'Add LAN',
+                            color: AppColors.errorLight,
+                            onPressed: () {
+                              Navigator.of(context).pushNamed(
+                                  AppRoutes.lanInfoScreen,
+                                  arguments: {
+                                    'init': true,
+                                  });
+                            },
+                            width: screenWidth * 0.3,
+                          ),
+                          SizedBox(width: screenWidth * 0.03),
+                          PrimaryButton(
+                            title: 'Done with SETUP',
+                            color: AppColors.successLight,
+                            onPressed: () {
+                              setInitialized();
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(builder: (context) {
+                                return const LandingScreen();
+                              }), (Route<dynamic> route) => false);
+                            },
+                            width: screenWidth * 0.3,
+                          ),
+                        ],
+                      ),
                     ),
-                    SizedBox(width: screenWidth * 0.03),
-                    PrimaryButton(
-                      title: 'Add LAN',
-                      color: AppColors.errorLight,
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) {
-                              return const LanInfoScreen();
-                            }));
-                      },
-                      width: screenWidth * 0.3,
-                    ),
-                    SizedBox(width: screenWidth * 0.03),
-                    PrimaryButton(
-                      title: 'Done with SETUP',
-                      color: AppColors.successLight,
-                      onPressed: () {
-                       setInitialized();
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) {
-                              return const LandingScreen();
-                            }), (Route<dynamic> route) => false);
-                      },
-                      width: screenWidth * 0.3,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+                  ),
+                )
+              : const PionixCloseButton(),
           optionsMenu
               ? Container(
                   color: Colors.white.withOpacity(0.8),
@@ -356,8 +383,31 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       final payload =
           "{\"interface\": \"wlan0\", \"ssid\": \"$_selectedSSID\", \"psk\": \"$psk\"}";
       mqtt.publish(Topic.addNetwork, payload);
-      Navigator.pop(context);
+      final savedNetwork = getsavedNetworkFromSSID(_selectedSSID);
+      final payloadSelectNetwork =
+          "{\"interface\": \"${savedNetwork.interface}\", \"network_id\": ${savedNetwork.network_id}}";
+      selectNetwork(payloadSelectNetwork);
+      // Navigator.pop(context);
     }
+  }
+
+  SavedNetwork getsavedNetworkFromSSID(String ssid) {
+    final network =
+        configuredNetworks.firstWhere((element) => element.ssid == ssid);
+    return SavedNetwork(
+        network_id: network.networkId, interface: network.interface);
+  }
+
+  void enableNetwork(String payload) {
+    mqtt.publish(Topic.enableNetwork, payload);
+  }
+
+  void disableNetwork(String payload) {
+    mqtt.publish(Topic.disableNetwork, payload);
+  }
+
+  void selectNetwork(String payload) {
+    mqtt.publish(Topic.selectNetwork, payload);
   }
 
   void enableWifiScanning() {
@@ -457,7 +507,11 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
               // removeNetworks(cn.interface, cn.networkId);
               // PionixSnackBar.errorSnackBar(context, 'Removing Network');
             } else {
-              _showPasswordScreen = true;
+              final payload =
+                  "{\"interface\": \"${cn.interface}\", \"network_id\": ${cn.networkId}}";
+              enableNetwork(payload);
+              selectNetwork(payload);
+              Navigator.pop(context);
             }
             setState(() {});
           },
@@ -489,6 +543,9 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
           },
         ));
       }
+      items.add(SizedBox(
+        height: screenHeight * 0.3,
+      ));
     }
     return _wifi
         ? RefreshIndicator(

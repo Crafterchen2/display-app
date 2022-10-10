@@ -40,7 +40,20 @@
   "configure_your_network": "Configure your network",
   "power": "Power",
   "pause_charging": "Pause Charging",
-  "current_session": "Current Session (Tap for details)"
+  "current_session": "Current Session (Tap for details)",
+  "swipe_your_card_please": "Swipe your card, Please.",
+  "connection_failed": "Connection Failed",
+  "initializing": "INITIALIZING ...",
+  "lan" : "LAN",
+  "connected_to_lan": "Connected to LAN",
+  "add_wifi": "Add Wifi",
+  "done_with_setup" : "DONE WITH SETUP",
+  "private" : "Private",
+  "public" : "Public",
+  "pause" : "PAUSE"
+
+
+
 
 
 

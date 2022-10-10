@@ -6,14 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/data/models/application_info.dart';
 import 'package:pionixbox/main.dart';
-import 'package:pionixbox/screens/private_charger_screen_demo.dart';
-import 'package:pionixbox/screens/wifi_setup_screen.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
-import 'lan_info_screen.dart';
+import '../utils/routing/app_router.dart';
 
 class InitializingScreen extends StatefulWidget {
   const InitializingScreen({
@@ -28,10 +26,13 @@ class _InitializingScreenState extends State<InitializingScreen> {
   final mqtt = MQTT();
   late ApplicationInfo _appInfo;
   double _progress = 0.0;
+  bool waitingIndicator = true;
   late Timer _timer;
+  String progressMessage = 'Initializing...'.tr();
 
   @override
   void didChangeDependencies() {
+    _appInfo = ApplicationInfo('null', 'null', false, 'null');
     _connect(context);
     startTimer();
     super.didChangeDependencies();
@@ -67,14 +68,8 @@ class _InitializingScreenState extends State<InitializingScreen> {
       getAppInfo(context, mqtt);
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
-      setState(() {
-        // _showProgress = false;
-      });
+      progressMessage = 'connection_failed'.tr();
     }
-
-    setState(() {
-      // _showProgress = false;
-    });
   }
 
   @override
@@ -86,34 +81,8 @@ class _InitializingScreenState extends State<InitializingScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _progress > 0.9
+            waitingIndicator
                 ? Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SquareButtonWidget(
-                            iconUrl: 'assets/icons/icon_wifi.svg',
-                            text: 'WIFI',
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(builder: (context) {
-                                return const WifiSetupScreen();
-                              }));
-                            }),
-                        SquareButtonWidget(
-                            iconUrl: 'assets/icons/icon_lan.svg',
-                            text: 'LAN',
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(builder: (context) {
-                                return const LanInfoScreen();
-                              }));
-                            })
-                      ],
-                    ),
-                  )
-                : Expanded(
                     child: Padding(
                       padding:
                           EdgeInsets.symmetric(vertical: screenHeight * 0.1),
@@ -123,11 +92,60 @@ class _InitializingScreenState extends State<InitializingScreen> {
                           EverestLogoWidget(
                             width: screenHeight * 0.6,
                           ),
-                          InitializingProgressWidget(progress: _progress),
+                          Column(
+                            children: [
+                              SizedBox(
+                                  width: screenWidth * 0.3,
+                                  child: LinearProgressIndicator(
+                                    color: AppColors.primaryBlue,
+                                    minHeight: screenHeight * 0.02,
+                                    backgroundColor: Colors.grey.shade300,
+                                  )),
+                              SizedBox(height: screenHeight * 0.01),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: screenHeight * 0.02,
+                                ),
+                                child: Text(
+                                  progressMessage.toUpperCase(),
+                                  style: AppTextStyles.subTitle4
+                                      .copyWith(fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
-                  ),
+                  )
+                : Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SquareButtonWidget(
+                            iconUrl: 'assets/icons/icon_wifi.svg',
+                            text: 'wifi'.tr(),
+                            onPressed: () {
+                              Navigator.of(context).pushNamed(
+                                  AppRoutes.wifiSetupScreen,
+                                  arguments: {
+                                    'init': true,
+                                  });
+                            }),
+                        SquareButtonWidget(
+                            iconUrl: 'assets/icons/icon_lan.svg',
+                            text: 'lan'.tr(),
+                            onPressed: () {
+                              Navigator.of(context).pushNamed(
+                                  AppRoutes.lanInfoScreen,
+                                  arguments: {
+                                    'init': true,
+                                  });
+                            })
+                      ],
+                    ),
+                  )
           ],
         ),
       ),
@@ -141,18 +159,29 @@ class _InitializingScreenState extends State<InitializingScreen> {
     debugPrint('Mode: ${_appInfo.mode}');
     debugPrint('Default Lang: ${_appInfo.default_language}');
     debugPrint('INIT: ${_appInfo.initialized}\n\n');
+
     if (_appInfo.current_language == 'unknown') {
       //
       updateDefaultLanguage();
       updateCurrentLanguage();
     }
-    if (_appInfo.initialized) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) {
-        return const PrivateChargerScreenDemo();
-      }), (Route<dynamic> route) => false);
-    }
 
+    if (mounted) {
+      if (_appInfo.mode != 'null') {
+        if (_appInfo.initialized) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              _appInfo.mode == 'unknown'
+                  ? AppRoutes.landingScreen
+                  : AppRoutes.privateChargerScreenDemo,
+              (Route<dynamic> route) => false,
+              arguments: {
+                'private_mode': _appInfo.mode == 'private',
+              });
+        } else {
+          waitingIndicator = false;
+        }
+      }
+    }
     if (mounted) {
       setState(() {
         // _showProgress = false;
@@ -229,8 +258,11 @@ class SquareButtonWidget extends StatelessWidget {
 
 class InitializingProgressWidget extends StatelessWidget {
   final double? progress;
+  final String message;
 
-  const InitializingProgressWidget({Key? key, this.progress}) : super(key: key);
+  const InitializingProgressWidget(
+      {Key? key, this.progress, this.message = 'INITIALIZING...'})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -253,7 +285,7 @@ class InitializingProgressWidget extends StatelessWidget {
               top: height * 0.02,
             ),
             child: Text(
-              'INITIALIZING...',
+              message.toUpperCase(),
               style:
                   AppTextStyles.subTitle4.copyWith(fontWeight: FontWeight.w700),
             ),

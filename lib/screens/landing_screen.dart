@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pionixbox/data/models/application_info.dart';
 import 'package:pionixbox/main.dart';
-import 'package:pionixbox/screens/private_charger_screen_demo.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
+import '../utils/routing/app_router.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({
@@ -39,7 +39,7 @@ class _LandingScreenState extends State<LandingScreen> {
       await mqtt.connect();
       getAppInfo(context, mqtt);
     } catch (e) {
-      debugPrint('Loading failed, Error: $e');
+      debugPrint('connecting MQTT server/ gettting app info failed with exception: $e');
       setState(() {
         // _showProgress = false;
       });
@@ -71,19 +71,23 @@ class _LandingScreenState extends State<LandingScreen> {
                     SquareButtonWidget(
                         text: 'Private',
                         onPressed: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            return const PrivateChargerScreenDemo();
-                          }));
+                          setMode('private');
+                          Navigator.of(context).pushNamed(
+                              AppRoutes.privateChargerScreenDemo,
+                              arguments: {
+                                'private_mode': true,
+                              });
                         }),
                     SizedBox(width: screenWidth * 0.1),
                     SquareButtonWidget(
                         text: 'Public',
                         onPressed: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            return const PrivateChargerScreenDemo();
-                          }));
+                          setMode('public');
+                          Navigator.of(context).pushNamed(
+                              AppRoutes.privateChargerScreenDemo,
+                              arguments: {
+                                'private_mode': false,
+                              });
                         })
                   ],
                 ),
@@ -120,8 +124,6 @@ class _LandingScreenState extends State<LandingScreen> {
       });
     }
   }
-
-
 
   void getAppInfo(BuildContext context, MQTT mqtt) {
     mqtt.publish("everest_api/setup/cmd/get_application_info", '');

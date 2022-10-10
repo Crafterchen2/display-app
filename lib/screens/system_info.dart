@@ -7,6 +7,7 @@ import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/widgets/buttons.dart';
 
 import '../mqtt.dart';
+import '../utils/constants/keys.dart';
 
 class SystemInfo extends StatefulWidget {
   const SystemInfo({
@@ -24,14 +25,21 @@ class _SystemInfoState extends State<SystemInfo> {
 
   @override
   void initState() {
-    _connect();
 
+    _connect();
+    scanWifi();
     super.initState();
+  }
+
+  void scanWifi() {
+    /// calling twice to make sure its going through all available frequencies
+    mqtt.publish(Topic.scanWifi, '');
+    mqtt.publish(Topic.scanWifi, '');
   }
 
   void networkDeviceInfo(String message) {
     final deviceInfo = jsonDecode(message);
-    // devices.clear();
+    devices.clear();
     for (final d in deviceInfo) {
       final device = NetworkDeviceInfo.fromJson(d);
       devices.add(device);
