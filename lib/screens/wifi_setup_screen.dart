@@ -168,15 +168,15 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                 decoration: const BoxDecoration(
                     shape: BoxShape.circle, color: AppColors.primaryBlue),
                 margin: EdgeInsets.symmetric(
-                    vertical: screenHeight * 0.04,
-                    horizontal: screenHeight * 0.05),
+                    vertical: 20,
+                    horizontal: 20),
                 padding: EdgeInsets.symmetric(
-                    vertical: screenHeight * 0.025,
-                    horizontal: screenHeight * 0.03),
+                    vertical: screenHeight * 0.015,
+                    horizontal: screenHeight * 0.013),
                 child: Icon(
                   Icons.more_horiz,
                   color: Colors.white,
-                  size: screenHeight * 0.06,
+                  size: 48,
                 ),
               ),
             ),
