@@ -32,7 +32,7 @@ class PrimaryButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
         width: width,
-        height: height ?? screenHeight * 0.12,
+        height: height ?? 64,
         color: color,
         child: Center(
           child: Text(title.toUpperCase(),
@@ -107,7 +107,7 @@ class SecondaryButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        height: height ?? screenHeight * 0.12,
+        height: height ?? 64,
         padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
         width: width,
         decoration: BoxDecoration(
@@ -259,20 +259,18 @@ class PionixCloseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
     return Align(
       alignment: Alignment.bottomCenter,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => onPressed ?? Navigator.pop(context),
         child: Container(
-          width: width * 0.2,
-          height: height * 0.1,
+          width: screenWidth * 0.3,
+          height: 54,
           alignment: Alignment.center,
           padding: EdgeInsets.symmetric(
-              horizontal: width * 0.02, vertical: height * 0.015),
-          margin: EdgeInsets.symmetric(vertical: height * 0.02),
+              horizontal: 12, vertical: 4),
+          margin: EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.circular(6),
@@ -287,15 +285,15 @@ class PionixCloseButton extends StatelessWidget {
                     color: color == Colors.white
                         ? AppColors.primaryBlue
                         : Colors.white,
-                    fontSize: height * 0.05),
+                    fontSize: 32),
               ),
-              SizedBox(width: width * 0.01),
+              SizedBox(width: screenWidth * 0.01),
               Icon(
                 Icons.cancel,
                 color: color == Colors.white
                     ? AppColors.primaryBlue
                     : Colors.white,
-                size: height * 0.05,
+                size: 28,
               ),
             ],
           ),

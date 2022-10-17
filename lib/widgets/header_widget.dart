@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pionixbox/main.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 
 class Header extends StatelessWidget {
@@ -15,10 +16,8 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
     return Container(
-      padding: EdgeInsets.only(left: width * 0.02),
+      padding: EdgeInsets.only(left: screenWidth * 0.02),
       child: SizedBox(
         width: double.infinity,
         child: Row(
@@ -35,11 +34,11 @@ class Header extends StatelessWidget {
               child: Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.symmetric(
-                    vertical: height * 0.04, horizontal: height * 0.05),
+                    vertical: screenHeight * 0.04, horizontal: screenHeight * 0.05),
                 child: Icon(
                   privateMode ? Icons.settings : Icons.language,
                   color: AppColors.primaryBlue,
-                  size: height * 0.08,
+                  size: screenHeight * 0.06,
                 ),
               ),
             )

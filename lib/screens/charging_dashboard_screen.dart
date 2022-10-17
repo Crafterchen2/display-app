@@ -6,6 +6,7 @@ import 'package:pionixbox/data/models/limits.dart';
 import 'package:pionixbox/data/models/power_meter.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/utils/helper.dart';
+import 'package:pionixbox/widgets/session_info_body_portrait.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
@@ -41,7 +42,6 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   bool privateMode = false;
   final mqtt = MQTT();
 
-
   @override
   void initState() {
     _status = 'unplugged';
@@ -54,9 +54,9 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     _connectMqtt();
     super.initState();
   }
+
   @override
   void didChangeDependencies() {
-
     extractArguments(context);
     super.didChangeDependencies();
   }
@@ -111,7 +111,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
 
   void parseSessionInfo(String message) {
     final i = jsonDecode(message);
-    _status =  i["state"] ??'';
+    _status = i["state"] ?? '';
     _chargedEnergy = i["charged_energy_wh"] / 1000.0;
     _latestTotalw = i["latest_total_w"] / 1000.0;
     _energyTotal = (_chargedEnergy.toStringAsFixed(1) + " kWh");
@@ -178,49 +178,72 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     return Scaffold(
       body: Stack(
         children: [
-          Column(
-            children: [
-              Header(
-                privateMode: privateMode,
-                onSettingsPressed: () async {
-                  if (privateMode) {
-                    Navigator.of(context)
-                        .pushNamed(AppRoutes.settingScreen, arguments: {
-                      'localization': localization,
-                      'setup_simulation': simulation,
-                      'setup_wifi': wifi,
-                    });
-                  } else {
-                    debugPrint('Before');
-                    final result = await Navigator.of(context)
-                        .pushNamed(AppRoutes.languagePickerScreen);
-                    debugPrint(result.toString());
-                    setState(() {});
-                  }
-                },
-              ),
-              const Spacer(flex: 1),
-              SessionInfoBody(
-                state: _status,
-                energy: _chargedEnergy,
-                totalEnergy: _energyTotal,
-                power: _power,
-                latestTotalw: _latestTotalw,
-                duration: _duration,
-                online: _online,
-                seeMorePressed: () {
-                  Navigator.of(context)
-                      .pushNamed(AppRoutes.sessionDetailScreen, arguments: {
-                    'powerMeter': powerMeter,
-                    'limits': limits,
-                  });
-                },
-                onPauseCharging: () => performAction(pauseCharging),
-                onResumeCharging: () => performAction(resumeCharging),
-              ),
-              const Spacer(flex: 2),
-            ],
-          ),
+          OrientationBuilder(builder: (context, orientation) {
+            return Column(
+              children: [
+                Header(
+                  privateMode: privateMode,
+                  onSettingsPressed: () async {
+                    if (privateMode) {
+                      Navigator.of(context)
+                          .pushNamed(AppRoutes.settingScreen, arguments: {
+                        'localization': localization,
+                        'setup_simulation': simulation,
+                        'setup_wifi': wifi,
+                      });
+                    } else {
+                      debugPrint('Before');
+                      final result = await Navigator.of(context)
+                          .pushNamed(AppRoutes.languagePickerScreen);
+                      debugPrint(result.toString());
+                      setState(() {});
+                    }
+                  },
+                ),
+                const Spacer(flex: 1),
+                orientation == Orientation.landscape
+                    ? SessionInfoBody(
+                        state: _status,
+                        energy: _chargedEnergy,
+                        totalEnergy: _energyTotal,
+                        power: _power,
+                        latestTotalw: _latestTotalw,
+                        duration: _duration,
+                        online: _online,
+                        seeMorePressed: () {
+                          Navigator.of(context).pushNamed(
+                              AppRoutes.sessionDetailScreen,
+                              arguments: {
+                                'powerMeter': powerMeter,
+                                'limits': limits,
+                              });
+                        },
+                        onPauseCharging: () => performAction(pauseCharging),
+                        onResumeCharging: () => performAction(resumeCharging),
+                      )
+                    : SessionInfoBodyPortrait(
+                        state: _status,
+                        energy: _chargedEnergy,
+                        totalEnergy: _energyTotal,
+                        power: _power,
+                        latestTotalw: _latestTotalw,
+                        duration: _duration,
+                        online: _online,
+                        seeMorePressed: () {
+                          Navigator.of(context).pushNamed(
+                              AppRoutes.sessionDetailScreen,
+                              arguments: {
+                                'powerMeter': powerMeter,
+                                'limits': limits,
+                              });
+                        },
+                        onPauseCharging: () => performAction(pauseCharging),
+                        onResumeCharging: () => performAction(resumeCharging),
+                      ),
+                const Spacer(flex: 2),
+              ],
+            );
+          }),
           if (_showProgressBar)
             Center(
               child: Container(
