@@ -195,14 +195,15 @@ class SessionInfoBodyPortrait extends StatelessWidget {
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                 child: SvgPicture.asset(
                   getChargingSessionIconByState(state),
-                  height: state == 'Unplugged' ? null : screenHeight * 0.2,
-                  width: screenHeight * 0.2,
+                  // height: state == 'Unplugged' ? null : screenHeight * 0.2,
+                  // width: screenHeight * 0.2,
                 ),
               ),
               if (state == 'ChargingPausedEVSE' || state == 'ChargingPausedEV')
                 SvgPicture.asset('assets/icons/icon_pausecharging.svg',
-                    height: state == 'Unplugged' ? null : screenWidth * 0.12,
-                    width: state == 'Unplugged' ? null : screenWidth * 0.12),
+                    // height: state == 'Unplugged' ? null : screenWidth * 0.12,
+                    // width: state == 'Unplugged' ? null : screenWidth * 0.12
+                ),
             ],
           ),
         ),
