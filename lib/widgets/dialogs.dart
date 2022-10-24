@@ -33,15 +33,15 @@ class BasicDialog extends StatelessWidget {
             color: AppColors.primaryBlue,
           )),
       actions: <Widget>[
-        FlatButton(
-            color: Colors.green,
+        TextButton(
+            // color: Colors.green,
             onPressed: onNegativePressed,
             child: Text(
               negativeText,
               style: const TextStyle(color: Colors.white),
             )),
-        FlatButton(
-            color: Colors.redAccent,
+        TextButton(
+            // color: Colors.redAccent,
             onPressed: onPositivePressed,
             child: Text(
               positiveText,
