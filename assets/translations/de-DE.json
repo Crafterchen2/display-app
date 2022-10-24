@@ -1,7 +1,7 @@
 {
   "english": "Englisch",
   "german": "Deutsch",
-  "last_session": "Letzter Ladevorgang",
+  "last_session": "Letzter Ladevorgang (Tap for details)",
   "energy": "Energie",
   "duration": "Dauer",
   "unplugged": "Ausgesteckt",
@@ -39,21 +39,15 @@
   "configure_your_network": "Configure your network",
   "power": "power",
   "pause_charging": "Pause Charging",
-  "current_session": "current_session",
+  "current_session": "current_session (Tap for details)",
   "swipe_your_card_please": "Swipe your card, Please.",
   "connection_failed": "connection_failed",
-
   "initializing": "INITIALIZING ...",
-  "lan" : "lan",
+  "lan": "lan",
   "connected_to_lan": "connected_to_lan",
   "add_wifi": "add_wifi",
-  "done_with_setup" : "done_with_setup",
-  "private" : "private",
-  "public" : "public",
-  "pause" : "pause"
-
-
-
-
-
+  "done_with_setup": "done_with_setup",
+  "private": "private",
+  "public": "public",
+  "pause": "pause"
 }

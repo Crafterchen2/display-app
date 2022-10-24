@@ -119,7 +119,7 @@ class SessionInfoBody extends StatelessWidget {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                  child: SvgPicture.asset('assets/icons/icon_charging.svg'),
+                  child: SvgPicture.asset('assets/icons/icon_battery_3.svg'),
                 ),
                 SvgPicture.asset('assets/icons/icon_pausecharging.svg'),
               ],

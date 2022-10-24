@@ -44,6 +44,7 @@ class Topic {
   static const String resetInitialized = 'everest_api/setup/cmd/reset_initialized';
   static const String setInitialized = 'everest_api/setup/cmd/set_initialized';
   static const String setAppMode = 'everest_api/setup/cmd/set_mode';
+  static const String setMaxCurrent = 'everest_external/nodered/1/cmd/set_max_current';
 
 
 }

@@ -19,11 +19,11 @@ String getChargingSessionIconByState(String state) {
     case ChargingState.unplugged:
       return '${base}icon_unplugged.svg';
     case ChargingState.charging:
-      return '${base}icon_charging.svg';
+      return '${base}icon_battery_3.svg';
     case ChargingState.chargingPausedEV:
-      return '${base}icon_charging.svg';
+      return '${base}icon_battery_3.svg';
     case ChargingState.chargingPausedEVSE:
-      return '${base}icon_charging.svg';
+      return '${base}icon_battery_3.svg';
     case ChargingState.error:
       return '';
     case ChargingState.permanentFault:

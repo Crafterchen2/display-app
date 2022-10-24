@@ -9,17 +9,20 @@ import '../utils/datetime_formats.dart';
 import '../utils/helper.dart';
 import 'buttons.dart';
 
-class SessionInfoBody extends StatelessWidget {
+class SessionInfoBody extends StatefulWidget {
   final double energy;
   final String duration;
   final String totalEnergy;
   final double power;
   final String state;
   final double latestTotalw;
+  final double maxCurrent;
+
   final bool online;
   final VoidCallback? seeMorePressed;
   final VoidCallback onPauseCharging;
   final VoidCallback onResumeCharging;
+  final ValueChanged onCurrentChanged;
 
   const SessionInfoBody({
     Key? key,
@@ -33,12 +36,22 @@ class SessionInfoBody extends StatelessWidget {
     this.online = true,
     this.power = 0.0,
     this.seeMorePressed,
+    required this.onCurrentChanged,
+    required this.maxCurrent,
   }) : super(key: key);
+
+  @override
+  State<SessionInfoBody> createState() => _SessionInfoBodyState();
+}
+
+class _SessionInfoBodyState extends State<SessionInfoBody> {
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    String currentSliderLabel = widget.maxCurrent.toStringAsFixed(1);
+
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.05),
@@ -59,15 +72,20 @@ class SessionInfoBody extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 20),
                         child: SvgPicture.asset(
-                          getChargingSessionIconByState(state),
-                          height: state == 'Unplugged' ? null : width * 0.2,
+                          getChargingSessionIconByState(widget.state),
+                          height:
+                              widget.state == 'Unplugged' ? null : width * 0.2,
                         ),
                       ),
-                      if (state == 'ChargingPausedEVSE' ||
-                          state == 'ChargingPausedEV')
+                      if (widget.state == 'ChargingPausedEVSE' ||
+                          widget.state == 'ChargingPausedEV')
                         SvgPicture.asset('assets/icons/icon_pausecharging.svg',
-                            height: state == 'Unplugged' ? null : width * 0.08,
-                            width: state == 'Unplugged' ? null : width * 0.08),
+                            height: widget.state == 'Unplugged'
+                                ? null
+                                : width * 0.08,
+                            width: widget.state == 'Unplugged'
+                                ? null
+                                : width * 0.08),
                     ],
                   ),
                 ),
@@ -77,34 +95,71 @@ class SessionInfoBody extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.15,
                 child: Column(
                   children: [
-                    if (state == ChargingState.charging)
+                    if (widget.state == ChargingState.charging)
                       SecondaryButton(
                           width: MediaQuery.of(context).size.width * 0.32,
                           title: 'pause'.tr(),
-                          onPressed: onPauseCharging,
+                          onPressed: widget.onPauseCharging,
                           textColor: AppColors.primaryAmber),
-                    if (pauseOrResumeChargingTitle(state) !=
+                    if (pauseOrResumeChargingTitle(widget.state) !=
                             ChargingState.charging &&
-                        state != ChargingState.authRequired &&
-                        pauseOrResumeChargingTitle(state) != '')
+                        widget.state != ChargingState.authRequired &&
+                        pauseOrResumeChargingTitle(widget.state) != '')
                       PrimaryButton(
                         width: MediaQuery.of(context).size.width * 0.32,
                         title: 'resume'.tr(),
-                        onPressed: onResumeCharging,
+                        onPressed: widget.onResumeCharging,
                         textColor: Colors.white,
                       ),
+
+                  ],
+                ),
+              ),
+              if (widget.state != ChargingState.authRequired)
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.3,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Max Current",
+                          style: AppTextStyles.heading3,
+                        ),
+
+                        Text(
+                          currentSliderLabel,
+                          textAlign: TextAlign.start,
+                          style: AppTextStyles.digitsHeading3,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 12,),
+                    Slider(
+                        min: 6,
+                        max: 16,
+                        label: currentSliderLabel,
+                        activeColor: AppColors.primaryAmber,
+                        inactiveColor: Colors.grey,
+                        onChanged: (val) {
+                          setState(() {});
+                          widget.onCurrentChanged(val);
+                        },
+                        value: widget.maxCurrent),
                   ],
                 ),
               ),
             ],
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              GestureDetector(
-                onTap: state == 'unplugged'.tr() ? () {} : seeMorePressed,
-                child: Column(
+          GestureDetector(
+            onTap: widget.seeMorePressed,
+            behavior: HitTestBehavior.opaque,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -115,109 +170,112 @@ class SessionInfoBody extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.5,
                       height: MediaQuery.of(context).size.height * 0.2,
                       child: Text(
-                        chargingStateTitle(state).toUpperCase(),
+                        chargingStateTitle(widget.state).toUpperCase(),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
                         style: AppTextStyles.heading6,
                       ),
                     ),
-                    state == ChargingState.authRequired
+                    widget.state == ChargingState.authRequired
                         ? SizedBox()
                         : SizedBox(height: height * 0.1),
-                    state == ChargingState.authRequired
+                    widget.state == ChargingState.authRequired
                         ? Text(
                             'swipe_your_card_please'.tr(),
                             style: AppTextStyles.subTitle4,
                           )
                         : Text(
-                            state == 'unplugged'.tr()
+                            widget.state == 'unplugged'.tr()
                                 ? 'last_session'.tr()
                                 : 'current_session'.tr(),
                             style: AppTextStyles.subTitle4,
                           ),
+
                   ],
                 ),
-              ),
-              state == ChargingState.authRequired
-                  ? SizedBox()
-                  : SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.52,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'energy'.tr(),
-                                style: AppTextStyles.heading3,
-                              ),
-                              SizedBox(height: height * 0.02),
-                              Text(
-                                'power'.tr(),
-                                style: AppTextStyles.heading3,
-                              ),
-                              SizedBox(height: height * 0.02),
-                              Text(
-                                'duration'.tr(),
-                                style: AppTextStyles.heading3,
-                              ),
-                              SizedBox(height: height * 0.02),
-                              Row(
-                                children: [
-                                  Text(
-                                    online ? 'online'.tr() : 'offline'.tr(),
-                                    style: AppTextStyles.heading3,
-                                  ),
-                                  Container(
-                                    height: 24,
-                                    width: 24,
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: width * 0.02),
-                                    decoration: BoxDecoration(
-                                        color: online
-                                            ? AppColors.successLight
-                                            : Colors.redAccent,
-                                        shape: BoxShape.circle),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.35,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                widget.state == ChargingState.authRequired
+                    ? SizedBox()
+                    : SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.52,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  energy.toStringAsFixed(2) + ' kWh',
-                                  textAlign: TextAlign.start,
-                                  style: AppTextStyles.digitsHeading3,
+                                  'energy'.tr(),
+                                  style: AppTextStyles.heading3,
                                 ),
                                 SizedBox(height: height * 0.02),
                                 Text(
-                                  power.toStringAsFixed(2) + ' kW',
-                                  textAlign: TextAlign.start,
-                                  style: AppTextStyles.digitsHeading3,
+                                  'power'.tr(),
+                                  style: AppTextStyles.heading3,
                                 ),
                                 SizedBox(height: height * 0.02),
                                 Text(
-                                  duration + ' h',
-                                  style: AppTextStyles.digitsHeading3,
+                                  'duration'.tr(),
+                                  style: AppTextStyles.heading3,
                                 ),
                                 SizedBox(height: height * 0.02),
-                                Text(
-                                  dateTimeFormat.format(DateTime.now()),
-                                  style: AppTextStyles.digitsHeading3,
+                                Row(
+                                  children: [
+                                    Text(
+                                      widget.online
+                                          ? 'online'.tr()
+                                          : 'offline'.tr(),
+                                      style: AppTextStyles.heading3,
+                                    ),
+                                    Container(
+                                      height: 24,
+                                      width: 24,
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: width * 0.02),
+                                      decoration: BoxDecoration(
+                                          color: widget.online
+                                              ? AppColors.successLight
+                                              : Colors.redAccent,
+                                          shape: BoxShape.circle),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ),
-                        ],
+                            const Spacer(),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.35,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    widget.energy.toStringAsFixed(2) + ' kWh',
+                                    textAlign: TextAlign.start,
+                                    style: AppTextStyles.digitsHeading3,
+                                  ),
+                                  SizedBox(height: height * 0.02),
+                                  Text(
+                                    widget.power.toStringAsFixed(2) + ' kW',
+                                    textAlign: TextAlign.start,
+                                    style: AppTextStyles.digitsHeading3,
+                                  ),
+                                  SizedBox(height: height * 0.02),
+                                  Text(
+                                    widget.duration + ' h',
+                                    style: AppTextStyles.digitsHeading3,
+                                  ),
+                                  SizedBox(height: height * 0.02),
+                                  Text(
+                                    dateTimeFormat.format(DateTime.now()),
+                                    style: AppTextStyles.digitsHeading3,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
