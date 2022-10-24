@@ -31,6 +31,8 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   late double _power;
   late PowerMeter powerMeter;
   late Limits limits;
+  double _maxCurrent = 16.0;
+  double _currentValue = 6.0;
   bool _online = false;
 
   bool _showSimulationPanel = false;
@@ -138,6 +140,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   void parseLimits(String message) {
     final i = jsonDecode(message);
     limits = Limits.fromJson(i);
+    _maxCurrent = limits.max_current;
     if (mounted) {
       setState(() {
         _showProgressBar = false;
@@ -179,7 +182,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
       body: Stack(
         children: [
           OrientationBuilder(builder: (context, orientation) {
-            return Column(
+            return ListView(
               children: [
                 Header(
                   privateMode: privateMode,
@@ -220,12 +223,19 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
                         },
                         onPauseCharging: () => performAction(pauseCharging),
                         onResumeCharging: () => performAction(resumeCharging),
+                        onCurrentChanged: (value) {
+                          _maxCurrent = value;
+                          setState(() {});
+                          setMaxCurrent(value);
+                        },
+                        maxCurrent: _maxCurrent,
                       )
                     : SessionInfoBodyPortrait(
                         state: _status,
                         energy: _chargedEnergy,
                         totalEnergy: _energyTotal,
                         power: _power,
+                        maxCurrent: _maxCurrent,
                         latestTotalw: _latestTotalw,
                         duration: _duration,
                         online: _online,
@@ -239,6 +249,11 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
                         },
                         onPauseCharging: () => performAction(pauseCharging),
                         onResumeCharging: () => performAction(resumeCharging),
+                        onCurrentChanged: (value) {
+                          _maxCurrent = value;
+                          setState(() {});
+                          setMaxCurrent(value);
+                        },
                       ),
                 const Spacer(flex: 2),
               ],
@@ -272,6 +287,10 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
 
   void pauseCharging() {
     mqtt.publish(Topic.pauseChargingTopic, "");
+  }
+
+  void setMaxCurrent(double maxCurrent) {
+    mqtt.publish(Topic.setMaxCurrent, "$maxCurrent");
   }
 
   void resumeCharging() {
