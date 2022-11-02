@@ -73,7 +73,7 @@ class _LandingScreenState extends State<LandingScreen> {
                         onPressed: () {
                           setMode('private');
                           Navigator.of(context).pushNamed(
-                              AppRoutes.privateChargerScreenDemo,
+                              AppRoutes.chargingDashboardScreen,
                               arguments: {
                                 'private_mode': true,
                               });
@@ -84,7 +84,7 @@ class _LandingScreenState extends State<LandingScreen> {
                         onPressed: () {
                           setMode('public');
                           Navigator.of(context).pushNamed(
-                              AppRoutes.privateChargerScreenDemo,
+                              AppRoutes.chargingDashboardScreen,
                               arguments: {
                                 'private_mode': false,
                               });

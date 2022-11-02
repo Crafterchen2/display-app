@@ -17,7 +17,7 @@ import '../main.dart';
 import '../mqtt.dart';
 import '../utils/constants/common.dart';
 import '../utils/constants/keys.dart';
-import '../utils/helper.dart';
+import '../utils/constants/helper.dart';
 import '../utils/routing/app_router.dart';
 import 'landing_screen.dart';
 

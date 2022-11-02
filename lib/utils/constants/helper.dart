@@ -25,14 +25,14 @@ String getChargingSessionIconByState(String state) {
     case ChargingState.chargingPausedEVSE:
       return '${base}icon_battery_3.svg';
     case ChargingState.error:
-      return '';
+      return '${base}icon_error.svg';
     case ChargingState.permanentFault:
       return '';
   }
   return '${base}icon_unplugged.svg';
 }
 
-String chargingStateTitle(String state) {
+String chargingStateTitle(String state, {String stateInfo = ''}) {
   switch (state) {
     case ChargingState.authRequired:
       return 'auth_required'.tr();
@@ -49,7 +49,7 @@ String chargingStateTitle(String state) {
     case ChargingState.chargingPausedEVSE:
       return 'charging_paused'.tr();
     case ChargingState.error:
-      return 'error'.tr();
+      return errorStateInfo(stateInfo);
     case ChargingState.permanentFault:
       return 'permanent_fault'.tr();
     default:
@@ -78,6 +78,31 @@ String pauseOrResumeChargingTitle(String state) {
       return '';
     case ChargingState.permanentFault:
       return '';
+  }
+  return title;
+}
+
+String errorStateInfo(String stateInfo) {
+  String title = '';
+  switch (stateInfo) {
+    case ErrorStateInfo.car:
+      return 'car_error'.tr();
+    case ErrorStateInfo.carDiodeFault:
+      return 'carDiodeFault_error'.tr();
+    case ErrorStateInfo.relais:
+      return 'relais_error'.tr();
+    case ErrorStateInfo.rCD:
+      return 'rCD_error'.tr();
+    case ErrorStateInfo.ventilationNotAvailable:
+      return 'ventilationNotAvailable_error'.tr();
+    case ErrorStateInfo.overCurrent:
+      return 'overCurrent_error'.tr();
+    case ErrorStateInfo.internal:
+      return 'internal_error'.tr();
+    case ErrorStateInfo.slac:
+      return 'slac_error'.tr();
+    case ErrorStateInfo.hlc:
+      return 'hlc_error'.tr();
   }
   return title;
 }

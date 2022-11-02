@@ -49,5 +49,14 @@
   "done_with_setup": "done_with_setup",
   "private": "private",
   "public": "public",
-  "pause": "pause"
+  "pause": "pause",
+  "car_error": "Car_Error",
+  "carDiodeFault_error": "CarDiodeFault_Error",
+  "relais_error": "Relais_Error",
+  "rCD_error": "RCD_Error",
+  "ventilationNotAvailable_error": "VentilationNotAvailable_Error",
+  "overCurrent_error": "OverCurrent_Error",
+  "internal_error": "Internal_Error",
+  "slac_error": "SLAC_Error",
+  "hlc_error": "HLC_Error"
 }

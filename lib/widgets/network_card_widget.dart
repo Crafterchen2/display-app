@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:pionixbox/utils/helper.dart';
+import 'package:pionixbox/utils/constants/helper.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/app_text_styles.dart';

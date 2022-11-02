@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pionixbox/data/models/limits.dart';
 import 'package:pionixbox/data/models/power_meter.dart';
 import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/utils/helper.dart';
+import 'package:pionixbox/utils/constants/helper.dart';
 import 'package:pionixbox/widgets/session_info_body_portrait.dart';
 
 import '../mqtt.dart';
@@ -14,16 +14,17 @@ import '../utils/routing/app_router.dart';
 import '../widgets/header_widget.dart';
 import '../widgets/session_info_body.dart';
 
-class PrivateChargerScreenDemo extends StatefulWidget {
-  const PrivateChargerScreenDemo({Key? key}) : super(key: key);
+class ChargingDashboardScreen extends StatefulWidget {
+  const ChargingDashboardScreen({Key? key}) : super(key: key);
 
   @override
-  State<PrivateChargerScreenDemo> createState() =>
-      _PrivateChargerScreenDemoState();
+  State<ChargingDashboardScreen> createState() =>
+      _ChargingDashboardScreenState();
 }
 
-class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
+class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
   late String _status;
+  late String _statusInfo;
   late String _energyTotal;
   late double _chargedEnergy;
   late double _latestTotalw;
@@ -31,8 +32,9 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   late double _power;
   late PowerMeter powerMeter;
   late Limits limits;
-  double _maxCurrent = 6.0;
-  // double _currentValue = 6.0;
+  double _current = 6.0;
+  double _minCurrentA = 6.0;
+  double _maxCurrentA = 32.0;
   bool _online = false;
 
   bool _showSimulationPanel = false;
@@ -47,6 +49,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   @override
   void initState() {
     _status = 'unplugged';
+    _statusInfo = '';
     _energyTotal = '12.3';
     _power = 0;
     _chargedEnergy = 12.3;
@@ -103,6 +106,16 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     }
   }
 
+  void parseHardwareCapabilities(String message) {
+    final i = jsonDecode(message);
+    _maxCurrentA = i["max_current_A"];
+    _minCurrentA = i["min_current_A"];
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   void parseOnlineStatus(String message) {
     debugPrint('\n\nchecking status: $message\n\n');
     _online = message == "online";
@@ -114,6 +127,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   void parseSessionInfo(String message) {
     final i = jsonDecode(message);
     _status = i["state"] ?? '';
+    _statusInfo = i["state_info"] ?? '';
     _chargedEnergy = i["charged_energy_wh"] / 1000.0;
     _latestTotalw = i["latest_total_w"] / 1000.0;
     _energyTotal = (_chargedEnergy.toStringAsFixed(1) + " kWh");
@@ -140,8 +154,8 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   void parseLimits(String message) {
     final i = jsonDecode(message);
     limits = Limits.fromJson(i);
-    _maxCurrent = limits.max_current;
-    debugPrint("\nMax current set to : $_maxCurrent\n");
+    _current = limits.max_current;
+    debugPrint("\nMax current set to : $_current\n");
     if (mounted) {
       setState(() {
         _showProgressBar = false;
@@ -162,6 +176,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
           "everest_api/evse_manager/var/powermeter", parsePowermeterDetails);
       mqtt.subscribe(
           "everest_api/setup/var/supported_setup_features", parseConfigInfo);
+      mqtt.subscribe(Topic.hardwareCapabilities, parseHardwareCapabilities);
       checkOnlineStatus();
       mqtt.subscribe("everest_api/setup/var/online_status", parseOnlineStatus);
     } catch (e) {
@@ -208,6 +223,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
                 orientation == Orientation.landscape
                     ? SessionInfoBody(
                         state: _status,
+                        stateInfo: _statusInfo,
                         energy: _chargedEnergy,
                         totalEnergy: _energyTotal,
                         power: _power,
@@ -225,18 +241,23 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
                         onPauseCharging: () => performAction(pauseCharging),
                         onResumeCharging: () => performAction(resumeCharging),
                         onCurrentChanged: (value) {
-                          _maxCurrent = value;
+                          _current = value;
                           setState(() {});
                           setMaxCurrent(value);
                         },
-                        maxCurrent: _maxCurrent,
+                        current: _current,
+                        maxCurrentA: _maxCurrentA,
+                        minCurrentA: _minCurrentA,
                       )
                     : SessionInfoBodyPortrait(
                         state: _status,
+                        stateInfo: _statusInfo,
                         energy: _chargedEnergy,
                         totalEnergy: _energyTotal,
                         power: _power,
-                        maxCurrent: _maxCurrent,
+                        current: _current,
+                        maxCurrentA: _maxCurrentA,
+                        minCurrentA: _minCurrentA,
                         latestTotalw: _latestTotalw,
                         duration: _duration,
                         online: _online,
@@ -251,7 +272,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
                         onPauseCharging: () => performAction(pauseCharging),
                         onResumeCharging: () => performAction(resumeCharging),
                         onCurrentChanged: (value) {
-                          _maxCurrent = value;
+                          _current = value;
                           setState(() {});
                           setMaxCurrent(value);
                         },

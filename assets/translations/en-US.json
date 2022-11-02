@@ -44,17 +44,20 @@
   "swipe_your_card_please": "Swipe your card, Please.",
   "connection_failed": "Connection Failed",
   "initializing": "INITIALIZING ...",
-  "lan" : "LAN",
+  "lan": "LAN",
   "connected_to_lan": "Connected to LAN",
   "add_wifi": "Add Wifi",
-  "done_with_setup" : "DONE WITH SETUP",
-  "private" : "Private",
-  "public" : "Public",
-  "pause" : "PAUSE"
-
-
-
-
-
-
+  "done_with_setup": "DONE WITH SETUP",
+  "private": "Private",
+  "public": "Public",
+  "pause": "PAUSE",
+  "car_error": "Car Error",
+  "carDiodeFault_error": "CarDiodeFault Error",
+  "relais_error": "Relais Error",
+  "rCD_error": "RCD Error",
+  "ventilationNotAvailable_error": "VentilationNotAvailable Error",
+  "overCurrent_error": "OverCurrent Error",
+  "internal_error": "Internal Error",
+  "slac_error": "SLAC Error",
+  "hlc_error": "HLC Error"
 }

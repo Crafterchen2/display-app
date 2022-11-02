@@ -9,7 +9,7 @@ import '../main.dart';
 import '../theme/app_text_styles.dart';
 import '../utils/constants/keys.dart';
 import '../utils/datetime_formats.dart';
-import '../utils/helper.dart';
+import '../utils/constants/helper.dart';
 import 'buttons.dart';
 
 class SessionInfoBodyPortrait extends StatefulWidget {
@@ -18,8 +18,11 @@ class SessionInfoBodyPortrait extends StatefulWidget {
   final String totalEnergy;
   final double power;
   final String state;
+  final String stateInfo;
   final double latestTotalw;
-  final double maxCurrent;
+  final double current;
+  final double maxCurrentA;
+  final double minCurrentA;
   final bool online;
   final VoidCallback? seeMorePressed;
   final VoidCallback onPauseCharging;
@@ -36,10 +39,12 @@ class SessionInfoBodyPortrait extends StatefulWidget {
     required this.onPauseCharging,
     required this.onResumeCharging,
     required this.onCurrentChanged,
-    required this.maxCurrent,
     this.online = true,
     this.power = 0.0,
     this.seeMorePressed,
+    required this.current,
+    required this.maxCurrentA,
+    required this.minCurrentA, required this.stateInfo,
   }) : super(key: key);
 
   @override
@@ -52,7 +57,7 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    String currentSliderLabel = widget.maxCurrent.toStringAsFixed(1);
+    String currentSliderLabel = widget.current.toStringAsFixed(1);
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.05),
@@ -67,7 +72,7 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
                 style: AppTextStyles.subTitle4,
               ),
               Text(
-                chargingStateTitle(widget.state).toUpperCase(),
+                chargingStateTitle(widget.state, stateInfo: widget.stateInfo).toUpperCase(),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 style: AppTextStyles.heading6,
@@ -175,16 +180,16 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
               _buildInfoCard(context,
                   title: 'Max Current', value: currentLabel),
               Slider(
-                  min: 6,
-                  max: 16,
-                  label: currentLabel,
-                  activeColor: AppColors.primaryAmber,
-                  inactiveColor: Colors.grey,
-                  onChanged: (val) {
-                    setState(() {});
-                    widget.onCurrentChanged(val);
-                  },
-                  value: widget.maxCurrent),
+                      min: widget.minCurrentA,
+                      max: widget.maxCurrentA,
+                      label: currentLabel,
+                      activeColor: AppColors.primaryAmber,
+                      inactiveColor: Colors.grey,
+                      onChanged: (val) {
+                        setState(() {});
+                        widget.onCurrentChanged(val);
+                      },
+                      value: widget.current),
             ],
           ),
       ],
