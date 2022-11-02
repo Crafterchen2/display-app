@@ -31,8 +31,8 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
   late double _power;
   late PowerMeter powerMeter;
   late Limits limits;
-  double _maxCurrent = 16.0;
-  double _currentValue = 6.0;
+  double _maxCurrent = 6.0;
+  // double _currentValue = 6.0;
   bool _online = false;
 
   bool _showSimulationPanel = false;
@@ -141,6 +141,7 @@ class _PrivateChargerScreenDemoState extends State<PrivateChargerScreenDemo> {
     final i = jsonDecode(message);
     limits = Limits.fromJson(i);
     _maxCurrent = limits.max_current;
+    debugPrint("\nMax current set to : $_maxCurrent\n");
     if (mounted) {
       setState(() {
         _showProgressBar = false;
