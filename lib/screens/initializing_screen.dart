@@ -172,7 +172,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
           Navigator.of(context).pushNamedAndRemoveUntil(
               _appInfo.mode == 'unknown'
                   ? AppRoutes.landingScreen
-                  : AppRoutes.privateChargerScreenDemo,
+                  : AppRoutes.chargingDashboardScreen,
               (Route<dynamic> route) => false,
               arguments: {
                 'private_mode': _appInfo.mode == 'private',

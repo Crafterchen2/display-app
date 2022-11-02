@@ -10,6 +10,18 @@ class ChargingState {
   static const String permanentFault = 'PermanentFault';
 }
 
+class ErrorStateInfo {
+  static const String car = 'Car';
+  static const String carDiodeFault = 'CarDiodeFault';
+  static const String relais = 'Relais';
+  static const String rCD = 'RCD';
+  static const String ventilationNotAvailable = 'VentilationNotAvailable';
+  static const String overCurrent = 'OverCurrent';
+  static const String internal = 'Internal';
+  static const String slac = 'SLAC';
+  static const String hlc = 'HLC';
+}
+
 class Language {
   static const String english = 'english';
   static const String german = 'german';
@@ -45,6 +57,7 @@ class Topic {
   static const String setInitialized = 'everest_api/setup/cmd/set_initialized';
   static const String setAppMode = 'everest_api/setup/cmd/set_mode';
   static const String setMaxCurrent = 'everest_external/nodered/1/cmd/set_max_current';
+  static const String hardwareCapabilities = 'everest_api/evse_manager/var/hardware_capabilities';
 
 
 }
