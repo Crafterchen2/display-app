@@ -230,13 +230,18 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
                         latestTotalw: _latestTotalw,
                         duration: _duration,
                         online: _online,
-                        seeMorePressed: () {
-                          Navigator.of(context).pushNamed(
+                        seeMorePressed: () async {
+                          final result = await Navigator.of(context).pushNamed(
                               AppRoutes.sessionDetailScreen,
                               arguments: {
                                 'powerMeter': powerMeter,
                                 'limits': limits,
-                              });
+                              }).then((value) {
+                            mqtt.subscribe(
+                                "everest_api/evse_manager/var/powermeter",
+                                parsePowermeterDetails);
+                            setState(() {});
+                          });
                         },
                         onPauseCharging: () => performAction(pauseCharging),
                         onResumeCharging: () => performAction(resumeCharging),
@@ -267,7 +272,12 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
                               arguments: {
                                 'powerMeter': powerMeter,
                                 'limits': limits,
-                              });
+                              }).then((value) {
+                            mqtt.subscribe(
+                                "everest_api/evse_manager/var/powermeter",
+                                parsePowermeterDetails);
+                            setState(() {});
+                          });
                         },
                         onPauseCharging: () => performAction(pauseCharging),
                         onResumeCharging: () => performAction(resumeCharging),
