@@ -198,7 +198,7 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
       body: Stack(
         children: [
           OrientationBuilder(builder: (context, orientation) {
-            return ListView(
+            return Column(
               children: [
                 Header(
                   privateMode: privateMode,

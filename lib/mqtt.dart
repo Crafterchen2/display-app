@@ -6,7 +6,7 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 class MQTT {
   static final MQTT _instance = MQTT._internal();
   static const String localHost = 'localhost';
-  static const String testing = '192.168.10.17';
+  static const String testing = '192.168.10.7';
 
   factory MQTT() => _instance;
 
