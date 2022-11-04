@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
-    /// uncomment below section to fix the orientation just in landscape mode
     if(screenWidth > screenHeight){
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.landscapeLeft,
@@ -44,6 +43,12 @@ class MyApp extends StatelessWidget {
         DeviceOrientation.portraitUp,
       ]);
     }
+    /// uncomment below section to fix the orientation just in portrait mode
+
+    // SystemChrome.setPreferredOrientations([
+    //     DeviceOrientation.portraitDown,
+    //     DeviceOrientation.portraitUp,
+    //   ]);
 
     return MaterialApp(
       title: 'Pionix Box',
