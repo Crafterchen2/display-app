@@ -17,7 +17,7 @@ class MQTT {
 
 
   MQTT._internal()
-      : _client = MqttServerClient.withPort(testing, "pionixbox", 1883) {
+      : _client = MqttServerClient.withPort(localHost, "pionixbox", 1883) {
     _client.onConnected = () {
       _subscriptionController.stream.listen((topic) {
         _client.subscribe(topic, MqttQos.exactlyOnce);
