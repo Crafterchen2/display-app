@@ -15,7 +15,6 @@ class MQTT {
   final StreamController _subscriptionController = StreamController<String>();
   final Map _callbacks = {};
 
-
   MQTT._internal()
       : _client = MqttServerClient.withPort(localHost, "pionixbox", 1883) {
     _client.onConnected = () {
