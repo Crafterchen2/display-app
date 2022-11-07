@@ -176,7 +176,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                       SessionDetailCardWidget(
                         expanded: energyListExpanded,
                         sectionTitle: 'Energy',
-                        unit: 'W',
+                        unit: 'Wh',
                         map: powerMeter.energy_Wh_import.toJson(),
                         onExpendPressed: () {
                           setState(() {
