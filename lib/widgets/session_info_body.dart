@@ -4,9 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 
 import '../theme/app_text_styles.dart';
+import '../utils/constants/helper.dart';
 import '../utils/constants/keys.dart';
 import '../utils/datetime_formats.dart';
-import '../utils/constants/helper.dart';
 import 'buttons.dart';
 
 class SessionInfoBody extends StatefulWidget {
@@ -42,7 +42,8 @@ class SessionInfoBody extends StatefulWidget {
     required this.onCurrentChanged,
     required this.current,
     required this.maxCurrentA,
-    required this.minCurrentA, required this.stateInfo,
+    required this.minCurrentA,
+    required this.stateInfo,
   }) : super(key: key);
 
   @override
@@ -50,7 +51,6 @@ class SessionInfoBody extends StatefulWidget {
 }
 
 class _SessionInfoBodyState extends State<SessionInfoBody> {
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -116,45 +116,47 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                         onPressed: widget.onResumeCharging,
                         textColor: Colors.white,
                       ),
-
                   ],
                 ),
               ),
-              if (widget.state != ChargingState.authRequired)
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.3,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Max Current",
-                          style: AppTextStyles.heading3,
-                        ),
-
-                        Text(
-                          currentSliderLabel,
-                          textAlign: TextAlign.start,
-                          style: AppTextStyles.digitsHeading3,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 12,),
-                    Slider(
-                        min: widget.minCurrentA,
-                        max: widget.maxCurrentA,
-                        label: currentSliderLabel,
-                        activeColor: AppColors.primaryAmber,
-                        inactiveColor: Colors.grey,
-                        onChanged: (val) {
-                          setState(() {});
-                          widget.onCurrentChanged(val);
-                        },
-                        value: widget.current),
-                  ],
+              if (widget.state != ChargingState.authRequired &&
+                  widget.current >= widget.minCurrentA &&
+                  widget.current <= widget.maxCurrentA)
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Max Current",
+                            style: AppTextStyles.heading3,
+                          ),
+                          Text(
+                            currentSliderLabel,
+                            textAlign: TextAlign.start,
+                            style: AppTextStyles.digitsHeading3,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      Slider(
+                          min: widget.minCurrentA,
+                          max: widget.maxCurrentA,
+                          label: currentSliderLabel,
+                          activeColor: AppColors.primaryAmber,
+                          inactiveColor: Colors.grey,
+                          onChanged: (val) {
+                            setState(() {});
+                            widget.onCurrentChanged(val);
+                          },
+                          value: widget.current),
+                    ],
+                  ),
                 ),
-              ),
             ],
           ),
           GestureDetector(
@@ -175,7 +177,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                       width: MediaQuery.of(context).size.width * 0.5,
                       height: MediaQuery.of(context).size.height * 0.2,
                       child: Text(
-                        chargingStateTitle(widget.state, stateInfo: widget.stateInfo).toUpperCase(),
+                        chargingStateTitle(widget.state,
+                                stateInfo: widget.stateInfo)
+                            .toUpperCase(),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
                         style: AppTextStyles.heading6,
@@ -195,7 +199,6 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 : 'current_session'.tr(),
                             style: AppTextStyles.subTitle4,
                           ),
-
                   ],
                 ),
                 widget.state == ChargingState.authRequired

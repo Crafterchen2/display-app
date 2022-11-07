@@ -108,8 +108,8 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
 
   void parseHardwareCapabilities(String message) {
     final i = jsonDecode(message);
-    _maxCurrentA = i["max_current_A"];
-    _minCurrentA = i["min_current_A"];
+    _maxCurrentA = i["max_current_A"] ?? 32;
+    _minCurrentA = i["min_current_A"] ?? 6;
 
     if (mounted) {
       setState(() {});

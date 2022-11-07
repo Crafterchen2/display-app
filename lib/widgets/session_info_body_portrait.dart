@@ -174,7 +174,9 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
             ],
           ),
         ),
-        if (widget.state != ChargingState.authRequired)
+        if (widget.state != ChargingState.authRequired &&
+            widget.current >= widget.minCurrentA &&
+            widget.current <= widget.maxCurrentA)
           Column(
             children: [
               _buildInfoCard(context,
