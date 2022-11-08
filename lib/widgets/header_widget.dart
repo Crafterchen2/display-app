@@ -25,8 +25,8 @@ class Header extends StatelessWidget {
           children: [
             const Image(
               image: AssetImage('assets/images/everest_logo.png'),
-              width: 200,
-              height: 100,
+              width: 180,
+              height: 90,
             ),
             GestureDetector(
               behavior: HitTestBehavior.opaque,
@@ -38,7 +38,7 @@ class Header extends StatelessWidget {
                 child: Icon(
                   privateMode ? Icons.settings : Icons.language,
                   color: AppColors.primaryBlue,
-                  size: screenHeight * 0.06,
+                  size: 48,
                 ),
               ),
             )

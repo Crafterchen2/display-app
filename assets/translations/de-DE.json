@@ -1,7 +1,7 @@
 {
   "english": "Englisch",
   "german": "Deutsch",
-  "last_session": "Letzter Ladevorgang (Tap for details)",
+  "last_session": "Letzter Ladevorgang",
   "energy": "Energie",
   "duration": "Dauer",
   "unplugged": "Ausgesteckt",
@@ -39,7 +39,7 @@
   "configure_your_network": "Configure your network",
   "power": "power",
   "pause_charging": "Pause Charging",
-  "current_session": "current_session (Tap for details)",
+  "current_session": "current_session",
   "swipe_your_card_please": "Swipe your card, Please.",
   "connection_failed": "connection_failed",
   "initializing": "INITIALIZING ...",
@@ -58,5 +58,6 @@
   "overCurrent_error": "OverCurrent_Error",
   "internal_error": "Internal_Error",
   "slac_error": "SLAC_Error",
-  "hlc_error": "HLC_Error"
+  "hlc_error": "HLC_Error",
+  "charge_upto": "charge_upto"
 }

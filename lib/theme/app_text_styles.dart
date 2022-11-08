@@ -56,6 +56,30 @@ class AppTextStyles {
     fontStyle: FontStyle.normal,
   );
 
+  static const TextStyle digitsHeading2 = TextStyle(
+    color: AppColors.primaryBlue,
+    fontFamily: 'PTSans',
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+    textBaseline: TextBaseline.alphabetic,
+    fontFeatures: [
+      FontFeature.tabularFigures()
+    ],
+    fontStyle: FontStyle.normal,
+  );
+
+  static const TextStyle digitsSubTitle2 = TextStyle(
+    color: AppColors.primaryBlue,
+    fontFamily: 'PTSans',
+    fontSize: 13,
+    fontWeight: FontWeight.w400,
+    textBaseline: TextBaseline.alphabetic,
+    fontFeatures: [
+      FontFeature.tabularFigures()
+    ],
+    fontStyle: FontStyle.normal,
+  );
+
   static const TextStyle heading6 = TextStyle(
     color: AppColors.primaryAmber,
     fontFamily: 'Urbanist',

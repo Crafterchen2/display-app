@@ -4,12 +4,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pionixbox/data/models/limits.dart';
 import 'package:pionixbox/data/models/power_meter.dart';
+import 'package:pionixbox/main.dart';
 import 'package:pionixbox/theme/app_colors.dart';
+import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/utils/constants/helper.dart';
 import 'package:pionixbox/widgets/session_info_body_portrait.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
+import '../utils/datetime_formats.dart';
 import '../utils/routing/app_router.dart';
 import '../widgets/header_widget.dart';
 import '../widgets/session_info_body.dart';
@@ -219,7 +222,9 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
                     }
                   },
                 ),
-                const Spacer(flex: 1),
+                SizedBox(
+                  height: screenHeight * 0.02,
+                ),
                 orientation == Orientation.landscape
                     ? SessionInfoBody(
                         state: _status,
@@ -288,6 +293,26 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
                         },
                       ),
                 const Spacer(flex: 2),
+                if(screenHeight > screenWidth)
+                Column(
+                  children: [
+                    Container(
+                      height: 3,
+                      color: Colors.grey.shade300,
+                    ),
+                    Align(
+                        alignment: Alignment.bottomRight,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text(
+                            dateTimeFormat.format(DateTime.now()),
+                            style:
+                            AppTextStyles.digitsSubTitle2.copyWith(color: Colors.grey),
+                          ),
+                        ))
+                  ],
+                ),
+
               ],
             );
           }),
