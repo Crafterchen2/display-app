@@ -228,11 +228,7 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                child: SvgPicture.asset(
-                  getChargingSessionIconByState(widget.state),
-                  height: screenHeight * 0.2,
-                  width: screenWidth * 0.4,
-                ),
+                child: getChargingSessionWidgetByState(widget.state)
               ),
               if (widget.state == 'ChargingPausedEVSE' ||
                   widget.state == 'ChargingPausedEV')
@@ -377,16 +373,57 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
       ],
     );
   }
+}
 
-  Widget getChargingAnimatedCell() {
-    const oneSec = Duration(seconds: 1);
-    Timer.periodic(oneSec, (Timer t) {});
-    return StatefulBuilder(
-      builder: (BuildContext context, void Function(void Function()) setState) {
-        return SvgPicture.asset(
-          'assets/icons/icon_battery_3',
-        );
-      },
+Widget getChargingSessionWidgetByState(String state) {
+  if (state == 'Charging') {
+    return ChargingAnimationWidget();
+  } else {
+    return SvgPicture.asset(
+      getChargingSessionIconByState(state),
+      height: screenHeight * 0.2,
+      width: screenWidth * 0.4,
     );
+  }
+}
+
+class ChargingAnimationWidget extends StatefulWidget {
+  List<String> battery_states = [
+    'assets/icons/icon_battery_1.svg',
+    'assets/icons/icon_battery_2.svg',
+    'assets/icons/icon_battery_3.svg',
+    'assets/icons/icon_battery_4.svg',
+  ];
+
+  @override
+  State<StatefulWidget> createState() => ChargingAnimationWidgetState();
+}
+
+class ChargingAnimationWidgetState extends State<ChargingAnimationWidget> {
+  int index = 0;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      setState(() {
+        index = (index + 1) % widget.battery_states.length;
+        debugPrint('INDEX: ${index}');
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SvgPicture.asset(
+      widget.battery_states[index],
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 }
