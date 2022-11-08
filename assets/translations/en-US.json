@@ -60,5 +60,5 @@
   "internal_error": "Internal Error",
   "slac_error": "SLAC Error",
   "hlc_error": "HLC Error",
-  "charge_upto": "Charge UPTO"
+  "charge_upto": "Charging with up to"
 }

@@ -284,7 +284,7 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
             height: screenHeight * 0.005,
           ),
           Text(
-            'charge_upto'.tr() + ' ' + widget.current.toStringAsFixed(1),
+            'charge_upto'.tr() + ' ' + widget.current.toStringAsFixed(1) + " A",
             style: AppTextStyles.subTitle2,
           )
         ],
