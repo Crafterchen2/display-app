@@ -76,73 +76,77 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
   }
 
   Widget _buildSessionInfoWidget(String currentLable) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        widget.state == ChargingState.authRequired
-            ? Text(
-                'swipe_your_card_please'.tr(),
-                style: AppTextStyles.heading3,
-              )
-            : Row(
+    return GestureDetector(
+        onTap: widget.seeMorePressed,
+        behavior: HitTestBehavior.opaque,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            widget.state == ChargingState.authRequired
+                ? Text(
+                    'swipe_your_card_please'.tr(),
+                    style: AppTextStyles.heading3,
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        widget.state == 'unplugged'.tr()
+                            ? 'last_session'.tr()
+                            : 'current_session'.tr(),
+                        style: AppTextStyles.heading3,
+                      ),
+                      Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: widget.online
+                                  ? AppColors.successLight
+                                  : AppColors.errorLight),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 4, horizontal: 12),
+                            child: Text(
+                              widget.online ? 'online'.tr() : 'offline'.tr(),
+                              style: AppTextStyles.subTitle2
+                                  .copyWith(color: Colors.white),
+                            ),
+                          )),
+                    ],
+                  ),
+            SizedBox(height: screenHeight * 0.02),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+              margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 2,
+                  color: AppColors.primaryBlue,
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
+              ),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    widget.state == 'unplugged'.tr()
-                        ? 'last_session'.tr()
-                        : 'current_session'.tr(),
-                    style: AppTextStyles.heading3,
-                  ),
-                  Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: widget.online
-                              ? AppColors.successLight
-                              : AppColors.errorLight),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 4, horizontal: 12),
-                        child: Text(
-                          widget.online ? 'online'.tr() : 'offline'.tr(),
-                          style: AppTextStyles.subTitle2
-                              .copyWith(color: Colors.white),
-                        ),
-                      )),
+                  _buildSessionInforCard('assets/icons/icon_power.svg',
+                      widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
+                  _buildSessionInforCard('assets/icons/icon_energy.svg',
+                      widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
+                  _buildSessionInforCard(
+                      'assets/icons/icon_charging_duration.svg',
+                      widget.duration + ' h',
+                      'duration'.tr()),
                 ],
               ),
-        SizedBox(height: screenHeight * 0.02),
-        Container(
-          padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
-          margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
-
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 2,
-              color: AppColors.primaryBlue,
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildSessionInforCard('assets/icons/icon_power.svg',
-                  widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
-              _buildSessionInforCard('assets/icons/icon_energy.svg',
-                  widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
-              _buildSessionInforCard('assets/icons/icon_charging_duration.svg',
-                  widget.duration + ' h', 'duration'.tr()),
-            ],
-          ),
-        ),
-        SizedBox(height: screenHeight * 0.02),
-        if (widget.state != ChargingState.authRequired &&
-            widget.current >= widget.minCurrentA &&
-            widget.current <= widget.maxCurrentA)
-          Align(
-              alignment: Alignment.center,
-              child: _buildSliderWidget(currentLable)),
-      ],
-    );
+            SizedBox(height: screenHeight * 0.02),
+            if (widget.state != ChargingState.authRequired &&
+                widget.current >= widget.minCurrentA &&
+                widget.current <= widget.maxCurrentA)
+              Align(
+                  alignment: Alignment.center,
+                  child: _buildSliderWidget(currentLable)),
+          ],
+        ));
   }
 
   Widget _buildSessionInforCard(String iconPath, String value, String label) {
@@ -168,8 +172,8 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
           ),
           Text(
             value,
-            style:
-                AppTextStyles.digitsHeading2.copyWith(color: AppColors.primaryBlue),
+            style: AppTextStyles.digitsHeading2
+                .copyWith(color: AppColors.primaryBlue),
           ),
         ],
       ),
