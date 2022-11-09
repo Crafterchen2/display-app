@@ -100,8 +100,9 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                   color: AppColors.primaryBlue,
                   child: VirtualKeyboard(
                       height: screenHeight * 0.4,
-                      fontSize: screenHeight * 0.04,
-                      textColor: Colors.white,
+
+                      fontSize: 32,
+                      textColor: AppColors.white,
                       textController: widget.passwordController,
                       defaultLayouts: const [
                         VirtualKeyboardDefaultLayouts.English
