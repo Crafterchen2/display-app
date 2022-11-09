@@ -20,31 +20,28 @@ class SettingMenuButton extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: onPressed,
-      child: Column(
-        children: [
-          Container(
-            height: screenWidth * 0.1,
-            width: screenWidth * 0.1,
-            child: Center(
-              child: Icon(
-                icon,
-                color: AppColors.primaryBlue,
-                size: screenWidth * 0.08,
-              ),
+      child: Container(
+        height: screenWidth * 0.2,
+        width: screenWidth * 0.2,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color: AppColors.primaryBlue,
+              size: 60,
             ),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-            ),
-          ),
-          SizedBox(
-            height: screenWidth * 0.02,
-          ),
-          Text(
-            title,
-            style: AppTextStyles.subTitle4.copyWith(color: Colors.white),
-          )
-        ],
+            const SizedBox(height: 12),
+            Text(
+              title,
+              style: AppTextStyles.subTitle4,
+            )
+          ],
+        ),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
       ),
     );
   }

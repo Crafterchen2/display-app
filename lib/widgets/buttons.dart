@@ -55,12 +55,12 @@ class PrimaryButton2 extends StatelessWidget {
 
   const PrimaryButton2(
       {Key? key,
-      this.height = 78,
+      this.height = 70,
       required this.title,
       this.color = AppColors.primaryAmber,
       this.textColor = Colors.white,
       required this.onPressed,
-      this.width = 500})
+      this.width = 200})
       : super(key: key);
 
   @override
@@ -268,8 +268,7 @@ class PionixCloseButton extends StatelessWidget {
           width: screenWidth * 0.3,
           height: 54,
           alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(
-              horizontal: 12, vertical: 4),
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           margin: EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
             color: color,
@@ -334,7 +333,10 @@ class CircularLabeledIconButton extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        Text(label, style: AppTextStyles.subTitle2,)
+        Text(
+          label,
+          style: AppTextStyles.subTitle2,
+        )
       ],
     );
   }

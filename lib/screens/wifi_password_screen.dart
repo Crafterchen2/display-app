@@ -35,15 +35,12 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: screenWidth * 0.02,
-                vertical:
-                    _showKeyboard ? screenHeight * 0.04 : screenHeight * 0.1),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: screenHeight * 0.15,
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  // height: screenHeight * 0.1,
                   width: double.infinity,
                   child: IconTextField(
                     hintText: 'Enter Password',
@@ -54,55 +51,56 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                     },
                     icon: Icon(
                       Icons.vpn_key,
-                      size: 40,
                       color: Colors.grey.shade400,
+                      size: 28,
                     ),
                     controller: widget.passwordController,
                   ),
                 ),
-                !_showKeyboard
-                    ? const Spacer()
-                    : SizedBox(height: screenHeight * 0.05),
-                Align(
+              ),
+              !_showKeyboard
+                  ? const Spacer()
+                  : SizedBox(height: screenHeight * 0.05),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
                   alignment: Alignment.bottomRight,
-                  child: Container(
-                    alignment: Alignment.bottomRight,
-
-                    width: double.infinity,
-                    height: screenHeight * 0.1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        PrimaryButton(
-                          width: screenWidth * 0.25,
-                          color: AppColors.primaryAmber,
-                          onPressed: () {
-                            _showKeyboard = false;
-                            widget.onBackPressed();
-                            debugPrint('on back Pressed');
-                          },
-                          title: 'Back',
-                        ),
-                        const SizedBox(width: 12),
-                        PrimaryButton(
-                          width: screenWidth * 0.25,
-                          color: AppColors.primaryAmber,
-                          onPressed: widget.onConnectPressed,
-                          title: 'Connect',
-                        ),
-                      ],
-                    ),
+                  padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+                  width: double.infinity,
+                  height: screenHeight * 0.1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      PrimaryButton(
+                        width: screenWidth * 0.3,
+                        color: AppColors.primaryAmber,
+                        onPressed: () {
+                          _showKeyboard = false;
+                          widget.onBackPressed();
+                          debugPrint('on back Pressed');
+                        },
+                        title: 'Back',
+                      ),
+                      const SizedBox(width: 12),
+                      PrimaryButton(
+                        width: screenWidth * 0.3,
+                        color: AppColors.primaryAmber,
+                        onPressed: widget.onConnectPressed,
+                        title: 'Connect',
+                      ),
+                      const SizedBox(width: 12),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           _showKeyboard
               ? Container(
                   color: AppColors.primaryBlue,
                   child: VirtualKeyboard(
-                      height: screenHeight * 0.6,
-                      fontSize: screenHeight * 0.06,
+                      height: screenHeight * 0.4,
+                      fontSize: screenHeight * 0.04,
                       textColor: Colors.white,
                       textController: widget.passwordController,
                       defaultLayouts: const [

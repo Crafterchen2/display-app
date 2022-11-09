@@ -19,86 +19,56 @@ class _SimulationPanelState extends State<SimulationPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final buttonWidth = MediaQuery.of(context).size.width * 0.4;
-    final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Container(
-        color: AppColors.primaryBlue,
-        child: Stack(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+      backgroundColor: AppColors.primaryBlue,
+      body: Column(
+        children: [
+          Expanded(
+            child: GridView(
+              scrollDirection: Axis.vertical,
+
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio: 1.5,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                crossAxisCount: 2,
+              ),
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    PrimaryButton2(
-                      width: buttonWidth,
-                      title: 'Plug In',
-                      onPressed: plugIn,
-                    ),
-                    const SizedBox(width: 8),
-                    PrimaryButton2(
-                      width: buttonWidth,
-                      title: 'Plug Out',
-                      onPressed: plugOut,
-                    ),
-                  ],
+                PrimaryButton2(
+                  title: 'Plug In',
+                  onPressed: plugIn,
                 ),
-                SizedBox(height: height * 0.02),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    PrimaryButton2(
-                      width: buttonWidth,
-                      title: 'Resume by car',
-                      onPressed: resumeByCar,
-                    ),
-                    const SizedBox(width: 8),
-                    PrimaryButton2(
-                      width: buttonWidth,
-                      title: 'Pause by car',
-                      onPressed: pauseByCar,
-                    ),
-                  ],
+                PrimaryButton2(
+                  title: 'Plug Out',
+                  onPressed: plugOut,
                 ),
-                SizedBox(height: height * 0.02),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    PrimaryButton2(
-                      width: buttonWidth,
-                      title: 'Enable Simulation',
-                      onPressed: enableSimulation,
-                    ),
-                    const SizedBox(width: 8),
-                    PrimaryButton2(
-                      width: buttonWidth,
-                      title: 'Disable Simulation',
-                      onPressed: disableSimulation,
-                    ),
-                  ],
+                PrimaryButton2(
+                  title: 'Resume by car',
+                  onPressed: resumeByCar,
                 ),
-                SizedBox(height: height * 0.02),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    PrimaryButton2(
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      title: 'Charging Simulation',
-                      onPressed: chargingSimulation,
-                    ),
-                  ],
+                PrimaryButton2(
+                  title: 'Pause by car',
+                  onPressed: pauseByCar,
                 ),
-                SizedBox(height: height * 0.02),
+                PrimaryButton2(
+                  title: 'Enable Simulation',
+                  onPressed: enableSimulation,
+                ),
+                PrimaryButton2(
+                  title: 'Disable Simulation',
+                  onPressed: disableSimulation,
+                ),
+                PrimaryButton2(
+                  title: 'Charging Simulation',
+                  onPressed: chargingSimulation,
+                ),
               ],
             ),
-            const PionixCloseButton(
-              color: AppColors.primaryAmber,
-            ),
-          ],
-        ),
+          ),
+          const PionixCloseButton(
+            color: AppColors.primaryBlue,
+          ),
+        ],
       ),
     );
   }

@@ -40,17 +40,18 @@ class IconTextField extends StatelessWidget {
               controller: controller,
               focusNode: focusNode,
               style: AppTextStyles.heading6.copyWith(
-                  color: AppColors.primaryBlue,
-                  fontSize: MediaQuery.of(context).size.height * 0.08),
+                  color: AppColors.primaryBlue,),
               decoration: InputDecoration(
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   contentPadding: const EdgeInsets.only(
                     left: 16.0,
                     right: 16.0,
+                    top: 15,
+                    bottom: 15,
                   ),
                   hintText: hintText,
-                  hintStyle: AppTextStyles.heading6
+                  hintStyle: AppTextStyles.heading3
                       .copyWith(color: Colors.grey.shade400)),
             ),
           ),

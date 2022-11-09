@@ -16,8 +16,8 @@ import '../data/models/network_device_info.dart';
 import '../main.dart';
 import '../mqtt.dart';
 import '../utils/constants/common.dart';
-import '../utils/constants/keys.dart';
 import '../utils/constants/helper.dart';
+import '../utils/constants/keys.dart';
 import '../utils/routing/app_router.dart';
 import 'landing_screen.dart';
 
@@ -90,7 +90,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
       final device = NetworkDeviceInfo.fromJson(d);
 
       if (device.interface == 'wlan0' && device.blocked == false) {
-        if(mounted){
+        if (mounted) {
           setState(() {
             _wifi = true;
           });
@@ -167,16 +167,15 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
               child: Container(
                 decoration: const BoxDecoration(
                     shape: BoxShape.circle, color: AppColors.primaryBlue),
-                margin: EdgeInsets.symmetric(
-                    vertical: 20,
-                    horizontal: 20),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 padding: EdgeInsets.symmetric(
                     vertical: screenHeight * 0.015,
                     horizontal: screenHeight * 0.013),
-                child: Icon(
+                child: const Icon(
                   Icons.more_horiz,
                   color: Colors.white,
-                  size: 48,
+                  size: 36,
                 ),
               ),
             ),
@@ -194,10 +193,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_cross.svg', onPressed: () {  }, label: 'Close',),
-                          // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_wifi.svg', onPressed: () {  }, label: 'Add Wifi',),
-                          // CircularLabeledIconButton(iconUrl: 'assets/icons/icon_finish_setup.svg', onPressed: () {  }, label: 'Finish Setup',),
-                          SecondaryButton(
+                            SecondaryButton(
                             title: 'Close',
                             borderColor: AppColors.errorLight,
                             textColor: AppColors.errorLight,
