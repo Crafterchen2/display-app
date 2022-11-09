@@ -65,9 +65,7 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
           _buildStatusWidget(),
           _buildImageWidget(context),
           _buildChargingButton(),
-          widget.state == ChargingState.authRequired
-              ? SizedBox()
-              : _buildSessionInfoWidget(currentSliderLabel),
+          _buildSessionInfoWidget(currentSliderLabel),
         ],
       ),
     );
@@ -291,30 +289,31 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
 
   Widget _buildChargingButton() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: screenHeight * 0.04),
-      child: Column(
-              children: [
-                if (widget.state == ChargingState.charging)
-                  SecondaryButton(
-                      title: 'pause'.tr(),
-                      onPressed: widget.onPauseCharging,
-                      textColor: AppColors.primaryAmber),
-                if (pauseOrResumeChargingTitle(widget.state) !=
-                        ChargingState.charging &&
-                    widget.state != ChargingState.authRequired &&
-                    pauseOrResumeChargingTitle(widget.state) != '')
-                  PrimaryButton(
-                    title: 'resume'.tr(),
-                    onPressed: widget.onResumeCharging,
-                    textColor: Colors.white,
-                  ),
-                if(widget.state != ChargingState.charging &&
+        padding: EdgeInsets.symmetric(vertical: screenHeight * 0.04),
+        child: Column(
+          children: [
+            if (widget.state == ChargingState.charging)
+              SecondaryButton(
+                  title: 'pause'.tr(),
+                  onPressed: widget.onPauseCharging,
+                  textColor: AppColors.primaryAmber),
+            if (pauseOrResumeChargingTitle(widget.state) !=
+                    ChargingState.charging &&
+                widget.state != ChargingState.authRequired &&
+                pauseOrResumeChargingTitle(widget.state) != '')
+              PrimaryButton(
+                title: 'resume'.tr(),
+                onPressed: widget.onResumeCharging,
+                textColor: Colors.white,
+              ),
+            if (widget.state != ChargingState.charging &&
                     widget.state == ChargingState.authRequired ||
-                    pauseOrResumeChargingTitle(widget.state) == '')
-                  SizedBox(height: 64,)
-              ],
-            )
-    );
+                pauseOrResumeChargingTitle(widget.state) == '')
+              SizedBox(
+                height: 64,
+              )
+          ],
+        ));
   }
 
   Widget _buildStatusWidget() {
