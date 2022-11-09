@@ -55,8 +55,6 @@ class SessionInfoBodyPortrait extends StatefulWidget {
 class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
     String currentSliderLabel = widget.current.toStringAsFixed(1);
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -226,19 +224,18 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
             alignment: Alignment.bottomRight,
             children: [
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                child: getChargingSessionWidgetByState(widget.state)
-              ),
-              if (widget.state == 'ChargingPausedEVSE' ||
-                  widget.state == 'ChargingPausedEV')
-                SvgPicture.asset(
-                  'assets/icons/icon_pausecharging.svg',
-                  height:
-                      widget.state == 'Unplugged' ? null : screenWidth * 0.15,
-                  width:
-                      widget.state == 'Unplugged' ? null : screenWidth * 0.15,
-                ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  child: getChargingSessionWidgetByState(widget.state)),
+              // if (widget.state == 'ChargingPausedEVSE' ||
+              //     widget.state == 'ChargingPausedEV')
+              // SvgPicture.asset(
+              //   'assets/icons/icon_pausecharging.svg',
+              //   height:
+              //       widget.state == 'Unplugged' ? null : screenWidth * 0.15,
+              //   width:
+              //       widget.state == 'Unplugged' ? null : screenWidth * 0.15,
+              // ),
             ],
           ),
         ],
@@ -296,23 +293,27 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: screenHeight * 0.04),
       child: Column(
-        children: [
-          if (widget.state == ChargingState.charging)
-            SecondaryButton(
-                title: 'pause'.tr(),
-                onPressed: widget.onPauseCharging,
-                textColor: AppColors.primaryAmber),
-          if (pauseOrResumeChargingTitle(widget.state) !=
-                  ChargingState.charging &&
-              widget.state != ChargingState.authRequired &&
-              pauseOrResumeChargingTitle(widget.state) != '')
-            PrimaryButton(
-              title: 'resume'.tr(),
-              onPressed: widget.onResumeCharging,
-              textColor: Colors.white,
-            ),
-        ],
-      ),
+              children: [
+                if (widget.state == ChargingState.charging)
+                  SecondaryButton(
+                      title: 'pause'.tr(),
+                      onPressed: widget.onPauseCharging,
+                      textColor: AppColors.primaryAmber),
+                if (pauseOrResumeChargingTitle(widget.state) !=
+                        ChargingState.charging &&
+                    widget.state != ChargingState.authRequired &&
+                    pauseOrResumeChargingTitle(widget.state) != '')
+                  PrimaryButton(
+                    title: 'resume'.tr(),
+                    onPressed: widget.onResumeCharging,
+                    textColor: Colors.white,
+                  ),
+                if(widget.state != ChargingState.charging &&
+                    widget.state == ChargingState.authRequired ||
+                    pauseOrResumeChargingTitle(widget.state) == '')
+                  SizedBox(height: 64,)
+              ],
+            )
     );
   }
 
@@ -418,6 +419,8 @@ class ChargingAnimationWidgetState extends State<ChargingAnimationWidget> {
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       widget.battery_states[index],
+      height: screenHeight * 0.2,
+      width: screenWidth * 0.4,
     );
   }
 
