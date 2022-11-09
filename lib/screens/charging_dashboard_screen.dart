@@ -293,7 +293,6 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
                         },
                       ),
                 const Spacer(flex: 2),
-                if(screenHeight > screenWidth)
                 Column(
                   children: [
                     Container(
@@ -306,13 +305,12 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
                           padding: const EdgeInsets.all(4.0),
                           child: Text(
                             dateTimeFormat.format(DateTime.now()),
-                            style:
-                            AppTextStyles.digitsSubTitle2.copyWith(color: Colors.grey),
+                            style: AppTextStyles.digitsSubTitle2
+                                .copyWith(color: Colors.grey),
                           ),
                         ))
                   ],
                 ),
-
               ],
             );
           }),

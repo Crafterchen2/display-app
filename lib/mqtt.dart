@@ -14,9 +14,9 @@ class MQTT {
   late StreamSubscription<List<MqttReceivedMessage<MqttMessage>>> subscription;
   final StreamController _subscriptionController = StreamController<String>();
   final Map _callbacks = {};
-  ///todo change testing to localhost
+
   MQTT._internal()
-      : _client = MqttServerClient.withPort(testing, "pionixbox", 1883) {
+      : _client = MqttServerClient.withPort(localHost, "pionixbox", 1883) {
     _client.onConnected = () {
       _subscriptionController.stream.listen((topic) {
         _client.subscribe(topic, MqttQos.exactlyOnce);
@@ -51,7 +51,7 @@ class MQTT {
     _subscriptionController.sink.add(topic);
   }
 
-  void publish(String topic, String payload) async{
+  void publish(String topic, String payload) async {
     _client.publishMessage(topic, MqttQos.exactlyOnce,
         MqttClientPayloadBuilder().addString(payload).payload!);
   }
