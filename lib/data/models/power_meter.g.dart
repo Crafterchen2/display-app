@@ -6,11 +6,21 @@ part of 'power_meter.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+num parseTimestamp(dynamic timestamp) {
+  if (timestamp is num) {
+    return timestamp;
+  } else if (timestamp is String) {
+    return DateTime.parse(timestamp).millisecondsSinceEpoch / 1000;
+  } else {
+    return DateTime.now().millisecondsSinceEpoch / 1000;
+  }
+}
+
 PowerMeter _$PowerMeterFromJson(Map<String, dynamic> json) => PowerMeter(
       CurrentA.fromJson(json['current_A'] as Map<String, dynamic>),
       json['meter_id'] as String,
       json['phase_seq_error'] as bool,
-      (json['timestamp'] as num).toDouble(),
+      parseTimestamp(json['timestamp']).toDouble(),
       EnergyWhImport.fromJson(json['energy_Wh_import'] as Map<String, dynamic>),
       FrequencyHz.fromJson(json['frequency_Hz'] as Map<String, dynamic>),
       PowerW.fromJson(json['power_W'] as Map<String, dynamic>),
