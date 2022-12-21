@@ -10,6 +10,7 @@ import '../theme/app_text_styles.dart';
 import '../utils/constants/helper.dart';
 import '../utils/constants/keys.dart';
 import 'buttons.dart';
+import 'charging_animation_widget.dart';
 
 class SessionInfoBodyPortrait extends StatefulWidget {
   final double energy;
@@ -176,43 +177,6 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
     );
   }
 
-  // Widget _buildSessionInfoWidget() {
-  //   return GestureDetector(
-  //     onTap: widget.seeMorePressed,
-  //     behavior: HitTestBehavior.opaque,
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         widget.state == ChargingState.authRequired
-  //             ? Text(
-  //                 'swipe_your_card_please'.tr(),
-  //                 style: AppTextStyles.subTitle4,
-  //               )
-  //             : Text(
-  //                 widget.state == 'unplugged'.tr()
-  //                     ? 'last_session'.tr()
-  //                     : 'current_session'.tr(),
-  //                 style: AppTextStyles.subTitle4,
-  //               ),
-  //         SizedBox(
-  //           height: screenHeight * 0.02,
-  //         ),
-  //         _buildInfoCard(context,
-  //             title: 'energy'.tr(),
-  //             value: widget.energy.toStringAsFixed(2) + ' kWh'),
-  //         _buildInfoCard(context,
-  //             title: 'power'.tr(),
-  //             value: widget.power.toStringAsFixed(2) + ' kW'),
-  //         _buildInfoCard(context,
-  //             title: 'duration'.tr(), value: widget.duration + ' h'),
-  //         _buildInfoCard(context,
-  //             title: widget.online ? 'online'.tr() : 'offline'.tr(),
-  //             value: dateTimeFormat.format(DateTime.now())),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   Widget _buildImageWidget(BuildContext context) {
     return SizedBox(
       child: Column(
@@ -225,15 +189,6 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                   child: getChargingSessionWidgetByState(widget.state)),
-              // if (widget.state == 'ChargingPausedEVSE' ||
-              //     widget.state == 'ChargingPausedEV')
-              // SvgPicture.asset(
-              //   'assets/icons/icon_pausecharging.svg',
-              //   height:
-              //       widget.state == 'Unplugged' ? null : screenWidth * 0.15,
-              //   width:
-              //       widget.state == 'Unplugged' ? null : screenWidth * 0.15,
-              // ),
             ],
           ),
         ],
@@ -384,48 +339,5 @@ Widget getChargingSessionWidgetByState(String state) {
       height: screenHeight * 0.2,
       width: screenWidth * 0.4,
     );
-  }
-}
-
-class ChargingAnimationWidget extends StatefulWidget {
-  List<String> battery_states = [
-    'assets/icons/icon_battery_1.svg',
-    'assets/icons/icon_battery_2.svg',
-    'assets/icons/icon_battery_3.svg',
-    'assets/icons/icon_battery_4.svg',
-  ];
-
-  @override
-  State<StatefulWidget> createState() => ChargingAnimationWidgetState();
-}
-
-class ChargingAnimationWidgetState extends State<ChargingAnimationWidget> {
-  int index = 0;
-  late Timer _timer;
-
-  @override
-  void initState() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
-      setState(() {
-        index = (index + 1) % widget.battery_states.length;
-        debugPrint('INDEX: ${index}');
-      });
-    });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SvgPicture.asset(
-      widget.battery_states[index],
-      height: screenHeight * 0.2,
-      width: screenWidth * 0.4,
-    );
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
   }
 }

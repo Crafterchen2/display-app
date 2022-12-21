@@ -8,6 +8,7 @@ import '../utils/constants/helper.dart';
 import '../utils/constants/keys.dart';
 import '../utils/datetime_formats.dart';
 import 'buttons.dart';
+import 'charging_animation_widget.dart';
 
 class SessionInfoBody extends StatefulWidget {
   final double energy;
@@ -66,35 +67,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.25,
-                height: MediaQuery.of(context).size.height * 0.3,
-                child: Center(
-                  child: Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 20),
-                        child: SvgPicture.asset(
-                          getChargingSessionIconByState(widget.state),
-                          height:
-                              widget.state == 'Unplugged' ? null : width * 0.2,
-                        ),
-                      ),
-                      if (widget.state == 'ChargingPausedEVSE' ||
-                          widget.state == 'ChargingPausedEV')
-                        SvgPicture.asset('assets/icons/icon_pausecharging.svg',
-                            height: widget.state == 'Unplugged'
-                                ? null
-                                : width * 0.08,
-                            width: widget.state == 'Unplugged'
-                                ? null
-                                : width * 0.08),
-                    ],
-                  ),
-                ),
-              ),
+              _buildImageWidget(context),
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.15,
@@ -287,6 +260,50 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildImageWidget(BuildContext context) {
+    return SizedBox(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  child: getChargingSessionWidgetByState(
+                      widget.state,
+                      MediaQuery.of(context).size.height * 0.2,
+                      MediaQuery.of(context).size.width * 0.4)),
+              // if (widget.state == 'ChargingPausedEVSE' ||
+              //     widget.state == 'ChargingPausedEV')
+              // SvgPicture.asset(
+              //   'assets/icons/icon_pausecharging.svg',
+              //   height:
+              //       widget.state == 'Unplugged' ? null : screenWidth * 0.15,
+              //   width:
+              //       widget.state == 'Unplugged' ? null : screenWidth * 0.15,
+              // ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+Widget getChargingSessionWidgetByState(
+    String state, double height, double width) {
+  if (state == 'Charging') {
+    return ChargingAnimationWidget();
+  } else {
+    return SvgPicture.asset(
+      getChargingSessionIconByState(state),
+      height: height,
+      width: width,
     );
   }
 }
