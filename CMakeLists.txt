@@ -7,7 +7,34 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/dist" CACHE PATH "..." FORCE)
 endif()
 
-find_package(EDM REQUIRED)
+find_package(everest-cmake 0.1
+    COMPONENTS bundling
+    PATHS ../everest-cmake
+)
+
+if (NOT everest-cmake_FOUND)
+    message(STATUS "Retreiving everest-cmake using FetchContent")
+    include(FetchContent)
+    FetchContent_Declare(
+        everest-cmake
+        GIT_REPOSITORY https://github.com/EVerest/everest-cmake.git
+        GIT_TAG        main
+    )
+    FetchContent_MakeAvailable(everest-cmake)
+    set(everest-cmake_DIR "${everest-cmake_SOURCE_DIR}")
+    set(everest-cmake_FIND_COMPONENTS "bundling")
+    include("${everest-cmake_SOURCE_DIR}/everest-cmake-config.cmake")
+endif()
+
+if(NOT DISABLE_EDM)
+    # FIXME (aw): this implicit definition for child projects is hacky
+    set(THIRD_PARTY_APP_DST "${CMAKE_INSTALL_LIBEXECDIR}/everest/3rd_party")
+
+    evc_setup_edm()
+
+    # FIXME (kai): we need to include this by hand due cmake refactor changes
+    include("${CMAKE_CURRENT_BINARY_DIR}/dependencies.cmake")
+endif()
 
 set(FLUTTER_BINARY "${flutter_SOURCE_DIR}/bin/flutter")
 
