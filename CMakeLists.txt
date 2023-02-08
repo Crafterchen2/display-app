@@ -69,7 +69,7 @@ add_custom_target(
     "--aot"
     "--tfa"
     "-Ddart.vm.product=true"
-    "--packages=.packages"
+    "--packages=.dart_tool/package_config.json"
     "--output-dill=build/kernel_snapshot.dill"
     "--verbose"
     "--depfile=build/kernel_snapshot.d"
