@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pionixbox/main.dart';
@@ -52,6 +51,7 @@ class PrimaryButton2 extends StatelessWidget {
   final Color color;
   final Color textColor;
   final VoidCallback onPressed;
+  final double fontSize;
 
   const PrimaryButton2(
       {Key? key,
@@ -60,7 +60,8 @@ class PrimaryButton2 extends StatelessWidget {
       this.color = AppColors.primaryAmber,
       this.textColor = Colors.white,
       required this.onPressed,
-      this.width = 200})
+      this.width = 200,
+      this.fontSize = 28})
       : super(key: key);
 
   @override
@@ -75,7 +76,7 @@ class PrimaryButton2 extends StatelessWidget {
         child: Center(
           child: Text(title.toUpperCase(),
               style: AppTextStyles.primaryButtonText
-                  .copyWith(color: textColor, fontSize: 24)),
+                  .copyWith(color: textColor, fontSize: fontSize)),
         ),
       ),
     );
@@ -171,7 +172,7 @@ class SwitchSettingsButton extends StatelessWidget {
                   style: titleStyle,
                 ),
               ),
-              CupertinoSwitch(
+              Switch(
                 activeColor: AppColors.primaryAmber,
                 value: value,
                 onChanged: onChanged,

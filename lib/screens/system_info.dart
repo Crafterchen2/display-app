@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:pionixbox/data/models/network_device_info.dart';
+import 'package:pionixbox/screens/about.dart';
+import 'package:pionixbox/screens/network_info.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
-import 'package:pionixbox/widgets/buttons.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
@@ -25,7 +27,6 @@ class _SystemInfoState extends State<SystemInfo> {
 
   @override
   void initState() {
-
     _connect();
     scanWifi();
     super.initState();
@@ -45,7 +46,9 @@ class _SystemInfoState extends State<SystemInfo> {
       devices.add(device);
     }
     if (mounted) {
-      setState(() { _showProgress = false;});
+      setState(() {
+        _showProgress = false;
+      });
     }
   }
 
@@ -56,7 +59,6 @@ class _SystemInfoState extends State<SystemInfo> {
           "everest_api/setup/var/network_device_info", networkDeviceInfo);
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
-
     }
     setState(() {
       _showProgress = false;
@@ -65,99 +67,24 @@ class _SystemInfoState extends State<SystemInfo> {
 
   @override
   Widget build(BuildContext context) {
-    final buttonWidth = MediaQuery.of(context).size.width * 0.4;
-    final height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      body: Container(
-        color: Colors.white,
-        child: Stack(
-          children: [
-            _showProgress
-                ? const Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.primaryBlue,
-                    ),
-                  )
-                : Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: height * 0.02,
-                        ),
-                        child: const Text(
-                          'System Info',
-                          style: AppTextStyles.heading6,
-                        ),
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                            itemCount: devices.length,
-                            itemBuilder: (builder, index) {
-                              return NetworkDeviceInfoWidget(
-                                info: devices[index],
-                              );
-                            }),
-                      ),
-                    ],
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+            appBar: AppBar(
+                toolbarHeight: 70,
+                automaticallyImplyLeading: false,
+                backgroundColor: AppColors.primaryBlue,
+                flexibleSpace:
+                    TabBar(labelStyle: AppTextStyles.subTitle4, tabs: [
+                  Tab(
+                    icon: const Icon(Icons.info),
+                    text: "about".tr(),
                   ),
-            const PionixCloseButton(),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class NetworkDeviceInfoWidget extends StatelessWidget {
-  final NetworkDeviceInfo info;
-
-  const NetworkDeviceInfoWidget({Key? key, required this.info})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: screenHeight * 0.03),
-          Row(
-            children: [
-              Container(
-                height: 1,
-                width: screenWidth * 0.1,
-                color: AppColors.primaryBlue,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text(
-                  'Interface: ${info.interface}',
-                  style: AppTextStyles.heading3
-                      .copyWith(color: AppColors.primaryBlue),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  height: 1,
-                  color: AppColors.primaryBlue,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: screenHeight * 0.03),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              'IPV4: ${info.ipv4.isEmpty ? '----------' : info.ipv4}',
-              style: AppTextStyles.subTitle4
-                  .copyWith(color: AppColors.primaryBlue),
-            ),
-          ),
-        ],
-      ),
-    );
+                  Tab(
+                    icon: const Icon(Icons.network_wifi_sharp),
+                    text: "network".tr(),
+                  )
+                ])),
+            body: const TabBarView(children: [About(), NetworkInfo()])));
   }
 }

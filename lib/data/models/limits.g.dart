@@ -9,7 +9,7 @@ part of 'limits.dart';
 Limits _$LimitsFromJson(Map<String, dynamic> json) => Limits(
       (json['max_current'] as num).toDouble(),
       json['nr_of_phases_available'] as int,
-      json['uuid'] as String,
+      json['uuid'] as String?,
     );
 
 Map<String, dynamic> _$LimitsToJson(Limits instance) => <String, dynamic>{

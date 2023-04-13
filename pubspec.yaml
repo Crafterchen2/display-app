@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -30,7 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   intl: ^0.17.0
-  json_serializable: ^6.1.5
+  json_annotation: ^4.8.0
   flutter_riverpod: ^1.0.3
   rxdart: ^0.27.3
   state_notifier: ^0.7.2+1
@@ -49,6 +49,7 @@ dependencies:
   # mqtt client
   mqtt_client: 9.6.6
   easy_localization: ^3.0.0
+  freezed_annotation: ^2.2.0
 
 dependency_overrides:
   shared_preferences:
@@ -58,8 +59,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
-  freezed: ^0.15.0+1
-  build_runner: ^2.1.8
+  build_runner: ^2.3.3
+  json_serializable: ^6.6.0
+  freezed: ^2.3.2
   # flutter pub run build_runner build
   # flutter pub run build_runner build --delete-conflicting-outputs
 

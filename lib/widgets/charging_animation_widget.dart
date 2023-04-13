@@ -24,7 +24,6 @@ class ChargingAnimationWidgetState extends State<ChargingAnimationWidget> {
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       setState(() {
         index = (index + 1) % widget.battery_states.length;
-        debugPrint('INDEX: ${index}');
       });
     });
     super.initState();

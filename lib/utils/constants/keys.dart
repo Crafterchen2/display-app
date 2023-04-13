@@ -29,8 +29,6 @@ class Language {
 }
 
 class Topic {
-  static const String pauseChargingTopic = 'everest_external/nodered/1/cmd/pause_charging';
-  static const String resumeChargingTopic = 'everest_external/nodered/1/cmd/resume_charging';
   static const String modifyChargingSessionTopic =
       'everest_external/nodered/1/carsim/cmd/modify_charging_session';
   static const String enableSimulationTopic =
@@ -56,10 +54,8 @@ class Topic {
   static const String resetInitialized = 'everest_api/setup/cmd/reset_initialized';
   static const String setInitialized = 'everest_api/setup/cmd/set_initialized';
   static const String setAppMode = 'everest_api/setup/cmd/set_mode';
+  static const String reboot = 'everest_api/setup/cmd/reboot';
   static const String setMaxCurrent = 'everest_external/nodered/1/cmd/set_max_current';
-  static const String hardwareCapabilities = 'everest_api/evse_manager/var/hardware_capabilities';
-
-
 }
 
 class Payloads {
@@ -75,5 +71,4 @@ class Payloads {
 }
 class AppAssets {
   static const String everestLogo = 'assets/images/everest_logo.png';
-
 }

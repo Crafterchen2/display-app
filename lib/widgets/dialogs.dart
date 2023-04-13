@@ -21,31 +21,30 @@ class BasicDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const yesColor = Color(0xFFFFA800);
-    const noColor = Color(0xFF4C4C4C);
     return AlertDialog(
       title: Text(
         title,
-        style: const TextStyle(color: AppColors.primaryBlue),
+        style: const TextStyle(color: AppColors.primaryBlue, fontSize: 40),
       ),
       content: Text(content,
-          style: const TextStyle(
-            color: AppColors.primaryBlue,
-          )),
+          style: const TextStyle(color: AppColors.primaryBlue, fontSize: 30)),
       actions: <Widget>[
         TextButton(
             // color: Colors.green,
             onPressed: onNegativePressed,
             child: Text(
               negativeText,
-              style: const TextStyle(color: Colors.white),
+              style:
+                  const TextStyle(color: AppColors.primaryBlue, fontSize: 36),
             )),
+            SizedBox(width: 50,),
         TextButton(
             // color: Colors.redAccent,
             onPressed: onPositivePressed,
             child: Text(
               positiveText,
-              style: const TextStyle(color: Colors.white),
+              style:
+                  const TextStyle(color: AppColors.primaryBlue, fontSize: 36),
             ))
       ],
     );

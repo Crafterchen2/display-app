@@ -1,9 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/data/models/limits.dart';
 import 'package:pionixbox/data/models/power_meter.dart';
+import 'package:pionixbox/data/models/session_info.dart';
+import 'package:pionixbox/data/providers/connector_provider.dart';
+import 'package:pionixbox/data/providers/hardware_capabilities_provider.dart';
+import 'package:pionixbox/data/providers/limits_provider.dart';
+import 'package:pionixbox/data/providers/powermeter_provider.dart';
+import 'package:pionixbox/data/providers/session_info_provider.dart';
 import 'package:pionixbox/main.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
@@ -17,15 +26,16 @@ import '../utils/routing/app_router.dart';
 import '../widgets/header_widget.dart';
 import '../widgets/session_info_body.dart';
 
-class ChargingDashboardScreen extends StatefulWidget {
+class ChargingDashboardScreen extends ConsumerStatefulWidget {
   const ChargingDashboardScreen({Key? key}) : super(key: key);
 
   @override
-  State<ChargingDashboardScreen> createState() =>
+  ConsumerState<ChargingDashboardScreen> createState() =>
       _ChargingDashboardScreenState();
 }
 
-class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
+class _ChargingDashboardScreenState
+    extends ConsumerState<ChargingDashboardScreen> {
   late String _status;
   late String _statusInfo;
   late String _energyTotal;
@@ -39,6 +49,7 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
   double _minCurrentA = 6.0;
   double _maxCurrentA = 32.0;
   bool _online = false;
+  String connector = connectorDefault;
 
   bool _showSimulationPanel = false;
   bool _showProgressBar = false;
@@ -53,10 +64,10 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
   void initState() {
     _status = 'unplugged';
     _statusInfo = '';
-    _energyTotal = '12.3';
+    _energyTotal = '0.0';
     _power = 0;
-    _chargedEnergy = 12.3;
-    _latestTotalw = 1000;
+    _chargedEnergy = 0.0;
+    _latestTotalw = 0;
     _duration = '00:00:00';
 
     _connectMqtt();
@@ -72,6 +83,43 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
   @override
   Widget build(BuildContext context) {
     extractArguments(context);
+    connector = ref.watch(connectorProvider);
+    final powermeter =
+        ref.watch(powermeterStreamProvider).whenOrNull(data: (data) => data);
+    if (powermeter != null) {
+      powerMeter = powermeter;
+      _power = powerMeter.power_W.total / 1000;
+    }
+    final l = ref.watch(limitsStreamProvider).whenOrNull(data: (data) => data);
+    if (l != null) {
+      limits = l;
+      if (limits.max_current >= 6.0) {
+        _current = limits.max_current;
+      }
+    }
+    final sessioninfo =
+        ref.watch(sessionInfoStreamProvider).whenOrNull(data: (data) => data);
+    if (sessioninfo != null) {
+      _status = sessioninfo.state;
+      _statusInfo = sessioninfo.state_info;
+      _chargedEnergy = sessioninfo.charged_energy_wh / 1000.0;
+      _latestTotalw = sessioninfo.latest_total_w / 1000.0;
+      _energyTotal = (_chargedEnergy.toStringAsFixed(1) + " kWh");
+      _duration =
+          durationFormat(Duration(seconds: sessioninfo.charging_duration_s));
+    }
+    final hardwareCapabilities = ref
+        .watch(hardwareCapabilitiesStreamProvider)
+        .whenOrNull(data: (data) => data);
+    if (hardwareCapabilities != null) {
+      if (hardwareCapabilities.max_current_A_import >= 6.0) {
+        _maxCurrentA = hardwareCapabilities.max_current_A_import;
+      }
+      if (hardwareCapabilities.min_current_A_import >= 6.0) {
+        _minCurrentA = hardwareCapabilities.min_current_A_import;
+      }
+    }
+
     return Scaffold(
       backgroundColor: AppColors.white,
       body: Stack(
@@ -90,10 +138,8 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
                         'setup_wifi': wifi,
                       });
                     } else {
-                      debugPrint('Before');
-                      final result = await Navigator.of(context)
+                      await Navigator.of(context)
                           .pushNamed(AppRoutes.languagePickerScreen);
-                      debugPrint(result.toString());
                       setState(() {});
                     }
                   },
@@ -111,13 +157,7 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
                         seeMorePressed: () async {
                           final result = await Navigator.of(context).pushNamed(
                               AppRoutes.sessionDetailScreen,
-                              arguments: {
-                                'powerMeter': powerMeter,
-                                'limits': limits,
-                              }).then((value) {
-                            mqtt.subscribe(
-                                "everest_api/evse_manager/var/powermeter",
-                                parsePowermeterDetails);
+                              arguments: {}).then((value) {
                             setState(() {});
                           });
                         },
@@ -147,13 +187,7 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
                         seeMorePressed: () {
                           Navigator.of(context).pushNamed(
                               AppRoutes.sessionDetailScreen,
-                              arguments: {
-                                'powerMeter': powerMeter,
-                                'limits': limits,
-                              }).then((value) {
-                            mqtt.subscribe(
-                                "everest_api/evse_manager/var/powermeter",
-                                parsePowermeterDetails);
+                              arguments: {}).then((value) {
                             setState(() {});
                           });
                         },
@@ -172,16 +206,42 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
                       height: 3,
                       color: Colors.grey.shade300,
                     ),
-                    Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(
-                            dateTimeFormat.format(DateTime.now()),
-                            style: AppTextStyles.digitsSubTitle2
-                                .copyWith(color: Colors.grey),
+                    Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: _online
+                                        ? AppColors.successLight
+                                        : AppColors.errorLight),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 4, horizontal: 12),
+                                  child: Text(
+                                    _online ? 'online'.tr() : 'offline'.tr(),
+                                    style: AppTextStyles.subTitle2
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                )),
                           ),
-                        ))
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Text(
+                              dateTimeFormat.format(DateTime.now()),
+                              style: AppTextStyles.digitsSubTitle2
+                                  .copyWith(color: Colors.grey),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ],
@@ -213,13 +273,7 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
     try {
       await mqtt.connect();
       mqtt.subscribe(
-          "everest_api/evse_manager/var/session_info", parseSessionInfo);
-      mqtt.subscribe("everest_api/evse_manager/var/limits", parseLimits);
-      mqtt.subscribe(
-          "everest_api/evse_manager/var/powermeter", parsePowermeterDetails);
-      mqtt.subscribe(
           "everest_api/setup/var/supported_setup_features", parseConfigInfo);
-      mqtt.subscribe(Topic.hardwareCapabilities, parseHardwareCapabilities);
       checkOnlineStatus();
       mqtt.subscribe("everest_api/setup/var/online_status", parseOnlineStatus);
     } catch (e) {
@@ -269,60 +323,10 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
     }
   }
 
-  void parseHardwareCapabilities(String message) {
-    final i = jsonDecode(message);
-    _maxCurrentA = i["max_current_A"] ?? 32;
-    _minCurrentA = i["min_current_A"] ?? 6;
-
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
   void parseOnlineStatus(String message) {
-    debugPrint('\n\nchecking status: $message\n\n');
     _online = message == "online";
     if (mounted) {
       setState(() {});
-    }
-  }
-
-  void parseSessionInfo(String message) {
-    final i = jsonDecode(message);
-    _status = i["state"] ?? '';
-    _statusInfo = i["state_info"] ?? '';
-    _chargedEnergy = i["charged_energy_wh"] / 1000.0;
-    _latestTotalw = i["latest_total_w"] / 1000.0;
-    _energyTotal = (_chargedEnergy.toStringAsFixed(1) + " kWh");
-    _duration = durationFormat(Duration(seconds: i["charging_duration_s"]));
-    if (mounted) {
-      setState(() {
-        _showProgressBar = false;
-      });
-    }
-  }
-
-  void parsePowermeterDetails(String powermtere) {
-    final i = jsonDecode(powermtere);
-    powerMeter = PowerMeter.fromJson(i);
-    _power = powerMeter.power_W.total / 1000;
-
-    if (mounted) {
-      setState(() {
-        _showProgressBar = false;
-      });
-    }
-  }
-
-  void parseLimits(String message) {
-    final i = jsonDecode(message);
-    limits = Limits.fromJson(i);
-    _current = limits.max_current;
-    debugPrint("\nMax current set to : $_current\n");
-    if (mounted) {
-      setState(() {
-        _showProgressBar = false;
-      });
     }
   }
 
@@ -342,7 +346,7 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
   }
 
   void pauseCharging() {
-    mqtt.publish(Topic.pauseChargingTopic, "");
+    mqtt.publish("everest_api/" + connector + "/cmd/pause_charging", "");
   }
 
   void setMaxCurrent(double maxCurrent) {
@@ -350,7 +354,7 @@ class _ChargingDashboardScreenState extends State<ChargingDashboardScreen> {
   }
 
   void resumeCharging() {
-    mqtt.publish(Topic.resumeChargingTopic, "");
+    mqtt.publish("everest_api/" + connector + "/cmd/resume_charging", "");
   }
 
   void pauseByCar() {

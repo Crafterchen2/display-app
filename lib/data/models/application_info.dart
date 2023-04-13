@@ -8,8 +8,10 @@ class ApplicationInfo {
   final String default_language;
   final bool initialized;
   final String mode;
+  final String? release_metadata_file;
 
-  ApplicationInfo(this.current_language, this.default_language, this.initialized, this.mode);
+  ApplicationInfo(this.current_language, this.default_language,
+      this.initialized, this.mode, this.release_metadata_file);
 
   factory ApplicationInfo.fromJson(Map<String, dynamic> json) =>
       _$ApplicationInfoFromJson(json);

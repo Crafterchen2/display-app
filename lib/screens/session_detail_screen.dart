@@ -1,36 +1,40 @@
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/data/models/limits.dart';
 import 'package:pionixbox/data/models/power_meter.dart';
+import 'package:pionixbox/data/providers/limits_provider.dart';
+import 'package:pionixbox/data/providers/powermeter_provider.dart';
 import 'package:pionixbox/main.dart';
 import 'package:pionixbox/theme/app_colors.dart';
+import 'package:pionixbox/utils/datetime_formats.dart';
 import 'package:pionixbox/widgets/buttons.dart';
 
 import '../mqtt.dart';
 import '../theme/app_text_styles.dart';
 
-class SessionDetailScreen extends StatefulWidget {
+class SessionDetailScreen extends ConsumerStatefulWidget {
   const SessionDetailScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<SessionDetailScreen> createState() => _SessionDetailScreenState();
+  ConsumerState<SessionDetailScreen> createState() =>
+      _SessionDetailScreenState();
 }
 
-class _SessionDetailScreenState extends State<SessionDetailScreen> {
+class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
   final mqtt = MQTT();
-  late PowerMeter powerMeter;
-  late Limits limits;
-  String selectedLanguage = 'english';
-  bool showLoader = true;
-  bool currentListExpanded = false;
-  bool powerListExpanded = false;
-  bool frequencyListExpanded = false;
-  bool energyListExpanded = false;
-  bool voltageListExpanded = false;
-  bool limitsListExpanded = false;
+  PowerMeter? powerMeter;
+  Limits? limits;
+  bool currentListExpanded = true;
+  bool powerListExpanded = true;
+  bool frequencyListExpanded = true;
+  bool energyListExpanded = true;
+  bool voltageListExpanded = true;
+  bool limitsListExpanded = true;
 
   @override
   void initState() {
@@ -40,73 +44,28 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
   @override
   void didChangeDependencies() {
     extractArguments(context);
-    _connectMqtt();
     super.didChangeDependencies();
   }
 
   void extractArguments(BuildContext context) {
     final i = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
-    powerMeter = i["powerMeter"];
-    limits = i["limits"];
-    debugPrint('\n\n ${powerMeter.toJson()}');
-    debugPrint('\n ${powerMeter.current_A.toJson()}');
-    debugPrint('\n ${powerMeter.power_W.toJson()}');
-    debugPrint('\n ${powerMeter.voltage_V.toJson()}');
-    debugPrint('\n ${powerMeter.energy_Wh_import.toJson()}');
-    debugPrint('\n ${powerMeter.frequency_Hz.toJson()}');
-    debugPrint('\n\n ${limits.toJson()} \n\n');
-    setState(() {
-      showLoader = false;
-    });
-  }
-
-  void parsePowermeterDetails(String powermtere) {
-    final i = jsonDecode(powermtere);
-    powerMeter = PowerMeter.fromJson(i);
-
-    if (mounted) {
-      setState(() {
-        showLoader = false;
-      });
-    }
-  }
-
-  void parseLimits(String message) {
-    final i = jsonDecode(message);
-    limits = Limits.fromJson(i);
-    if (mounted) {
-      setState(() {
-        showLoader = false;
-      });
-    }
-  }
-
-  Future<void> _connectMqtt() async {
-    setState(() {
-      showLoader = true;
-    });
-    try {
-      await mqtt.connect();
-
-      mqtt.subscribe("everest_api/evse_manager/var/limits", parseLimits);
-      mqtt.subscribe(
-          "everest_api/evse_manager/var/powermeter", parsePowermeterDetails);
-      setState(() {
-        showLoader = false;
-      });
-    } catch (e) {
-      debugPrint(e.toString());
-      setState(() {
-        showLoader = false;
-      });
-    }
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    final powermeter =
+        ref.watch(powermeterStreamProvider).whenOrNull(data: (data) => data);
+    if (powermeter != null) {
+      powerMeter = powermeter;
+    }
+    final l = ref.watch(limitsStreamProvider).whenOrNull(data: (data) => data);
+    if (l != null) {
+      limits = l;
+    }
     return Scaffold(
       backgroundColor: AppColors.primaryBlue,
       body: Container(
@@ -114,100 +73,96 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
           borderRadius: BorderRadius.circular(12),
           color: AppColors.primaryBlue,
         ),
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         child: Stack(
           children: [
-            showLoader || powerMeter == null || limits == null
-                ? Center(
+            powerMeter == null || limits == null
+                ? const Center(
                     child: CircularProgressIndicator(),
                   )
                 : ListView(
                     // mainAxisAlignment: MainAxisAlignment.center,
                     // crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text(
-                              'Powermeter',
-                              style: AppTextStyles.heading3
-                                  .copyWith(color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
                       SingleInfoCard(
-                          title: 'Meter ID',
-                          value: powerMeter.meter_id.toString()),
+                          title: 'Powermeter ID',
+                          value: powerMeter!.meter_id.toString()),
                       SingleInfoCard(
                           title: 'Phase sequence error',
-                          value: powerMeter.phase_seq_error
+                          value: powerMeter!.phase_seq_error
                               ? 'Error state'
                               : 'No Error'),
                       SingleInfoCard(
                           title: 'Time',
-                          value: DateTime.fromMillisecondsSinceEpoch(
-                                  powerMeter.timestamp.round() * 1000)
+                          value: dateTimeFormat
+                              .format(DateTime.fromMillisecondsSinceEpoch(
+                                  powerMeter!.timestamp.round() * 1000))
                               .toString()),
-                      SessionDetailCardWidget(
-                        expanded: currentListExpanded,
-                        sectionTitle: 'Current A',
-                        map: powerMeter.current_A.toJson(),
-                        unit: 'A',
-                        onExpendPressed: () {
-                          setState(() {
-                            currentListExpanded = !currentListExpanded;
-                          });
-                        },
-                      ),
-                      SessionDetailCardWidget(
-                        expanded: powerListExpanded,
-                        sectionTitle: 'Power w',
-                        map: powerMeter.power_W.toJson(),
-                        unit: 'W',
-                        onExpendPressed: () {
-                          setState(() {
-                            powerListExpanded = !powerListExpanded;
-                          });
-                        },
-                      ),
-                      SessionDetailCardWidget(
-                        expanded: energyListExpanded,
-                        sectionTitle: 'Energy',
-                        unit: 'Wh',
-                        map: powerMeter.energy_Wh_import.toJson(),
-                        onExpendPressed: () {
-                          setState(() {
-                            energyListExpanded = !energyListExpanded;
-                          });
-                        },
-                      ),
-                      SessionDetailCardWidget(
-                        expanded: frequencyListExpanded,
-                        sectionTitle: 'Frequency',
-                        unit: 'Hz',
-                        map: powerMeter.frequency_Hz.toJson(),
-                        onExpendPressed: () {
-                          setState(() {
-                            frequencyListExpanded = !frequencyListExpanded;
-                          });
-                        },
-                      ),
-                      SessionDetailCardWidget(
-                        expanded: voltageListExpanded,
-                        sectionTitle: 'Voltage',
-                        unit: 'V',
-                        map: powerMeter.voltage_V.toJson(),
-                        onExpendPressed: () {
-                          setState(() {
-                            voltageListExpanded = !voltageListExpanded;
-                          });
-                        },
-                      ),
+                      GridView.count(
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 8,
+                          shrinkWrap: true,
+                          children: [
+                            SessionDetailCardWidget(
+                              expanded: currentListExpanded,
+                              sectionTitle: 'current'.tr(),
+                              map: powerMeter!.current_A.toJson(),
+                              unit: 'A',
+                              onExpendPressed: () {
+                                setState(() {
+                                  currentListExpanded = !currentListExpanded;
+                                });
+                              },
+                            ),
+                            SessionDetailCardWidget(
+                              expanded: powerListExpanded,
+                              sectionTitle: 'power'.tr(),
+                              map: powerMeter!.power_W.toJson(),
+                              unit: 'W',
+                              onExpendPressed: () {
+                                setState(() {
+                                  powerListExpanded = !powerListExpanded;
+                                });
+                              },
+                            ),
+                            SessionDetailCardWidget(
+                              expanded: energyListExpanded,
+                              sectionTitle: 'energy'.tr(),
+                              unit: 'Wh',
+                              map: powerMeter!.energy_Wh_import.toJson(),
+                              onExpendPressed: () {
+                                setState(() {
+                                  energyListExpanded = !energyListExpanded;
+                                });
+                              },
+                            ),
+                            SessionDetailCardWidget(
+                              expanded: frequencyListExpanded,
+                              sectionTitle: 'frequency'.tr(),
+                              unit: 'Hz',
+                              map: powerMeter!.frequency_Hz.toJson(),
+                              onExpendPressed: () {
+                                setState(() {
+                                  frequencyListExpanded =
+                                      !frequencyListExpanded;
+                                });
+                              },
+                            ),
+                            SessionDetailCardWidget(
+                              expanded: voltageListExpanded,
+                              sectionTitle: 'voltage'.tr(),
+                              unit: 'V',
+                              map: powerMeter!.voltage_V.toJson(),
+                              onExpendPressed: () {
+                                setState(() {
+                                  voltageListExpanded = !voltageListExpanded;
+                                });
+                              },
+                            ),
+                          ]),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Text(
                           'Limits',
                           style: AppTextStyles.heading3
@@ -217,7 +172,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                       SessionDetailCardWidget(
                         expanded: limitsListExpanded,
                         sectionTitle: 'Limits',
-                        map: limits.toJson(),
+                        map: limits!.toJson(),
                         onExpendPressed: () {
                           setState(() {
                             limitsListExpanded = !limitsListExpanded;
@@ -251,19 +206,20 @@ class SessionDetailCardWidget extends StatelessWidget {
       required this.sectionTitle,
       required this.map,
       this.expanded = false,
-      this.onExpendPressed, this.unit = ''})
+      this.onExpendPressed,
+      this.unit = ''})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(12),
-      margin: EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           border: Border.all(width: 2, color: Colors.white30)),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Column(
@@ -294,13 +250,13 @@ class SessionDetailCardWidget extends StatelessWidget {
               ),
               expanded
                   ? Padding(
-                      padding: const EdgeInsets.only(bottom: 12, top: 8),
+                      padding: const EdgeInsets.only(bottom: 0, top: 0),
                       child: Container(
                         height: 2,
                         color: Colors.white10,
                       ),
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
               if (expanded) ...populateList(context),
             ],
           ),
@@ -349,7 +305,7 @@ class SingleInfoCard extends StatelessWidget {
           ),
           const Spacer(),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.35,
+            // width: MediaQuery.of(context).size.width * 0.35,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [

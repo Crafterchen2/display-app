@@ -7,12 +7,14 @@ class SettingMenuButton extends StatelessWidget {
   final IconData icon;
   final String title;
   final VoidCallback onPressed;
+  final TextStyle style;
 
   const SettingMenuButton({
     Key? key,
     required this.icon,
     required this.title,
     required this.onPressed,
+    this.style = AppTextStyles.subTitle4,
   }) : super(key: key);
 
   @override
@@ -34,7 +36,8 @@ class SettingMenuButton extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               title,
-              style: AppTextStyles.subTitle4,
+              style: style,
+              textAlign: TextAlign.center,
             )
           ],
         ),

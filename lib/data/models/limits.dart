@@ -6,7 +6,7 @@ part 'limits.g.dart';
 class Limits {
   final double max_current;
   final int nr_of_phases_available;
-  final String uuid;
+  final String? uuid;
 
   Limits(this.max_current, this.nr_of_phases_available, this.uuid);
 

@@ -6,13 +6,22 @@ part of 'network_device_info.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+List<String> parseIp(dynamic ip) {
+  if (ip is String) {
+    return [ip];
+  } else if (ip is List<dynamic>) {
+    return ip.map((e) => e as String).toList();
+  }
+  return [];
+}
+
 NetworkDeviceInfo _$NetworkDeviceInfoFromJson(Map<String, dynamic> json) =>
     NetworkDeviceInfo(
       interface: json['interface'] as String,
-      ipv4: json['ipv4'] as String? ?? "",
+      ipv4: parseIp(json['ipv4']),
       blocked: json['blocked'] as bool,
       wireless: json['wireless'] as bool,
-      ipv6: json['ipv6'] as String? ?? "",
+      ipv6: parseIp(json['ipv6']),
       rfkill_id: json['rfkill_id'] as String? ?? "",
     );
 

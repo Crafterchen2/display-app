@@ -28,11 +28,11 @@ class _InitializingScreenState extends State<InitializingScreen> {
   double _progress = 0.0;
   bool waitingIndicator = true;
   late Timer _timer;
-  String progressMessage = 'Initializing...'.tr();
+  String progressMessage = 'initializing'.tr();
 
   @override
   void didChangeDependencies() {
-    _appInfo = ApplicationInfo('null', 'null', false, 'null');
+    _appInfo = ApplicationInfo('null', 'null', false, 'null', "");
     _connect(context);
     startTimer();
     super.didChangeDependencies();
@@ -90,7 +90,8 @@ class _InitializingScreenState extends State<InitializingScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           EverestLogoWidget(
-                            width: screenHeight * 0.6,
+                            height: screenHeight * 0.7,
+                            width: screenWidth * 0.7,
                           ),
                           Column(
                             children: [
@@ -155,13 +156,8 @@ class _InitializingScreenState extends State<InitializingScreen> {
   void applicationInfo(String message) {
     final msg = jsonDecode(message);
     _appInfo = ApplicationInfo.fromJson(msg);
-    debugPrint('\n\nCurrent Lang: ${_appInfo.current_language}');
-    debugPrint('Mode: ${_appInfo.mode}');
-    debugPrint('Default Lang: ${_appInfo.default_language}');
-    debugPrint('INIT: ${_appInfo.initialized}\n\n');
 
     if (_appInfo.current_language == 'unknown') {
-      //
       updateDefaultLanguage();
       updateCurrentLanguage();
     }
@@ -190,8 +186,8 @@ class _InitializingScreenState extends State<InitializingScreen> {
   }
 
   void getAppInfo(BuildContext context, MQTT mqtt) {
-    mqtt.publish("everest_api/setup/cmd/get_application_info", '');
     mqtt.subscribe("everest_api/setup/var/application_info", applicationInfo);
+    mqtt.publish("everest_api/setup/cmd/get_application_info", '');
   }
 
   void updateCurrentLanguage() {

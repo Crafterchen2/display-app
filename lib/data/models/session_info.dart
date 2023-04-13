@@ -4,14 +4,15 @@ part 'session_info.g.dart';
 
 @JsonSerializable()
 class SessionInfo {
-  final double charged_energy_wh;
-  final double charging_duration_s;
+  final int charged_energy_wh;
+  final int charging_duration_s;
   final DateTime datetime;
-  final double latest_total_w;
+  final int latest_total_w;
   final String state;
+  final String state_info;
 
   SessionInfo(this.charged_energy_wh, this.charging_duration_s, this.datetime,
-      this.latest_total_w, this.state);
+      this.latest_total_w, this.state, this.state_info);
 
   factory SessionInfo.fromJson(Map<String, dynamic> json) =>
       _$SessionInfoFromJson(json);

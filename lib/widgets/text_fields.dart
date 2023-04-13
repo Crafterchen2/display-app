@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
 
-class IconTextField extends StatelessWidget {
+class IconTextField extends StatefulWidget {
   final Icon icon;
   final TextEditingController controller;
   final FocusNode? focusNode;
@@ -21,6 +21,12 @@ class IconTextField extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<IconTextField> createState() => _IconTextFieldState();
+}
+
+class _IconTextFieldState extends State<IconTextField> {
+  bool visible = false;
+  @override
   Widget build(BuildContext context) {
     return Container(
       height: 54,
@@ -32,29 +38,39 @@ class IconTextField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: <Widget>[
-          icon,
+          widget.icon,
+          const SizedBox(width: 16,),
           Expanded(
             child: TextField(
+              textAlignVertical: TextAlignVertical.center,
+              obscureText: !visible,
               readOnly: true,
-              onTap: onTap,
-              controller: controller,
-              focusNode: focusNode,
-              style: AppTextStyles.heading6.copyWith(
-                  color: AppColors.primaryBlue,),
+              onTap: widget.onTap,
+              controller: widget.controller,
+              focusNode: widget.focusNode,
+              style: AppTextStyles.heading3.copyWith(
+                color: AppColors.primaryBlue,
+              ),
               decoration: InputDecoration(
+                alignLabelWithHint: true,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
-                  contentPadding: const EdgeInsets.only(
-                    left: 16.0,
-                    right: 16.0,
-                    top: 15,
-                    bottom: 15,
-                  ),
-                  hintText: hintText,
+                  hintText: widget.hintText,
                   hintStyle: AppTextStyles.heading3
                       .copyWith(color: Colors.grey.shade400)),
             ),
           ),
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  visible = !visible;
+                });
+              },
+              icon: Icon(
+                visible ? Icons.visibility : Icons.visibility_off,
+                color: Colors.grey.shade400,
+                size: 28,
+              ))
         ],
       ),
     );

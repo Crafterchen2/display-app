@@ -3,18 +3,18 @@ import 'package:pionixbox/theme/app_colors.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
-import '../widgets/buttons.dart';
+import 'buttons.dart';
 
-class SimulationPanel extends StatefulWidget {
-  const SimulationPanel({
+class SimulationPanelLandscape extends StatefulWidget {
+  const SimulationPanelLandscape({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<SimulationPanel> createState() => _SimulationPanelState();
+  State<SimulationPanelLandscape> createState() => _SimulationPanelLandscapeState();
 }
 
-class _SimulationPanelState extends State<SimulationPanel> {
+class _SimulationPanelLandscapeState extends State<SimulationPanelLandscape> {
   final mqtt = MQTT();
 
   @override
@@ -26,11 +26,12 @@ class _SimulationPanelState extends State<SimulationPanel> {
           Expanded(
             child: GridView(
               scrollDirection: Axis.vertical,
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
 
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 1.5,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
+                childAspectRatio: 4.5,
+                mainAxisSpacing: 20,
+                crossAxisSpacing:20,
                 crossAxisCount: 2,
               ),
               children: [
@@ -76,16 +77,6 @@ class _SimulationPanelState extends State<SimulationPanel> {
   // void performAction(Function() action) {
   //   action();
   // }
-
-  void pauseCharging() {
-    mqtt.publish(Topic.pauseChargingTopic, "");
-    Navigator.pop(context);
-  }
-
-  void resumeCharging() {
-    mqtt.publish(Topic.resumeChargingTopic, "");
-    Navigator.pop(context);
-  }
 
   void pauseByCar() {
     mqtt.publish(Topic.modifyChargingSessionTopic, Payloads.pausedByCar);

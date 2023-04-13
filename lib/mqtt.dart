@@ -6,7 +6,6 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 class MQTT {
   static final MQTT _instance = MQTT._internal();
   static const String localHost = 'localhost';
-  static const String testing = '192.168.1.65';
 
   factory MQTT() => _instance;
 
@@ -14,6 +13,7 @@ class MQTT {
   late StreamSubscription<List<MqttReceivedMessage<MqttMessage>>> subscription;
   final StreamController _subscriptionController = StreamController<String>();
   final Map _callbacks = {};
+  final Map<String, StreamController<String>> _streams = {};
 
   MQTT._internal()
       : _client = MqttServerClient.withPort(localHost, "pionixbox", 1883) {
@@ -40,6 +40,9 @@ class MQTT {
         if (_callbacks.containsKey(topic)) {
           _callbacks[topic](message);
         }
+        if (_streams.containsKey(topic)) {
+          _streams[topic]?.add(message);
+        }
       });
     } on NoConnectionException catch (e) {
       _client.disconnect();
@@ -49,6 +52,22 @@ class MQTT {
   void subscribe(String topic, Function(String) callback) {
     _callbacks[topic] = callback;
     _subscriptionController.sink.add(topic);
+  }
+
+  Stream<String> subscribeStream(String topic) {
+    final stream = StreamController<String>();
+    _streams[topic] = stream;
+    _subscriptionController.sink.add(topic);
+    return stream.stream;
+  }
+
+  void unsubscribe(String topic) {
+    if (_callbacks.remove(topic) != null) {
+      _client.unsubscribe(topic);
+    }
+    if (_streams.remove(topic) != null) {
+      _client.unsubscribe(topic);
+    }
   }
 
   void publish(String topic, String payload) async {

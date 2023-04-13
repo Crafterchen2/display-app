@@ -43,7 +43,7 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
     devices.clear();
     for (final d in deviceInfo) {
       final device = NetworkDeviceInfo.fromJson(d);
-      if (device.interface == 'eth0') {
+      if (!device.wireless) {
         devices.add(device);
       }
     }

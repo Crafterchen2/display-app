@@ -4,7 +4,7 @@ import 'package:pionixbox/screens/lan_info_screen.dart';
 import 'package:pionixbox/screens/landing_screen.dart';
 import 'package:pionixbox/screens/language_picker_screen.dart';
 import 'package:pionixbox/screens/settings_screen.dart';
-import 'package:pionixbox/screens/simulation_panel.dart';
+import 'package:pionixbox/widgets/simulation_panel.dart';
 import 'package:pionixbox/screens/system_info.dart';
 import 'package:pionixbox/screens/wifi_setup_screen.dart';
 

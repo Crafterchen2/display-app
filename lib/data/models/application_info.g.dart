@@ -12,6 +12,7 @@ ApplicationInfo _$ApplicationInfoFromJson(Map<String, dynamic> json) =>
       json['default_language'] as String,
       json['initialized'] as bool,
       json['mode'] as String,
+      json['release_metadata_file'] as String?,
     );
 
 Map<String, dynamic> _$ApplicationInfoToJson(ApplicationInfo instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$ApplicationInfoToJson(ApplicationInfo instance) =>
       'default_language': instance.default_language,
       'initialized': instance.initialized,
       'mode': instance.mode,
+      'release_metadata_file': instance.release_metadata_file,
     };

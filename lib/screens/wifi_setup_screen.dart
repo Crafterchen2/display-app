@@ -1,7 +1,8 @@
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:get/get_navigation/src/root/parse_route.dart';
 import 'package:pionixbox/data/models/available_network.dart';
 import 'package:pionixbox/data/models/configured_network.dart';
 import 'package:pionixbox/data/models/saved_network.dart';
@@ -45,6 +46,8 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   FocusNode passwordFocusNode = FocusNode();
   List<NetworkDeviceInfo> devices = [];
   bool initialisingScreen = false;
+  bool bannerVisible = false;
+  String bannerText = "";
 
   @override
   void didChangeDependencies() {
@@ -63,21 +66,24 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   @override
   void dispose() {
     disableWifiScanning();
+    checkOnlineStatus();
     super.dispose();
   }
 
   void _connect() async {
     try {
       await mqtt.connect();
-      scanWifi();
       mqtt.subscribe(
           "everest_api/setup/var/wifi_info", parseAvailableNetworksInfo);
-      listConfiguredNetworks();
       mqtt.subscribe("everest_api/setup/var/configured_networks",
           parseConfiguredNetworksInfo);
 
       mqtt.subscribe(
           "everest_api/setup/var/network_device_info", networkDeviceInfo);
+
+      enableWifiScanning();
+      scanWifi();
+      listConfiguredNetworks();
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
     }
@@ -89,7 +95,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     for (final d in deviceInfo) {
       final device = NetworkDeviceInfo.fromJson(d);
 
-      if (device.interface == 'wlan0' && device.blocked == false) {
+      if (device.wireless && device.blocked == false) {
         if (mounted) {
           setState(() {
             _wifi = true;
@@ -140,6 +146,19 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     }
   }
 
+  void showBanner(String title) {
+    bannerText = title;
+    bannerVisible = true;
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          bannerVisible = false;
+          bannerText = "";
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -155,31 +174,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
               Expanded(child: sectionedListView()),
             ],
           ),
-          Align(
-            alignment: Alignment.topRight,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                setState(() {
-                  optionsMenu = true;
-                });
-              },
-              child: Container(
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: AppColors.primaryBlue),
-                margin:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                padding: EdgeInsets.symmetric(
-                    vertical: screenHeight * 0.015,
-                    horizontal: screenHeight * 0.013),
-                child: const Icon(
-                  Icons.more_horiz,
-                  color: Colors.white,
-                  size: 36,
-                ),
-              ),
-            ),
-          ),
           initialisingScreen
               ? Align(
                   alignment: Alignment.bottomRight,
@@ -193,8 +187,8 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                            SecondaryButton(
-                            title: 'Close',
+                          SecondaryButton(
+                            title: 'close'.tr(),
                             borderColor: AppColors.errorLight,
                             textColor: AppColors.errorLight,
                             onPressed: () {
@@ -203,7 +197,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                             width: screenWidth * 0.2,
                           ),
                           SizedBox(width: screenWidth * 0.03),
-
                           PrimaryButton(
                             title: 'Add LAN',
                             color: AppColors.errorLight,
@@ -234,121 +227,22 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                     ),
                   ),
                 )
-              : const PionixCloseButton(),
-          optionsMenu
-              ? Container(
-                  color: Colors.white.withOpacity(0.8),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      color: AppColors.primaryBlue,
-                      width: screenWidth * 0.4,
+              : Stack(children: [
+                  const PionixCloseButton(),
+                  Visibility(
+                      visible: bannerVisible,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.01),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () {
-                                setState(() {
-                                  optionsMenu = false;
-                                });
-                              },
-                              child: Container(
-                                alignment: Alignment.topRight,
-                                padding: EdgeInsets.symmetric(
-                                    vertical: screenHeight * 0.04,
-                                    horizontal: screenWidth * 0.01),
-                                child: Icon(
-                                  Icons.cancel,
-                                  color: Colors.white,
-                                  size: screenHeight * 0.08,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              child: SwitchSettingsButton(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: screenHeight * 0.03,
-                                    horizontal: screenHeight * 0.02),
-                                onChanged: (val) {
-                                  _wifi = val;
-                                  if (val) {
-                                    debugPrint('Unblocking the rfKill value');
-                                    unblockWifi();
-                                  } else {
-                                    debugPrint('blocking the rfKill value');
-                                    blockWifi();
-                                  }
-                                  setState(() {});
-                                },
-                                titleStyle: AppTextStyles.subTitle4.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                                title: 'Wifi',
-                                value: _wifi,
-                              ),
-                            ),
-                            SizedBox(
-                              height: screenHeight * 0.01,
-                            ),
-                            SizedBox(
-                              child: SwitchSettingsButton(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: screenHeight * 0.03,
-                                    horizontal: screenHeight * 0.02),
-                                onChanged: (val) {
-                                  _autoScan = val;
-                                  if (val) {
-                                    debugPrint('Enable wifi scanning');
-                                    enableWifiScanning();
-                                  } else {
-                                    debugPrint('disable wifi scanning');
-                                    disableWifiScanning();
-                                  }
-                                  setState(() {});
-                                },
-                                titleStyle: AppTextStyles.subTitle4.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                                title: 'Auto Scan',
-                                value: _autoScan,
-                              ),
-                            ),
-                            const Spacer(),
-                            SizedBox(
-                              child: ActionButtonWithTitleBar(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: screenHeight * 0.02),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: screenHeight * 0.03,
-                                    horizontal: screenHeight * 0.02),
-                                onPressed: () {
-                                  removeAllNetworks();
-                                },
-                                titleStyle: AppTextStyles.subTitle4.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                                title: 'Reset',
-                                icon: Icon(
-                                  Icons.reset_tv,
-                                  size: screenWidth * 0.03,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              : const SizedBox(),
+                          padding: EdgeInsets.all(8),
+                          child: Text(
+                            bannerText,
+                            style: AppTextStyles.heading3
+                                .copyWith(color: Colors.white),
+                          )))
+                ]),
           _showPasswordScreen
               ? WifiPasswordScreen(
+                  ssid: _selectedSSID,
+                  isSaved: getsavedNetworkFromSSID(_selectedSSID) != null,
                   passwordController: passwordController,
                   passwordFocusNode: passwordFocusNode,
                   onConnectPressed: () {
@@ -364,7 +258,19 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                       _showPasswordScreen = false;
                     });
                   },
-                )
+                  onForgetPressed: () async {
+                    final savedNetwork = getsavedNetworkFromSSID(_selectedSSID);
+                    if (savedNetwork != null) {
+                      await forgetConfirmationDialog(context,
+                          interface: savedNetwork.interface,
+                          networkId: savedNetwork.network_id,
+                          ssid: _selectedSSID);
+                    }
+                    passwordController.clear();
+                    setState(() {
+                      _showPasswordScreen = false;
+                    });
+                  })
               : const SizedBox(),
         ],
       ),
@@ -373,23 +279,39 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
 
   void connectToNetwork(BuildContext context) async {
     if (passwordController.text.isEmpty) {
-      debugPrint('Please enter passworkd');
+      debugPrint('Please enter passworkd'); // FIXME: add a dialog here
     } else {
+      // first try to remove an existing network
+      {
+        final savedNetwork = getsavedNetworkFromSSID(_selectedSSID);
+        if (savedNetwork != null) {
+          debugPrint(
+              "Removing existing network $_selectedSSID with network id ${savedNetwork.network_id}");
+          removeNetwork(savedNetwork.interface, savedNetwork.network_id);
+        }
+      }
       final psk = await generatePSK(_selectedSSID, passwordController.text);
       final payload =
           "{\"interface\": \"wlan0\", \"ssid\": \"$_selectedSSID\", \"psk\": \"$psk\"}";
       mqtt.publish(Topic.addNetwork, payload);
+      debugPrint("Added network $_selectedSSID");
       final savedNetwork = getsavedNetworkFromSSID(_selectedSSID);
-      final payloadSelectNetwork =
-          "{\"interface\": \"${savedNetwork.interface}\", \"network_id\": ${savedNetwork.network_id}}";
-      selectNetwork(payloadSelectNetwork);
-      // Navigator.pop(context);
+      if (savedNetwork != null) {
+        debugPrint(
+            "Selecting network $_selectedSSID with network id ${savedNetwork.network_id}");
+        final payloadSelectNetwork =
+            "{\"interface\": \"${savedNetwork.interface}\", \"network_id\": ${savedNetwork.network_id}}";
+        selectNetwork(payloadSelectNetwork);
+      }
     }
   }
 
-  SavedNetwork getsavedNetworkFromSSID(String ssid) {
+  SavedNetwork? getsavedNetworkFromSSID(String ssid) {
     final network =
-        configuredNetworks.firstWhere((element) => element.ssid == ssid);
+        configuredNetworks.firstWhereOrNull((element) => element.ssid == ssid);
+    if (network == null) {
+      return null;
+    }
     return SavedNetwork(
         network_id: network.networkId, interface: network.interface);
   }
@@ -398,7 +320,8 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     mqtt.publish(Topic.enableNetwork, payload);
   }
 
-  void disableNetwork(String payload) {
+  void disableNetwork(String interface, int networkId) {
+    final payload = "{\"interface\": \"wlan0\", \"network_id\": $networkId}";
     mqtt.publish(Topic.disableNetwork, payload);
   }
 
@@ -412,6 +335,10 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
 
   void disableWifiScanning() {
     mqtt.publish(Topic.disableWifiScanning, '0');
+  }
+
+  void checkOnlineStatus() {
+    mqtt.publish(Topic.checkOnlineStatus, '');
   }
 
   void blockWifi() {
@@ -435,7 +362,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     mqtt.publish(Topic.setInitialized, 'true');
   }
 
-  void removeNetworks(String interface, int networkId) {
+  void removeNetwork(String interface, int networkId) {
     final payload = "{\"interface\": \"wlan0\", \"network_id\": $networkId}";
     mqtt.publish(Topic.removeNetwork, payload);
   }
@@ -453,14 +380,40 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
         builder: (ctz) {
           return BasicDialog(
               title: cn.ssid,
-              positiveText: 'Disconnect',
-              negativeText: 'Cancel',
-              content: 'Disconnecting this network',
+              positiveText: 'disconnect'.tr(),
+              negativeText: 'cancel'.tr(),
+              content: 'disconnect_this_network'.tr(),
               onPositivePressed: () {
-                removeNetworks(cn.interface, cn.networkId);
+                disableNetwork(cn.interface, cn.networkId);
                 Navigator.pop(context);
-                PionixSnackBar.errorSnackBar(
-                    context, '$_selectedSSID disconnected');
+                showBanner('$_selectedSSID disconnected');
+              },
+              onNegativePressed: () {
+                Navigator.pop(context);
+              });
+        });
+  }
+
+  Future<void> forgetConfirmationDialog(BuildContext context,
+      {required String ssid,
+      required String interface,
+      required int networkId}) async {
+    showDialog(
+        context: context,
+        builder: (ctz) {
+          return BasicDialog(
+              title: ssid,
+              positiveText: 'forget'.tr(),
+              negativeText: 'cancel'.tr(),
+              content: 'forget_this_network'.tr(),
+              onPositivePressed: () {
+                removeNetwork(interface, networkId);
+
+                passwordController.clear();
+                setState(() {
+                  _showPasswordScreen = false;
+                });
+                Navigator.pop(context);
               },
               onNegativePressed: () {
                 Navigator.pop(context);
@@ -471,24 +424,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   Widget sectionedListView() {
     List<Widget> items = [];
     if (configuredNetworks.isNotEmpty) {
-      items.add(Center(
-        child: Padding(
-          padding:
-              EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.arrow_downward,
-                  color: AppColors.primaryBlue.withOpacity(0.1)),
-              Text(
-                'Pull to rescan',
-                style: AppTextStyles.subTitle4
-                    .copyWith(color: AppColors.primaryBlue.withOpacity(0.1)),
-              ),
-            ],
-          ),
-        ),
-      ));
       // items.add(const ListSectionLabel(label: 'Configured Networks'));
       final ids = configuredNetworks.map((e) => e.ssid).toSet();
       configuredNetworks.retainWhere((element) => ids.remove(element.ssid));
@@ -496,26 +431,32 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
         items.add(NetworkCardWidget(
           ssid: cn.ssid.isNotEmpty ? cn.ssid : 'Hidden SSID',
           isConnected: cn.isConnected,
+          isSaved: getsavedNetworkFromSSID(cn.ssid) != null,
           onPressed: () async {
             _selectedSSID = cn.ssid;
             if (cn.isConnected) {
               await confirmationDialog(context, cn: cn);
-              // removeNetworks(cn.interface, cn.networkId);
-              // PionixSnackBar.errorSnackBar(context, 'Removing Network');
+              // PionixSnackBar.infoSnackBar(context, 'Removing Network');
             } else {
               final payload =
                   "{\"interface\": \"${cn.interface}\", \"network_id\": ${cn.networkId}}";
               enableNetwork(payload);
               selectNetwork(payload);
-              Navigator.pop(context);
+              showBanner('Connecting to network $_selectedSSID');
             }
             setState(() {});
+          },
+          onSavedPressed: () {
+            debugPrint("on saved pressed");
+            _selectedSSID = cn.ssid;
+            setState(() {
+              _showPasswordScreen = true;
+            });
           },
         ));
       }
     }
     if (availableNetworks.isNotEmpty) {
-      // items.add(const ListSectionLabel(label: 'Available Networks'));
       final ids = availableNetworks.map((e) => e.ssid).toSet();
       availableNetworks.retainWhere((element) => ids.remove(element.ssid));
       availableNetworks
@@ -524,14 +465,17 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
         items.add(NetworkCardWidget(
           ssid: an.ssid.isNotEmpty ? an.ssid : 'Hidden SSID',
           isConnected: an.ssid == connectedSsid,
+          isSaved: getsavedNetworkFromSSID(an.ssid) != null,
           signalLevel: an.signal_level,
           strengthColor: checkSignalStrengthColor(an.signal_level),
-          // strength: checkSignalStrength(an.signal_level) +
-          //     ' ' +
-          //     '(' +
-          //     an.signal_level.toString() +
-          //     ')',
           onPressed: () {
+            _selectedSSID = an.ssid;
+            setState(() {
+              _showPasswordScreen = true;
+            });
+          },
+          onSavedPressed: () {
+            debugPrint("on saved pressed");
             _selectedSSID = an.ssid;
             setState(() {
               _showPasswordScreen = true;
@@ -543,36 +487,72 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
         height: screenHeight * 0.3,
       ));
     }
-    return _wifi
-        ? RefreshIndicator(
-            onRefresh: () async {
-              scanWifi();
-            },
+    return Column(children: [
+      Column(
+        children: [
+          Container(
+              decoration: const BoxDecoration(
+                color: AppColors.primaryBlue,
+              ),
+              child: Container(
+                  padding: const EdgeInsets.only(
+                    left: 16.0,
+                    right: 8.0,
+                  ),
+                  child: SizedBox(
+                      height: 60,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'wifi'.tr(),
+                            style: AppTextStyles.heading3.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          Switch(
+                            activeColor: AppColors.primaryAmber,
+                            value: _wifi,
+                            onChanged: (val) {
+                              _wifi = val;
+                              if (val) {
+                                debugPrint('Unblocking the rfKill value');
+                                unblockWifi();
+                                enableWifiScanning();
+                              } else {
+                                debugPrint('blocking the rfKill value');
+                                blockWifi();
+                                disableWifiScanning();
+                              }
+                              setState(() {});
+                            },
+                          ),
+                        ],
+                      )))),
+          if (_wifi)
+            SizedBox(
+                width: screenWidth,
+                child: LinearProgressIndicator(
+                  color: AppColors.primaryBlue,
+                  minHeight: 5,
+                  backgroundColor: Colors.grey.shade300,
+                )),
+        ],
+      ),
+      if (_wifi)
+        Expanded(
             child: ListView.builder(
                 itemCount: items.length,
                 itemBuilder: (builder, index) {
                   return items[index];
-                }),
-          )
-        : Center(
-            child: Container(
-              alignment: Alignment.center,
-              height: MediaQuery.of(context).size.height * 0.3,
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  _wifi = true;
-                  unblockWifi();
-                  scanWifi();
-                  setState(() {});
-                },
-                child: Text(
-                  'Tap here to turn the Wifi ON'.toUpperCase(),
-                  style: AppTextStyles.subTitle4
-                      .copyWith(color: AppColors.primaryAmber),
-                ),
-              ),
-            ),
-          );
+                }))
+      else
+        Center(
+            child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                child: Text('please_enable_wifi'.tr(),
+                    style: AppTextStyles.heading3)))
+    ]);
   }
 }

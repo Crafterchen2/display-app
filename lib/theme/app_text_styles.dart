@@ -71,7 +71,7 @@ class AppTextStyles {
   static const TextStyle digitsSubTitle2 = TextStyle(
     color: AppColors.primaryBlue,
     fontFamily: 'PTSans',
-    fontSize: 13,
+    fontSize: 20,
     fontWeight: FontWeight.w400,
     textBaseline: TextBaseline.alphabetic,
     fontFeatures: [
@@ -93,7 +93,7 @@ class AppTextStyles {
   static const TextStyle subTitle2 = TextStyle(
     color: AppColors.primaryBlue,
     fontFamily: 'Urbanist',
-    fontSize: 13,
+    fontSize: 20,
     fontWeight: FontWeight.w400,
     textBaseline: TextBaseline.alphabetic,
     fontStyle: FontStyle.normal,
@@ -104,6 +104,16 @@ class AppTextStyles {
     color: AppColors.primaryBlue,
     fontFamily: 'Urbanist',
     fontSize: 24,
+    fontWeight: FontWeight.w400,
+    textBaseline: TextBaseline.alphabetic,
+    fontStyle: FontStyle.normal,
+    letterSpacing: 0.15,
+  );
+
+  static const TextStyle horizontalMenuButton = TextStyle(
+    color: AppColors.primaryBlue,
+    fontFamily: 'Urbanist',
+    fontSize: 35,
     fontWeight: FontWeight.w400,
     textBaseline: TextBaseline.alphabetic,
     fontStyle: FontStyle.normal,

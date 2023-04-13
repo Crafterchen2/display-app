@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:pionixbox/data/models/application_info.dart';
 import 'package:pionixbox/main.dart';
@@ -102,12 +103,7 @@ class _LandingScreenState extends State<LandingScreen> {
   void applicationInfo(String message) {
     final msg = jsonDecode(message);
     _appInfo = ApplicationInfo.fromJson(msg);
-    debugPrint('\n\nCurrent Lang: ${_appInfo.current_language}');
-    debugPrint('Mode: ${_appInfo.mode}');
-    debugPrint('Default Lang: ${_appInfo.default_language}');
-    debugPrint('INIT: ${_appInfo.initialized}\n\n');
     if (_appInfo.current_language == 'unknown') {
-      //
       updateDefaultLanguage();
       updateCurrentLanguage();
     }
@@ -202,7 +198,7 @@ class InitializingProgressWidget extends StatelessWidget {
               top: height * 0.02,
             ),
             child: Text(
-              'INITIALIZING...',
+              'initializing'.tr(),
               style:
                   AppTextStyles.subTitle4.copyWith(fontWeight: FontWeight.w700),
             ),

@@ -1,34 +1,23 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/data/models/session_info.dart';
+import 'package:pionixbox/data/providers/connector_provider.dart';
+import 'package:pionixbox/mqtt.dart';
 
-import '../../mqtt.dart';
-import 'app_repo_provider.dart';
+SessionInfo parseSessionInfo(String sessionInfo) {
+  return SessionInfo.fromJson(jsonDecode(sessionInfo));
+}
 
-final sessionInfoProvider =
-    StreamProvider.autoDispose<SessionInfo>((ref) async* {
-  // final repo = ref.read(appRepoProvider);
-  debugPrint("Values starting");
+final sessionInfoStreamProvider = StreamProvider<SessionInfo>((ref) async* {
   final mqtt = MQTT();
   await mqtt.connect();
-  mqtt.subscribe("everest_api/evse_manager/var/session_info", (m) async* {
-    debugPrint("Values starting");
-    try {
-      yield jsonDecode(m);
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  });
-
-  // await for (final val in result) {
-  //   debugPrint(val.toString());
-  //   final s = json.decode(val.toString()) as Map<String, dynamic>;
-  //   debugPrint("Values Mid");
-  //
-  //   final obj = SessionInfo.fromJson(s);
-  //   debugPrint("Values ending$obj");
-  //   yield obj;
-  // }
+  final connector = ref.watch(connectorProvider);
+  final stream =
+      mqtt.subscribeStream("everest_api/" + connector + "/var/session_info");
+  await for (final message in stream) {
+    // debugPrint("Received session info");
+    yield parseSessionInfo(message);
+  }
 });

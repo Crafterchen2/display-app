@@ -56,11 +56,11 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    String currentSliderLabel = widget.current.toStringAsFixed(1);
+    String currentSliderLabel = widget.current.toStringAsFixed(1) + " A";
 
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.05),
+          horizontal: MediaQuery.of(context).size.width * 0.01),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -92,9 +92,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                   ],
                 ),
               ),
-              if (widget.state != ChargingState.authRequired &&
-                  widget.current >= widget.minCurrentA &&
-                  widget.current <= widget.maxCurrentA)
+              // if (widget.state != ChargingState.authRequired &&
+              //     widget.current >= widget.minCurrentA &&
+              //     widget.current <= widget.maxCurrentA)
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.3,
                   child: Column(
@@ -102,8 +102,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "Max Current",
+                          Text(
+                            'charge_upto'.tr() + ' ',
                             style: AppTextStyles.heading3,
                           ),
                           Text(
@@ -113,7 +113,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                     const SizedBox(
                         height: 12,
                       ),
                       Slider(
@@ -142,13 +142,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'status'.tr(),
-                      style: AppTextStyles.subTitle4,
-                    ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.5,
-                      height: MediaQuery.of(context).size.height * 0.2,
+                      height: MediaQuery.of(context).size.height * 0.3,
                       child: Text(
                         chargingStateTitle(widget.state,
                                 stateInfo: widget.stateInfo)
@@ -175,7 +171,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                   ],
                 ),
                 widget.state == ChargingState.authRequired
-                    ? SizedBox()
+                    ? const SizedBox()
                     : SizedBox(
                         width: MediaQuery.of(context).size.width * 0.52,
                         child: Row(
@@ -199,59 +195,61 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                   style: AppTextStyles.heading3,
                                 ),
                                 SizedBox(height: height * 0.02),
-                                Row(
-                                  children: [
-                                    Text(
-                                      widget.online
-                                          ? 'online'.tr()
-                                          : 'offline'.tr(),
-                                      style: AppTextStyles.heading3,
-                                    ),
-                                    Container(
-                                      height: 24,
-                                      width: 24,
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: width * 0.02),
-                                      decoration: BoxDecoration(
-                                          color: widget.online
-                                              ? AppColors.successLight
-                                              : Colors.redAccent,
-                                          shape: BoxShape.circle),
-                                    ),
-                                  ],
-                                ),
                               ],
                             ),
                             const Spacer(),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.35,
+                              // width: MediaQuery.of(context).size.width * 0.35,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    widget.energy.toStringAsFixed(2) + ' kWh',
+                                    widget.energy.toStringAsFixed(2),
                                     textAlign: TextAlign.start,
                                     style: AppTextStyles.digitsHeading3,
                                   ),
                                   SizedBox(height: height * 0.02),
                                   Text(
-                                    widget.power.toStringAsFixed(2) + ' kW',
+                                    widget.power.toStringAsFixed(2),
                                     textAlign: TextAlign.start,
                                     style: AppTextStyles.digitsHeading3,
                                   ),
                                   SizedBox(height: height * 0.02),
                                   Text(
-                                    widget.duration + ' h',
+                                    widget.duration,
                                     style: AppTextStyles.digitsHeading3,
                                   ),
                                   SizedBox(height: height * 0.02),
-                                  Text(
-                                    dateTimeFormat.format(DateTime.now()),
-                                    style: AppTextStyles.digitsHeading3,
-                                  ),
                                 ],
                               ),
                             ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      ' kWh',
+                                      style: AppTextStyles.digitsHeading3,
+                                    )),
+                                SizedBox(height: height * 0.02),
+                                const Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      ' kW',
+                                      style: AppTextStyles.digitsHeading3,
+                                    )),
+                                SizedBox(height: height * 0.02),
+                                const Text(
+                                  ' h',
+                                  style: AppTextStyles.digitsHeading3,
+                                ),
+                                SizedBox(height: height * 0.02),
+                              ],
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.05,
+                            )
                           ],
                         ),
                       ),
