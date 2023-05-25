@@ -8,6 +8,7 @@ class ChargingState {
   static const String chargingPausedEVSE = 'ChargingPausedEVSE';
   static const String error = 'Error';
   static const String permanentFault = 'PermanentFault';
+  static const String waitEnergy = 'WaitingForEnergy';
 }
 
 class ErrorStateInfo {

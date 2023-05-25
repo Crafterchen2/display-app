@@ -12,6 +12,7 @@
   "offline": "Offline",
   "unplugged": "Unplugged",
   "charging": "Charging",
+  "wait_for_energy": "Waiting for Energy",
   "auth_required": "Auth Required",
   "disable": "Disable",
   "plugged_in": "PluggedIn",

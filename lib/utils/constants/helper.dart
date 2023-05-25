@@ -52,6 +52,8 @@ String chargingStateTitle(String state, {String stateInfo = ''}) {
       return errorStateInfo(stateInfo);
     case ChargingState.permanentFault:
       return 'permanent_fault'.tr();
+    case ChargingState.waitEnergy:
+      return 'wait_for_energy'.tr();
     default:
       return 'unplugged'.tr();
   }

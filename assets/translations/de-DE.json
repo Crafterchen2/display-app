@@ -11,6 +11,7 @@
   "online": "Online",
   "offline": "Offline",
   "unplugged": "Ausgesteckt",
+  "wait_for_energy": "Warte auf Energie",
   "charging": "Laden",
   "auth_required": "Authorisierung benötigt",
   "disable": "Deaktivieren",
