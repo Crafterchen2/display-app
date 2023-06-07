@@ -88,5 +88,11 @@
   "network_interface": "Netzwerkschnittstelle",
   "reboot": "Neu starten",
   "reboot_charger": "BelayBox neu starten",
-  "reboot_charger_explanation": "Hiermit wird die BelayBox neu gestartet. Möchten Sie das wirklich tun?"
+  "reboot_charger_explanation": "Hiermit wird die BelayBox neu gestartet. Möchten Sie das wirklich tun?",
+  "private_mode": "Privater Ladestationsmodus",
+  "private_mode_ok": "Privat Modus aktivieren",
+  "private_mode_explanation": "Im privaten Ladestationsmodus können Einstellungen modifiziert, Netzwerkeinstellungen geändet und die Station neu gestartet werden.",
+  "public_mode": "Öffentlicher Ladestationsmodus",
+  "public_mode_ok": "Öffentlichen Modus aktivieren",
+  "public_mode_explanation": "Im öffentlichen Ladestationsmodus ist die Display Applikation stark eingeschränkt und erlaubt nur das ändern der Sprache. Diese Einstellung kann über die Applikation nicht rückgängig gemacht werden und verlangt einen manuellen Eingriff in die Stationseinstellungen. Möchten Sie den öffentlichen Ladestationsmodus wirklich aktivieren?"
 }

@@ -88,5 +88,11 @@
   "network_interface": "Network interface",
   "reboot": "Reboot",
   "reboot_charger": "Reboot BelayBox",
-  "reboot_charger_explanation": "This reboots your BelayBox, do you really want to do this?"
+  "reboot_charger_explanation": "This reboots your BelayBox, do you really want to do this?",
+  "private_mode": "Private charging station mode",
+  "private_mode_ok": "Enable private mode",
+  "private_mode_explanation": "In private charging station mode you can modify settings, change network configuration, reboot the station, etc.",
+  "public_mode": "Public charging station mode",
+  "public_mode_ok": "Enable private mode",
+  "public_mode_explanation": "In public charging station mode your display application will be locked down and you will only be able to change the language. This setting cannot be reversed via the application and requires manual intervention. Do you really want to enable public charging station mode?"
 }

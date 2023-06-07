@@ -6,6 +6,7 @@ import 'package:pionixbox/data/models/application_info.dart';
 import 'package:pionixbox/main.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
+import 'package:pionixbox/widgets/dialogs.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
@@ -40,7 +41,8 @@ class _LandingScreenState extends State<LandingScreen> {
       await mqtt.connect();
       getAppInfo(context, mqtt);
     } catch (e) {
-      debugPrint('connecting MQTT server/ gettting app info failed with exception: $e');
+      debugPrint(
+          'connecting MQTT server/ gettting app info failed with exception: $e');
       setState(() {
         // _showProgress = false;
       });
@@ -64,31 +66,21 @@ class _LandingScreenState extends State<LandingScreen> {
             Expanded(
               flex: 2,
               child: Padding(
-                padding: EdgeInsets.only(top: screenHeight * 0.1),
+                padding: EdgeInsets.only(top: screenHeight * 0.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SquareButtonWidget(
-                        text: 'Private',
+                        text: 'private_mode'.tr(),
                         onPressed: () {
-                          setMode('private');
-                          Navigator.of(context).pushNamed(
-                              AppRoutes.chargingDashboardScreen,
-                              arguments: {
-                                'private_mode': true,
-                              });
+                          privateConfirmationDialog(context);
                         }),
                     SizedBox(width: screenWidth * 0.1),
                     SquareButtonWidget(
-                        text: 'Public',
+                        text: 'public_mode'.tr(),
                         onPressed: () {
-                          setMode('public');
-                          Navigator.of(context).pushNamed(
-                              AppRoutes.chargingDashboardScreen,
-                              arguments: {
-                                'private_mode': false,
-                              });
+                          publicConfirmationDialog(context);
                         })
                   ],
                 ),
@@ -140,6 +132,56 @@ class _LandingScreenState extends State<LandingScreen> {
     mqtt.publish(Topic.setAppMode, mode);
     setState(() {});
   }
+
+  Future<void> privateConfirmationDialog(
+    BuildContext context,
+  ) async {
+    showDialog(
+        context: context,
+        builder: (ctz) {
+          return BasicDialog(
+              title: 'private_mode'.tr(),
+              positiveText: 'private_mode_ok'.tr(),
+              negativeText: 'cancel'.tr(),
+              content: 'private_mode_explanation'.tr(),
+              onPositivePressed: () {
+                Navigator.pop(context);
+                setMode('private');
+                Navigator.of(context)
+                    .pushNamed(AppRoutes.chargingDashboardScreen, arguments: {
+                  'private_mode': true,
+                });
+              },
+              onNegativePressed: () {
+                Navigator.pop(context);
+              });
+        });
+  }
+
+  Future<void> publicConfirmationDialog(
+    BuildContext context,
+  ) async {
+    showDialog(
+        context: context,
+        builder: (ctz) {
+          return BasicDialog(
+              title: 'public_mode'.tr(),
+              positiveText: 'public_mode_ok'.tr(),
+              negativeText: 'cancel'.tr(),
+              content: 'public_mode_explanation'.tr(),
+              onPositivePressed: () {
+                Navigator.pop(context);
+                setMode('public');
+                Navigator.of(context)
+                    .pushNamed(AppRoutes.chargingDashboardScreen, arguments: {
+                  'private_mode': false,
+                });
+              },
+              onNegativePressed: () {
+                Navigator.pop(context);
+              });
+        });
+  }
 }
 
 class SquareButtonWidget extends StatelessWidget {
@@ -165,6 +207,7 @@ class SquareButtonWidget extends StatelessWidget {
         ),
         child: Center(
           child: Text(text,
+              textAlign: TextAlign.center,
               style: AppTextStyles.heading6.copyWith(color: Colors.white)),
         ),
       ),
