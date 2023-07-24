@@ -1,12 +1,14 @@
+import 'dart:math';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/theme/app_colors.dart';
+import 'package:pionixbox/utils/enums.dart';
 
 import '../theme/app_text_styles.dart';
 import '../utils/constants/helper.dart';
 import '../utils/constants/keys.dart';
-import '../utils/datetime_formats.dart';
 import 'buttons.dart';
 import 'charging_animation_widget.dart';
 
@@ -27,6 +29,8 @@ class SessionInfoBody extends StatefulWidget {
   final VoidCallback onPauseCharging;
   final VoidCallback onResumeCharging;
   final ValueChanged onCurrentChanged;
+  final ChargingMode chargingMode;
+  final double? soc;
 
   const SessionInfoBody({
     Key? key,
@@ -45,6 +49,8 @@ class SessionInfoBody extends StatefulWidget {
     required this.maxCurrentA,
     required this.minCurrentA,
     required this.stateInfo,
+    required this.chargingMode,
+    this.soc,
   }) : super(key: key);
 
   @override
@@ -54,9 +60,9 @@ class SessionInfoBody extends StatefulWidget {
 class _SessionInfoBodyState extends State<SessionInfoBody> {
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    String currentSliderLabel = widget.current.toStringAsFixed(1) + " A";
+    String currentSliderLabel =
+        min(widget.current, widget.maxCurrentA).toStringAsFixed(1) + " A";
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -69,67 +75,69 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             children: [
               _buildImageWidget(context),
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.15,
-                child: Column(
-                  children: [
-                    if (widget.state == ChargingState.charging)
-                      SecondaryButton(
-                          width: MediaQuery.of(context).size.width * 0.32,
-                          title: 'pause'.tr(),
-                          onPressed: widget.onPauseCharging,
-                          textColor: AppColors.primaryAmber),
-                    if (pauseOrResumeChargingTitle(widget.state) !=
-                            ChargingState.charging &&
-                        widget.state != ChargingState.authRequired &&
-                        pauseOrResumeChargingTitle(widget.state) != '')
-                      PrimaryButton(
-                        width: MediaQuery.of(context).size.width * 0.32,
-                        title: 'resume'.tr(),
-                        onPressed: widget.onResumeCharging,
-                        textColor: Colors.white,
-                      ),
-                  ],
-                ),
-              ),
-              // if (widget.state != ChargingState.authRequired &&
-              //     widget.current >= widget.minCurrentA &&
-              //     widget.current <= widget.maxCurrentA)
+              if (widget.chargingMode == ChargingMode.unknown ||
+                  widget.chargingMode == ChargingMode.basicAC)
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.3,
+                  height: MediaQuery.of(context).size.height * 0.15,
                   child: Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'charge_upto'.tr() + ' ',
-                            style: AppTextStyles.heading3,
-                          ),
-                          Text(
-                            currentSliderLabel,
-                            textAlign: TextAlign.start,
-                            style: AppTextStyles.digitsHeading3,
-                          ),
-                        ],
-                      ),
-                     const SizedBox(
-                        height: 12,
-                      ),
-                      Slider(
-                          min: widget.minCurrentA,
-                          max: widget.maxCurrentA,
-                          label: currentSliderLabel,
-                          activeColor: AppColors.primaryAmber,
-                          inactiveColor: Colors.grey,
-                          onChanged: (val) {
-                            setState(() {});
-                            widget.onCurrentChanged(val);
-                          },
-                          value: widget.current),
+                      if (widget.state == ChargingState.charging)
+                        SecondaryButton(
+                            width: MediaQuery.of(context).size.width * 0.32,
+                            title: 'pause'.tr(),
+                            onPressed: widget.onPauseCharging,
+                            textColor: AppColors.primaryAmber),
+                      if (pauseOrResumeChargingTitle(widget.state) !=
+                              ChargingState.charging &&
+                          widget.state != ChargingState.authRequired &&
+                          pauseOrResumeChargingTitle(widget.state) != '')
+                        PrimaryButton(
+                          width: MediaQuery.of(context).size.width * 0.32,
+                          title: 'resume'.tr(),
+                          onPressed: widget.onResumeCharging,
+                          textColor: Colors.white,
+                        ),
                     ],
                   ),
                 ),
+              // if (widget.state != ChargingState.authRequired &&
+              //     widget.current >= widget.minCurrentA &&
+              //     widget.current <= widget.maxCurrentA)
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.3,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'charge_upto'.tr() + ' ',
+                          style: AppTextStyles.heading3,
+                        ),
+                        Text(
+                          currentSliderLabel,
+                          textAlign: TextAlign.start,
+                          style: AppTextStyles.digitsHeading3,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Slider(
+                        min: widget.minCurrentA,
+                        max: widget.maxCurrentA,
+                        label: currentSliderLabel,
+                        activeColor: AppColors.primaryAmber,
+                        inactiveColor: Colors.grey,
+                        onChanged: (val) {
+                          setState(() {});
+                          widget.onCurrentChanged(val);
+                        },
+                        value: min(widget.current, widget.maxCurrentA)),
+                  ],
+                ),
+              ),
             ],
           ),
           GestureDetector(
@@ -155,7 +163,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                       ),
                     ),
                     widget.state == ChargingState.authRequired
-                        ? SizedBox()
+                        ? const SizedBox()
                         : SizedBox(height: height * 0.1),
                     widget.state == ChargingState.authRequired
                         ? Text(
@@ -275,7 +283,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                   child: getChargingSessionWidgetByState(
                       widget.state,
                       MediaQuery.of(context).size.height * 0.2,
-                      MediaQuery.of(context).size.width * 0.4)),
+                      MediaQuery.of(context).size.width * 0.4,
+                      widget.soc)),
               // if (widget.state == 'ChargingPausedEVSE' ||
               //     widget.state == 'ChargingPausedEV')
               // SvgPicture.asset(
@@ -294,9 +303,33 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
 }
 
 Widget getChargingSessionWidgetByState(
-    String state, double height, double width) {
+    String state, double height, double width, double? soc) {
   if (state == 'Charging') {
-    return ChargingAnimationWidget();
+    return Stack(alignment: Alignment.bottomCenter, children: <Widget>[
+      ChargingAnimationWidget(),
+      if (soc != null)
+        Stack(
+          children: <Widget>[
+            Text(
+              soc.toStringAsFixed(0) + "%",
+              style: TextStyle(
+                fontSize: 60,
+                foreground: Paint()
+                  ..style = PaintingStyle.stroke
+                  ..strokeWidth = 8
+                  ..color = AppColors.primaryBlue,
+              ),
+            ),
+            Text(
+              soc.toStringAsFixed(0) + "%",
+              style: const TextStyle(
+                fontSize: 60,
+                color: AppColors.white,
+              ),
+            ),
+          ],
+        )
+    ]);
   } else {
     return SvgPicture.asset(
       getChargingSessionIconByState(state),

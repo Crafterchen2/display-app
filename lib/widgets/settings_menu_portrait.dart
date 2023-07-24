@@ -1,24 +1,21 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pionixbox/main.dart';
 import 'package:pionixbox/widgets/simulation_panel.dart';
 import 'package:pionixbox/screens/system_info.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/utils/routing/app_router.dart';
 import 'package:pionixbox/widgets/settings_menu_button.dart';
 
 class SettingsMenuPortrait extends StatelessWidget {
-  final bool setup_wifi;
-  final bool setup_simulation;
+  final bool setupWifi;
+  final bool setupSimulation;
   final bool localization;
   final Future<void> Function(BuildContext) resetInitialised;
   final Future<void> Function(BuildContext) rebootCharger;
 
   const SettingsMenuPortrait({
     Key? key,
-    required this.setup_wifi,
-    required this.setup_simulation,
+    required this.setupWifi,
+    required this.setupSimulation,
     required this.localization,
     required this.resetInitialised,
     required this.rebootCharger,
@@ -47,7 +44,7 @@ class SettingsMenuPortrait extends StatelessWidget {
               });
             },
           ),
-          if (setup_simulation)
+          if (setupSimulation)
             SettingMenuButton(
               icon: Icons.settings,
               title: tr('simulation'),

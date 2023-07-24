@@ -11,7 +11,6 @@ import 'package:pionixbox/widgets/restart_widget.dart';
 late double screenWidth;
 late double screenHeight;
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
@@ -31,18 +30,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([]);
-    if(screenWidth > screenHeight){
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    if (screenWidth > screenHeight) {
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.landscapeLeft,
         DeviceOrientation.landscapeRight,
       ]);
-    }else{
+    } else {
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitDown,
         DeviceOrientation.portraitUp,
       ]);
     }
+
     /// uncomment below section to fix the orientation just in portrait mode
 
     // SystemChrome.setPreferredOrientations([

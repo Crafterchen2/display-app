@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/data/models/network_device_info.dart';
@@ -26,7 +25,7 @@ class _AboutState extends ConsumerState<About> {
   List<NetworkDeviceInfo> devices = [];
   ReleaseInfo releaseInfo = ReleaseInfo(
       "unknown".tr(), DateTime.now().toUtc(), "version_unknown".tr(), []);
-  String release_metadata_file = '';
+  String releaseMetadataFile = '';
 
   @override
   void initState() {
@@ -35,7 +34,7 @@ class _AboutState extends ConsumerState<About> {
 
   void _read() async {
     try {
-      final File file = File(release_metadata_file);
+      final File file = File(releaseMetadataFile);
       releaseInfo = ReleaseInfo.fromJson(jsonDecode(await file.readAsString()));
       setState(() {
         releaseInfo;
@@ -52,10 +51,10 @@ class _AboutState extends ConsumerState<About> {
         .whenOrNull(data: (data) => data);
     if (appInfo != null) {
       if (appInfo.release_metadata_file != null &&
-          appInfo.release_metadata_file != release_metadata_file) {
-        release_metadata_file =
-            appInfo.release_metadata_file ?? release_metadata_file;
-        debugPrint("metadata file: $release_metadata_file");
+          appInfo.release_metadata_file != releaseMetadataFile) {
+        releaseMetadataFile =
+            appInfo.release_metadata_file ?? releaseMetadataFile;
+        debugPrint("metadata file: $releaseMetadataFile");
         _read();
       }
     }

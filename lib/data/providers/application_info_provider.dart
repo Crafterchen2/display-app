@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/data/models/application_info.dart';
 import 'package:pionixbox/mqtt.dart';

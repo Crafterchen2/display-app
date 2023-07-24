@@ -37,7 +37,9 @@ class BasicDialog extends StatelessWidget {
               style:
                   const TextStyle(color: AppColors.primaryBlue, fontSize: 36),
             )),
-            SizedBox(width: 50,),
+        const SizedBox(
+          width: 50,
+        ),
         TextButton(
             // color: Colors.redAccent,
             onPressed: onPositivePressed,

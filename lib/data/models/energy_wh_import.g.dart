@@ -8,9 +8,9 @@ part of 'energy_wh_import.dart';
 
 EnergyWhImport _$EnergyWhImportFromJson(Map<String, dynamic> json) =>
     EnergyWhImport(
-      (json['L1'] as num).toDouble(),
-      (json['L2'] as num).toDouble(),
-      (json['L3'] as num).toDouble(),
+      (json['L1'] as num?)?.toDouble(),
+      (json['L2'] as num?)?.toDouble(),
+      (json['L3'] as num?)?.toDouble(),
       (json['total'] as num).toDouble(),
     );
 

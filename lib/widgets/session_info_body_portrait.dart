@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -155,7 +153,7 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(label, style: AppTextStyles.heading2),
-          SizedBox(
+          const SizedBox(
             height: 12,
           ),
           SvgPicture.asset(
@@ -164,7 +162,7 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
             width: screenWidth * 0.1,
             color: AppColors.primaryBlue,
           ),
-          SizedBox(
+          const SizedBox(
             height: 12,
           ),
           Text(
@@ -264,7 +262,7 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
             if (widget.state != ChargingState.charging &&
                     widget.state == ChargingState.authRequired ||
                 pauseOrResumeChargingTitle(widget.state) == '')
-              SizedBox(
+              const SizedBox(
                 height: 64,
               )
           ],
@@ -293,39 +291,6 @@ class _SessionInfoBodyPortraitState extends State<SessionInfoBodyPortrait> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildInfoCard(BuildContext context,
-      {required String title, required String value}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Text(
-              title,
-              style: AppTextStyles.heading3,
-            ),
-            if (title == 'Online' || title == 'Offline')
-              Container(
-                height: 20,
-                width: 20,
-                margin: const EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                    color: widget.online
-                        ? AppColors.successLight
-                        : Colors.redAccent,
-                    shape: BoxShape.circle),
-              ),
-          ],
-        ),
-        Text(
-          value,
-          textAlign: TextAlign.start,
-          style: AppTextStyles.digitsHeading3,
-        ),
-      ],
     );
   }
 }

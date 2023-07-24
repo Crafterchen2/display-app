@@ -66,8 +66,6 @@ class _NetworkInfoState extends State<NetworkInfo> {
 
   @override
   Widget build(BuildContext context) {
-    final buttonWidth = MediaQuery.of(context).size.width * 0.4;
-    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -155,7 +153,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                           .copyWith(color: AppColors.primaryBlue),
                     );
                   } else {
-                    return null;
+                    return const SizedBox.shrink();
                   }
                 }),
           ),
@@ -173,7 +171,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                           .copyWith(color: AppColors.primaryBlue),
                     );
                   } else {
-                    return null;
+                    return const SizedBox.shrink();
                   }
                 }),
           ),

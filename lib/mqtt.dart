@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
@@ -45,6 +46,7 @@ class MQTT {
         }
       });
     } on NoConnectionException catch (e) {
+      debugPrint(e.toString());
       _client.disconnect();
     }
   }

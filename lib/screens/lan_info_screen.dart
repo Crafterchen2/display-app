@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:pionixbox/data/models/network_device_info.dart';
 import 'package:pionixbox/main.dart';
 import 'package:pionixbox/screens/landing_screen.dart';
-import 'package:pionixbox/screens/charging_dashboard_screen.dart';
-import 'package:pionixbox/screens/wifi_setup_screen.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/widgets/buttons.dart';
@@ -79,7 +77,6 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
         color: Colors.white,

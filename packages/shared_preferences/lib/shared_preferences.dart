@@ -30,6 +30,7 @@ class SharedPreferences {
     return _completer!.future;
   }
 
+  // ignore: unused_field
   final Map<String, Object> _preferenceCache;
 
   String? getString(String key) => null;

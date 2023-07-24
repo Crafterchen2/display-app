@@ -39,7 +39,9 @@ class _IconTextFieldState extends State<IconTextField> {
       child: Row(
         children: <Widget>[
           widget.icon,
-          const SizedBox(width: 16,),
+          const SizedBox(
+            width: 16,
+          ),
           Expanded(
             child: TextField(
               textAlignVertical: TextAlignVertical.center,
@@ -52,7 +54,7 @@ class _IconTextFieldState extends State<IconTextField> {
                 color: AppColors.primaryBlue,
               ),
               decoration: InputDecoration(
-                alignLabelWithHint: true,
+                  alignLabelWithHint: true,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   hintText: widget.hintText,

@@ -12,11 +12,16 @@ class LocaleJsonConverter implements JsonConverter<Locale, String> {
   @override
   Locale fromJson(String json) {
     Map<String, dynamic> jsonLocale = jsonDecode(json);
-    return Locale.fromSubtags(languageCode: jsonLocale['languageCode']!, countryCode: jsonLocale['countryCode']);
+    return Locale.fromSubtags(
+        languageCode: jsonLocale['languageCode']!,
+        countryCode: jsonLocale['countryCode']);
   }
 
   @override
   String toJson(Locale locale) {
-    return jsonEncode({'languageCode': locale.languageCode, 'countryCode': locale.countryCode});
+    return jsonEncode({
+      'languageCode': locale.languageCode,
+      'countryCode': locale.countryCode
+    });
   }
 }

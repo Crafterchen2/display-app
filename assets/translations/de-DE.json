@@ -94,5 +94,14 @@
   "private_mode_explanation": "Im privaten Ladestationsmodus können Einstellungen modifiziert, Netzwerkeinstellungen geändet und die Station neu gestartet werden.",
   "public_mode": "Öffentlicher Ladestationsmodus",
   "public_mode_ok": "Öffentlichen Modus aktivieren",
-  "public_mode_explanation": "Im öffentlichen Ladestationsmodus ist die Display Applikation stark eingeschränkt und erlaubt nur das ändern der Sprache. Diese Einstellung kann über die Applikation nicht rückgängig gemacht werden und verlangt einen manuellen Eingriff in die Stationseinstellungen. Möchten Sie den öffentlichen Ladestationsmodus wirklich aktivieren?"
+  "public_mode_explanation": "Im öffentlichen Ladestationsmodus ist die Display Applikation stark eingeschränkt und erlaubt nur das ändern der Sprache. Diese Einstellung kann über die Applikation nicht rückgängig gemacht werden und verlangt einen manuellen Eingriff in die Stationseinstellungen. Möchten Sie den öffentlichen Ladestationsmodus wirklich aktivieren?",
+  "session_details": "Session Details",
+  "session_details_graphs": "Diagramme",
+  "telemetry": "Telemetrie",
+  "fan": "Lüfter",
+  "rcd_current": "RCD Strom",
+  "relais_on": "Relais an",
+  "supply_voltage_12V": "Versorgungsspannung 12V",
+  "supply_voltage_minus_12V": "Versorgungsspannung -12V",
+  "temperature": "Temperatur"
 }

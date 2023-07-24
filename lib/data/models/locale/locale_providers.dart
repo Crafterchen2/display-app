@@ -10,8 +10,6 @@ final platformLocaleProvider = Provider<Locale>((_) {
   // Get the platform language using platform specific implementations
   Locale _platformLocale = PlatformLocale().getPlatformLocale();
 
-  print("Retrieved platform locale: " + _platformLocale.toString());
-
   return _platformLocale;
 });
 

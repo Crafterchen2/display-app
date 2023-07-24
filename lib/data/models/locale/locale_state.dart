@@ -15,12 +15,14 @@ part 'locale_state.g.dart';
 // Fallback Locale
 const Locale fallbackLocale = Locale('en', 'US');
 
-final localeStateProvider = StateNotifierProvider<LocaleStateNotifier, LocaleState>((ref) => LocaleStateNotifier(ref));
+final localeStateProvider =
+    StateNotifierProvider<LocaleStateNotifier, LocaleState>(
+        (ref) => LocaleStateNotifier(ref));
 
 @freezed
 class LocaleState with _$LocaleState, PersistentState<LocaleState> {
   const factory LocaleState({
-    @LocaleJsonConverter() @Default(fallbackLocale) @JsonKey() Locale locale,
+    @LocaleJsonConverter() @Default(fallbackLocale) Locale locale,
   }) = _LocaleState;
 
   // Allow custom getters / setters
@@ -36,7 +38,6 @@ class LocaleState with _$LocaleState, PersistentState<LocaleState> {
     try {
       return await JsonLocalSync.save(key: _localStorageKey, value: value);
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -48,7 +49,6 @@ class LocaleState with _$LocaleState, PersistentState<LocaleState> {
     try {
       return await JsonLocalSync.delete(key: _localStorageKey);
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -70,7 +70,8 @@ class LocaleState with _$LocaleState, PersistentState<LocaleState> {
   }
 
   // For Riverpod integrated toJson / fromJson json_serializable code generator
-  factory LocaleState.fromJson(Map<String, dynamic> json) => _$LocaleStateFromJson(json);
+  factory LocaleState.fromJson(Map<String, dynamic> json) =>
+      _$LocaleStateFromJson(json);
 }
 
 class LocaleStateNotifier extends StateNotifier<LocaleState> {
@@ -83,11 +84,14 @@ class LocaleStateNotifier extends StateNotifier<LocaleState> {
   /// 2. IF no locale in storage, attempts to set local from the platform settings
   Future<void> initLocale() async {
     // Attempt to restore from storage
-    bool _fromStorageSuccess = await ref.read(localeStateProvider.notifier).restoreFromStorage();
+    bool _fromStorageSuccess =
+        await ref.read(localeStateProvider.notifier).restoreFromStorage();
 
     // If storage restore did not work, set from platform
     if (!_fromStorageSuccess) {
-      ref.read(localeStateProvider.notifier).setLocale(ref.read(platformLocaleProvider));
+      ref
+          .read(localeStateProvider.notifier)
+          .setLocale(ref.read(platformLocaleProvider));
     }
   }
 
@@ -109,8 +113,9 @@ class LocaleStateNotifier extends StateNotifier<LocaleState> {
     }
 
     // Get the closest language locale and set that instead
-    Locale? _closestLocale =
-        _supportedLocales.firstWhereOrNull((supportedLocale) => supportedLocale.languageCode == locale.languageCode);
+    Locale? _closestLocale = _supportedLocales.firstWhereOrNull(
+        (supportedLocale) =>
+            supportedLocale.languageCode == locale.languageCode);
     if (_closestLocale != null) {
       // Update state
       state = state.copyWith(locale: _closestLocale);
@@ -127,7 +132,7 @@ class LocaleStateNotifier extends StateNotifier<LocaleState> {
   /// Restore Locale from Storage
   Future<bool> restoreFromStorage() async {
     try {
-      print("Restoring LocaleState from storage.");
+      // print("Restoring LocaleState from storage.");
       // Attempt to get the user from storage
       LocaleState? _state = await state.fromStorage();
 
@@ -136,15 +141,15 @@ class LocaleStateNotifier extends StateNotifier<LocaleState> {
         return false;
       }
 
-      print("State found in storage: " + _state.toJson().toString());
+      // print("State found in storage: " + _state.toJson().toString());
 
       // Set state
       state = _state;
 
       return true;
-    } catch (e, s) {
-      print("Error" + e.toString());
-      print(s);
+    } catch (e) {
+      // print("Error" + e.toString());
+      // print(s);
       return false;
     }
   }

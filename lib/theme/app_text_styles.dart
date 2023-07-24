@@ -50,9 +50,7 @@ class AppTextStyles {
     fontSize: 26,
     fontWeight: FontWeight.bold,
     textBaseline: TextBaseline.alphabetic,
-    fontFeatures: [
-      FontFeature.tabularFigures()
-    ],
+    fontFeatures: [FontFeature.tabularFigures()],
     fontStyle: FontStyle.normal,
   );
 
@@ -62,9 +60,7 @@ class AppTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.bold,
     textBaseline: TextBaseline.alphabetic,
-    fontFeatures: [
-      FontFeature.tabularFigures()
-    ],
+    fontFeatures: [FontFeature.tabularFigures()],
     fontStyle: FontStyle.normal,
   );
 
@@ -74,9 +70,7 @@ class AppTextStyles {
     fontSize: 20,
     fontWeight: FontWeight.w400,
     textBaseline: TextBaseline.alphabetic,
-    fontFeatures: [
-      FontFeature.tabularFigures()
-    ],
+    fontFeatures: [FontFeature.tabularFigures()],
     fontStyle: FontStyle.normal,
   );
 

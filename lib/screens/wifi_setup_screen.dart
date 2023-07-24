@@ -16,7 +16,6 @@ import 'package:pionixbox/widgets/network_card_widget.dart';
 import '../data/models/network_device_info.dart';
 import '../main.dart';
 import '../mqtt.dart';
-import '../utils/constants/common.dart';
 import '../utils/constants/helper.dart';
 import '../utils/constants/keys.dart';
 import '../utils/routing/app_router.dart';
@@ -34,7 +33,6 @@ class WifiSetupScreen extends StatefulWidget {
 class _WifiSetupScreenState extends State<WifiSetupScreen> {
   String connectedSsid = 'Not Specified';
   bool _wifi = false;
-  bool _autoScan = false;
   bool _showPasswordScreen = false;
   bool optionsMenu = false;
   bool showConnectedDetails = false;
@@ -232,7 +230,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                   Visibility(
                       visible: bannerVisible,
                       child: Padding(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           child: Text(
                             bannerText,
                             style: AppTextStyles.heading3

@@ -1,16 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pionixbox/main.dart';
 import 'package:pionixbox/widgets/simulation_panel_landscape.dart';
 import 'package:pionixbox/screens/system_info.dart';
-import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/utils/routing/app_router.dart';
 import 'package:pionixbox/widgets/settings_menu_button.dart';
 
 class SettingsMenuLandscape extends StatefulWidget {
-  final bool setup_wifi;
-  final bool setup_simulation;
+  final bool setupWifi;
+  final bool setupSimulation;
   final bool localization;
   final Future<void> Function(BuildContext) resetInitialised;
   final Future<void> Function(BuildContext) rebootCharger;
@@ -18,8 +16,8 @@ class SettingsMenuLandscape extends StatefulWidget {
   final EdgeInsetsGeometry margin;
   const SettingsMenuLandscape({
     Key? key,
-    required this.setup_wifi,
-    required this.setup_simulation,
+    required this.setupWifi,
+    required this.setupSimulation,
     required this.localization,
     required this.resetInitialised,
     required this.rebootCharger,
@@ -38,11 +36,11 @@ class _SettingsMenuLandscapeState extends State<SettingsMenuLandscape> {
         child: ListView(
       children: [
         GridView.count(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             crossAxisCount: 3,
             shrinkWrap: true,
             children: [
-              if (widget.setup_wifi)
+              if (widget.setupWifi)
                 Container(
                   margin: widget.margin,
                   child: SettingMenuButton(
@@ -57,7 +55,7 @@ class _SettingsMenuLandscapeState extends State<SettingsMenuLandscape> {
                     },
                   ),
                 ),
-              if (widget.setup_simulation)
+              if (widget.setupSimulation)
                 Container(
                   margin: widget.margin,
                   child: SettingMenuButton(

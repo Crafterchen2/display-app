@@ -7,9 +7,9 @@ part of 'power_w.dart';
 // **************************************************************************
 
 PowerW _$PowerWFromJson(Map<String, dynamic> json) => PowerW(
-      (json['L1'] as num).toDouble(),
-      (json['L2'] as num).toDouble(),
-      (json['L3'] as num).toDouble(),
+      (json['L1'] as num?)?.toDouble(),
+      (json['L2'] as num?)?.toDouble(),
+      (json['L3'] as num?)?.toDouble(),
       (json['total'] as num).toDouble(),
     );
 

@@ -1,22 +1,22 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/data/models/limits.dart';
+import 'package:pionixbox/data/models/ev_info.dart';
 import 'package:pionixbox/data/providers/connector_provider.dart';
 import 'package:pionixbox/mqtt.dart';
 
-Limits parseLimits(String limits) {
-  return Limits.fromJson(jsonDecode(limits));
+EvInfo parseEvInfo(String evInfo) {
+  return EvInfo.fromJson(jsonDecode(evInfo));
 }
 
-final limitsStreamProvider = StreamProvider<Limits>((ref) async* {
+final evInfoStreamProvider = StreamProvider<EvInfo>((ref) async* {
   final mqtt = MQTT();
   await mqtt.connect();
   final connector = ref.watch(connectorProvider);
   final stream =
-      mqtt.subscribeStream("everest_api/" + connector + "/var/limits");
+      mqtt.subscribeStream("everest_api/" + connector + "/var/ev_info");
   await for (final message in stream) {
-    // debugPrint("Received limits");
-    yield parseLimits(message);
+    // debugPrint("Received EvInfo");
+    yield parseEvInfo(message);
   }
 });

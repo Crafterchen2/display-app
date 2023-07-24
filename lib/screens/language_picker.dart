@@ -15,7 +15,9 @@ class LanguagePicker extends ConsumerWidget {
 
     return DropdownButton<Locale>(
         isDense: true,
-        value: (!_supportedLocales.contains(_currentLocale)) ? null : _currentLocale,
+        value: (!_supportedLocales.contains(_currentLocale))
+            ? null
+            : _currentLocale,
         icon: const Icon(Icons.arrow_drop_down),
         underline: Container(
           height: 1,
@@ -25,7 +27,7 @@ class LanguagePicker extends ConsumerWidget {
           if (newLocale == null) {
             return;
           }
-          print("Selected " + newLocale.toString());
+          debugPrint("Selected " + newLocale.toString());
 
           // Set the locale (this will rebuild the app)
           ref.read(localeStateProvider.notifier).setLocale(newLocale);

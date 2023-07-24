@@ -19,6 +19,7 @@ class Footer extends StatefulWidget {
 }
 
 class _FooterState extends State<Footer> {
+  // ignore: unused_field
   late Timer _timer;
 
   void startTimer() {
@@ -78,7 +79,8 @@ class _FooterState extends State<Footer> {
               children: [
                 Text(
                   dateTimeFormat.format(DateTime.now()),
-                  style: AppTextStyles.digitsHeading3.copyWith(color: AppColors.primaryBlue),
+                  style: AppTextStyles.digitsHeading3
+                      .copyWith(color: AppColors.primaryBlue),
                 ),
                 const SizedBox(width: 50),
               ],

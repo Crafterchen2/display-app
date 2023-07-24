@@ -199,8 +199,8 @@ class SquareButtonWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        height: screenHeight * 0.35,
-        width: screenHeight * 0.35,
+        height: screenHeight * 0.45,
+        width: screenHeight * 0.45,
         decoration: const BoxDecoration(
           color: AppColors.primaryAmber,
           borderRadius: BorderRadius.all(Radius.circular(16)),

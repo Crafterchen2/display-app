@@ -9,7 +9,6 @@ import 'package:pionixbox/widgets/buttons.dart';
 import '../data/models/application_info.dart';
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
-import '../widgets/restart_widget.dart';
 
 class LanguagePickerScreen extends StatefulWidget {
   const LanguagePickerScreen({

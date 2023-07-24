@@ -133,7 +133,7 @@ class SwitchSettingsButton extends StatelessWidget {
   final TextStyle titleStyle;
   final Color textColor;
   final double height;
-  final backgroundColor;
+  final Color backgroundColor;
 
   const SwitchSettingsButton({
     Key? key,
@@ -193,7 +193,7 @@ class ActionButtonWithTitleBar extends StatelessWidget {
   final TextStyle titleStyle;
   final Color textColor;
   final double height;
-  final backgroundColor;
+  final Color backgroundColor;
   final Icon icon;
 
   const ActionButtonWithTitleBar({
@@ -264,13 +264,13 @@ class PionixCloseButton extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () => onPressed ?? Navigator.pop(context),
+        onTap: () => onPressed != null ? onPressed!() : Navigator.pop(context),
         child: Container(
           width: screenWidth * 0.3,
           height: 54,
           alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          margin: EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          margin: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.circular(6),

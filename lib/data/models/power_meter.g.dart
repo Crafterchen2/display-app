@@ -17,14 +17,22 @@ num parseTimestamp(dynamic timestamp) {
 }
 
 PowerMeter _$PowerMeterFromJson(Map<String, dynamic> json) => PowerMeter(
-      CurrentA.fromJson(json['current_A'] as Map<String, dynamic>),
-      json['meter_id'] as String,
-      json['phase_seq_error'] as bool,
+      json['current_A'] == null
+          ? null
+          : CurrentA.fromJson(json['current_A'] as Map<String, dynamic>),
+      json['meter_id'] as String?,
+      json['phase_seq_error'] as bool?,
       parseTimestamp(json['timestamp']).toDouble(),
       EnergyWhImport.fromJson(json['energy_Wh_import'] as Map<String, dynamic>),
-      FrequencyHz.fromJson(json['frequency_Hz'] as Map<String, dynamic>),
-      PowerW.fromJson(json['power_W'] as Map<String, dynamic>),
-      VoltageV.fromJson(json['voltage_V'] as Map<String, dynamic>),
+      json['frequency_Hz'] == null
+          ? null
+          : FrequencyHz.fromJson(json['frequency_Hz'] as Map<String, dynamic>),
+      json['power_W'] == null
+          ? null
+          : PowerW.fromJson(json['power_W'] as Map<String, dynamic>),
+      json['voltage_V'] == null
+          ? null
+          : VoltageV.fromJson(json['voltage_V'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PowerMeterToJson(PowerMeter instance) =>

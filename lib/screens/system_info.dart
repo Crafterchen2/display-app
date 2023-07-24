@@ -23,7 +23,6 @@ class SystemInfo extends StatefulWidget {
 class _SystemInfoState extends State<SystemInfo> {
   final mqtt = MQTT();
   List<NetworkDeviceInfo> devices = [];
-  bool _showProgress = true;
 
   @override
   void initState() {
@@ -46,9 +45,7 @@ class _SystemInfoState extends State<SystemInfo> {
       devices.add(device);
     }
     if (mounted) {
-      setState(() {
-        _showProgress = false;
-      });
+      setState(() {});
     }
   }
 
@@ -60,9 +57,7 @@ class _SystemInfoState extends State<SystemInfo> {
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
     }
-    setState(() {
-      _showProgress = false;
-    });
+    setState(() {});
   }
 
   @override

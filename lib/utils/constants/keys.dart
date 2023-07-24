@@ -41,22 +41,32 @@ class Topic {
   static const String enableNetwork = 'everest_api/setup/cmd/enable_network';
   static const String disableNetwork = 'everest_api/setup/cmd/disable_network';
   static const String selectNetwork = 'everest_api/setup/cmd/select_network';
-  static const String removeAllNetworks = 'everest_api/setup/cmd/remove_all_networks';
-  static const String listConfiguredNetworks = 'everest_api/setup/cmd/list_configured_networks';
+  static const String removeAllNetworks =
+      'everest_api/setup/cmd/remove_all_networks';
+  static const String listConfiguredNetworks =
+      'everest_api/setup/cmd/list_configured_networks';
   static const String scanWifi = 'everest_api/setup/cmd/scan_wifi';
-  static const String enableWifiScanning = 'everest_api/setup/cmd/enable_wifi_scanning';
-  static const String disableWifiScanning = 'everest_api/setup/cmd/disable_wifi_scanning';
+  static const String enableWifiScanning =
+      'everest_api/setup/cmd/enable_wifi_scanning';
+  static const String disableWifiScanning =
+      'everest_api/setup/cmd/disable_wifi_scanning';
   static const String removeNetwork = 'everest_api/setup/cmd/remove_network';
-  static const String checkOnlineStatus = 'everest_api/setup/cmd/check_online_status';
+  static const String checkOnlineStatus =
+      'everest_api/setup/cmd/check_online_status';
   static const String onlineStatus = 'everest_api/setup/var/online_status';
-  static const String applicationInfo = 'everest_api/setup/var/application_info';
-  static const String updateCurrentLanguage = 'everest_api/setup/cmd/change_current_language';
-  static const String updateDefaultLanguage = 'everest_api/setup/cmd/change_default_language';
-  static const String resetInitialized = 'everest_api/setup/cmd/reset_initialized';
+  static const String applicationInfo =
+      'everest_api/setup/var/application_info';
+  static const String updateCurrentLanguage =
+      'everest_api/setup/cmd/change_current_language';
+  static const String updateDefaultLanguage =
+      'everest_api/setup/cmd/change_default_language';
+  static const String resetInitialized =
+      'everest_api/setup/cmd/reset_initialized';
   static const String setInitialized = 'everest_api/setup/cmd/set_initialized';
   static const String setAppMode = 'everest_api/setup/cmd/set_mode';
   static const String reboot = 'everest_api/setup/cmd/reboot';
-  static const String setMaxCurrent = 'everest_external/nodered/1/cmd/set_max_current';
+  static const String setMaxCurrent =
+      'everest_external/nodered/1/cmd/set_max_current';
 }
 
 class Payloads {
@@ -70,6 +80,7 @@ class Payloads {
   static const String enableSimulation = 'true';
   static const String disableSimulation = 'false';
 }
+
 class AppAssets {
   static const String everestLogo = 'assets/images/everest_logo.png';
 }

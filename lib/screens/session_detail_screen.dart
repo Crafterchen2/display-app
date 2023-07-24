@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +7,7 @@ import 'package:pionixbox/data/providers/limits_provider.dart';
 import 'package:pionixbox/data/providers/powermeter_provider.dart';
 import 'package:pionixbox/main.dart';
 import 'package:pionixbox/theme/app_colors.dart';
+import 'package:pionixbox/utils/circular_queue.dart';
 import 'package:pionixbox/utils/datetime_formats.dart';
 import 'package:pionixbox/widgets/buttons.dart';
 
@@ -34,6 +33,7 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
   bool frequencyListExpanded = true;
   bool energyListExpanded = true;
   bool voltageListExpanded = true;
+  bool telemetryListExpanded = true;
   bool limitsListExpanded = true;
 
   @override
@@ -48,15 +48,11 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
   }
 
   void extractArguments(BuildContext context) {
-    final i = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
     final powermeter =
         ref.watch(powermeterStreamProvider).whenOrNull(data: (data) => data);
     if (powermeter != null) {
@@ -87,11 +83,17 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                       SingleInfoCard(
                           title: 'Powermeter ID',
                           value: powerMeter!.meter_id.toString()),
-                      SingleInfoCard(
-                          title: 'Phase sequence error',
-                          value: powerMeter!.phase_seq_error
-                              ? 'Error state'
-                              : 'No Error'),
+                      powerMeter!.phase_seq_error != null
+                          ? SingleInfoCard(
+                              title: 'Phase sequence error',
+                              value: powerMeter!.phase_seq_error!
+                                  ? 'Error state'
+                                  : 'No Error')
+                          : bufferedPowerMeter.ac
+                              ? const SingleInfoCard(
+                                  title: 'Phase sequence error',
+                                  value: 'Unknown')
+                              : Container(),
                       SingleInfoCard(
                           title: 'Time',
                           value: dateTimeFormat
@@ -107,7 +109,7 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                             SessionDetailCardWidget(
                               expanded: currentListExpanded,
                               sectionTitle: 'current'.tr(),
-                              map: powerMeter!.current_A.toJson(),
+                              map: powerMeter!.current_A?.toJson(),
                               unit: 'A',
                               onExpendPressed: () {
                                 setState(() {
@@ -118,7 +120,7 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                             SessionDetailCardWidget(
                               expanded: powerListExpanded,
                               sectionTitle: 'power'.tr(),
-                              map: powerMeter!.power_W.toJson(),
+                              map: powerMeter!.power_W?.toJson(),
                               unit: 'W',
                               onExpendPressed: () {
                                 setState(() {
@@ -137,23 +139,25 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                                 });
                               },
                             ),
-                            SessionDetailCardWidget(
-                              expanded: frequencyListExpanded,
-                              sectionTitle: 'frequency'.tr(),
-                              unit: 'Hz',
-                              map: powerMeter!.frequency_Hz.toJson(),
-                              onExpendPressed: () {
-                                setState(() {
-                                  frequencyListExpanded =
-                                      !frequencyListExpanded;
-                                });
-                              },
-                            ),
+                            bufferedPowerMeter.ac
+                                ? SessionDetailCardWidget(
+                                    expanded: frequencyListExpanded,
+                                    sectionTitle: 'frequency'.tr(),
+                                    unit: 'Hz',
+                                    map: powerMeter!.frequency_Hz?.toJson(),
+                                    onExpendPressed: () {
+                                      setState(() {
+                                        frequencyListExpanded =
+                                            !frequencyListExpanded;
+                                      });
+                                    },
+                                  )
+                                : Container(),
                             SessionDetailCardWidget(
                               expanded: voltageListExpanded,
                               sectionTitle: 'voltage'.tr(),
                               unit: 'V',
-                              map: powerMeter!.voltage_V.toJson(),
+                              map: powerMeter!.voltage_V?.toJson(),
                               onExpendPressed: () {
                                 setState(() {
                                   voltageListExpanded = !voltageListExpanded;
@@ -179,6 +183,41 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                           });
                         },
                       ),
+                      SessionDetailCardWidget(
+                        expanded: telemetryListExpanded,
+                        sectionTitle: 'telemetry'.tr(),
+                        unit: '',
+                        map: {
+                          "fan".tr(): bufferedTelemetry.fanRPM
+                                  .last()
+                                  .toStringAsFixed(0) +
+                              " RPM",
+                          "rcd_current".tr(): bufferedTelemetry.rcdCurrent
+                                  .last()
+                                  .toStringAsFixed(3) +
+                              " A",
+                          "relais_on".tr(): bufferedTelemetry.relaisOn.last(),
+                          "supply_voltage_12V".tr(): bufferedTelemetry
+                                  .supplyVoltage12V
+                                  .last()
+                                  .toStringAsFixed(2) +
+                              " V",
+                          "supply_voltage_minus_12V".tr(): bufferedTelemetry
+                                  .supplyVoltage12V
+                                  .last()
+                                  .toStringAsFixed(2) +
+                              " V",
+                          "temperature".tr(): bufferedTelemetry.temperature
+                                  .last()
+                                  .toStringAsFixed(1) +
+                              " °C",
+                        },
+                        onExpendPressed: () {
+                          setState(() {
+                            telemetryListExpanded = !telemetryListExpanded;
+                          });
+                        },
+                      ),
                       SizedBox(
                         height: screenHeight * 0.15,
                       )
@@ -198,7 +237,7 @@ class SessionDetailCardWidget extends StatelessWidget {
   final bool expanded;
   final String sectionTitle;
   final String unit;
-  final Map<String, dynamic> map;
+  final Map<String, dynamic>? map;
   final VoidCallback? onExpendPressed;
 
   const SessionDetailCardWidget(
@@ -221,45 +260,40 @@ class SessionDetailCardWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: onExpendPressed ?? () {},
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        sectionTitle,
-                        style: AppTextStyles.subTitle4
-                            .copyWith(color: Colors.white),
-                      ),
-                    ),
-                    Icon(
-                      expanded
-                          ? Icons.keyboard_arrow_down_sharp
-                          : Icons.keyboard_arrow_right,
-                      color: Colors.white,
-                      size: screenHeight * 0.08,
-                    )
-                  ],
+        children: [
+          GestureDetector(
+            onTap: onExpendPressed ?? () {},
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    sectionTitle,
+                    style:
+                        AppTextStyles.subTitle4.copyWith(color: Colors.white),
+                  ),
                 ),
-              ),
-              expanded
-                  ? Padding(
-                      padding: const EdgeInsets.only(bottom: 0, top: 0),
-                      child: Container(
-                        height: 2,
-                        color: Colors.white10,
-                      ),
-                    )
-                  : const SizedBox(),
-              if (expanded) ...populateList(context),
-            ],
+                Icon(
+                  expanded
+                      ? Icons.keyboard_arrow_down_sharp
+                      : Icons.keyboard_arrow_right,
+                  color: Colors.white,
+                  size: screenHeight * 0.08,
+                )
+              ],
+            ),
           ),
+          expanded
+              ? Padding(
+                  padding: const EdgeInsets.only(bottom: 0, top: 0),
+                  child: Container(
+                    height: 2,
+                    color: Colors.white10,
+                  ),
+                )
+              : const SizedBox(),
+          if (expanded) ...populateList(context),
         ],
       ),
     );
@@ -267,8 +301,14 @@ class SessionDetailCardWidget extends StatelessWidget {
 
   List<Widget> populateList(BuildContext context) {
     List<Widget> items = [];
-    for (final item in map.entries) {
+    if (map == null) {
+      return items;
+    }
+    for (final item in map!.entries) {
       var val = item.value;
+      if (val == null) {
+        continue;
+      }
       if (item.value.runtimeType == double) {
         val = val.toStringAsFixed(2);
       } else {

@@ -8,8 +8,8 @@ part of 'frequency_hz.dart';
 
 FrequencyHz _$FrequencyHzFromJson(Map<String, dynamic> json) => FrequencyHz(
       (json['L1'] as num).toDouble(),
-      (json['L2'] as num).toDouble(),
-      (json['L3'] as num).toDouble(),
+      (json['L2'] as num?)?.toDouble(),
+      (json['L3'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$FrequencyHzToJson(FrequencyHz instance) =>

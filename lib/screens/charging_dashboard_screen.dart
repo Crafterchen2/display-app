@@ -2,21 +2,22 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/data/models/limits.dart';
 import 'package:pionixbox/data/models/power_meter.dart';
-import 'package:pionixbox/data/models/session_info.dart';
 import 'package:pionixbox/data/providers/connector_provider.dart';
+import 'package:pionixbox/data/providers/ev_info_provider.dart';
 import 'package:pionixbox/data/providers/hardware_capabilities_provider.dart';
 import 'package:pionixbox/data/providers/limits_provider.dart';
 import 'package:pionixbox/data/providers/powermeter_provider.dart';
 import 'package:pionixbox/data/providers/session_info_provider.dart';
-import 'package:pionixbox/main.dart';
+import 'package:pionixbox/data/providers/telemetry_provider.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
+import 'package:pionixbox/utils/circular_queue.dart';
 import 'package:pionixbox/utils/constants/helper.dart';
+import 'package:pionixbox/utils/enums.dart';
 import 'package:pionixbox/widgets/session_info_body_portrait.dart';
 
 import '../mqtt.dart';
@@ -51,13 +52,13 @@ class _ChargingDashboardScreenState
   bool _online = false;
   String connector = connectorDefault;
 
-  bool _showSimulationPanel = false;
   bool _showProgressBar = false;
   bool showSettingsIcon = true;
   bool simulation = false;
   bool wifi = false;
   bool localization = false;
   bool privateMode = false;
+  ChargingMode chargingMode = ChargingMode.unknown;
   final mqtt = MQTT();
 
   @override
@@ -88,8 +89,78 @@ class _ChargingDashboardScreenState
         ref.watch(powermeterStreamProvider).whenOrNull(data: (data) => data);
     if (powermeter != null) {
       powerMeter = powermeter;
-      _power = powerMeter.power_W.total / 1000;
+      if (powerMeter.power_W != null) {
+        _power = powerMeter.power_W!.total / 1000;
+
+        if (powerMeter.power_W!.L1 != null) {
+          bufferedPowerMeter.powerL1.add(powerMeter.power_W!.L1!);
+        }
+        if (powerMeter.power_W!.L2 != null) {
+          bufferedPowerMeter.powerL2.add(powerMeter.power_W!.L2!);
+        }
+        if (powerMeter.power_W!.L3 != null) {
+          bufferedPowerMeter.powerL3.add(powerMeter.power_W!.L3!);
+        }
+        bufferedPowerMeter.powerTotal.add(powerMeter.power_W!.total);
+      }
+
+      if (powerMeter.current_A != null) {
+        if (powerMeter.current_A!.L1 != null) {
+          bufferedPowerMeter.currentL1.add(powerMeter.current_A!.L1!);
+        }
+        if (powerMeter.current_A!.L2 != null) {
+          bufferedPowerMeter.currentL2.add(powerMeter.current_A!.L2!);
+        }
+        if (powerMeter.current_A!.L3 != null) {
+          bufferedPowerMeter.currentL3.add(powerMeter.current_A!.L3!);
+        }
+        if (powerMeter.current_A!.N != null) {
+          bufferedPowerMeter.currentN.add(powerMeter.current_A!.N!);
+        }
+        if (powerMeter.current_A!.DC != null) {
+          bufferedPowerMeter.currentDC.add(powerMeter.current_A!.DC!);
+          bufferedPowerMeter.ac = false;
+        }
+      }
+
+      if (powerMeter.frequency_Hz != null) {
+        bufferedPowerMeter.freqL1.add(powerMeter.frequency_Hz!.L1);
+        if (powerMeter.frequency_Hz!.L2 != null) {
+          bufferedPowerMeter.freqL2.add(powerMeter.frequency_Hz!.L2!);
+        }
+        if (powerMeter.frequency_Hz!.L3 != null) {
+          bufferedPowerMeter.freqL3.add(powerMeter.frequency_Hz!.L3!);
+        }
+      }
+
+      if (powerMeter.voltage_V != null) {
+        if (powerMeter.voltage_V!.L1 != null) {
+          bufferedPowerMeter.voltageL1.add(powerMeter.voltage_V!.L1!);
+        }
+        if (powerMeter.voltage_V!.L2 != null) {
+          bufferedPowerMeter.voltageL2.add(powerMeter.voltage_V!.L2!);
+        }
+        if (powerMeter.voltage_V!.L3 != null) {
+          bufferedPowerMeter.voltageL3.add(powerMeter.voltage_V!.L3!);
+        }
+        if (powerMeter.voltage_V!.DC != null) {
+          bufferedPowerMeter.voltageDC.add(powerMeter.voltage_V!.DC!);
+        }
+      }
     }
+
+    final telemetry =
+        ref.watch(telemetryStreamProvider).whenOrNull(data: (data) => data);
+    if (telemetry != null) {
+      bufferedTelemetry.fanRPM.add(telemetry.fan_rpm);
+      bufferedTelemetry.rcdCurrent.add(telemetry.rcd_current);
+      bufferedTelemetry.relaisOn.add(telemetry.relais_on);
+      bufferedTelemetry.supplyVoltage12V.add(telemetry.supply_voltage_12V);
+      bufferedTelemetry.supplyMinusVoltage12V
+          .add(telemetry.supply_voltage_minus_12V);
+      bufferedTelemetry.temperature.add(telemetry.temperature);
+    }
+
     final l = ref.watch(limitsStreamProvider).whenOrNull(data: (data) => data);
     if (l != null) {
       limits = l;
@@ -117,6 +188,20 @@ class _ChargingDashboardScreenState
       }
       if (hardwareCapabilities.min_current_A_import >= 6.0) {
         _minCurrentA = hardwareCapabilities.min_current_A_import;
+      }
+    }
+    final evInfo =
+        ref.watch(evInfoStreamProvider).whenOrNull(data: (data) => data);
+    if (evInfo != null) {
+      if (evInfo.evcc_id != null) {
+        // not basic charging
+        if (powerMeter.voltage_V != null && powerMeter.voltage_V!.DC != null) {
+          chargingMode = ChargingMode.unknownDC;
+        } else {
+          chargingMode = ChargingMode.isoAC;
+        }
+      } else {
+        chargingMode = ChargingMode.basicAC;
       }
     }
 
@@ -155,7 +240,7 @@ class _ChargingDashboardScreenState
                         duration: _duration,
                         online: _online,
                         seeMorePressed: () async {
-                          final result = await Navigator.of(context).pushNamed(
+                          await Navigator.of(context).pushNamed(
                               AppRoutes.sessionDetailScreen,
                               arguments: {}).then((value) {
                             setState(() {});
@@ -171,7 +256,8 @@ class _ChargingDashboardScreenState
                         current: _current,
                         maxCurrentA: _maxCurrentA,
                         minCurrentA: _minCurrentA,
-                      )
+                        chargingMode: chargingMode,
+                        soc: evInfo?.soc)
                     : SessionInfoBodyPortrait(
                         state: _status,
                         stateInfo: _statusInfo,
@@ -341,7 +427,6 @@ class _ChargingDashboardScreenState
     action();
     setState(() {
       _showProgressBar = false;
-      _showSimulationPanel = false;
     });
   }
 

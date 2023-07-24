@@ -8,7 +8,6 @@ import 'package:pionixbox/utils/constants/keys.dart';
 
 String getChargingSessionIconByState(String state) {
   String base = 'assets/icons/';
-  String url = '';
   switch (state) {
     case ChargingState.authRequired:
       return '${base}icon_cardswipe.svg';
@@ -154,16 +153,16 @@ Future<String> generatePSK(String ssid, String password) async {
   final pbkdf2 =
       Pbkdf2(macAlgorithm: Hmac(Sha1()), iterations: 4096, bits: 256);
 
-  List<int> password_bytes = utf8.encode(password);
-  List<int> ssid_bytes = utf8.encode(ssid);
+  List<int> passwordBytes = utf8.encode(password);
+  List<int> ssidBytes = utf8.encode(ssid);
 
   final psk = await pbkdf2.deriveKey(
-      secretKey: SecretKey(password_bytes), nonce: ssid_bytes);
-  final psk_bytes = await psk.extractBytes();
-  final psk_string = hex.encode(psk_bytes);
+      secretKey: SecretKey(passwordBytes), nonce: ssidBytes);
+  final pskBytes = await psk.extractBytes();
+  final pskString = hex.encode(pskBytes);
 
-  print("PSK: " + psk_string);
-  return psk_string;
+  // print("PSK: " + pskString);
+  return pskString;
 }
 
 String durationFormat(Duration duration) {

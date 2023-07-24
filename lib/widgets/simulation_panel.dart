@@ -26,7 +26,6 @@ class _SimulationPanelState extends State<SimulationPanel> {
           Expanded(
             child: GridView(
               scrollDirection: Axis.vertical,
-
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 1.5,
                 mainAxisSpacing: 8,

@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -247,13 +249,13 @@ class PionixVirtualKeyboard extends StatefulWidget {
   /// inverse the layout to fix the issues with right to left languages.
   final bool reverseLayout;
 
-  bool specialCharacters;
+  final bool specialCharacters;
 
   /// used for multi-languages with default layouts, the default is English only
   /// will be ignored if customLayoutKeys is not null
   final List<VirtualKeyboardDefaultLayouts>? defaultLayouts;
 
-  PionixVirtualKeyboard(
+  const PionixVirtualKeyboard(
       {Key? key,
       required this.type,
       this.onKeyPress,

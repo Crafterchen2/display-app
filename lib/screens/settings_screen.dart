@@ -1,18 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:pionixbox/widgets/dialogs.dart';
-import 'package:pionixbox/widgets/simulation_panel.dart';
-import 'package:pionixbox/screens/system_info.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/widgets/buttons.dart';
 import 'package:pionixbox/widgets/restart_widget.dart';
-import 'package:pionixbox/widgets/settings_menu_button.dart';
 import 'package:pionixbox/widgets/settings_menu_landscape.dart';
 import 'package:pionixbox/widgets/settings_menu_portrait.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
-import '../utils/routing/app_router.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({
@@ -26,16 +22,16 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   final mqtt = MQTT();
   bool localization = false;
-  bool setup_simulation = false;
-  bool setup_wifi = false;
+  bool setupSimulation = false;
+  bool setupWifi = false;
   String selectedLanguage = 'english';
 
   void extractArguments(BuildContext context) {
     final i = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     localization = i["localization"];
-    setup_simulation = i["setup_simulation"];
-    setup_wifi = i["setup_wifi"];
+    setupSimulation = i["setup_simulation"];
+    setupWifi = i["setup_wifi"];
     setState(() {});
   }
 
@@ -55,16 +51,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 orientation == Orientation.landscape
                     ? SettingsMenuLandscape(
-                        setup_wifi: setup_wifi,
-                        setup_simulation: setup_simulation,
+                        setupWifi: setupWifi,
+                        setupSimulation: setupSimulation,
                         localization: localization,
                         resetInitialised: resetConfirmationDialog,
                         rebootCharger: rebootConfirmationDialog,
                         setParentState: rebuild,
                       )
                     : SettingsMenuPortrait(
-                        setup_wifi: setup_wifi,
-                        setup_simulation: setup_simulation,
+                        setupWifi: setupWifi,
+                        setupSimulation: setupSimulation,
                         localization: localization,
                         resetInitialised: resetConfirmationDialog,
                         rebootCharger: rebootConfirmationDialog,

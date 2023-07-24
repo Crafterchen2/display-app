@@ -11,7 +11,8 @@ class SimulationPanelLandscape extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<SimulationPanelLandscape> createState() => _SimulationPanelLandscapeState();
+  State<SimulationPanelLandscape> createState() =>
+      _SimulationPanelLandscapeState();
 }
 
 class _SimulationPanelLandscapeState extends State<SimulationPanelLandscape> {
@@ -26,12 +27,13 @@ class _SimulationPanelLandscapeState extends State<SimulationPanelLandscape> {
           Expanded(
             child: GridView(
               scrollDirection: Axis.vertical,
+              // ignore: prefer_const_constructors
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
 
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 4.5,
                 mainAxisSpacing: 20,
-                crossAxisSpacing:20,
+                crossAxisSpacing: 20,
                 crossAxisCount: 2,
               ),
               children: [
