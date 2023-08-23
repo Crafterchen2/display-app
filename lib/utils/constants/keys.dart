@@ -1,5 +1,6 @@
 class ChargingState {
   static const String charging = 'Charging';
+  static const String preparing = 'Preparing';
   static const String unplugged = 'Unplugged';
   static const String disable = 'Disable';
   static const String pluggedIn = 'PluggedIn';

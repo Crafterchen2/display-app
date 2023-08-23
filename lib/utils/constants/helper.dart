@@ -41,6 +41,8 @@ String chargingStateTitle(String state, {String stateInfo = ''}) {
       return 'pluggedIn'.tr();
     case ChargingState.unplugged:
       return 'unplugged'.tr();
+    case ChargingState.preparing:
+      return 'preparing'.tr();
     case ChargingState.charging:
       return 'charging'.tr();
     case ChargingState.chargingPausedEV:
@@ -54,7 +56,7 @@ String chargingStateTitle(String state, {String stateInfo = ''}) {
     case ChargingState.waitEnergy:
       return 'wait_for_energy'.tr();
     default:
-      return 'unplugged'.tr();
+      return state;
   }
 }
 
