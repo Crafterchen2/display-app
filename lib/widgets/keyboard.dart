@@ -207,15 +207,15 @@ const List<List> _defaultSpecialCharactersLayout = [
   ]
 ];
 
-/// The default keyboard height. Can we overriden by passing
+/// The default keyboard height. Can be overridden by passing
 ///  `height` argument to `VirtualKeyboard` widget.
 const double _virtualKeyboardDefaultHeight = 300;
 
-const int _virtualKeyboardBackspaceEventPerioud = 250;
+const int _virtualKeyboardBackspaceEventPeriod = 250;
 
 /// Virtual Keyboard widget.
 class PionixVirtualKeyboard extends StatefulWidget {
-  /// Keyboard Type: Should be inited in creation time.
+  /// Keyboard Type: Should be inited in creation time. //TODO: Typo in "inited"? maybe "initiated"?
   final VirtualKeyboardType type;
 
   /// Callback for Key press event. Called with pressed `Key` object.
@@ -283,7 +283,7 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
   VirtualKeyboardType type = VirtualKeyboardType.Alphanumeric;
   Function? onKeyPress;
   TextEditingController textController = TextEditingController();
-  // The builder function will be called for each Key object.
+  /// The builder function will be called for each Key object.
   Widget Function(BuildContext context, PionixVirtualKeyboardKey key)? builder;
   late double height;
   double? width;
@@ -292,10 +292,10 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
   late bool alwaysCaps;
   late bool reverseLayout;
   late VirtualKeyboardPionixLayoutKeys customLayoutKeys;
-  // Text Style for keys.
+  /// Text Style for keys.
   late TextStyle textStyle;
 
-  // True if shift is enabled.
+  /// True if shift is enabled.
   bool isShiftEnabled = false;
   bool isSpecialCharactersEnabled = false;
 
@@ -468,7 +468,7 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
-          // Generate keboard keys
+          // Generate keyboard keys
           children: items,
         ),
       );
@@ -514,7 +514,7 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
               // Start sending backspace key events while longPress is true
               Timer.periodic(
                   const Duration(
-                      milliseconds: _virtualKeyboardBackspaceEventPerioud),
+                      milliseconds: _virtualKeyboardBackspaceEventPeriod),
                   (timer) {
                 if (longPress) {
                   _onKeyPress(key);
@@ -590,7 +590,7 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
         break;
     }
 
-    var wdgt = InkWell(
+    var widget = InkWell(
       onTap: () {
         if (key.action == PionixVirtualKeyboardKeyAction.Shift) {
           if (!alwaysCaps) {
@@ -611,9 +611,10 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
 
     if (key.action == PionixVirtualKeyboardKeyAction.Space) {
       return SizedBox(
-          width: (width ?? MediaQuery.of(context).size.width) / 2, child: wdgt);
+          width: (width ?? MediaQuery.of(context).size.width) / 2,
+          child: widget);
     } else {
-      return Expanded(child: wdgt);
+      return Expanded(child: widget);
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_client.dart';
@@ -6,7 +7,6 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 
 class MQTT {
   static final MQTT _instance = MQTT._internal();
-  static const String localHost = 'localhost';
 
   factory MQTT() => _instance;
 
@@ -17,7 +17,7 @@ class MQTT {
   final Map<String, StreamController<String>> _streams = {};
 
   MQTT._internal()
-      : _client = MqttServerClient.withPort(localHost, "pionixbox", 1883) {
+      : _client = MqttServerClient.withPort(Platform.environment['PIONIXBOX_HOST'] ?? 'localhost', "pionixbox", 1883) {
     _client.onConnected = () {
       _subscriptionController.stream.listen((topic) {
         _client.subscribe(topic, MqttQos.exactlyOnce);

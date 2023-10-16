@@ -59,6 +59,7 @@ class _AboutState extends ConsumerState<About> {
       }
     }
     return Scaffold(
+      //floatingActionButton: const PionixCloseButton(),
       body: Container(
         color: Colors.white,
         child: Stack(
@@ -88,7 +89,6 @@ class _AboutState extends ConsumerState<About> {
                 ),
               ],
             ),
-            const PionixCloseButton(),
           ],
         ),
       ),

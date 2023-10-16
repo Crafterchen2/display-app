@@ -142,7 +142,7 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  width: screenWidth * 0.2,
+                                  //width: screenWidth * 0.2,
                                 ),
                                 SizedBox(width: screenWidth * 0.03),
                                 PrimaryButton(
@@ -155,7 +155,7 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                                           'init': true,
                                         });
                                   },
-                                  width: screenWidth * 0.3,
+                                  //width: screenWidth * 0.3,
                                 ),
                                 SizedBox(width: screenWidth * 0.03),
                                 PrimaryButton(
@@ -168,7 +168,7 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                                       return const LandingScreen();
                                     }), (Route<dynamic> route) => false);
                                   },
-                                  width: screenWidth * 0.3,
+                                  //width: screenWidth * 0.3,
                                 ),
                               ],
                             ),

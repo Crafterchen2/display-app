@@ -42,7 +42,7 @@ class _LandingScreenState extends State<LandingScreen> {
       getAppInfo(context, mqtt);
     } catch (e) {
       debugPrint(
-          'connecting MQTT server/ gettting app info failed with exception: $e');
+          'connecting MQTT server/ getting app info failed with exception: $e');
       setState(() {
         // _showProgress = false;
       });

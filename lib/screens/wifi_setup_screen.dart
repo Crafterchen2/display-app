@@ -163,6 +163,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
+      floatingActionButton: !_showPasswordScreen?const PionixCloseButton():null,
       body: Stack(
         children: [
           Column(
@@ -192,7 +193,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            width: screenWidth * 0.2,
+                            //width: screenWidth * 0.2,
                           ),
                           SizedBox(width: screenWidth * 0.03),
                           PrimaryButton(
@@ -205,7 +206,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                                     'init': true,
                                   });
                             },
-                            width: screenWidth * 0.3,
+                            //width: screenWidth * 0.3,
                           ),
                           SizedBox(width: screenWidth * 0.03),
                           PrimaryButton(
@@ -218,7 +219,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                                 return const LandingScreen();
                               }), (Route<dynamic> route) => false);
                             },
-                            width: screenWidth * 0.3,
+                            //width: screenWidth * 0.3,
                           ),
                         ],
                       ),
@@ -226,7 +227,6 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                   ),
                 )
               : Stack(children: [
-                  const PionixCloseButton(),
                   Visibility(
                       visible: bannerVisible,
                       child: Padding(
@@ -240,7 +240,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
           _showPasswordScreen
               ? WifiPasswordScreen(
                   ssid: _selectedSSID,
-                  isSaved: getsavedNetworkFromSSID(_selectedSSID) != null,
+                  isSaved: getSavedNetworkFromSSID(_selectedSSID) != null,
                   passwordController: passwordController,
                   passwordFocusNode: passwordFocusNode,
                   onConnectPressed: () {
@@ -257,7 +257,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                     });
                   },
                   onForgetPressed: () async {
-                    final savedNetwork = getsavedNetworkFromSSID(_selectedSSID);
+                    final savedNetwork = getSavedNetworkFromSSID(_selectedSSID);
                     if (savedNetwork != null) {
                       await forgetConfirmationDialog(context,
                           interface: savedNetwork.interface,
@@ -277,11 +277,11 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
 
   void connectToNetwork(BuildContext context) async {
     if (passwordController.text.isEmpty) {
-      debugPrint('Please enter passworkd'); // FIXME: add a dialog here
+      debugPrint('Please enter password'); // FIXME: add a dialog here
     } else {
       // first try to remove an existing network
       {
-        final savedNetwork = getsavedNetworkFromSSID(_selectedSSID);
+        final savedNetwork = getSavedNetworkFromSSID(_selectedSSID);
         if (savedNetwork != null) {
           debugPrint(
               "Removing existing network $_selectedSSID with network id ${savedNetwork.network_id}");
@@ -293,7 +293,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
           "{\"interface\": \"wlan0\", \"ssid\": \"$_selectedSSID\", \"psk\": \"$psk\"}";
       mqtt.publish(Topic.addNetwork, payload);
       debugPrint("Added network $_selectedSSID");
-      final savedNetwork = getsavedNetworkFromSSID(_selectedSSID);
+      final savedNetwork = getSavedNetworkFromSSID(_selectedSSID);
       if (savedNetwork != null) {
         debugPrint(
             "Selecting network $_selectedSSID with network id ${savedNetwork.network_id}");
@@ -304,7 +304,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     }
   }
 
-  SavedNetwork? getsavedNetworkFromSSID(String ssid) {
+  SavedNetwork? getSavedNetworkFromSSID(String ssid) {
     final network =
         configuredNetworks.firstWhereOrNull((element) => element.ssid == ssid);
     if (network == null) {
@@ -429,7 +429,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
         items.add(NetworkCardWidget(
           ssid: cn.ssid.isNotEmpty ? cn.ssid : 'Hidden SSID',
           isConnected: cn.isConnected,
-          isSaved: getsavedNetworkFromSSID(cn.ssid) != null,
+          isSaved: getSavedNetworkFromSSID(cn.ssid) != null,
           onPressed: () async {
             _selectedSSID = cn.ssid;
             if (cn.isConnected) {
@@ -463,7 +463,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
         items.add(NetworkCardWidget(
           ssid: an.ssid.isNotEmpty ? an.ssid : 'Hidden SSID',
           isConnected: an.ssid == connectedSsid,
-          isSaved: getsavedNetworkFromSSID(an.ssid) != null,
+          isSaved: getSavedNetworkFromSSID(an.ssid) != null,
           signalLevel: an.signal_level,
           strengthColor: checkSignalStrengthColor(an.signal_level),
           onPressed: () {

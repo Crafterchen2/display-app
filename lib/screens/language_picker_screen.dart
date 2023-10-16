@@ -78,6 +78,7 @@ class _LanguagePickerScreenState extends State<LanguagePickerScreen> {
   Widget build(BuildContext context) {
     // Create a DateFormat for the current locale
     return Scaffold(
+      floatingActionButton: const PionixCloseButton(inverted: true,),
       backgroundColor: AppColors.primaryBlue,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -109,7 +110,6 @@ class _LanguagePickerScreenState extends State<LanguagePickerScreen> {
                       child: CircularProgressIndicator(
                   color: AppColors.primaryAmber,
                 ))),
-          const PionixCloseButton(),
         ],
       ),
     );

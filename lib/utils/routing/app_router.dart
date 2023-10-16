@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pionixbox/screens/charging_dashboard_screen.dart';
+import 'package:pionixbox/screens/hlc_log.dart';
 import 'package:pionixbox/screens/lan_info_screen.dart';
 import 'package:pionixbox/screens/landing_screen.dart';
 import 'package:pionixbox/screens/language_picker_screen.dart';
@@ -18,6 +19,7 @@ class AppRoutes {
   static const wifiSetupScreen = '/wifi_setup_screen';
   static const systemInfo = '/system_info';
   static const sessionDetailScreen = '/session_detail_screen';
+  static const hlcLogScreen = '/hlc_log_screen';
   static const chargingDashboardScreen = '/charging_dashboard_screen';
 }
 
@@ -65,6 +67,12 @@ class AppRouter {
       case AppRoutes.sessionDetailScreen:
         return MaterialPageRoute<dynamic>(
           builder: (_) => const SessionDetail(),
+          settings: settings,
+          fullscreenDialog: true,
+        );
+      case AppRoutes.hlcLogScreen:
+        return MaterialPageRoute<dynamic>(
+          builder: (_) => const HlcLogScreen(),
           settings: settings,
           fullscreenDialog: true,
         );

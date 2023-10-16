@@ -12,7 +12,7 @@
 // class ProdRepo implements AppRepo {
 //   @override
 //   Future<List<AvailableNetwork>> fetchAvailableNetworks() async {
-//     debugPrint('Runninng fetch Available Networks');
+//     debugPrint('Running fetch Available Networks');
 //     final result = await DbHelper.instance.getAvailableNetworks();
 //     debugPrint(result.length.toString());
 //     return result;
@@ -20,7 +20,7 @@
 //
 //   @override
 //   Future<List<ConfiguredNetwork>> fetchConfiguredNetworks() async {
-//     debugPrint('Runninng fetch Configured Networks');
+//     debugPrint('Running fetch Configured Networks');
 //     final result = await DbHelper.instance.getConfiguredNetworks();
 //     debugPrint(result.length.toString());
 //     return result;

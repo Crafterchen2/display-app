@@ -11,6 +11,7 @@ import 'package:pionixbox/data/providers/ev_info_provider.dart';
 import 'package:pionixbox/data/providers/hardware_capabilities_provider.dart';
 import 'package:pionixbox/data/providers/limits_provider.dart';
 import 'package:pionixbox/data/providers/powermeter_provider.dart';
+import 'package:pionixbox/data/providers/selected_protocol_provider.dart';
 import 'package:pionixbox/data/providers/session_info_provider.dart';
 import 'package:pionixbox/data/providers/telemetry_provider.dart';
 import 'package:pionixbox/theme/app_colors.dart';
@@ -18,7 +19,7 @@ import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/utils/circular_queue.dart';
 import 'package:pionixbox/utils/constants/helper.dart';
 import 'package:pionixbox/utils/enums.dart';
-import 'package:pionixbox/widgets/session_info_body_portrait.dart';
+import 'package:pionixbox/widgets/layout.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
@@ -59,6 +60,7 @@ class _ChargingDashboardScreenState
   bool localization = false;
   bool privateMode = false;
   ChargingMode chargingMode = ChargingMode.unknown;
+  String selectedProtocolString = "";
   final mqtt = MQTT();
 
   @override
@@ -205,134 +207,50 @@ class _ChargingDashboardScreenState
       }
     }
 
+    final selectedProtocol = ref
+        .watch(selectedProtocolStreamProvider)
+        .whenOrNull(data: (data) => data);
+    if (selectedProtocol != null) {
+      selectedProtocolString = selectedProtocol;
+      if (selectedProtocol == "IEC61851-1") {
+        chargingMode = ChargingMode.basicAC;
+      } else if (selectedProtocol == "DIN70121") {
+        chargingMode = ChargingMode.dinDC;
+      } else if (selectedProtocol == "ISO15118-2-2013") {
+        if (powerMeter.voltage_V != null && powerMeter.voltage_V!.DC != null) {
+          chargingMode = ChargingMode.isoDC;
+        } else {
+          chargingMode = ChargingMode.isoAC;
+        }
+      } else if (selectedProtocol == "ISO15118-2-2010") {
+        if (powerMeter.voltage_V != null && powerMeter.voltage_V!.DC != null) {
+          chargingMode = ChargingMode.isoDC;
+        } else {
+          chargingMode = ChargingMode.isoAC;
+        }
+      } else {
+        chargingMode = ChargingMode.unknown;
+        selectedProtocolString = "";
+      }
+    }
+
     return Scaffold(
       backgroundColor: AppColors.white,
       body: Stack(
         children: [
-          OrientationBuilder(builder: (context, orientation) {
-            return Column(
-              children: [
-                Header(
-                  privateMode: privateMode,
-                  onSettingsPressed: () async {
-                    if (privateMode) {
-                      Navigator.of(context)
-                          .pushNamed(AppRoutes.settingScreen, arguments: {
-                        'localization': localization,
-                        'setup_simulation': simulation,
-                        'setup_wifi': wifi,
-                      });
-                    } else {
-                      await Navigator.of(context)
-                          .pushNamed(AppRoutes.languagePickerScreen);
-                      setState(() {});
-                    }
-                  },
-                ),
-                orientation == Orientation.landscape
-                    ? SessionInfoBody(
-                        state: _status,
-                        stateInfo: _statusInfo,
-                        energy: _chargedEnergy,
-                        totalEnergy: _energyTotal,
-                        power: _power,
-                        latestTotalw: _latestTotalw,
-                        duration: _duration,
-                        online: _online,
-                        seeMorePressed: () async {
-                          await Navigator.of(context).pushNamed(
-                              AppRoutes.sessionDetailScreen,
-                              arguments: {}).then((value) {
-                            setState(() {});
-                          });
-                        },
-                        onPauseCharging: () => performAction(pauseCharging),
-                        onResumeCharging: () => performAction(resumeCharging),
-                        onCurrentChanged: (value) {
-                          _current = value;
-                          setState(() {});
-                          setMaxCurrent(value);
-                        },
-                        current: _current,
-                        maxCurrentA: _maxCurrentA,
-                        minCurrentA: _minCurrentA,
-                        chargingMode: chargingMode,
-                        soc: evInfo?.soc)
-                    : SessionInfoBodyPortrait(
-                        state: _status,
-                        stateInfo: _statusInfo,
-                        energy: _chargedEnergy,
-                        totalEnergy: _energyTotal,
-                        power: _power,
-                        current: _current,
-                        maxCurrentA: _maxCurrentA,
-                        minCurrentA: _minCurrentA,
-                        latestTotalw: _latestTotalw,
-                        duration: _duration,
-                        online: _online,
-                        seeMorePressed: () {
-                          Navigator.of(context).pushNamed(
-                              AppRoutes.sessionDetailScreen,
-                              arguments: {}).then((value) {
-                            setState(() {});
-                          });
-                        },
-                        onPauseCharging: () => performAction(pauseCharging),
-                        onResumeCharging: () => performAction(resumeCharging),
-                        onCurrentChanged: (value) {
-                          _current = value;
-                          setState(() {});
-                          setMaxCurrent(value);
-                        },
-                      ),
-                const Spacer(flex: 2),
-                Column(
-                  children: [
-                    Container(
-                      height: 3,
-                      color: Colors.grey.shade300,
-                    ),
-                    Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: _online
-                                        ? AppColors.successLight
-                                        : AppColors.errorLight),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 4, horizontal: 12),
-                                  child: Text(
-                                    _online ? 'online'.tr() : 'offline'.tr(),
-                                    style: AppTextStyles.subTitle2
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                )),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Text(
-                              dateTimeFormat.format(DateTime.now()),
-                              style: AppTextStyles.digitsSubTitle2
-                                  .copyWith(color: Colors.grey),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            );
-          }),
+          BorderLayout(
+            widgets: {
+              BorderLayoutSlot.north: Header(
+                localization: localization,
+                setupSimulation: simulation,
+                setupWifi: wifi,
+                privateMode: privateMode,
+              ),
+              BorderLayoutSlot.center: makeSessionInfoBody(context),
+              ////const Spacer(flex: 2),
+              BorderLayoutSlot.south: makeFooterBar(),
+            },
+          ),
           if (_showProgressBar)
             Center(
               child: Container(
@@ -346,6 +264,129 @@ class _ChargingDashboardScreenState
         ],
       ),
     );
+  }
+
+  StatefulWidget makeSessionInfoBody(BuildContext context) {
+    return SessionInfoBody(
+      state: _status,
+      stateInfo: _statusInfo,
+      energy: _chargedEnergy,
+      totalEnergy: _energyTotal,
+      power: _power,
+      latestTotalw: _latestTotalw,
+      duration: _duration,
+      online: _online,
+      seeMorePressed: (ref
+                  .watch(powermeterStreamProvider)
+                  .whenOrNull(data: (data) => data) !=
+              null)
+          ? () async {
+              /*final result = */ await Navigator.of(context).pushNamed(
+                  AppRoutes.sessionDetailScreen,
+                  arguments: {}).then((value) {
+                setState(() {});
+              });
+            }
+          : () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  elevation: 20,
+                  duration: const Duration(
+                    seconds: 2,
+                  ),
+                  content: const Text(
+                      'You are offline. Try again or check wifi Settings.'), //TODO: Localization
+                  action: SnackBarAction(
+                    label: 'Open Wifi settings', //TODO: Localization
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(
+                        AppRoutes.wifiSetupScreen,
+                        arguments: {
+                          'init': false,
+                        },
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+      onPauseCharging: () => performAction(pauseCharging),
+      onResumeCharging: () => performAction(resumeCharging),
+      onCurrentChanged: (value) {
+        _current = value;
+        setState(() {});
+        setMaxCurrent(value);
+      },
+      current: _current,
+      maxCurrentA: _maxCurrentA,
+      minCurrentA: _minCurrentA,
+      chargingMode: chargingMode,
+    );
+  }
+
+  Column makeFooterBar() {
+    return Column(
+      children: [
+        Divider(
+          thickness: 3,
+          color: Colors.grey.shade300,
+          height: 4,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                runAlignment: WrapAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: _online
+                                ? AppColors.successLight
+                                : AppColors.errorLight),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 12),
+                          child: Text(
+                            _online ? 'online'.tr() : 'offline'.tr(),
+                            style: AppTextStyles.subTitle2
+                                .copyWith(color: Colors.white),
+                          ),
+                        )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      selectedProtocolString,
+                      style: AppTextStyles.digitsSubTitle2
+                          .copyWith(color: Colors.grey),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      dateTimeFormat.format(DateTime.now()),
+                      style: AppTextStyles.digitsSubTitle2
+                          .copyWith(color: Colors.grey),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  ScrollPhysics makeScrollPhysics() {
+    ScrollPhysics physics = const BouncingScrollPhysics();
+    final ScrollPhysics mergedPhysics =
+        physics.applyTo(const AlwaysScrollableScrollPhysics());
+    return mergedPhysics;
   }
 
   ///

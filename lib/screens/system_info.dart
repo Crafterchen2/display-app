@@ -10,6 +10,7 @@ import 'package:pionixbox/theme/app_text_styles.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
+import '../widgets/buttons.dart';
 
 class SystemInfo extends StatefulWidget {
   const SystemInfo({
@@ -65,12 +66,15 @@ class _SystemInfoState extends State<SystemInfo> {
     return DefaultTabController(
         length: 2,
         child: Scaffold(
+            floatingActionButton: const PionixCloseButton(),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             appBar: AppBar(
-                toolbarHeight: 70,
-                automaticallyImplyLeading: false,
-                backgroundColor: AppColors.primaryBlue,
-                flexibleSpace:
-                    TabBar(labelStyle: AppTextStyles.subTitle4, tabs: [
+              toolbarHeight: 70,
+              automaticallyImplyLeading: false,
+              backgroundColor: AppColors.primaryBlue,
+              flexibleSpace: TabBar(
+                labelStyle: AppTextStyles.subTitle4,
+                tabs: [
                   Tab(
                     icon: const Icon(Icons.info),
                     text: "about".tr(),
@@ -79,7 +83,9 @@ class _SystemInfoState extends State<SystemInfo> {
                     icon: const Icon(Icons.network_wifi_sharp),
                     text: "network".tr(),
                   )
-                ])),
+                ],
+              ),
+            ),
             body: const TabBarView(children: [About(), NetworkInfo()])));
   }
 }

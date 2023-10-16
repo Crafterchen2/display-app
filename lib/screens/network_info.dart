@@ -67,6 +67,7 @@ class _NetworkInfoState extends State<NetworkInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //floatingActionButton: const PionixCloseButton(),
       body: Container(
         color: Colors.white,
         child: Stack(
@@ -91,7 +92,6 @@ class _NetworkInfoState extends State<NetworkInfo> {
                       ),
                     ],
                   ),
-            const PionixCloseButton(),
           ],
         ),
       ),

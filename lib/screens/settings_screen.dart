@@ -4,8 +4,7 @@ import 'package:pionixbox/widgets/dialogs.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/widgets/buttons.dart';
 import 'package:pionixbox/widgets/restart_widget.dart';
-import 'package:pionixbox/widgets/settings_menu_landscape.dart';
-import 'package:pionixbox/widgets/settings_menu_portrait.dart';
+import 'package:pionixbox/widgets/settings_menu.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
@@ -43,36 +42,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     extractArguments(context);
     return Scaffold(
+      floatingActionButton: const PionixCloseButton(
+        inverted: true,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       backgroundColor: AppColors.primaryBlue,
-      body: Column(
-        children: [
-          Expanded(child: OrientationBuilder(builder: (context, orientation) {
-            return Column(
-              children: [
-                orientation == Orientation.landscape
-                    ? SettingsMenuLandscape(
-                        setupWifi: setupWifi,
-                        setupSimulation: setupSimulation,
-                        localization: localization,
-                        resetInitialised: resetConfirmationDialog,
-                        rebootCharger: rebootConfirmationDialog,
-                        setParentState: rebuild,
-                      )
-                    : SettingsMenuPortrait(
-                        setupWifi: setupWifi,
-                        setupSimulation: setupSimulation,
-                        localization: localization,
-                        resetInitialised: resetConfirmationDialog,
-                        rebootCharger: rebootConfirmationDialog,
-                      )
-              ],
-            );
-          })),
-          // ignore: prefer_const_constructors
-          PionixCloseButton(
-            color: Colors.white,
-          ),
-        ],
+      body: SettingsMenu(
+        setup_wifi: setupWifi,
+        setup_simulation: setupSimulation,
+        localization: localization,
+        resetInitialised: resetConfirmationDialog,
+        rebootCharger: rebootConfirmationDialog,
+        setParentState: rebuild,
       ),
     );
   }
@@ -109,7 +90,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
               onNegativePressed: () {
                 Navigator.pop(context);
-              });
+              },
+          );
         });
   }
 

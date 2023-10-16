@@ -1,11 +1,12 @@
-import 'dart:math';
-
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' as _virtualKeyboardBackspaceEventPeriod;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/utils/enums.dart';
+import 'package:pionixbox/utils/number_tools.dart';
+import 'package:pionixbox/utils/routing/app_router.dart';
 
+import '../main.dart';
 import '../theme/app_text_styles.dart';
 import '../utils/constants/helper.dart';
 import '../utils/constants/keys.dart';
@@ -60,112 +61,153 @@ class SessionInfoBody extends StatefulWidget {
 class _SessionInfoBodyState extends State<SessionInfoBody> {
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    String currentSliderLabel =
-        min(widget.current, widget.maxCurrentA).toStringAsFixed(1) + " A";
-
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.01),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildImageWidget(context),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-              if (widget.chargingMode == ChargingMode.unknown ||
-                  widget.chargingMode == ChargingMode.basicAC)
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  child: Column(
-                    children: [
-                      if (widget.state == ChargingState.charging)
-                        SecondaryButton(
-                            width: MediaQuery.of(context).size.width * 0.32,
-                            title: 'pause'.tr(),
-                            onPressed: widget.onPauseCharging,
-                            textColor: AppColors.primaryAmber),
-                      if (pauseOrResumeChargingTitle(widget.state) !=
-                              ChargingState.charging &&
-                          widget.state != ChargingState.authRequired &&
-                          pauseOrResumeChargingTitle(widget.state) != '')
-                        PrimaryButton(
-                          width: MediaQuery.of(context).size.width * 0.32,
-                          title: 'resume'.tr(),
-                          onPressed: widget.onResumeCharging,
-                          textColor: Colors.white,
-                        ),
-                    ],
-                  ),
-                ),
-              // if (widget.state != ChargingState.authRequired &&
-              //     widget.current >= widget.minCurrentA &&
-              //     widget.current <= widget.maxCurrentA)
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.3,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    String currentSliderLabel = widget.current.toStringAsFixed(1);
+    //Change the snapping behavior below is sufficient.
+    NumberSnap carSideWidth = NumberSnap(
+      parameter: MediaQuery.of(context).size.width - adjustScale(300),
+      snapped: adjustScale(280),
+      threshold: adjustScale(150),
+    );
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: adjustScale(10),
+        ),
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.start,
+          alignment: WrapAlignment.start,
+          runAlignment: WrapAlignment.start,
+          children: [
+            SizedBox(
+              width: carSideWidth.snapNumber(),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          'charge_upto'.tr() + ' ',
-                          style: AppTextStyles.heading3,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'status'.tr(),
+                                style: AppTextStyles.subTitle4,
+                              ),
+                            ),
+                            Text(
+                              chargingStateTitle(widget.state,
+                                      stateInfo: widget.stateInfo)
+                                  .toUpperCase(),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style:
+                                  AppTextStyles.heading6.copyWith(fontSize: 32),
+                            ),
+                          ],
                         ),
-                        Text(
-                          currentSliderLabel,
-                          textAlign: TextAlign.start,
-                          style: AppTextStyles.digitsHeading3,
-                        ),
+                        _buildImageWidget(context),
+                        if (widget.chargingMode == ChargingMode.unknown ||
+                            widget.chargingMode == ChargingMode.basicAC)
+                          SizedBox(
+                            height: adjustScale(60),
+                            child: (widget.state == ChargingState.charging)
+                                ? SecondaryButton(
+                                    title: 'pause'.tr(),
+                                    onPressed: widget.onPauseCharging,
+                                    textColor: AppColors.primaryAmber)
+                                : (pauseOrResumeChargingTitle(widget.state) !=
+                                            ChargingState.charging &&
+                                        widget.state !=
+                                            ChargingState.authRequired &&
+                                        pauseOrResumeChargingTitle(
+                                                widget.state) !=
+                                            '')
+                                    ? PrimaryButton(
+                                        title: 'resume'.tr(),
+                                        onPressed: widget.onResumeCharging,
+                                        textColor: Colors.white,
+                                      )
+                                    : Container(),
+                          ),
+                        if (widget.state != ChargingState.authRequired &&
+                            widget.current >= widget.minCurrentA &&
+                            widget.current <= widget.maxCurrentA)
+                          Column(
+                            //mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Wrap(
+                                children: [
+                                  Text(
+                                    'charge_upto'.tr() + ' ',
+                                    style: AppTextStyles.heading3,
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        currentSliderLabel,
+                                        textAlign: TextAlign.start,
+                                        style: AppTextStyles.digitsHeading3,
+                                      ),
+                                      const Text(
+                                        ' A',
+                                        textAlign: TextAlign.end,
+                                        style: AppTextStyles.digitsHeading3,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Slider(
+                                  min: widget.minCurrentA,
+                                  max: widget.maxCurrentA,
+                                  label: currentSliderLabel,
+                                  activeColor: AppColors.primaryAmber,
+                                  inactiveColor: Colors.grey,
+                                  onChanged: (val) {
+                                    setState(() {});
+                                    widget.onCurrentChanged(val);
+                                  },
+                                  value: widget.current),
+                            ],
+                          ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Slider(
-                        min: widget.minCurrentA,
-                        max: widget.maxCurrentA,
-                        label: currentSliderLabel,
-                        activeColor: AppColors.primaryAmber,
-                        inactiveColor: Colors.grey,
-                        onChanged: (val) {
-                          setState(() {});
-                          widget.onCurrentChanged(val);
-                        },
-                        value: min(widget.current, widget.maxCurrentA)),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          GestureDetector(
-            onTap: widget.seeMorePressed,
-            behavior: HitTestBehavior.opaque,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  ),
+                  //TODO fix err "Null check operator used on a null value"
+                  if (carSideWidth.isSnapped())
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      child: Text(
-                        chargingStateTitle(widget.state,
-                                stateInfo: widget.stateInfo)
-                            .toUpperCase(),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: AppTextStyles.heading6,
+                      height: adjustScale(350),
+                      child: VerticalDivider(
+                        thickness: adjustScale(2),
+                        color: Colors.grey,
                       ),
                     ),
-                    widget.state == ChargingState.authRequired
-                        ? const SizedBox()
-                        : SizedBox(height: height * 0.1),
-                    widget.state == ChargingState.authRequired
+                ],
+              ),
+            ),
+            if (!carSideWidth.isSnapped())
+              Divider(
+                thickness: adjustScale(2),
+                color: Colors.grey,
+              ),
+            SizedBox(
+              width:
+                  carSideWidth.snapNumber(ovrSnapped: carSideWidth.parameter),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      bottom: adjustScale(5),
+                    ),
+                    child: widget.state == ChargingState.authRequired
                         ? Text(
                             'swipe_your_card_please'.tr(),
                             style: AppTextStyles.subTitle4,
@@ -176,93 +218,135 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 : 'current_session'.tr(),
                             style: AppTextStyles.subTitle4,
                           ),
-                  ],
-                ),
-                widget.state == ChargingState.authRequired
-                    ? const SizedBox()
-                    : SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.52,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'energy'.tr(),
-                                  style: AppTextStyles.heading3,
-                                ),
-                                SizedBox(height: height * 0.02),
-                                Text(
-                                  'power'.tr(),
-                                  style: AppTextStyles.heading3,
-                                ),
-                                SizedBox(height: height * 0.02),
-                                Text(
-                                  'duration'.tr(),
-                                  style: AppTextStyles.heading3,
-                                ),
-                                SizedBox(height: height * 0.02),
-                              ],
+                  ),
+                  widget.state == ChargingState.authRequired
+                      ? Container()
+                      : GestureDetector(
+                          onTap: widget.seeMorePressed,
+                          behavior: HitTestBehavior.opaque,
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minWidth: adjustScale(150),
                             ),
-                            const Spacer(),
-                            SizedBox(
-                              // width: MediaQuery.of(context).size.width * 0.35,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    widget.energy.toStringAsFixed(2),
-                                    textAlign: TextAlign.start,
-                                    style: AppTextStyles.digitsHeading3,
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 2,
+                                    color: AppColors.primaryBlue,
                                   ),
-                                  SizedBox(height: height * 0.02),
-                                  Text(
-                                    widget.power.toStringAsFixed(2),
-                                    textAlign: TextAlign.start,
-                                    style: AppTextStyles.digitsHeading3,
+                                  borderRadius: const BorderRadius.only(
+                                    topRight: Radius.circular(12),
+                                    topLeft: Radius.circular(12),
                                   ),
-                                  SizedBox(height: height * 0.02),
-                                  Text(
-                                    widget.duration,
-                                    style: AppTextStyles.digitsHeading3,
-                                  ),
-                                  SizedBox(height: height * 0.02),
-                                ],
+                                ),
+                                child: Wrap(
+                                  alignment: WrapAlignment.spaceEvenly,
+                                  children: [
+                                    _buildSessionInfoCard(
+                                        'assets/icons/icon_power.svg',
+                                        widget.power.toStringAsFixed(2) + ' kW',
+                                        'power'.tr()),
+                                     _buildSessionInfoCard(
+                                        'assets/icons/icon_energy.svg',
+                                        widget.energy.toStringAsFixed(2) +
+                                            ' kWh',
+                                        'energy'.tr()),
+                                     _buildSessionInfoCard(
+                                        'assets/icons/icon_charging_duration.svg',
+                                        widget.duration + ' h',
+                                        'duration'.tr()),
+                                  ],
+                                ),
                               ),
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      ' kWh',
-                                      style: AppTextStyles.digitsHeading3,
-                                    )),
-                                SizedBox(height: height * 0.02),
-                                const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      ' kW',
-                                      style: AppTextStyles.digitsHeading3,
-                                    )),
-                                SizedBox(height: height * 0.02),
-                                const Text(
-                                  ' h',
-                                  style: AppTextStyles.digitsHeading3,
-                                ),
-                                SizedBox(height: height * 0.02),
-                              ],
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.05,
-                            )
-                          ],
+                          ),
+                        ),
+                  Container(
+                    transform: Matrix4.translationValues(0, -2, 0),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                          color: AppColors.primaryBlue,
+                          width: 2,
+                        ),
+                        bottom: BorderSide(
+                          color: AppColors.primaryBlue,
+                          width: 2,
+                        ),
+                        right: BorderSide(
+                          color: AppColors.primaryBlue,
+                          width: 2,
+                        ),
+                        top: BorderSide(
+                          color: AppColors.primaryBlue,
+                          width: 2,
                         ),
                       ),
-              ],
+                      borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(12),
+                        bottomLeft: Radius.circular(12),
+                      ),
+                    ),
+                    child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: GestureDetector(
+                          onTap: () async {
+                            /*final result = */ await Navigator.of(context)
+                                .pushNamed(AppRoutes.hlcLogScreen,
+                                    arguments: {}).then((value) {
+                              setState(() {});
+                            });
+                          },
+                          behavior: HitTestBehavior.opaque,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "See HLC comm log", //TODO Localisation
+                              style:
+                                  AppTextStyles.horizontalMenuButton.copyWith(
+                                color: Colors.grey,
+                              ),
+                              softWrap: true,
+                              maxLines: 4,
+                            ),
+                          ),
+                        )),
+                  )
+                ],
+              ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSessionInfoCard(String iconPath, String value, String label) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: adjustScale(10),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Text(label, style: AppTextStyles.digitsHeading3),
+          SizedBox(
+            height: adjustScale(10.0),
+          ),
+          SvgPicture.asset(
+            iconPath,
+            color: AppColors.primaryBlue,
+          ),
+          SizedBox(
+            height: adjustScale(10),
+          ),
+          Text(
+            value,
+            style: AppTextStyles.digitsHeading3
+                .copyWith(color: AppColors.primaryBlue),
           ),
         ],
       ),
@@ -280,11 +364,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
               Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                  child: getChargingSessionWidgetByState(
-                      widget.state,
-                      MediaQuery.of(context).size.height * 0.2,
-                      MediaQuery.of(context).size.width * 0.4,
-                      widget.soc)),
+                  child: getChargingSessionWidgetByState(widget.state,
+                      adjustScale(96), adjustScale(320), widget.soc)),
               // if (widget.state == 'ChargingPausedEVSE' ||
               //     widget.state == 'ChargingPausedEV')
               // SvgPicture.asset(

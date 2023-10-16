@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-/// various datetime formats for futur use
+/// various datetime formats for future use
 // final dateFormat = DateFormat('MMM dd, yyyy - hh:mm a');
 // final dateTimeFormat = DateFormat('MMM dd, yyyy \'at\' hh:mm a');
 // final monthTimeFormat = DateFormat('MMM dd \'at\' hh:mm a');

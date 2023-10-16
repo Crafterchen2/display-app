@@ -46,8 +46,8 @@ class AppTextStyles {
 
   static const TextStyle digitsHeading3 = TextStyle(
     color: AppColors.primaryBlue,
-    fontFamily: 'PTSans',
-    fontSize: 26,
+    fontFamily: 'RobotoMono',
+    fontSize: 21,
     fontWeight: FontWeight.bold,
     textBaseline: TextBaseline.alphabetic,
     fontFeatures: [FontFeature.tabularFigures()],

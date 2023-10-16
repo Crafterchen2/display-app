@@ -27,8 +27,7 @@ class _SimulationPanelLandscapeState extends State<SimulationPanelLandscape> {
           Expanded(
             child: GridView(
               scrollDirection: Axis.vertical,
-              // ignore: prefer_const_constructors
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
 
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 4.5,
@@ -37,31 +36,31 @@ class _SimulationPanelLandscapeState extends State<SimulationPanelLandscape> {
                 crossAxisCount: 2,
               ),
               children: [
-                PrimaryButton2(
+                PrimaryButton(
                   title: 'Plug In',
                   onPressed: plugIn,
                 ),
-                PrimaryButton2(
+                PrimaryButton(
                   title: 'Plug Out',
                   onPressed: plugOut,
                 ),
-                PrimaryButton2(
+                PrimaryButton(
                   title: 'Resume by car',
                   onPressed: resumeByCar,
                 ),
-                PrimaryButton2(
+                PrimaryButton(
                   title: 'Pause by car',
                   onPressed: pauseByCar,
                 ),
-                PrimaryButton2(
+                PrimaryButton(
                   title: 'Enable Simulation',
                   onPressed: enableSimulation,
                 ),
-                PrimaryButton2(
+                PrimaryButton(
                   title: 'Disable Simulation',
                   onPressed: disableSimulation,
                 ),
-                PrimaryButton2(
+                PrimaryButton(
                   title: 'Charging Simulation',
                   onPressed: chargingSimulation,
                 ),

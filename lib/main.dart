@@ -7,9 +7,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/screens/initializing_screen.dart';
 import 'package:pionixbox/utils/routing/app_router.dart';
 import 'package:pionixbox/widgets/restart_widget.dart';
+import 'package:auto_orientation/auto_orientation.dart';
 
 late double screenWidth;
 late double screenHeight;
+/// [uiScale] should be used to determine any kind of manual size adjustment of
+/// a widget or font or similar. It's not recommended to make f.e. a widget
+/// dependant on the size of the screen / window, as weird UI movements will
+/// occur which should be avoided to achieve a good and clean user experience.
+/// Example:
+/// SizedBox(
+///   width = adjustScale(1000),
+///   height = adjustScale(250),
+/// );
+///
+/// see also: [adjustScale]
+double uiScale = 1.0;
+
+///Convenience method.
+///Multiplies parameter number with variable [uiScale] and returns the product.
+double adjustScale(double number){
+  return number * uiScale;
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,24 +50,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-    if (screenWidth > screenHeight) {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeLeft,
-        DeviceOrientation.landscapeRight,
-      ]);
-    } else {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitDown,
-        DeviceOrientation.portraitUp,
-      ]);
-    }
-
-    /// uncomment below section to fix the orientation just in portrait mode
-
-    // SystemChrome.setPreferredOrientations([
-    //     DeviceOrientation.portraitDown,
-    //     DeviceOrientation.portraitUp,
-    //   ]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    AutoOrientation.fullAutoMode();
 
     return MaterialApp(
       title: 'Pionix Box',

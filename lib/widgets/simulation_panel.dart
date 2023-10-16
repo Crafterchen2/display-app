@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pionixbox/main.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 
 import '../mqtt.dart';
@@ -19,62 +20,63 @@ class _SimulationPanelState extends State<SimulationPanel> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> menuButtons = makeMenuButtons();
     return Scaffold(
       backgroundColor: AppColors.primaryBlue,
-      body: Column(
-        children: [
-          Expanded(
-            child: GridView(
-              scrollDirection: Axis.vertical,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 1.5,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                crossAxisCount: 2,
-              ),
-              children: [
-                PrimaryButton2(
-                  title: 'Plug In',
-                  onPressed: plugIn,
-                ),
-                PrimaryButton2(
-                  title: 'Plug Out',
-                  onPressed: plugOut,
-                ),
-                PrimaryButton2(
-                  title: 'Resume by car',
-                  onPressed: resumeByCar,
-                ),
-                PrimaryButton2(
-                  title: 'Pause by car',
-                  onPressed: pauseByCar,
-                ),
-                PrimaryButton2(
-                  title: 'Enable Simulation',
-                  onPressed: enableSimulation,
-                ),
-                PrimaryButton2(
-                  title: 'Disable Simulation',
-                  onPressed: disableSimulation,
-                ),
-                PrimaryButton2(
-                  title: 'Charging Simulation',
-                  onPressed: chargingSimulation,
-                ),
-              ],
-            ),
-          ),
-          const PionixCloseButton(
-            color: AppColors.primaryBlue,
-          ),
-        ],
+      floatingActionButton: const PionixCloseButton(
+        inverted: true,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0,),
+        child: ListView.separated(
+          itemBuilder: (BuildContext context, int index) {
+            return SizedBox(
+              height: adjustScale(75),
+              child: menuButtons[index],
+            );
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return const Divider();
+          },
+          itemCount: menuButtons.length,
+        ),
       ),
     );
   }
 
-  // void performAction(Function() action) {
-  //   action();
-  // }
+  List<Widget> makeMenuButtons(){
+    return [
+      PrimaryButton(
+        title: 'Plug In',
+        onPressed: plugIn,
+      ),
+      PrimaryButton(
+        title: 'Plug Out',
+        onPressed: plugOut,
+      ),
+      PrimaryButton(
+        title: 'Resume by car',
+        onPressed: resumeByCar,
+      ),
+      PrimaryButton(
+        title: 'Pause by car',
+        onPressed: pauseByCar,
+      ),
+      PrimaryButton(
+        title: 'Enable Simulation',
+        onPressed: enableSimulation,
+      ),
+      PrimaryButton(
+        title: 'Disable Simulation',
+        onPressed: disableSimulation,
+      ),
+      PrimaryButton(
+        title: 'Charging Simulation',
+        onPressed: chargingSimulation,
+      ),
+    ];
+  }
 
   void pauseByCar() {
     mqtt.publish(Topic.modifyChargingSessionTopic, Payloads.pausedByCar);

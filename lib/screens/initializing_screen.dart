@@ -28,6 +28,8 @@ class _InitializingScreenState extends State<InitializingScreen> {
   double _progress = 0.0;
   bool waitingIndicator = true;
   late Timer _timer;
+  Timer? _reconnectMessageTimer;
+  Timer? _reconnectTimer;
   String progressMessage = 'initializing'.tr();
 
   @override
@@ -41,6 +43,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
   @override
   void dispose() {
     _timer.cancel();
+    _reconnectTimer?.cancel();
     super.dispose();
   }
 
@@ -64,11 +67,17 @@ class _InitializingScreenState extends State<InitializingScreen> {
 
   void _connect(BuildContext context) async {
     try {
+      progressMessage = 'initializing'.tr();
       await mqtt.connect();
       getAppInfo(context, mqtt);
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
       progressMessage = 'connection_failed'.tr();
+      // reconnecting...
+      _reconnectMessageTimer = Timer(const Duration(seconds: 3),
+          () => progressMessage = 'reconnecting'.tr());
+      _reconnectTimer =
+          Timer(const Duration(seconds: 5), () => _connect(context));
     }
   }
 
@@ -76,78 +85,83 @@ class _InitializingScreenState extends State<InitializingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            waitingIndicator
-                ? Expanded(
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: screenHeight * 0.1),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          EverestLogoWidget(
-                            height: screenHeight * 0.7,
-                            width: screenWidth * 0.7,
-                          ),
-                          Column(
-                            children: [
-                              SizedBox(
-                                  width: screenWidth * 0.7,
-                                  child: LinearProgressIndicator(
-                                    color: AppColors.primaryBlue,
-                                    minHeight: screenHeight * 0.02,
-                                    backgroundColor: Colors.grey.shade300,
-                                  )),
-                              SizedBox(height: screenHeight * 0.01),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  top: screenHeight * 0.02,
+      body: Padding(
+        padding: EdgeInsets.all(adjustScale(10)),
+        child: SizedBox.expand(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                waitingIndicator
+                    ? Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Expanded(
+                              child:
+                                  SizedBox.expand(child: EverestLogoWidget()),
+                            ),
+                            Column(
+                              children: [
+                                Divider(
+                                  thickness: adjustScale(2),
+                                  color: Colors.grey,
+                                  height: adjustScale(50),
+                                  indent: adjustScale(20),
+                                  endIndent: adjustScale(20),
                                 ),
-                                child: Text(
-                                  progressMessage.toUpperCase(),
-                                  style: AppTextStyles.subTitle4
-                                      .copyWith(fontWeight: FontWeight.w700),
+                                LinearProgressIndicator(
+                                  color: AppColors.primaryBlue,
+                                  minHeight: adjustScale(10),
+                                  backgroundColor: Colors.grey.shade300,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                : Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SquareButtonWidget(
-                            iconUrl: 'assets/icons/icon_wifi.svg',
-                            text: 'wifi'.tr(),
-                            onPressed: () {
-                              Navigator.of(context).pushNamed(
-                                  AppRoutes.wifiSetupScreen,
-                                  arguments: {
-                                    'init': true,
-                                  });
-                            }),
-                        SquareButtonWidget(
-                            iconUrl: 'assets/icons/icon_lan.svg',
-                            text: 'lan'.tr(),
-                            onPressed: () {
-                              Navigator.of(context).pushNamed(
-                                  AppRoutes.lanInfoScreen,
-                                  arguments: {
-                                    'init': true,
-                                  });
-                            })
-                      ],
-                    ),
-                  )
-          ],
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    top: screenHeight * 0.02,
+                                  ),
+                                  child: Text(
+                                    progressMessage.toUpperCase(),
+                                    style: AppTextStyles.subTitle4
+                                        .copyWith(fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    : Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SquareButtonWidget(
+                                iconUrl: 'assets/icons/icon_wifi.svg',
+                                text: 'wifi'.tr(),
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(
+                                      AppRoutes.wifiSetupScreen,
+                                      arguments: {
+                                        'init': true,
+                                      });
+                                }),
+                            SquareButtonWidget(
+                                iconUrl: 'assets/icons/icon_lan.svg',
+                                text: 'lan'.tr(),
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(
+                                      AppRoutes.lanInfoScreen,
+                                      arguments: {
+                                        'init': true,
+                                      });
+                                })
+                          ],
+                        ),
+                      )
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -301,10 +315,13 @@ class EverestLogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image(
-      image: const AssetImage(AppAssets.everestLogo),
-      width: width,
-      height: height,
+    return const AspectRatio(
+      aspectRatio: 3,
+      child: Image(
+        image: AssetImage(AppAssets.everestLogo),
+        //width: width,
+        //height: height,
+      ),
     );
   }
 }
