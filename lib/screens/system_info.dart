@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:pionixbox/data/models/network_device_info.dart';
 import 'package:pionixbox/screens/about.dart';
+import 'package:pionixbox/screens/control.dart';
 import 'package:pionixbox/screens/network_info.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
@@ -64,7 +65,7 @@ class _SystemInfoState extends State<SystemInfo> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
             floatingActionButton: const PionixCloseButton(),
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -82,10 +83,14 @@ class _SystemInfoState extends State<SystemInfo> {
                   Tab(
                     icon: const Icon(Icons.network_wifi_sharp),
                     text: "network".tr(),
+                  ),
+                  Tab(
+                    icon: const Icon(Icons.tune),
+                    text: "control".tr(),
                   )
                 ],
               ),
             ),
-            body: const TabBarView(children: [About(), NetworkInfo()])));
+            body: const TabBarView(children: [About(), NetworkInfo(), Control()])));
   }
 }

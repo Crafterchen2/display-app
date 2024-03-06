@@ -199,8 +199,28 @@ class _InitializingScreenState extends State<InitializingScreen> {
     }
   }
 
+  void controlAvailable(String message) {
+    if (message == "true") {
+      if (mounted) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            AppRoutes.chargingDashboardScreen, (Route<dynamic> route) => false,
+            arguments: {
+              'private_mode': true,
+            });
+      } else {
+        waitingIndicator = false;
+      }
+    }
+    if (mounted) {
+      setState(() {
+        // _showProgress = false;
+      });
+    }
+  }
+
   void getAppInfo(BuildContext context, MQTT mqtt) {
     mqtt.subscribe("everest_api/setup/var/application_info", applicationInfo);
+    mqtt.subscribe("everest_api/control/var/available", controlAvailable);
     mqtt.publish("everest_api/setup/cmd/get_application_info", '');
   }
 

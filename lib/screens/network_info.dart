@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/data/models/network_device_info.dart';
+import 'package:pionixbox/data/providers/hostname_provider.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/widgets/buttons.dart';
@@ -10,19 +12,20 @@ import 'package:pionixbox/widgets/buttons.dart';
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
 
-class NetworkInfo extends StatefulWidget {
+class NetworkInfo extends ConsumerStatefulWidget {
   const NetworkInfo({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<NetworkInfo> createState() => _NetworkInfoState();
+  ConsumerState<NetworkInfo> createState() => _NetworkInfoState();
 }
 
-class _NetworkInfoState extends State<NetworkInfo> {
+class _NetworkInfoState extends ConsumerState<NetworkInfo> {
   final mqtt = MQTT();
   List<NetworkDeviceInfo> devices = [];
   bool _showProgress = true;
+  String hostnameString = "";
 
   @override
   void initState() {
@@ -66,6 +69,11 @@ class _NetworkInfoState extends State<NetworkInfo> {
 
   @override
   Widget build(BuildContext context) {
+    final hostname =
+        ref.watch(hostnameStreamProvider).whenOrNull(data: (data) => data);
+    if (hostname != null) {
+      hostnameString = hostname;
+    }
     return Scaffold(
       //floatingActionButton: const PionixCloseButton(),
       body: Container(
@@ -80,6 +88,27 @@ class _NetworkInfoState extends State<NetworkInfo> {
                   )
                 : Column(
                     children: [
+                      Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  MediaQuery.of(context).size.width * 0.02),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.03),
+                                Row(children: [
+                                  Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      child: Text(
+                                        'Hostname: $hostnameString',
+                                        style: AppTextStyles.subTitle4.copyWith(
+                                            color: AppColors.primaryBlue),
+                                      ))
+                                ])
+                              ])),
                       Expanded(
                         child: ListView.builder(
                             padding: const EdgeInsets.only(bottom: 100),
@@ -175,6 +204,13 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                   }
                 }),
           ),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                'MAC: ${info.mac}',
+                style: AppTextStyles.subTitle4
+                    .copyWith(color: AppColors.primaryBlue),
+              )),
         ],
       ),
     );

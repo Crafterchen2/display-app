@@ -38,6 +38,8 @@ class Topic {
 
   static const String blockWifi = 'everest_api/setup/cmd/rfkill_block';
   static const String unblockWifi = 'everest_api/setup/cmd/rfkill_unblock';
+  static const String enableAp = 'everest_api/setup/cmd/enable_ap';
+  static const String disableAp = 'everest_api/setup/cmd/disable_ap';
   static const String addNetwork = 'everest_api/setup/cmd/add_network';
   static const String enableNetwork = 'everest_api/setup/cmd/enable_network';
   static const String disableNetwork = 'everest_api/setup/cmd/disable_network';

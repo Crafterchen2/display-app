@@ -73,6 +73,13 @@ class BufferedTelemetry {
       CircularQueue<double>(bufferSize, duration);
   CircularQueue<double> temperature =
       CircularQueue<double>(bufferSize, duration);
+  
+  bool isEmpty() {
+    if (fanRPM.values.isEmpty || rcdCurrent.values.isEmpty || relaisOn.values.isEmpty || supplyVoltage12V.values.isEmpty || supplyMinusVoltage12V.values.isEmpty || temperature.values.isEmpty) {
+      return true;
+    }
+    return false;
+  }
 }
 
 BufferedTelemetry bufferedTelemetry = BufferedTelemetry();

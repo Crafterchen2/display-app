@@ -30,6 +30,7 @@
   "tap_here_to_turn_the_wifi_on": "Tippen Sie hier, um das WLAN einzuschalten",
   "close": "Schließen",
   "wifi": "WLAN",
+  "ap": "Access Point",
   "please_enable_wifi": "Bitte WLAN aktivieren um verfügbare Netzwerke zu sehen",
   "auto_scan": "Automatischer Scan",
   "reset": "Zurücksetzen",

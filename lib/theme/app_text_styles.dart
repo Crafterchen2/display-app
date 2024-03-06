@@ -56,7 +56,7 @@ class AppTextStyles {
 
   static const TextStyle digitsHeading2 = TextStyle(
     color: AppColors.primaryBlue,
-    fontFamily: 'PTSans',
+    fontFamily: 'RobotoMono',
     fontSize: 16,
     fontWeight: FontWeight.bold,
     textBaseline: TextBaseline.alphabetic,
@@ -66,7 +66,7 @@ class AppTextStyles {
 
   static const TextStyle digitsSubTitle2 = TextStyle(
     color: AppColors.primaryBlue,
-    fontFamily: 'PTSans',
+    fontFamily: 'RobotoMono',
     fontSize: 20,
     fontWeight: FontWeight.w400,
     textBaseline: TextBaseline.alphabetic,

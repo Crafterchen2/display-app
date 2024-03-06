@@ -1,8 +1,11 @@
-import 'package:easy_localization/easy_localization.dart' as _virtualKeyboardBackspaceEventPeriod;
+import 'package:easy_localization/easy_localization.dart'
+    as _virtualKeyboardBackspaceEventPeriod;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pionixbox/mqtt.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/utils/enums.dart';
+import 'package:pionixbox/utils/globals.dart';
 import 'package:pionixbox/utils/number_tools.dart';
 import 'package:pionixbox/utils/routing/app_router.dart';
 
@@ -32,6 +35,7 @@ class SessionInfoBody extends StatefulWidget {
   final ValueChanged onCurrentChanged;
   final ChargingMode chargingMode;
   final double? soc;
+  final String chargerModelName;
 
   const SessionInfoBody({
     Key? key,
@@ -52,6 +56,7 @@ class SessionInfoBody extends StatefulWidget {
     required this.stateInfo,
     required this.chargingMode,
     this.soc,
+    required this.chargerModelName,
   }) : super(key: key);
 
   @override
@@ -59,6 +64,70 @@ class SessionInfoBody extends StatefulWidget {
 }
 
 class _SessionInfoBodyState extends State<SessionInfoBody> {
+  final mqtt = MQTT();
+  String relaisState = "Unknown";
+  double outputVoltage = 0;
+  double cpHi = 0;
+  double cpLo = 0;
+  double pwmDc = 0;
+  String stateString = "Unknown";
+
+  @override
+  void didChangeDependencies() {
+    _connect();
+    super.didChangeDependencies();
+  }
+
+  void parseRelaisOn(String message) {
+    // why is this a float? does 0 mean "off" ?
+    double rs = double.parse(message);
+    if (rs > 0) {
+      relaisState = "On";
+    } else {
+      relaisState = "Off";
+    }
+  }
+
+  void parseOutputVoltage(String message) {
+    outputVoltage = double.parse(message);
+  }
+
+  void parseCpHi(String message) {
+    cpHi = double.parse(message);
+  }
+
+  void parseCpLo(String message) {
+    cpLo = double.parse(message);
+  }
+
+  void parsePwmDc(String message) {
+    pwmDc = double.parse(message) * 100;
+  }
+
+  void parseStateString(String message) {
+    stateString = message;
+    if (stateString == "Idle") {
+      debugPrint("Idle, clearing HLC log");
+      clearHlcLog();
+    }
+  }
+
+  void _connect() async {
+    try {
+      await mqtt.connect();
+      mqtt.subscribe("everest_external/umwc/relais_on", parseRelaisOn);
+      mqtt.subscribe(
+          "everest_external/umwc/output_voltage", parseOutputVoltage);
+      mqtt.subscribe("everest_external/umwc/cp_hi", parseCpHi);
+      mqtt.subscribe("everest_external/umwc/cp_lo", parseCpLo);
+      mqtt.subscribe("everest_external/umwc/pwm_dc", parsePwmDc);
+      mqtt.subscribe(
+          "everest_external/nodered/1/state/state_string", parseStateString);
+    } catch (e) {
+      debugPrint('Loading failed, Error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     String currentSliderLabel = widget.current.toStringAsFixed(1);
@@ -100,8 +169,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               ),
                             ),
                             Text(
-                              chargingStateTitle(widget.state,
-                                      stateInfo: widget.stateInfo)
+                              chargingStateTitle(widget.state)
                                   .toUpperCase(),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
@@ -243,21 +311,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 ),
                                 child: Wrap(
                                   alignment: WrapAlignment.spaceEvenly,
-                                  children: [
-                                    _buildSessionInfoCard(
-                                        'assets/icons/icon_power.svg',
-                                        widget.power.toStringAsFixed(2) + ' kW',
-                                        'power'.tr()),
-                                     _buildSessionInfoCard(
-                                        'assets/icons/icon_energy.svg',
-                                        widget.energy.toStringAsFixed(2) +
-                                            ' kWh',
-                                        'energy'.tr()),
-                                     _buildSessionInfoCard(
-                                        'assets/icons/icon_charging_duration.svg',
-                                        widget.duration + ' h',
-                                        'duration'.tr()),
-                                  ],
+                                  children:
+                                      _buildInfoCards(widget.chargerModelName),
                                 ),
                               ),
                             ),
@@ -313,7 +368,101 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                             ),
                           ),
                         )),
-                  )
+                  ),
+                  if (widget.chargerModelName == "MicroMegaWattCharger")
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 8),
+                          child: PrimaryButton(
+                            //width: screenWidth * 0.3,
+                            color: AppColors.primaryAmber,
+                            onPressed: () {
+                              mqtt.publish(
+                                  "everest_external/nodered/1/cmd/pause_charging",
+                                  "1");
+                            },
+                            title: "Pause",
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 8),
+                          child: PrimaryButton(
+                            //width: screenWidth * 0.3,
+                            color: AppColors.primaryAmber,
+                            onPressed: () {
+                              mqtt.publish(
+                                  "everest_external/nodered/1/cmd/resume_charging",
+                                  "1");
+                            },
+                            title: "Resume",
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 8),
+                          child: PrimaryButton(
+                            //width: screenWidth * 0.3,
+                            color: AppColors.primaryAmber,
+                            onPressed: () {
+                              mqtt.publish(
+                                  "everest_external/nodered/1/cmd/stop_transaction",
+                                  "1");
+                            },
+                            title: "Stop transaction",
+                          ),
+                        ),
+                      ],
+                    ),
+                  if (widget.chargerModelName == "MicroMegaWattCharger")
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 8),
+                          child: PrimaryButton(
+                            //width: screenWidth * 0.3,
+                            color: AppColors.primaryAmber,
+                            onPressed: () {
+                              mqtt.publish(
+                                  "everest_external/nodered/1/cmd/emergency_stop",
+                                  "1");
+                            },
+                            title: "Emerg.Stp",
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 8),
+                          child: PrimaryButton(
+                            //width: screenWidth * 0.3,
+                            color: AppColors.primaryAmber,
+                            onPressed: () {
+                              mqtt.publish(
+                                  "everest_external/nodered/1/cmd/evse_malfunction",
+                                  "1");
+                            },
+                            title: "EVSE malf",
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 8),
+                          child: PrimaryButton(
+                            //width: screenWidth * 0.3,
+                            color: AppColors.primaryAmber,
+                            onPressed: () {
+                              mqtt.publish(
+                                  "everest_external/nodered/1/cmd/evse_utility_int",
+                                  "1");
+                            },
+                            title: "EVSEutil int",
+                          ),
+                        ),
+                      ],
+                    )
                 ],
               ),
             ),
@@ -323,7 +472,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     );
   }
 
-  Widget _buildSessionInfoCard(String iconPath, String value, String label) {
+  Widget _buildSessionInfoCard(String? iconPath, String value, String label) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: adjustScale(10),
@@ -333,24 +482,53 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Text(label, style: AppTextStyles.digitsHeading3),
-          SizedBox(
-            height: adjustScale(10.0),
-          ),
-          SvgPicture.asset(
-            iconPath,
-            color: AppColors.primaryBlue,
-          ),
-          SizedBox(
-            height: adjustScale(10),
-          ),
+          if (iconPath != null)
+            SizedBox(
+              height: adjustScale(10.0),
+            ),
+          if (iconPath != null)
+            SvgPicture.asset(
+              iconPath,
+              color: AppColors.primaryBlue,
+            ),
+          if (iconPath != null)
+            SizedBox(
+              height: adjustScale(10),
+            ),
           Text(
             value,
             style: AppTextStyles.digitsHeading3
                 .copyWith(color: AppColors.primaryBlue),
           ),
+          if (iconPath == null)
+            SizedBox(
+              height: adjustScale(10),
+            ),
         ],
       ),
     );
+  }
+
+  List<Widget> _buildInfoCards(String chargerModelName) {
+    if (chargerModelName == "MicroMegaWattCharger") {
+      return [
+        _buildSessionInfoCard(
+            null, outputVoltage.toStringAsFixed(2) + ' V', 'Output Voltage'),
+        _buildSessionInfoCard(null, relaisState, 'Relais'),
+        _buildSessionInfoCard(null, pwmDc.toStringAsFixed(0) + ' %', 'PWM DC'),
+        _buildSessionInfoCard(null, cpHi.toStringAsFixed(2), 'CP Hi'),
+        _buildSessionInfoCard(null, cpLo.toStringAsFixed(2), 'CP Lo'),
+        _buildSessionInfoCard(null, stateString, 'State'),
+      ];
+    }
+    return [
+      _buildSessionInfoCard('assets/icons/icon_power.svg',
+          widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
+      _buildSessionInfoCard('assets/icons/icon_energy.svg',
+          widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
+      _buildSessionInfoCard('assets/icons/icon_charging_duration.svg',
+          widget.duration + ' h', 'duration'.tr())
+    ];
   }
 
   Widget _buildImageWidget(BuildContext context) {

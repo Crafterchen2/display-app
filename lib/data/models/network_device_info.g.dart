@@ -23,6 +23,7 @@ NetworkDeviceInfo _$NetworkDeviceInfoFromJson(Map<String, dynamic> json) =>
       wireless: json['wireless'] as bool,
       ipv6: parseIp(json['ipv6']),
       rfkill_id: json['rfkill_id'] as String? ?? "",
+      mac: json['mac'] as String? ?? "",
     );
 
 Map<String, dynamic> _$NetworkDeviceInfoToJson(NetworkDeviceInfo instance) =>
@@ -33,4 +34,5 @@ Map<String, dynamic> _$NetworkDeviceInfoToJson(NetworkDeviceInfo instance) =>
       'wireless': instance.wireless,
       'ipv6': instance.ipv6,
       'rfkill_id': instance.rfkill_id,
+      'mac': instance.mac,
     };

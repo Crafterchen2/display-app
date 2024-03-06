@@ -30,6 +30,7 @@
   "tap_here_to_turn_the_wifi_on": "TAP HERE TO TURN THE WIFI ON",
   "close": "Close",
   "wifi": "Wifi",
+  "ap": "Access Point",
   "please_enable_wifi": "Please enable Wifi to see available networks",
   "auto_scan": "Auto Scan",
   "reset": "Reset",

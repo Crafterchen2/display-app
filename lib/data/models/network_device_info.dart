@@ -12,6 +12,7 @@ class NetworkDeviceInfo {
   final bool wireless;
   final List<String> ipv6;
   final String rfkill_id;
+  final String mac;
 
   NetworkDeviceInfo(
       {required this.interface,
@@ -19,7 +20,8 @@ class NetworkDeviceInfo {
       required this.blocked,
       required this.wireless,
       this.ipv6 = const [],
-      this.rfkill_id = ""});
+      this.rfkill_id = "",
+      this.mac = ""});
 
   factory NetworkDeviceInfo.fromJson(Map<String, dynamic> json) =>
       _$NetworkDeviceInfoFromJson(json);

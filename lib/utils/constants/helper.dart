@@ -177,3 +177,12 @@ String durationFormat(Duration duration) {
 // String signalStrength(int ) {
 //   return;
 // }
+
+String wrapString(String str){
+    String newStr = "";
+    for (var character in str.runes) {
+      newStr += String.fromCharCode(character);
+      newStr +='\u200B';
+    }
+    return newStr;
+}

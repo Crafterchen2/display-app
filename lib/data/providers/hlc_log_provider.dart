@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/data/models/hlc_log.dart';
 import 'package:pionixbox/data/providers/connector_provider.dart';
@@ -16,7 +17,7 @@ final hlcLogStreamProvider = StreamProvider<HlcLog>((ref) async* {
   final stream =
       mqtt.subscribeStream("everest_api/" + connector + "/var/hlc_log");
   await for (final message in stream) {
-    // debugPrint("Received hlc log");
+    // debugPrint("Received hlc log $message");
     yield parseHlcLog(message);
   }
 });

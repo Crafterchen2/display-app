@@ -57,7 +57,7 @@ class VirtualKeyboardPionixLayoutKeys extends VirtualKeyboardLayoutKeys {
   }
 
   List<List> getLayout() {
-    debugPrint("getLayout: $specialCharacters");
+    // debugPrint("getLayout: $specialCharacters");
     if (specialCharacters) {
       return _defaultSpecialCharactersLayout;
     } else {

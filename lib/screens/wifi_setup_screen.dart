@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_navigation/src/root/parse_route.dart';
 import 'package:pionixbox/data/models/available_network.dart';
 import 'package:pionixbox/data/models/configured_network.dart';
 import 'package:pionixbox/data/models/saved_network.dart';
+import 'package:pionixbox/data/providers/ap_state_provider.dart';
 import 'package:pionixbox/screens/wifi_password_screen.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
@@ -21,18 +23,19 @@ import '../utils/constants/keys.dart';
 import '../utils/routing/app_router.dart';
 import 'landing_screen.dart';
 
-class WifiSetupScreen extends StatefulWidget {
+class WifiSetupScreen extends ConsumerStatefulWidget {
   const WifiSetupScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<WifiSetupScreen> createState() => _WifiSetupScreenState();
+  ConsumerState<WifiSetupScreen> createState() => _WifiSetupScreenState();
 }
 
-class _WifiSetupScreenState extends State<WifiSetupScreen> {
+class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   String connectedSsid = 'Not Specified';
   bool _wifi = false;
+  bool _ap = false;
   bool _showPasswordScreen = false;
   bool optionsMenu = false;
   bool showConnectedDetails = false;
@@ -46,6 +49,7 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
   bool initialisingScreen = false;
   bool bannerVisible = false;
   String bannerText = "";
+  String apStateString = "unknown";
 
   @override
   void didChangeDependencies() {
@@ -159,11 +163,24 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final apState = ref
+        .watch(apStateStreamProvider)
+        .whenOrNull(data: (data) => data);
+    if (apState != null) {
+      apStateString = apState;
+      if (apStateString == "enabled") {
+        _ap = true;
+        _wifi = true;
+      } else if (apStateString == "disabled") {
+        _ap = false;
+      }
+    }
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
-      floatingActionButton: !_showPasswordScreen?const PionixCloseButton():null,
+      floatingActionButton:
+          !_showPasswordScreen ? const PionixCloseButton() : null,
       body: Stack(
         children: [
           Column(
@@ -347,6 +364,14 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
     mqtt.publish(Topic.unblockWifi, '0');
   }
 
+  void enableAp() {
+    mqtt.publish(Topic.enableAp, '0');
+  }
+
+  void disableAp() {
+    mqtt.publish(Topic.disableAp, '0');
+  }
+
   void listConfiguredNetworks() {
     mqtt.publish(Topic.listConfiguredNetworks, '');
   }
@@ -500,31 +525,64 @@ class _WifiSetupScreenState extends State<WifiSetupScreen> {
                   child: SizedBox(
                       height: 60,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            'wifi'.tr(),
-                            style: AppTextStyles.heading3.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                          Row(
+                            children: [
+                              Text(
+                                'ap'.tr(),
+                                style: AppTextStyles.heading3.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                              Switch(
+                                activeColor: AppColors.primaryAmber,
+                                value: _ap,
+                                onChanged: (val) {
+                                  _wifi = val || true;
+                                  _ap = val;
+                                  if (val) {
+                                    debugPrint('enable AP');
+                                    unblockWifi();
+                                    enableAp();
+                                  } else {
+                                    debugPrint('disable AP');
+                                    disableAp();
+                                  }
+                                  setState(() {});
+                                },
+                              )
+                            ],
                           ),
-                          Switch(
-                            activeColor: AppColors.primaryAmber,
-                            value: _wifi,
-                            onChanged: (val) {
-                              _wifi = val;
-                              if (val) {
-                                debugPrint('Unblocking the rfKill value');
-                                unblockWifi();
-                                enableWifiScanning();
-                              } else {
-                                debugPrint('blocking the rfKill value');
-                                blockWifi();
-                                disableWifiScanning();
-                              }
-                              setState(() {});
-                            },
+                          Row(
+                            children: [
+                              Text(
+                                'wifi'.tr(),
+                                style: AppTextStyles.heading3.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                              Switch(
+                                activeColor: AppColors.primaryAmber,
+                                value: _wifi,
+                                onChanged: (val) {
+                                  _wifi = val;
+                                  if (val) {
+                                    debugPrint('Unblocking the rfKill value');
+                                    unblockWifi();
+                                    enableWifiScanning();
+                                  } else {
+                                    debugPrint('blocking the rfKill value');
+                                    _ap = false;
+                                    disableAp();
+                                    blockWifi();
+                                    disableWifiScanning();
+                                  }
+                                  setState(() {});
+                                },
+                              )
+                            ],
                           ),
                         ],
                       )))),

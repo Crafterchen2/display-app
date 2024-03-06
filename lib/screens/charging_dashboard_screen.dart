@@ -4,11 +4,15 @@ import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pionixbox/data/models/charger_info.dart';
+import 'package:pionixbox/data/models/hlc_log.dart';
 import 'package:pionixbox/data/models/limits.dart';
 import 'package:pionixbox/data/models/power_meter.dart';
+import 'package:pionixbox/data/providers/charger_info_provider.dart';
 import 'package:pionixbox/data/providers/connector_provider.dart';
 import 'package:pionixbox/data/providers/ev_info_provider.dart';
 import 'package:pionixbox/data/providers/hardware_capabilities_provider.dart';
+import 'package:pionixbox/data/providers/hlc_log_provider.dart';
 import 'package:pionixbox/data/providers/limits_provider.dart';
 import 'package:pionixbox/data/providers/powermeter_provider.dart';
 import 'package:pionixbox/data/providers/selected_protocol_provider.dart';
@@ -19,6 +23,7 @@ import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/utils/circular_queue.dart';
 import 'package:pionixbox/utils/constants/helper.dart';
 import 'package:pionixbox/utils/enums.dart';
+import 'package:pionixbox/utils/globals.dart';
 import 'package:pionixbox/widgets/layout.dart';
 
 import '../mqtt.dart';
@@ -39,12 +44,12 @@ class ChargingDashboardScreen extends ConsumerStatefulWidget {
 class _ChargingDashboardScreenState
     extends ConsumerState<ChargingDashboardScreen> {
   late String _status;
-  late String _statusInfo;
   late String _energyTotal;
   late double _chargedEnergy;
   late double _latestTotalw;
   late String _duration;
   late double _power;
+  ChargerInfo? chargerInfo;
   late PowerMeter powerMeter;
   late Limits limits;
   double _current = 6.0;
@@ -61,12 +66,13 @@ class _ChargingDashboardScreenState
   bool privateMode = false;
   ChargingMode chargingMode = ChargingMode.unknown;
   String selectedProtocolString = "";
+  // List<HlcLog> hlcLogList = [];
+
   final mqtt = MQTT();
 
   @override
   void initState() {
     _status = 'unplugged';
-    _statusInfo = '';
     _energyTotal = '0.0';
     _power = 0;
     _chargedEnergy = 0.0;
@@ -80,13 +86,43 @@ class _ChargingDashboardScreenState
   @override
   void didChangeDependencies() {
     extractArguments(context);
+    _connect();
     super.didChangeDependencies();
+  }
+
+  void parseHlcLogMsg(String message) {
+    // debugPrint("Parsing $message");
+    HlcLog log = parseHlcLog(message);
+    hlcLogList.add(log);
+  }
+
+  void parseLoggingPathMsg(String message) {
+    // debugPrint("Parsing $message");
+    loggingPath = message;
+  }
+
+  void _connect() async {
+    try {
+      await mqtt.connect();
+      final connector = ref.watch(connectorProvider);
+      mqtt.subscribe(
+          "everest_api/" + connector + "/var/hlc_log", parseHlcLogMsg);
+      mqtt.subscribe("everest_api/" + connector + "/var/logging_path",
+          parseLoggingPathMsg);
+    } catch (e) {
+      debugPrint('Loading failed, Error: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     extractArguments(context);
     connector = ref.watch(connectorProvider);
+    final chargerinfo =
+        ref.watch(chargerInfoStreamProvider).whenOrNull(data: (data) => data);
+    if (chargerinfo != null) {
+      chargerInfo = chargerinfo;
+    }
     final powermeter =
         ref.watch(powermeterStreamProvider).whenOrNull(data: (data) => data);
     if (powermeter != null) {
@@ -174,7 +210,6 @@ class _ChargingDashboardScreenState
         ref.watch(sessionInfoStreamProvider).whenOrNull(data: (data) => data);
     if (sessioninfo != null) {
       _status = sessioninfo.state;
-      _statusInfo = sessioninfo.state_info;
       _chargedEnergy = sessioninfo.charged_energy_wh / 1000.0;
       _latestTotalw = sessioninfo.latest_total_w / 1000.0;
       _energyTotal = (_chargedEnergy.toStringAsFixed(1) + " kWh");
@@ -266,10 +301,17 @@ class _ChargingDashboardScreenState
     );
   }
 
+  String getChargerModelName() {
+    if (chargerInfo != null) {
+      return chargerInfo!.model_name ?? "";
+    }
+    return "";
+  }
+
   StatefulWidget makeSessionInfoBody(BuildContext context) {
     return SessionInfoBody(
       state: _status,
-      stateInfo: _statusInfo,
+      stateInfo: "",
       energy: _chargedEnergy,
       totalEnergy: _energyTotal,
       power: _power,
@@ -321,6 +363,7 @@ class _ChargingDashboardScreenState
       maxCurrentA: _maxCurrentA,
       minCurrentA: _minCurrentA,
       chargingMode: chargingMode,
+      chargerModelName: getChargerModelName(),
     );
   }
 
