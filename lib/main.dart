@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/screens/initializing_screen.dart';
+import 'package:pionixbox/theme/pionix_theme_provider.dart';
 import 'package:pionixbox/utils/routing/app_router.dart';
 import 'package:pionixbox/widgets/restart_widget.dart';
 import 'package:auto_orientation/auto_orientation.dart';
@@ -58,12 +59,14 @@ class MyApp extends StatelessWidget {
     ]);
     AutoOrientation.fullAutoMode();
 
+    PionixThemeProvider themeProvider = PionixThemeProvider();
+
     return MaterialApp(
       title: 'Pionix Box',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      themeMode: ThemeMode.light,
+      theme: themeProvider.getLightTheme(),
+      darkTheme: themeProvider.getDarkTheme(),
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
