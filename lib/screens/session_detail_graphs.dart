@@ -9,6 +9,7 @@ import 'package:pionixbox/main.dart';
 import 'package:pionixbox/screens/general_detail_screen.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/utils/circular_queue.dart';
+import '../widgets/dialogs.dart';
 import '../widgets/info_cards.dart';
 
 class ChartValues {
@@ -251,14 +252,15 @@ class _SessionDetailGraphsState extends ConsumerState<SessionDetailGraphs> {
           value: ":(",
           title: "Es ist ein Problem aufgetreten.", //TODO: Localization
         ),
-      ); //-->Container()
+      );
     }
   }
 
   void showOverlay() {
     //Widget --> void
-    showModalBottomSheet(
+    showPionixBottomSheet(
       context: context,
+      heightPercent: getChartHeightPercent(),
       enableDrag: true,
       elevation: 20,
       backgroundColor: AppColors.primaryBlue,
@@ -378,4 +380,8 @@ class _SessionDetailGraphsState extends ConsumerState<SessionDetailGraphs> {
       ),
     );
   }
+}
+
+double getChartHeightPercent(){
+return 0.7;
 }

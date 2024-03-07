@@ -276,7 +276,7 @@ class _LineChartCardContent extends State<LineChartCardContent> {
     }
 
     SizedBox chart = SizedBox(
-      height: (widget.showPopup) ? widget.chartHeight : MediaQuery.of(context).size.height/2 - adjustScale(0),
+      height: (widget.showPopup) ? widget.chartHeight : MediaQuery.of(context).size.height*getChartHeightPercent() - adjustScale(0),
       child: LineChart(
         LineChartData(
           minY: minimums.first,

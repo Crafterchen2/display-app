@@ -30,7 +30,9 @@ import '../mqtt.dart';
 import '../utils/constants/keys.dart';
 import '../utils/datetime_formats.dart';
 import '../utils/routing/app_router.dart';
+import '../widgets/dialogs.dart';
 import '../widgets/header_widget.dart';
+import '../widgets/restart_widget.dart';
 import '../widgets/session_info_body.dart';
 
 class ChargingDashboardScreen extends ConsumerStatefulWidget {
@@ -270,6 +272,297 @@ class _ChargingDashboardScreenState
     }
 
     return Scaffold(
+      endDrawer: NavigationDrawer(
+        elevation: 20,
+        backgroundColor: AppColors.primaryBlue,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 10,
+              right: 10,
+            ),
+            child: Text(
+              "Navigation", //TODO Localisation
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                    color: AppColors.white,
+                  ),
+            ),
+          ),
+          const Divider(
+            indent: 10,
+            endIndent: 10,
+            thickness: 2,
+            color: AppColors.white,
+          ),
+          Padding(
+            padding: const  EdgeInsets.only(
+              left: 10,
+              bottom: 5,
+              right: 10,
+              top: 10,
+            ),
+            child: FilledButton.icon(
+              onPressed: (ref
+                  .watch(powermeterStreamProvider)
+                  .whenOrNull(data: (data) => data) !=
+                  null)
+                  ? () async {
+                /*final result = */ await Navigator.of(context).pushNamed(
+                    AppRoutes.sessionDetailScreen,
+                    arguments: {}).then((value) {
+                  setState(() {});
+                });
+              }
+                  : () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    elevation: 20,
+                    duration: const Duration(
+                      seconds: 2,
+                    ),
+                    content: const Text(
+                        'You are offline. Try again or check wifi Settings.'), //TODO: Localization
+                    action: SnackBarAction(
+                      label: 'Open Wifi settings', //TODO: Localization
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(
+                          AppRoutes.wifiSetupScreen,
+                          arguments: {
+                            'init': false,
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.primaryAmber,
+              ),
+              icon: const Icon(Icons.details),
+              label: Text("Details", //TODO Localisation
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: AppColors.white,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const  EdgeInsets.only(
+              left: 10,
+              bottom: 5,
+              right: 10,
+            ),
+            child: FilledButton.icon(
+              onPressed: () async {
+                await Navigator.of(context).pushNamed(AppRoutes.hlcLogScreen);
+              },
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.primaryAmber,
+              ),
+              icon: const Icon(Icons.compare_arrows),
+              label: Text("HLC log", //TODO Localisation
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: AppColors.white,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const  EdgeInsets.only(
+              left: 10,
+              right: 10,
+            ),
+            child: Text("Einstellungen", //TODO Localisation
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                    color: AppColors.white,
+              ),
+            ),
+          ),
+          const Divider(
+            indent: 10,
+            endIndent: 10,
+            thickness: 2,
+            color: AppColors.white,
+          ),
+          Padding(
+            padding: const  EdgeInsets.only(
+              left: 10,
+              bottom: 5,
+              right: 10,
+              top: 10,
+            ),
+            child: FilledButton.icon(
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  AppRoutes.wifiSetupScreen,
+                  arguments: {
+                    'init': false,
+                  },
+                );
+              },
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.primaryAmber,
+              ),
+              label: Text(tr('wifi_setup'),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: AppColors.white,
+                ),
+              ),
+              icon: const Icon(Icons.wifi_protected_setup),
+            ),
+          ),
+          Padding(
+            padding: const  EdgeInsets.only(
+              left: 10,
+              bottom: 5,
+              right: 10,
+            ),
+            child: FilledButton.icon(
+              onPressed: () async {
+                await Navigator.of(context)
+                    .pushNamed(AppRoutes.languagePickerScreen);
+              },
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.primaryAmber,
+              ),
+              label: Text(tr('language'),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: AppColors.white,
+                ),
+              ),
+              icon: const Icon(Icons.language),
+            ),
+          ),
+          Padding(
+            padding: const  EdgeInsets.only(
+              left: 10,
+              bottom: 5,
+              right: 10,
+            ),
+            child: FilledButton.icon(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.systemInfo);
+              },
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.primaryAmber,
+              ),
+              label: Text(tr('system_info'),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: AppColors.white,
+                ),
+              ),
+              icon: const Icon(Icons.info_outline),
+            ),
+          ),
+          Padding(
+            padding: const  EdgeInsets.only(
+              left: 10,
+              bottom: 5,
+              right: 10,
+            ),
+            child: FilledButton.icon(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return BasicDialog(
+                      title: 'reset_app_to_factory_defaults'.tr(),
+                      positiveText: 'reset'.tr(),
+                      negativeText: 'cancel'.tr(),
+                      content: 'reset_app_to_factory_defaults_explanation'.tr(),
+                      onPositivePressed: () {
+                        Navigator.pop(context);
+                        mqtt.publish(Topic.resetInitialized, '');
+                        mqtt.publish(Topic.setAppMode, 'unknown');
+                        RestartWidget.restartApp(context);
+                      },
+                      onNegativePressed: () {
+                        Navigator.pop(context);
+                      },
+                    );
+                  },
+                );
+              },
+              style: FilledButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.errorContainer,
+              ),
+              label: Text(
+                tr('reset'),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onErrorContainer,
+                ),
+              ),
+              icon: Icon(
+                Icons.restore,
+                color: Theme.of(context).colorScheme.onErrorContainer,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const  EdgeInsets.only(
+              left: 10,
+              bottom: 5,
+              right: 10,
+            ),
+            child: FilledButton.icon(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (ctz) {
+                    return BasicDialog(
+                        title: 'reboot_charger'.tr(),
+                        positiveText: 'reboot'.tr(),
+                        negativeText: 'cancel'.tr(),
+                        content: 'reboot_charger_explanation'.tr(),
+                        onPositivePressed: () {
+                          Navigator.pop(context);
+                          mqtt.publish(Topic.reboot, '');
+                        },
+                        onNegativePressed: () {
+                          Navigator.pop(context);
+                        });
+                  },
+                );
+              },
+              style: FilledButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.errorContainer,
+              ),
+              label: Text(
+                tr('reboot'),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onErrorContainer,
+                ),
+              ),
+              icon: Icon(
+                Icons.restart_alt,
+                color: Theme.of(context).colorScheme.onErrorContainer,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const  EdgeInsets.only(
+              left: 10,
+              bottom: 5,
+              right: 10,
+            ),
+            child: FilledButton.icon(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.simulationScreen);
+              },
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.primaryAmber,
+              ),
+              label: Text(tr('simulation'),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: AppColors.white,
+                ),
+              ),
+              icon: const Icon(Icons.settings),
+            ),
+          ),
+        ],
+      ),
       backgroundColor: AppColors.white,
       body: Stack(
         children: [

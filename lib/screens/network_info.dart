@@ -7,7 +7,6 @@ import 'package:pionixbox/data/models/network_device_info.dart';
 import 'package:pionixbox/data/providers/hostname_provider.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
-import 'package:pionixbox/widgets/buttons.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';

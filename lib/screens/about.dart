@@ -10,7 +10,6 @@ import 'package:pionixbox/data/models/release_info.dart';
 import 'package:pionixbox/data/providers/application_info_provider.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
-import 'package:pionixbox/widgets/buttons.dart';
 
 class About extends ConsumerStatefulWidget {
   const About({

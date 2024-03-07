@@ -1,9 +1,7 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/main.dart';
 import 'package:pionixbox/theme/app_colors.dart';
@@ -91,155 +89,19 @@ class Header extends StatelessWidget {
               aspectRatio: 1,
               child: Center(
                 child: (privateMode)
-                    ? SpeedDial(
-                        heroTag: PionixCloseButton.getHeroTag(),
-                        direction: SpeedDialDirection.down,
-                        icon: Icons.settings,
-                        iconTheme: const IconThemeData(
+                    ? FloatingActionButton(
+                        elevation: 20,
+                        backgroundColor: AppColors.primaryBlue,
+                        onPressed: () {
+                          Scaffold.of(context).openEndDrawer();
+                          },
+                        child: const Icon(Icons.settings,
+                          color: AppColors.white,
                           size: 48,
                         ),
-                        renderOverlay: true,
-                        overlayColor: const Color.fromARGB(255, 64, 64, 64),
-                        backgroundColor: AppColors.primaryBlue,
-                        elevation: 20,
-                        closeDialOnPop: true,
-                        activeIcon: Icons.close,
-                        useRotationAnimation: true,
-                        childrenButtonSize: const Size(64, 64),
-                        children: [
-                          SpeedDialChild(
-                            label: tr('wifi_setup'),
-                            labelStyle: labelStyle,
-                            backgroundColor: AppColors.primaryAmber,
-                            visible: setupWifi,
-                            onTap: () {
-                              Navigator.of(context).pushNamed(
-                                AppRoutes.wifiSetupScreen,
-                                arguments: {
-                                  'init': false,
-                                },
-                              );
-                            },
-                            child: const Icon(
-                              Icons.wifi_protected_setup,
-                              color: AppColors.white,
-                            ),
-                          ),
-                          SpeedDialChild(
-                            label: tr('simulation'),
-                            labelStyle: labelStyle,
-                            backgroundColor: AppColors.primaryAmber,
-                            visible: setupSimulation,
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(AppRoutes.simulationScreen);
-                            },
-                            child: const Icon(
-                              Icons.settings,
-                              color: AppColors.white,
-                            ),
-                          ),
-                          SpeedDialChild(
-                            label: tr('language'),
-                            labelStyle: labelStyle,
-                            backgroundColor: AppColors.primaryAmber,
-                            visible: localization,
-                            onTap: () async {
-                              await Navigator.of(context)
-                                  .pushNamed(AppRoutes.languagePickerScreen);
-                              //.then(
-                              //  (_) => setState(
-                              //    () {},
-                              //  ),
-                              //)
-                              //.then((_) => widget.setParentState());
-                            },
-                            child: const Icon(
-                              Icons.language,
-                              color: AppColors.white,
-                            ),
-                          ),
-                          SpeedDialChild(
-                            label: tr('system_info'),
-                            labelStyle: labelStyle,
-                            backgroundColor: AppColors.primaryAmber,
-                            visible: true,
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(AppRoutes.systemInfo);
-                            },
-                            child: const Icon(
-                              Icons.info_outline,
-                              color: AppColors.white,
-                            ),
-                          ),
-                          SpeedDialChild(
-                            label: tr('reset'),
-                            labelStyle: labelStyle,
-                            backgroundColor: Colors.red,
-                            visible: true,
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return BasicDialog(
-                                    title: 'reset_app_to_factory_defaults'.tr(),
-                                    positiveText: 'reset'.tr(),
-                                    negativeText: 'cancel'.tr(),
-                                    content:
-                                        'reset_app_to_factory_defaults_explanation'
-                                            .tr(),
-                                    onPositivePressed: () {
-                                      Navigator.pop(context);
-                                      mqtt.publish(Topic.resetInitialized, '');
-                                      setMode('unknown');
-                                      RestartWidget.restartApp(context);
-                                    },
-                                    onNegativePressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                            child: const Icon(
-                              Icons.restore,
-                              color: AppColors.white,
-                            ),
-                          ),
-                          SpeedDialChild(
-                            label: tr('reboot'),
-                            labelStyle: labelStyle,
-                            backgroundColor: Colors.red,
-                            visible: true,
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (ctz) {
-                                  return BasicDialog(
-                                      title: 'reboot_charger'.tr(),
-                                      positiveText: 'reboot'.tr(),
-                                      negativeText: 'cancel'.tr(),
-                                      content:
-                                          'reboot_charger_explanation'.tr(),
-                                      onPositivePressed: () {
-                                        Navigator.pop(context);
-                                        mqtt.publish(Topic.reboot, '');
-                                      },
-                                      onNegativePressed: () {
-                                        Navigator.pop(context);
-                                      });
-                                },
-                              );
-                            },
-                            child: const Icon(
-                              Icons.restart_alt,
-                              color: AppColors.white,
-                            ),
-                          ),
-                        ],
                       )
                     : FloatingActionButton(
+                        elevation: 20,
                         onPressed: () async {
                           await Navigator.of(context).pushNamed(
                             AppRoutes.languagePickerScreen,
@@ -247,8 +109,7 @@ class Header extends StatelessWidget {
                         },
                         backgroundColor: AppColors.primaryBlue,
                         child: const Icon(
-                          Icons
-                              .language, //Icons.language --> privateMode ? Icons.settings : Icons.language,
+                          Icons.language, //Icons.language --> privateMode ? Icons.settings : Icons.language,
                           color: AppColors.white,
                           size: 48,
                         ),

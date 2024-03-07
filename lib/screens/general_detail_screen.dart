@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pionixbox/main.dart';
-import 'package:pionixbox/widgets/buttons.dart';
 
 import '../theme/app_colors.dart';
 import '../widgets/info_cards.dart';

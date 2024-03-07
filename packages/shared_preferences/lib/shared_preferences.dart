@@ -15,7 +15,7 @@ class SharedPreferences {
       final Completer<SharedPreferences> completer =
           Completer<SharedPreferences>();
       try {
-        final preferencesMap = Map<String, Object>();
+        final preferencesMap = <String, Object>{};
         completer.complete(SharedPreferences._(preferencesMap));
       } on Exception catch (e) {
         // If there's an error, explicitly return the future with an error.

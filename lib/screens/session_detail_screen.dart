@@ -70,14 +70,14 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SingleInfoCard(
-                    title: 'Powermeter ID', value: powerMeter!.meter_id.toString()),
+                    title: 'Powermeter ID', value: powerMeter.meter_id.toString()),
                 const Divider(
                   color: Colors.white10,
                   thickness: 2,
                 ),
                 SingleInfoCard(
                     title: 'Phase sequence error',
-                    value: (powerMeter!.phase_seq_error ?? false)
+                    value: (powerMeter.phase_seq_error ?? false)
                         ? 'Error state'
                         : 'No Error'),
                 const Divider(
@@ -88,7 +88,7 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                     title: 'Time',
                     value: dateTimeFormat
                         .format(DateTime.fromMillisecondsSinceEpoch(
-                            powerMeter!.timestamp.round() * 1000))
+                            powerMeter.timestamp.round() * 1000))
                         .toString()),
                 const Divider(
                   color: Colors.white10,
@@ -108,7 +108,7 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                   },
                   expandContent: ListCardContent(
                     unit: 'A',
-                    map: powerMeter!.current_A?.toJson(),
+                    map: powerMeter.current_A?.toJson(),
                   ),
                 ),
                 SessionDetailCardWidget(
@@ -121,7 +121,7 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                   },
                   expandContent: ListCardContent(
                     unit: 'W',
-                    map: powerMeter!.power_W?.toJson(),
+                    map: powerMeter.power_W?.toJson(),
                   ),
                 ),
                 SessionDetailCardWidget(
@@ -134,7 +134,7 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                   },
                   expandContent: ListCardContent(
                     unit: 'Wh',
-                    map: powerMeter!.energy_Wh_import.toJson(),
+                    map: powerMeter.energy_Wh_import.toJson(),
                   ),
                 ),
                 if (bufferedPowerMeter.ac)
@@ -148,7 +148,7 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                     },
                     expandContent: ListCardContent(
                       unit: 'Hz',
-                      map: powerMeter!.frequency_Hz?.toJson(),
+                      map: powerMeter.frequency_Hz?.toJson(),
                     ),
                   ),
                 SessionDetailCardWidget(
@@ -161,7 +161,7 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                   },
                   expandContent: ListCardContent(
                     unit: 'V',
-                    map: powerMeter!.voltage_V?.toJson(),
+                    map: powerMeter.voltage_V?.toJson(),
                   ),
                 ),
               ],

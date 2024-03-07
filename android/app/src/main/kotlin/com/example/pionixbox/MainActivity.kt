@@ -1,4 +1,4 @@
-package com.pionix.pionixbox
+package com.example.pionixbox
 
 import io.flutter.embedding.android.FlutterActivity
 
