@@ -19,7 +19,7 @@ class PionixThemeProvider {
     );
   }
 
-  ThemeData getCustomLightTheme() {
+  ThemeData getLightTheme() {
     const double backgroundDisabledOpacity = 0.12;
     const double foregroundDisabledOpacity = 0.38;
     const OutlinedBorder buttonShape = ContinuousRectangleBorder();
@@ -93,7 +93,7 @@ class PionixThemeProvider {
     );
   }
 
-  ThemeData getCustomDarkTheme() {
+  ThemeData getDarkTheme() {
     const double backgroundDisabledOpacity = 0.12;
     const double foregroundDisabledOpacity = 0.38;
     const OutlinedBorder buttonShape = ContinuousRectangleBorder();
