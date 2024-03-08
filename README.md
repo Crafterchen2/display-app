@@ -33,7 +33,7 @@ Here is short summary on how to get flutter-pi to run on your Raspberry Pi, all 
    ```bash
    git clone https://github.com/ardera/flutter-engine-binaries-for-arm.git
    cd flutter-engine-binaries-for-arm
-   git checkout deaf44bacae971edfa1ffe84ba39874118a622cc
+   git checkout bc5c3c99c1274ba79da6c62eb740e93c487bbc5b
    sudo ./install.sh
    ```
 
