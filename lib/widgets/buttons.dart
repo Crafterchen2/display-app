@@ -57,8 +57,7 @@ class SecondaryButton extends StatelessWidget {
             color: color,
             child: Center(
               child: Text(title.toUpperCase(),
-                  style: AppTextStyles.primaryButtonText
-                      .copyWith(color: textColor)),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(color: textColor)),
             ),
           ),
         ),
