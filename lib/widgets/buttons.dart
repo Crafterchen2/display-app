@@ -5,43 +5,22 @@ import 'package:pionixbox/theme/app_colors.dart';
 
 import '../theme/app_text_styles.dart';
 
-class PrimaryButton extends StatelessWidget {
-  final String title;
-  final VoidCallback onPressed;
-  final Color color;
-  final Color highlightColor;
-  final Color textColor;
+class PrimaryButton extends ElevatedButton {
 
   const PrimaryButton({
-    Key? key,
-    required this.title,
-    required this.onPressed,
-    this.color = AppColors.primaryAmber,
-    this.highlightColor = AppColors.primaryBlue,
-    this.textColor = Colors.white,
-  }) : super(key: key);
+    super.key,
+    required super.onPressed,
+    super.onLongPress,
+    super.onHover,
+    super.onFocusChange,
+    super.style,
+    super.focusNode,
+    super.autofocus = false,
+    super.clipBehavior = Clip.none,
+    super.statesController,
+    required super.child,
+  });
 
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-        color: color,
-        child: InkWell(
-          onTap: onPressed,
-          highlightColor: highlightColor,
-          splashColor: Colors.transparent,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text(
-                title.toUpperCase(),
-                style: AppTextStyles.primaryButtonText.copyWith(
-                  color: textColor,
-                ),
-              ),
-            ),
-          ),
-        ));
-  }
 }
 
 class SecondaryButton extends StatelessWidget {
