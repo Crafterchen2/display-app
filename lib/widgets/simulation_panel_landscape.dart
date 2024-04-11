@@ -11,8 +11,7 @@ class SimulationPanelLandscape extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<SimulationPanelLandscape> createState() =>
-      _SimulationPanelLandscapeState();
+  State<SimulationPanelLandscape> createState() => _SimulationPanelLandscapeState();
 }
 
 class _SimulationPanelLandscapeState extends State<SimulationPanelLandscape> {
@@ -28,7 +27,6 @@ class _SimulationPanelLandscapeState extends State<SimulationPanelLandscape> {
             child: GridView(
               scrollDirection: Axis.vertical,
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 4.5,
                 mainAxisSpacing: 20,
@@ -37,31 +35,31 @@ class _SimulationPanelLandscapeState extends State<SimulationPanelLandscape> {
               ),
               children: [
                 PrimaryButton(
-                  title: 'Plug In',
+                  child: const Text('Plug In'),
                   onPressed: plugIn,
                 ),
                 PrimaryButton(
-                  title: 'Plug Out',
+                  child: const Text('Plug Out'),
                   onPressed: plugOut,
                 ),
                 PrimaryButton(
-                  title: 'Resume by car',
+                  child: const Text('Resume by car'),
                   onPressed: resumeByCar,
                 ),
                 PrimaryButton(
-                  title: 'Pause by car',
+                  child: const Text('Pause by car'),
                   onPressed: pauseByCar,
                 ),
                 PrimaryButton(
-                  title: 'Enable Simulation',
+                  child: const Text('Enable Simulation'),
                   onPressed: enableSimulation,
                 ),
                 PrimaryButton(
-                  title: 'Disable Simulation',
+                  child: const Text('Disable Simulation'),
                   onPressed: disableSimulation,
                 ),
                 PrimaryButton(
-                  title: 'Charging Simulation',
+                  child: const Text('Charging Simulation'),
                   onPressed: chargingSimulation,
                 ),
               ],
