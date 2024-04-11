@@ -196,9 +196,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                                 widget.state) !=
                                             '')
                                     ? PrimaryButton(
-                                        title: 'resume'.tr(),
+                                        child: Text('resume'.tr()),
                                         onPressed: widget.onResumeCharging,
-                                        textColor: Colors.white,
+                                        //textColor: Colors.white,
                                       )
                                     : Container(),
                           ),
@@ -212,7 +212,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 children: [
                                   Text(
                                     'charge_upto'.tr() + ' ',
-                                    style: AppTextStyles.heading3,
+                                    style: Theme.of(context).textTheme.titleLarge,
                                   ),
                                   Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -377,13 +377,12 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               horizontal: 8, vertical: 8),
                           child: PrimaryButton(
                             //width: screenWidth * 0.3,
-                            color: AppColors.primaryAmber,
                             onPressed: () {
                               mqtt.publish(
                                   "everest_external/nodered/1/cmd/pause_charging",
                                   "1");
                             },
-                            title: "Pause",
+                            child: const Text("Pause"),
                           ),
                         ),
                         Padding(
@@ -391,13 +390,12 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               horizontal: 8, vertical: 8),
                           child: PrimaryButton(
                             //width: screenWidth * 0.3,
-                            color: AppColors.primaryAmber,
                             onPressed: () {
                               mqtt.publish(
                                   "everest_external/nodered/1/cmd/resume_charging",
                                   "1");
                             },
-                            title: "Resume",
+                            child: const Text("Resume"),
                           ),
                         ),
                         Padding(
@@ -405,13 +403,12 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               horizontal: 8, vertical: 8),
                           child: PrimaryButton(
                             //width: screenWidth * 0.3,
-                            color: AppColors.primaryAmber,
                             onPressed: () {
                               mqtt.publish(
                                   "everest_external/nodered/1/cmd/stop_transaction",
                                   "1");
                             },
-                            title: "Stop transaction",
+                            child: const Text("Stop transaction"),
                           ),
                         ),
                       ],
@@ -424,13 +421,12 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               horizontal: 8, vertical: 8),
                           child: PrimaryButton(
                             //width: screenWidth * 0.3,
-                            color: AppColors.primaryAmber,
                             onPressed: () {
                               mqtt.publish(
                                   "everest_external/nodered/1/cmd/emergency_stop",
                                   "1");
                             },
-                            title: "Emerg.Stp",
+                            child: const Text("Emerg.Stp"),
                           ),
                         ),
                         Padding(
@@ -438,13 +434,12 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               horizontal: 8, vertical: 8),
                           child: PrimaryButton(
                             //width: screenWidth * 0.3,
-                            color: AppColors.primaryAmber,
                             onPressed: () {
                               mqtt.publish(
                                   "everest_external/nodered/1/cmd/evse_malfunction",
                                   "1");
                             },
-                            title: "EVSE malf",
+                            child: const Text("EVSE malf"),
                           ),
                         ),
                         Padding(
@@ -452,13 +447,12 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               horizontal: 8, vertical: 8),
                           child: PrimaryButton(
                             //width: screenWidth * 0.3,
-                            color: AppColors.primaryAmber,
                             onPressed: () {
                               mqtt.publish(
                                   "everest_external/nodered/1/cmd/evse_utility_int",
                                   "1");
                             },
-                            title: "EVSEutil int",
+                            child: const Text("EVSEutil int"),
                           ),
                         ),
                       ],
