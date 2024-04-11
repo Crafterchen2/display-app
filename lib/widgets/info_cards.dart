@@ -86,10 +86,7 @@ class SessionDetailCardWidget extends StatelessWidget {
               ],
             ),
             expanded
-                ? const Divider(
-                    color: Colors.white30,
-                    thickness: 2,
-                  )
+                ? const Divider()
                 : Container(),
             if (expanded)
               expandContent, //...populateList(context) --> ListCardContent(unit: unit, map: map) --> expandContent
