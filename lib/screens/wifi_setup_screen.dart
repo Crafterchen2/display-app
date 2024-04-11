@@ -214,8 +214,10 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                           ),
                           SizedBox(width: screenWidth * 0.03),
                           PrimaryButton(
-                            title: 'Add LAN',
-                            color: AppColors.errorLight,
+                            child: const Text('Add LAN'),
+                            style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
+                                backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).colorScheme.errorContainer)
+                            ),
                             onPressed: () {
                               Navigator.of(context).pushNamed(
                                   AppRoutes.lanInfoScreen,
@@ -227,8 +229,10 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                           ),
                           SizedBox(width: screenWidth * 0.03),
                           PrimaryButton(
-                            title: 'Done with SETUP',
-                            color: AppColors.successLight,
+                            child: const Text('Done with SETUP'),
+                            style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
+                                backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).colorScheme.tertiaryContainer)
+                            ),
                             onPressed: () {
                               setInitialized();
                               Navigator.of(context).pushAndRemoveUntil(
@@ -608,7 +612,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                 child: Text('please_enable_wifi'.tr(),
-                    style: AppTextStyles.heading3)))
+                    style: Theme.of(context).textTheme.titleLarge)))
     ]);
   }
 }
