@@ -70,9 +70,8 @@ class _SystemInfoState extends State<SystemInfo> {
             floatingActionButton: const PionixCloseButton(),
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             appBar: AppBar(
-              toolbarHeight: 70,
+              //toolbarHeight: 70,
               automaticallyImplyLeading: false,
-              backgroundColor: AppColors.primaryBlue,
               flexibleSpace: TabBar(
                 labelStyle: AppTextStyles.subTitle4,
                 tabs: [
