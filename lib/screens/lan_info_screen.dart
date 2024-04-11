@@ -146,8 +146,10 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                                 ),
                                 SizedBox(width: screenWidth * 0.03),
                                 PrimaryButton(
-                                  title: 'Add WIFI',
-                                  color: AppColors.errorLight,
+                                  child: const Text('Add WIFI'),
+                                  style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
+                                    backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).colorScheme.errorContainer)
+                                  ),
                                   onPressed: () {
                                     Navigator.of(context).pushNamed(
                                         AppRoutes.wifiSetupScreen,
@@ -159,8 +161,10 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                                 ),
                                 SizedBox(width: screenWidth * 0.03),
                                 PrimaryButton(
-                                  title: 'Done with SETUP',
-                                  color: AppColors.successLight,
+                                  child: const Text('Done with SETUP'),
+                                  style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
+                                      backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).colorScheme.tertiaryContainer)
+                                  ),
                                   onPressed: () {
                                     setInitialized();
                                     Navigator.of(context).pushAndRemoveUntil(
