@@ -133,12 +133,11 @@ class _ControlState extends ConsumerState<Control> {
                                 horizontal: 8, vertical: 8),
                             child: PrimaryButton(
                               //width: screenWidth * 0.3,
-                              color: AppColors.primaryAmber,
                               onPressed: () {
                                 mqtt.publish(
                                     "everest_api/control/cmd/restart", "1");
                               },
-                              title: "Restart everest-control.service",
+                              child: const Text("Restart everest-control.service"),
                             ),
                           ),
                           Padding(
@@ -146,13 +145,12 @@ class _ControlState extends ConsumerState<Control> {
                                 horizontal: 8, vertical: 8),
                             child: PrimaryButton(
                               //width: screenWidth * 0.3,
-                              color: AppColors.primaryAmber,
                               onPressed: () {
                                 mqtt.publish(
                                     "everest_api/control/cmd/restart_display_app",
                                     "1");
                               },
-                              title: "Restart display-app.service",
+                              child: const Text("Restart display-app.service"),
                             ),
                           ),
                         ],
@@ -262,7 +260,6 @@ class ConfigInfoWidget extends StatelessWidget {
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     child: PrimaryButton(
                       //width: screenWidth * 0.3,
-                      color: AppColors.primaryAmber,
                       onPressed: () {
                         if (header == "configs") {
                           loadConfig(value);
@@ -270,7 +267,7 @@ class ConfigInfoWidget extends StatelessWidget {
                           loadConfig(header + "/" + value);
                         }
                       },
-                      title: 'load'.tr(),
+                      child: Text('load'.tr()),
                     ),
                   ),
                 ]);
