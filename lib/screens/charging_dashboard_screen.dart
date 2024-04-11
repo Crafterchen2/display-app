@@ -288,12 +288,7 @@ class _ChargingDashboardScreenState
                   ),
             ),
           ),
-          const Divider(
-            indent: 10,
-            endIndent: 10,
-            thickness: 2,
-            color: AppColors.white,
-          ),
+          const Divider(),
           Padding(
             padding: const  EdgeInsets.only(
               left: 10,
@@ -336,9 +331,6 @@ class _ChargingDashboardScreenState
                   ),
                 );
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryAmber,
-              ),
               icon: const Icon(Icons.details),
               label: Text("Details", //TODO Localisation
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -379,12 +371,7 @@ class _ChargingDashboardScreenState
               ),
             ),
           ),
-          const Divider(
-            indent: 10,
-            endIndent: 10,
-            thickness: 2,
-            color: AppColors.white,
-          ),
+          const Divider(),
           Padding(
             padding: const  EdgeInsets.only(
               left: 10,
@@ -401,9 +388,6 @@ class _ChargingDashboardScreenState
                   },
                 );
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryAmber,
-              ),
               label: Text(tr('wifi_setup'),
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: AppColors.white,
@@ -423,9 +407,6 @@ class _ChargingDashboardScreenState
                 await Navigator.of(context)
                     .pushNamed(AppRoutes.languagePickerScreen);
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryAmber,
-              ),
               label: Text(tr('language'),
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: AppColors.white,
@@ -444,9 +425,6 @@ class _ChargingDashboardScreenState
               onPressed: () {
                 Navigator.of(context).pushNamed(AppRoutes.systemInfo);
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryAmber,
-              ),
               label: Text(tr('system_info'),
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: AppColors.white,
@@ -484,18 +462,18 @@ class _ChargingDashboardScreenState
                   },
                 );
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.errorContainer,
+              style: Theme.of(context).filledButtonTheme.style?.copyWith(
+                  backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).colorScheme.error)
               ),
               label: Text(
                 tr('reset'),
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onErrorContainer,
+                  color: Theme.of(context).colorScheme.onError,
                 ),
               ),
               icon: Icon(
                 Icons.restore,
-                color: Theme.of(context).colorScheme.onErrorContainer,
+                color: Theme.of(context).colorScheme.onError,
               ),
             ),
           ),
@@ -525,18 +503,18 @@ class _ChargingDashboardScreenState
                   },
                 );
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.errorContainer,
+              style: Theme.of(context).filledButtonTheme.style?.copyWith(
+                backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).colorScheme.error)
               ),
               label: Text(
                 tr('reboot'),
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onErrorContainer,
+                  color: Theme.of(context).colorScheme.onError,
                 ),
               ),
               icon: Icon(
                 Icons.restart_alt,
-                color: Theme.of(context).colorScheme.onErrorContainer,
+                color: Theme.of(context).colorScheme.onError,
               ),
             ),
           ),
@@ -550,9 +528,6 @@ class _ChargingDashboardScreenState
               onPressed: () {
                 Navigator.of(context).pushNamed(AppRoutes.simulationScreen);
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryAmber,
-              ),
               label: Text(tr('simulation'),
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: AppColors.white,
@@ -681,8 +656,9 @@ class _ChargingDashboardScreenState
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: _online
-                                ? AppColors.successLight
-                                : AppColors.errorLight),
+                                ? Theme.of(context).colorScheme.tertiaryContainer
+                                : Theme.of(context).colorScheme.errorContainer,
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 4, horizontal: 12),
