@@ -89,30 +89,27 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                       if (widget.isSaved)
                         PrimaryButton(
                           //width: screenWidth * 0.3,
-                          color: AppColors.primaryAmber,
                           onPressed: () {
                             _showKeyboard = false;
                             widget.onForgetPressed();
                           },
-                          title: 'forget'.tr(),
+                          child: Text('forget'.tr()),
                         ),
                       const SizedBox(width: 12),
                       PrimaryButton(
                         //width: screenWidth * 0.3,
-                        color: AppColors.primaryAmber,
                         onPressed: () {
                           _showKeyboard = false;
                           widget.onBackPressed();
                           debugPrint('on back Pressed');
                         },
-                        title: 'back'.tr(),
+                        child: Text('back'.tr()),
                       ),
                       const SizedBox(width: 12),
                       PrimaryButton(
                         //width: screenWidth * 0.3,
-                        color: AppColors.primaryAmber,
                         onPressed: widget.onConnectPressed,
-                        title: 'connect'.tr(),
+                        child: Text('connect'.tr()),
                       ),
                       const SizedBox(width: 12),
                     ],
