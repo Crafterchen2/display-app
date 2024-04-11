@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class PionixThemeProvider {
@@ -23,6 +25,21 @@ class PionixThemeProvider {
     const double backgroundDisabledOpacity = 0.12;
     const double foregroundDisabledOpacity = 0.38;
     const OutlinedBorder buttonShape = ContinuousRectangleBorder();
+    const TextStyle urbanistFont = TextStyle(
+      fontFamily: 'Urbanist',
+      textBaseline: TextBaseline.alphabetic,
+      fontStyle: FontStyle.normal,
+    );
+    TextStyle robotoMonoFont = TextStyle(
+      color: customLightScheme.primary,
+      fontFamily: 'RobotoMono',
+      textBaseline: TextBaseline.alphabetic,
+      fontStyle: FontStyle.normal,
+      fontFeatures: const [FontFeature.tabularFigures()],
+    );
+    const TextStyle bold = TextStyle(
+      fontWeight: FontWeight.bold,
+    );
     return ThemeData(
       colorScheme: customLightScheme,
       sliderTheme: SliderThemeData(
@@ -32,16 +49,14 @@ class PionixThemeProvider {
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.disabled)) return customLightScheme.onSurface.withOpacity(backgroundDisabledOpacity);
-            return customLightScheme.secondary;
+            return customLightScheme.primary;
           }),
           foregroundColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.disabled)) return customLightScheme.onSurface.withOpacity(foregroundDisabledOpacity);
-            if (states.contains(MaterialState.hovered)) return customLightScheme.onSecondary;
-            return customLightScheme.primary;
+            if (states.contains(MaterialState.hovered)) return customLightScheme.onPrimary;
+            return customLightScheme.secondary;
           }),
-          surfaceTintColor: MaterialStateProperty.resolveWith((states) {
-            return Colors.transparent;
-          }),
+          surfaceTintColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
           elevation: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.disabled)) return 0;
             if (states.contains(MaterialState.pressed)) return 2;
@@ -54,6 +69,16 @@ class PionixThemeProvider {
       filledButtonTheme: FilledButtonThemeData(
         style: ButtonStyle(
           shape: MaterialStateProperty.resolveWith((states) => buttonShape),
+          elevation: MaterialStateProperty.resolveWith((states) => 0),
+          backgroundColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.disabled)) return customLightScheme.onSurface.withOpacity(backgroundDisabledOpacity);
+            return customLightScheme.secondary;
+          }),
+          foregroundColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.disabled)) return customLightScheme.onSurface.withOpacity(foregroundDisabledOpacity);
+            return customLightScheme.primary;
+          }),
+          surfaceTintColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -85,9 +110,43 @@ class PionixThemeProvider {
         return customLightScheme.primary;
       })),
       scrollbarTheme: ScrollbarThemeData(
-        thumbVisibility: MaterialStateProperty.resolveWith((states) {
-          return true;
-        }),
+        thumbVisibility: MaterialStateProperty.resolveWith((states) => true),
+      ),
+      navigationDrawerTheme: NavigationDrawerThemeData(
+        backgroundColor: customLightScheme.primaryContainer,
+        surfaceTintColor: Colors.transparent,
+        shadowColor: customLightScheme.secondaryContainer,
+        elevation: 20,
+      ),
+      dividerTheme: DividerThemeData(
+        color: customLightScheme.primaryContainer,
+        endIndent: 10,
+        indent: 10,
+        space: 6,
+        thickness: 2,
+      ),
+      tabBarTheme: TabBarTheme(
+        overlayColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
+        labelColor: customLightScheme.onPrimary,
+        unselectedLabelColor: customLightScheme.primaryContainer,
+        indicatorColor: customLightScheme.secondary,
+      ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: customLightScheme.primary,
+        elevation: 20,
+        surfaceTintColor: Colors.transparent,
+        toolbarHeight: 70,
+      ),
+      textTheme: const TextTheme(
+        displaySmall: bold,
+        displayMedium: bold,
+        displayLarge: bold,
+        headlineSmall: bold,
+        headlineMedium: bold,
+        headlineLarge: bold,
+        //titleSmall: bold,
+        //titleMedium: bold,
+        //titleLarge: bold,
       ),
       useMaterial3: true,
     );
