@@ -28,7 +28,9 @@ class _SimulationPanelState extends State<SimulationPanel> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0,),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8.0,
+        ),
         child: ListView.separated(
           itemBuilder: (BuildContext context, int index) {
             return SizedBox(
@@ -45,34 +47,34 @@ class _SimulationPanelState extends State<SimulationPanel> {
     );
   }
 
-  List<Widget> makeMenuButtons(){
+  List<Widget> makeMenuButtons() {
     return [
       PrimaryButton(
-        title: 'Plug In',
+        child: const Text('Plug In'),
         onPressed: plugIn,
       ),
       PrimaryButton(
-        title: 'Plug Out',
+        child: const Text('Plug Out'),
         onPressed: plugOut,
       ),
       PrimaryButton(
-        title: 'Resume by car',
+        child: const Text('Resume by car'),
         onPressed: resumeByCar,
       ),
       PrimaryButton(
-        title: 'Pause by car',
+        child: const Text('Pause by car'),
         onPressed: pauseByCar,
       ),
       PrimaryButton(
-        title: 'Enable Simulation',
+        child: const Text('Enable Simulation'),
         onPressed: enableSimulation,
       ),
       PrimaryButton(
-        title: 'Disable Simulation',
+        child: const Text('Disable Simulation'),
         onPressed: disableSimulation,
       ),
       PrimaryButton(
-        title: 'Charging Simulation',
+        child: const Text('Charging Simulation'),
         onPressed: chargingSimulation,
       ),
     ];
