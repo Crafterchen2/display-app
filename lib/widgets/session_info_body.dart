@@ -183,6 +183,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                             widget.chargingMode == ChargingMode.basicAC)
                           SizedBox(
                             height: adjustScale(60),
+                            width: carSideWidth.snapNumber(),
                             child: (widget.state == ChargingState.charging)
                                 ? SecondaryButton(
                                     title: 'pause'.tr(),
