@@ -303,7 +303,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     width: 2,
-                                    color: AppColors.primaryBlue,
+                                    color: Theme.of(context).colorScheme.primary,
                                   ),
                                   borderRadius: const BorderRadius.only(
                                     topRight: Radius.circular(12),
@@ -321,26 +321,26 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                         ),
                   Container(
                     transform: Matrix4.translationValues(0, -2, 0),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       border: Border(
                         left: BorderSide(
-                          color: AppColors.primaryBlue,
+                          color: Theme.of(context).colorScheme.primary,
                           width: 2,
                         ),
                         bottom: BorderSide(
-                          color: AppColors.primaryBlue,
+                          color: Theme.of(context).colorScheme.primary,
                           width: 2,
                         ),
                         right: BorderSide(
-                          color: AppColors.primaryBlue,
+                          color: Theme.of(context).colorScheme.primary,
                           width: 2,
                         ),
                         top: BorderSide(
-                          color: AppColors.primaryBlue,
+                          color: Theme.of(context).colorScheme.primary,
                           width: 2,
                         ),
                       ),
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         bottomRight: Radius.circular(12),
                         bottomLeft: Radius.circular(12),
                       ),
@@ -484,7 +484,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
           if (iconPath != null)
             SvgPicture.asset(
               iconPath,
-              color: AppColors.primaryBlue,
+              color: Theme.of(context).colorScheme.primary,
             ),
           if (iconPath != null)
             SizedBox(
@@ -493,7 +493,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
           Text(
             value,
             style: AppTextStyles.digitsHeading3
-                .copyWith(color: AppColors.primaryBlue),
+                .copyWith(color: Theme.of(context).colorScheme.primary),
           ),
           if (iconPath == null)
             SizedBox(
@@ -537,8 +537,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
               Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                  child: getChargingSessionWidgetByState(widget.state,
-                      adjustScale(96), adjustScale(320), widget.soc)),
+                  child: getChargingSessionWidgetByState(context, widget.state, adjustScale(96), adjustScale(320), widget.soc)),
               // if (widget.state == 'ChargingPausedEVSE' ||
               //     widget.state == 'ChargingPausedEV')
               // SvgPicture.asset(
@@ -556,8 +555,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   }
 }
 
-Widget getChargingSessionWidgetByState(
-    String state, double height, double width, double? soc) {
+Widget getChargingSessionWidgetByState(BuildContext context, String state, double height, double width, double? soc) {
   if (state == 'Charging') {
     return Stack(alignment: Alignment.bottomCenter, children: <Widget>[
       ChargingAnimationWidget(),
@@ -571,7 +569,7 @@ Widget getChargingSessionWidgetByState(
                 foreground: Paint()
                   ..style = PaintingStyle.stroke
                   ..strokeWidth = 8
-                  ..color = AppColors.primaryBlue,
+                  ..color = Theme.of(context).colorScheme.primary,
               ),
             ),
             Text(
