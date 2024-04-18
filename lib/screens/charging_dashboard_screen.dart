@@ -351,9 +351,6 @@ class _ChargingDashboardScreenState
               onPressed: () async {
                 await Navigator.of(context).pushNamed(AppRoutes.hlcLogScreen);
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryAmber,
-              ),
               icon: const Icon(Icons.compare_arrows),
               label: Text("HLC log", //TODO Localisation
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
