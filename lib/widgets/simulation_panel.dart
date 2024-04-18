@@ -28,8 +28,11 @@ class _SimulationPanelState extends State<SimulationPanel> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 8.0,
+        padding: EdgeInsets.only(
+          bottom: adjustScale(80),
+          left: adjustScale(8),
+          right: adjustScale(8),
+          top: adjustScale(8),
         ),
         child: ListView.separated(
           itemBuilder: (BuildContext context, int index) {
