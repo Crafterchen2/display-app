@@ -282,7 +282,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                             ),
                             orientation == Orientation.landscape
                                 ? Container(
-                                    color: AppColors.primaryAmber,
+                                    color: Theme.of(context).colorScheme.secondary,
                                     child: PionixVirtualKeyboard(
                                         height: 300,
                                         fontSize: 32,
@@ -294,7 +294,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                                         onKeyPress: (key) => _onKeyPress(key)),
                                   )
                                 : Container(
-                                    color: AppColors.primaryAmber,
+                                    color: Theme.of(context).colorScheme.secondary,
                                     child: PionixVirtualKeyboard(
                                         height: 500,
                                         fontSize: 32,

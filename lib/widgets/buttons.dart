@@ -115,7 +115,7 @@ class SwitchSettingsButton extends StatelessWidget {
                 ),
               ),
               Switch(
-                activeColor: AppColors.primaryAmber,
+                activeColor: Theme.of(context).colorScheme.secondary,
                 value: value,
                 onChanged: onChanged,
               ),

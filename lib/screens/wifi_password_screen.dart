@@ -125,11 +125,11 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                       children: [
                         orientation == Orientation.landscape
                             ? Container(
-                                color: AppColors.primaryAmber,
+                                color: Theme.of(context).colorScheme.secondary,
                                 child: PionixVirtualKeyboard(
                                     height: 300,
                                     fontSize: 32,
-                                    textColor: AppColors.primaryBlue,
+                                    textColor: Theme.of(context).colorScheme.primary,
                                     textController: widget.passwordController,
                                     customLayoutKeys:
                                         VirtualKeyboardPionixLayoutKeys(),
@@ -137,11 +137,11 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                                     onKeyPress: (key) => _onKeyPress(key)),
                               )
                             : Container(
-                                color: AppColors.primaryAmber,
+                                color: Theme.of(context).colorScheme.secondary,
                                 child: PionixVirtualKeyboard(
                                     height: 500,
                                     fontSize: 32,
-                                    textColor: AppColors.primaryBlue,
+                                    textColor: Theme.of(context).colorScheme.primary,
                                     textController: widget.passwordController,
                                     defaultLayouts: const [
                                       VirtualKeyboardDefaultLayouts.English

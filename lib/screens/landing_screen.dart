@@ -201,9 +201,9 @@ class SquareButtonWidget extends StatelessWidget {
       child: Container(
         height: screenHeight * 0.45,
         width: screenHeight * 0.45,
-        decoration: const BoxDecoration(
-          color: AppColors.primaryAmber,
-          borderRadius: BorderRadius.all(Radius.circular(16)),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.secondary,
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
         ),
         child: Center(
           child: Text(text,
@@ -232,7 +232,7 @@ class InitializingProgressWidget extends StatelessWidget {
               width: height * 0.5,
               child: LinearProgressIndicator(
                 value: progress,
-                color: AppColors.primaryAmber,
+                color: Theme.of(context).colorScheme.secondary,
                 backgroundColor: Colors.grey.shade300,
               )),
           SizedBox(height: height * 0.01),

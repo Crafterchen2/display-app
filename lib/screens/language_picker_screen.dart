@@ -105,10 +105,10 @@ class _LanguagePickerScreenState extends State<LanguagePickerScreen> {
                   //   ],
                   // ),
                 )
-              : const Expanded(
+              : Expanded(
                   child: Center(
                       child: CircularProgressIndicator(
-                  color: AppColors.primaryAmber,
+                  color: Theme.of(context).colorScheme.secondary,
                 ))),
         ],
       ),
@@ -142,12 +142,12 @@ class _LanguagePickerScreenState extends State<LanguagePickerScreen> {
           decoration: BoxDecoration(
               border: Border.all(
                   color:
-                      selected ? AppColors.primaryAmber : Theme.of(context).colorScheme.primary,
+                      selected ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.primary,
                   width: 3.0)),
           child: Text(
             language.tr(),
             style:
-                AppTextStyles.heading6.copyWith(color: AppColors.primaryAmber),
+                AppTextStyles.heading6.copyWith(color: Theme.of(context).colorScheme.secondary),
           ),
         ),
       ),

@@ -65,7 +65,7 @@ class _SessionDetailState extends State<SessionDetail> with SingleTickerProvider
     return TabBar(
       controller: tabController,
           labelStyle: AppTextStyles.subTitle4,
-          indicatorColor: AppColors.primaryAmber,
+          indicatorColor: Theme.of(context).colorScheme.secondary,
           indicatorWeight: adjustScale(3),
           tabs: [
             Tab(

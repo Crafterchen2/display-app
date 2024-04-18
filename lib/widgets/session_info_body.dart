@@ -236,7 +236,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                   min: widget.minCurrentA,
                                   max: widget.maxCurrentA,
                                   label: currentSliderLabel,
-                                  activeColor: AppColors.primaryAmber,
+                                  activeColor: Theme.of(context).colorScheme.secondary,
                                   inactiveColor: Colors.grey,
                                   onChanged: (val) {
                                     setState(() {});

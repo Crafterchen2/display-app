@@ -518,8 +518,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       Column(
         children: [
           Container(
-              decoration: const BoxDecoration(
-                color: AppColors.primaryBlue,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
               ),
               child: Container(
                   padding: const EdgeInsets.only(
@@ -541,7 +541,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                                     color: Colors.white),
                               ),
                               Switch(
-                                activeColor: AppColors.primaryAmber,
+                                activeColor: Theme.of(context).colorScheme.secondary,
                                 value: _ap,
                                 onChanged: (val) {
                                   _wifi = val || true;
@@ -568,7 +568,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                                     color: Colors.white),
                               ),
                               Switch(
-                                activeColor: AppColors.primaryAmber,
+                                activeColor: Theme.of(context).colorScheme.secondary,
                                 value: _wifi,
                                 onChanged: (val) {
                                   _wifi = val;
@@ -594,7 +594,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             SizedBox(
                 width: screenWidth,
                 child: LinearProgressIndicator(
-                  color: AppColors.primaryBlue,
+                  color: Theme.of(context).colorScheme.primary,
                   minHeight: 5,
                   backgroundColor: Colors.grey.shade300,
                 )),

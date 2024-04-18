@@ -28,7 +28,7 @@ class SettingMenuButton extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(adjustScale(12)),
-            color: AppColors.primaryAmber, //white --> primaryAmber //NOTE: Weiß nicht ob das besser ist, vermutlich nicht
+            color: Theme.of(context).colorScheme.secondary, //AppColors.white --> Theme.of(context).colorScheme.secondary //NOTE: I don't know if this is actually better yet, must check further
           ),
           child: Center(
             child: Row(
