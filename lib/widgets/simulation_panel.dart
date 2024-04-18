@@ -22,7 +22,7 @@ class _SimulationPanelState extends State<SimulationPanel> {
   Widget build(BuildContext context) {
     List<Widget> menuButtons = makeMenuButtons();
     return Scaffold(
-      backgroundColor: AppColors.primaryBlue,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       floatingActionButton: const PionixCloseButton(
         inverted: true,
       ),

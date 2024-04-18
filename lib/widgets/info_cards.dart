@@ -51,7 +51,7 @@ class SessionDetailCardWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           border: Border.all(width: 2, color: Colors.white30),
-          color: AppColors.primaryBlue,
+          color: Theme.of(context).colorScheme.primary,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

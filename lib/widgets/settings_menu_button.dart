@@ -40,7 +40,7 @@ class SettingMenuButton extends StatelessWidget {
                     children: [
                       Icon(
                         icon,
-                        color: AppColors.primaryBlue,
+                        color: Theme.of(context).colorScheme.primary,
                         size: 60,
                       ),
                       Padding(

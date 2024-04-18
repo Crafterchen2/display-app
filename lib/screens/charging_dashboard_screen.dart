@@ -273,8 +273,10 @@ class _ChargingDashboardScreenState
 
     return Scaffold(
       endDrawer: NavigationDrawer(
+        //TODO Handle with theme!
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        surfaceTintColor: Colors.transparent,
         elevation: 20,
-        backgroundColor: AppColors.primaryBlue,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(

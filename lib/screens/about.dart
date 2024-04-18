@@ -116,7 +116,7 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
               Container(
                 height: 1,
                 width: screenWidth * 0.1,
-                color: AppColors.primaryBlue,
+                color: Theme.of(context).colorScheme.primary,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -129,7 +129,7 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
               Expanded(
                 child: Container(
                   height: 1,
-                  color: AppColors.primaryBlue,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
             ],
@@ -140,21 +140,21 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
               child: Text(
                 component.description,
                 style: AppTextStyles.subTitle4
-                    .copyWith(color: AppColors.primaryBlue),
+                    .copyWith(color: Theme.of(context).colorScheme.primary),
               )),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 "version".tr() + ": ${component.version}",
                 style: AppTextStyles.subTitle4
-                    .copyWith(color: AppColors.primaryBlue),
+                    .copyWith(color: Theme.of(context).colorScheme.primary),
               )),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 "license".tr() + ": ${component.license}",
                 style: AppTextStyles.subTitle4
-                    .copyWith(color: AppColors.primaryBlue),
+                    .copyWith(color: Theme.of(context).colorScheme.primary),
               ))
         ],
       ),

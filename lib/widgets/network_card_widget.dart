@@ -44,12 +44,12 @@ class NetworkCardWidget extends StatelessWidget {
                         height: 40,
                         width: 40,
                       )
-                    : const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Icon(
                           Icons.block_rounded,
                           size: 40,
-                          color: AppColors.primaryBlue,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
                 const SizedBox(
@@ -71,7 +71,7 @@ class NetworkCardWidget extends StatelessWidget {
                             child: Text(
                               'saved'.tr(),
                               style: AppTextStyles.subTitle2.copyWith(
-                                color: AppColors.primaryBlue,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
                           )
@@ -114,19 +114,19 @@ class NetworkCardWidget extends StatelessWidget {
                           onTap: onSavedPressed,
                           child: Container(
                             alignment: Alignment.center,
-                            child: const Icon(
+                            child: Icon(
                               Icons.settings,
-                              color: AppColors.primaryBlue,
+                              color: Theme.of(context).colorScheme.primary,
                               size: 48,
                             ),
                           ),
                         ))
-                    : const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Icon(
                           Icons.chevron_right,
                           size: 40,
-                          color: AppColors.primaryBlue,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
               ],
@@ -136,7 +136,7 @@ class NetworkCardWidget extends StatelessWidget {
           Container(
             height: 0.2,
             width: double.infinity,
-            color: AppColors.primaryBlue,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ],
       ),

@@ -117,7 +117,7 @@ class _ControlState extends ConsumerState<Control> {
                               wrapString('Loaded config: $loadedConfig'),
                               softWrap: true,
                               style: AppTextStyles.subTitle4
-                                  .copyWith(color: AppColors.primaryBlue),
+                                  .copyWith(color: Theme.of(context).colorScheme.primary),
                             )),
                             Container()
                           ])
@@ -222,8 +222,8 @@ class ConfigInfoWidget extends StatelessWidget {
             children: [
               Container(
                 height: 1,
-                width: screenWidth * 0.1,
-                color: AppColors.primaryBlue,
+                width: screenWidth * 0.1, //TODO: Remove dependency on screen dimensions
+                color: Theme.of(context).colorScheme.primary,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -236,7 +236,7 @@ class ConfigInfoWidget extends StatelessWidget {
               Expanded(
                 child: Container(
                   height: 1,
-                  color: AppColors.primaryBlue,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
             ],

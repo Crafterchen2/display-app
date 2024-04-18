@@ -191,9 +191,9 @@ class ActionButtonWithTitleBar extends StatelessWidget {
 class PionixCloseButton extends StatelessWidget {
   final String title;
 
-  ///if [inverted] == false, then the background will have the color [AppColors.primaryBlue]
+  ///if [inverted] == false, then the background will have the themes primary color
   ///and the text will have the color [AppColors.white].
-  ///If [inverted] == true, then the text will have the color [AppColors.primaryBlue]
+  ///If [inverted] == true, then the text will have the themes primary color
   ///and the background will have the color [AppColors.white].
   final bool inverted;
   final Color color;
@@ -224,8 +224,8 @@ class PionixCloseButton extends StatelessWidget {
       ),
       heroTag: getHeroTag(),
       icon: const Icon(Icons.cancel),
-      foregroundColor: (inverted) ? AppColors.primaryBlue : AppColors.white,
-      backgroundColor: (inverted) ? AppColors.white : AppColors.primaryBlue,
+      foregroundColor: (inverted) ? Theme.of(context).colorScheme.primary : AppColors.white,
+      backgroundColor: (inverted) ? AppColors.white : Theme.of(context).colorScheme.primary,
     );
   }
 }

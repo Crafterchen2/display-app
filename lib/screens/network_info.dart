@@ -80,9 +80,9 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
         child: Stack(
           children: [
             _showProgress
-                ? const Center(
+                ? Center(
                     child: CircularProgressIndicator(
-                      color: AppColors.primaryBlue,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   )
                 : Column(
@@ -104,7 +104,7 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
                                       child: Text(
                                         'Hostname: $hostnameString',
                                         style: AppTextStyles.subTitle4.copyWith(
-                                            color: AppColors.primaryBlue),
+                                            color: Theme.of(context).colorScheme.primary),
                                       ))
                                 ])
                               ])),
@@ -148,7 +148,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
               Container(
                 height: 1,
                 width: screenWidth * 0.1,
-                color: AppColors.primaryBlue,
+                color: Theme.of(context).colorScheme.primary,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -161,7 +161,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
               Expanded(
                 child: Container(
                   height: 1,
-                  color: AppColors.primaryBlue,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
             ],
@@ -178,7 +178,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                     return Text(
                       'IPv4: ${info.ipv4[index]}',
                       style: AppTextStyles.subTitle4
-                          .copyWith(color: AppColors.primaryBlue),
+                          .copyWith(color: Theme.of(context).colorScheme.primary),
                     );
                   } else {
                     return const SizedBox.shrink();
@@ -196,7 +196,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                     return Text(
                       'IPv6: ${info.ipv6[index]}',
                       style: AppTextStyles.subTitle4
-                          .copyWith(color: AppColors.primaryBlue),
+                          .copyWith(color: Theme.of(context).colorScheme.primary),
                     );
                   } else {
                     return const SizedBox.shrink();
@@ -208,7 +208,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
               child: Text(
                 'MAC: ${info.mac}',
                 style: AppTextStyles.subTitle4
-                    .copyWith(color: AppColors.primaryBlue),
+                    .copyWith(color: Theme.of(context).colorScheme.primary),
               )),
         ],
       ),

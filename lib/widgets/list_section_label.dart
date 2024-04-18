@@ -19,20 +19,20 @@ class ListSectionLabel extends StatelessWidget {
           Container(
             height: 1,
             width: screenWidth * 0.1,
-            color: AppColors.primaryBlue,
+            color: Theme.of(context).colorScheme.primary,
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
             child: Text(
               label,
               style: AppTextStyles.subTitle4
-                  .copyWith(color: AppColors.primaryBlue),
+                  .copyWith(color: Theme.of(context).colorScheme.primary),
             ),
           ),
           Expanded(
             child: Container(
               height: 1,
-              color: AppColors.primaryBlue,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
         ],

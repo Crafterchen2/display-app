@@ -80,7 +80,7 @@ class _FooterState extends State<Footer> {
                 Text(
                   dateTimeFormat.format(DateTime.now()),
                   style: AppTextStyles.digitsHeading3
-                      .copyWith(color: AppColors.primaryBlue),
+                      .copyWith(color: Theme.of(context).colorScheme.primary),
                 ),
                 const SizedBox(width: 50),
               ],

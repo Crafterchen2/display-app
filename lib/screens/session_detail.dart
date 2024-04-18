@@ -32,14 +32,14 @@ class _SessionDetailState extends State<SessionDetail> with SingleTickerProvider
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: AppColors.primaryBlue,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         floatingActionButton: const PionixCloseButton(
           inverted: true,
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         appBar: AppBar(
           elevation: 20,
-          backgroundColor: AppColors.primaryBlue,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           automaticallyImplyLeading: false,
           toolbarHeight: 66,
           flexibleSpace: makeTabBar(),

@@ -173,7 +173,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
     List<Widget> logEntries = makeHlcLog();
 
     return Scaffold(
-      backgroundColor: AppColors.primaryBlue,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       floatingActionButton: Container(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),
         child: Row(
@@ -181,7 +181,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
           children: <Widget>[
             FloatingActionButton(
               backgroundColor: AppColors.white,
-              foregroundColor: AppColors.primaryBlue,
+              foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => autoscroll = !autoscroll,
               heroTag:
                   "pauseHero", //prevent "Same hero tag error"; does not change functionality
@@ -191,7 +191,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
             ),
             FloatingActionButton(
               backgroundColor: AppColors.white,
-              foregroundColor: AppColors.primaryBlue,
+              foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => hlcLogList.clear(),
               heroTag:
                   "clearHero", //prevent "Same hero tag error"; does not change functionality
@@ -199,7 +199,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
             ),
             FloatingActionButton(
               backgroundColor: AppColors.white,
-              foregroundColor: AppColors.primaryBlue,
+              foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => annotateButtonPressed(),
               heroTag:
                   "annotateHero", //prevent "Same hero tag error"; does not change functionality
@@ -286,7 +286,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                                     child: PionixVirtualKeyboard(
                                         height: 300,
                                         fontSize: 32,
-                                        textColor: AppColors.primaryBlue,
+                                        textColor: Theme.of(context).colorScheme.primary,
                                         textController: annotateController,
                                         customLayoutKeys:
                                             VirtualKeyboardPionixLayoutKeys(),
@@ -298,7 +298,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                                     child: PionixVirtualKeyboard(
                                         height: 500,
                                         fontSize: 32,
-                                        textColor: AppColors.primaryBlue,
+                                        textColor: Theme.of(context).colorScheme.primary,
                                         textController: annotateController,
                                         defaultLayouts: const [
                                           VirtualKeyboardDefaultLayouts.English

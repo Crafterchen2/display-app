@@ -91,7 +91,7 @@ class Header extends StatelessWidget {
                 child: (privateMode)
                     ? FloatingActionButton(
                         elevation: 20,
-                        backgroundColor: AppColors.primaryBlue,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
                         onPressed: () {
                           Scaffold.of(context).openEndDrawer();
                           },
@@ -107,7 +107,7 @@ class Header extends StatelessWidget {
                             AppRoutes.languagePickerScreen,
                           );
                         },
-                        backgroundColor: AppColors.primaryBlue,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
                         child: const Icon(
                           Icons.language, //Icons.language --> privateMode ? Icons.settings : Icons.language,
                           color: AppColors.white,

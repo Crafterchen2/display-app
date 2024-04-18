@@ -83,9 +83,9 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
         child: Stack(
           children: [
             _showProgress
-                ? const Center(
+                ? Center(
                     child: CircularProgressIndicator(
-                      color: AppColors.primaryBlue,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   )
                 : Column(
@@ -211,7 +211,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
             child: Text(
               'Interface: ${info.interface}',
               style: AppTextStyles.subTitle4.copyWith(
-                  color: AppColors.primaryBlue, fontWeight: FontWeight.w700),
+                  color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w700),
             ),
           ),
           SizedBox(height: screenHeight * 0.02),
@@ -220,7 +220,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
             child: Text(
               'IPV4: ${info.ipv4.isEmpty ? '----------' : info.ipv4}',
               style: AppTextStyles.subTitle4.copyWith(
-                  color: AppColors.primaryBlue, fontWeight: FontWeight.w700),
+                  color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w700),
             ),
           ),
         ],

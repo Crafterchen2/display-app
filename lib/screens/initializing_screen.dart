@@ -112,7 +112,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
                                   endIndent: adjustScale(20),
                                 ),
                                 LinearProgressIndicator(
-                                  color: AppColors.primaryBlue,
+                                  color: Theme.of(context).colorScheme.primary,
                                   minHeight: adjustScale(10),
                                   backgroundColor: Colors.grey.shade300,
                                 ),
@@ -277,7 +277,7 @@ class SquareButtonWidget extends StatelessWidget {
               ),
               Text(text,
                   style: AppTextStyles.heading6
-                      .copyWith(color: AppColors.primaryBlue)),
+                      .copyWith(color: Theme.of(context).colorScheme.primary)),
             ],
           ),
         ),

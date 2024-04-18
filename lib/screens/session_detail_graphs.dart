@@ -263,7 +263,7 @@ class _SessionDetailGraphsState extends ConsumerState<SessionDetailGraphs> {
       heightPercent: getChartHeightPercent(),
       enableDrag: true,
       elevation: 20,
-      backgroundColor: AppColors.primaryBlue,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       shape: RoundedRectangleBorder(
         side: const BorderSide(
           width: 2,

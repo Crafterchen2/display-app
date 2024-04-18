@@ -83,10 +83,10 @@ class BasicDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(
         title,
-        style: const TextStyle(color: AppColors.primaryBlue, fontSize: 40),
+        style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 40),
       ),
       content: Text(content,
-          style: const TextStyle(color: AppColors.primaryBlue, fontSize: 30)),
+          style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 30)),
       actions: <Widget>[
         TextButton(
             // color: Colors.green,
@@ -94,7 +94,7 @@ class BasicDialog extends StatelessWidget {
             child: Text(
               negativeText,
               style:
-                  const TextStyle(color: AppColors.primaryBlue, fontSize: 36),
+                  TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 36),
             )),
         const SizedBox(
           width: 50,
@@ -105,7 +105,7 @@ class BasicDialog extends StatelessWidget {
             child: Text(
               positiveText,
               style:
-                  const TextStyle(color: AppColors.primaryBlue, fontSize: 36),
+                  TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 36),
             ))
       ],
     );

@@ -79,7 +79,7 @@ class _LanguagePickerScreenState extends State<LanguagePickerScreen> {
     // Create a DateFormat for the current locale
     return Scaffold(
       floatingActionButton: const PionixCloseButton(inverted: true,),
-      backgroundColor: AppColors.primaryBlue,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -142,7 +142,7 @@ class _LanguagePickerScreenState extends State<LanguagePickerScreen> {
           decoration: BoxDecoration(
               border: Border.all(
                   color:
-                      selected ? AppColors.primaryAmber : AppColors.primaryBlue,
+                      selected ? AppColors.primaryAmber : Theme.of(context).colorScheme.primary,
                   width: 3.0)),
           child: Text(
             language.tr(),
