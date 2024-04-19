@@ -75,52 +75,50 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
     }
     return Scaffold(
       //floatingActionButton: const PionixCloseButton(),
-      body: Container(
-        child: Stack(
-          children: [
-            _showProgress
-                ? Center(
-                    child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  )
-                : Column(
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal:
-                                  MediaQuery.of(context).size.width * 0.02),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.03),
-                                Row(children: [
-                                  Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8),
-                                      child: Text(
-                                        'Hostname: $hostnameString',
-                                        style: AppTextStyles.subTitle4.copyWith(
-                                            color: Theme.of(context).colorScheme.primary),
-                                      ))
-                                ])
-                              ])),
-                      Expanded(
-                        child: ListView.builder(
-                            padding: const EdgeInsets.only(bottom: 100),
-                            itemCount: devices.length,
-                            itemBuilder: (builder, index) {
-                              return NetworkDeviceInfoWidget(
-                                info: devices[index],
-                              );
-                            }),
-                      ),
-                    ],
+      body: Stack(
+        children: [
+          _showProgress
+              ? Center(
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.primary,
                   ),
-          ],
-        ),
+                )
+              : Column(
+                  children: [
+                    Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal:
+                                MediaQuery.of(context).size.width * 0.02),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.03),
+                              Row(children: [
+                                Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: Text(
+                                      'Hostname: $hostnameString',
+                                      style: AppTextStyles.subTitle4.copyWith(
+                                          color: Theme.of(context).colorScheme.primary),
+                                    ))
+                              ])
+                            ])),
+                    Expanded(
+                      child: ListView.builder(
+                          padding: const EdgeInsets.only(bottom: 100),
+                          itemCount: devices.length,
+                          itemBuilder: (builder, index) {
+                            return NetworkDeviceInfoWidget(
+                              info: devices[index],
+                            );
+                          }),
+                    ),
+                  ],
+                ),
+        ],
       ),
     );
   }

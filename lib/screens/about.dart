@@ -59,36 +59,33 @@ class _AboutState extends ConsumerState<About> {
     }
     return Scaffold(
       //floatingActionButton: const PionixCloseButton(),
-      body: Container(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                const Padding(padding: EdgeInsets.only(bottom: 20)),
-                Text(
-                  "EVerest " +
-                      releaseInfo.version +
-                      " @ " +
-                      releaseInfo.channel +
-                      " " +
-                      "channel".tr(),
-                  style: AppTextStyles.heading3
-                      .copyWith(color: AppColors.primaryBlue),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                      padding: const EdgeInsets.only(bottom: 100),
-                      itemCount: releaseInfo.components.length,
-                      itemBuilder: (builder, index) {
-                        return ReleaseComponentInfoWidget(
-                          component: releaseInfo.components[index],
-                        );
-                      }),
-                ),
-              ],
-            ),
-          ],
-        ),
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              const Padding(padding: EdgeInsets.only(bottom: 20)),
+              Text(
+                "EVerest " +
+                    releaseInfo.version +
+                    " @ " +
+                    releaseInfo.channel +
+                    " " +
+                    "channel".tr(),
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              Expanded(
+                child: ListView.builder(
+                    padding: const EdgeInsets.only(bottom: 100),
+                    itemCount: releaseInfo.components.length,
+                    itemBuilder: (builder, index) {
+                      return ReleaseComponentInfoWidget(
+                        component: releaseInfo.components[index],
+                      );
+                    }),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
