@@ -76,7 +76,6 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
     return Scaffold(
       //floatingActionButton: const PionixCloseButton(),
       body: Container(
-        color: Colors.white,
         child: Stack(
           children: [
             _showProgress

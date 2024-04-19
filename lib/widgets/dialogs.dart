@@ -26,7 +26,7 @@ showPionixBottomSheet({
 }) {
   showModalBottomSheet(
     context: context,
-    backgroundColor: backgroundColor ?? AppColors.white,
+    backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.background,
     barrierLabel: barrierLabel,
     elevation: elevation ?? 20,
     shape: shape ?? RoundedRectangleBorder(

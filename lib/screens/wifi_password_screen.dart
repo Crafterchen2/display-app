@@ -40,7 +40,7 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [

@@ -78,8 +78,8 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.white,
+      body: Container( //Is Container really necessary?
+        color: Theme.of(context).colorScheme.background,
         child: Stack(
           children: [
             _showProgress
@@ -96,8 +96,9 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                         child: Container(
                           decoration: BoxDecoration(
                               color: _connected
-                                  ? AppColors.successLight
-                                  : AppColors.errorLight),
+                                  ? Theme.of(context).colorScheme.tertiaryContainer
+                                  : Theme.of(context).colorScheme.errorContainer,
+                          ),
                           child: Padding(
                             padding: EdgeInsets.only(
                                 left: screenWidth * 0.2,
@@ -108,8 +109,11 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                               _connected
                                   ? 'CONNECTED TO LAN'.tr()
                                   : 'NO NETWORK FOUND'.tr(),
-                              style: AppTextStyles.heading6
-                                  .copyWith(color: Colors.white),
+                              style: AppTextStyles.heading6.copyWith(
+                                color: _connected
+                                    ? Theme.of(context).colorScheme.onTertiaryContainer
+                                    : Theme.of(context).colorScheme.onErrorContainer,
+                              ),
                             ),
                           ),
                         ),
@@ -126,7 +130,7 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Container(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.background, //Is this necessary?
                           height: screenHeight * 0.2,
                           child: Padding(
                             padding: EdgeInsets.symmetric(
@@ -137,8 +141,8 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                               children: [
                                 SecondaryButton(
                                   title: 'Close',
-                                  borderColor: AppColors.errorLight,
-                                  textColor: AppColors.errorLight,
+                                  borderColor: Theme.of(context).colorScheme.errorContainer,
+                                  textColor: Theme.of(context).colorScheme.errorContainer,
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },

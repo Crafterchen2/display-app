@@ -178,7 +178,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       floatingActionButton:
           !_showPasswordScreen ? const PionixCloseButton() : null,
       body: Stack(
@@ -194,7 +194,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
               ? Align(
                   alignment: Alignment.bottomRight,
                   child: Container(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.background,
                     height: screenHeight * 0.2,
                     child: Padding(
                       padding: EdgeInsets.symmetric(
@@ -205,8 +205,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                         children: [
                           SecondaryButton(
                             title: 'close'.tr(),
-                            borderColor: AppColors.errorLight,
-                            textColor: AppColors.errorLight,
+                            borderColor: Theme.of(context).colorScheme.errorContainer,
+                            textColor: Theme.of(context).colorScheme.errorContainer,
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -538,7 +538,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                                 'ap'.tr(),
                                 style: AppTextStyles.heading3.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                                    color: Theme.of(context).colorScheme.onPrimary,
+                                ),
                               ),
                               Switch(
                                 activeColor: Theme.of(context).colorScheme.secondary,
@@ -565,7 +566,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                                 'wifi'.tr(),
                                 style: AppTextStyles.heading3.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                                    color: Theme.of(context).colorScheme.onPrimary,
+                                ),
                               ),
                               Switch(
                                 activeColor: Theme.of(context).colorScheme.secondary,

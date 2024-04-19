@@ -265,7 +265,7 @@ class SquareButtonWidget extends StatelessWidget {
         width: screenWidth * 0.4,
         child: Material(
           elevation: 3,
-          color: AppColors.white,
+          color: Theme.of(context).colorScheme.onPrimary,
           borderRadius: const BorderRadius.all(Radius.circular(16)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

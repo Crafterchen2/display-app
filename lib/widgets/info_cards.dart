@@ -75,7 +75,7 @@ class SessionDetailCardWidget extends StatelessWidget {
                             (expanded)
                                 ? Icons.keyboard_arrow_down_sharp
                                 : Icons.keyboard_arrow_right,
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             size: adjustScale(40),
                           )
                         ],

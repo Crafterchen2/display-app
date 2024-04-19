@@ -180,7 +180,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             FloatingActionButton(
-              backgroundColor: AppColors.white,
+              backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => autoscroll = !autoscroll,
               heroTag:
@@ -190,7 +190,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                   : const Icon(Icons.play_arrow),
             ),
             FloatingActionButton(
-              backgroundColor: AppColors.white,
+              backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => hlcLogList.clear(),
               heroTag:
@@ -198,7 +198,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
               child: const Icon(Icons.delete),
             ),
             FloatingActionButton(
-              backgroundColor: AppColors.white,
+              backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => annotateButtonPressed(),
               heroTag:
@@ -269,7 +269,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                                   visible: true,
                                   hidden: false,
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: Theme.of(context).colorScheme.onPrimary,
                                   ),
                                   icon: Icon(
                                     Icons.message,

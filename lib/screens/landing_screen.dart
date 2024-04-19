@@ -56,7 +56,7 @@ class _LandingScreenState extends State<LandingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -208,7 +208,10 @@ class SquareButtonWidget extends StatelessWidget {
         child: Center(
           child: Text(text,
               textAlign: TextAlign.center,
-              style: AppTextStyles.heading6.copyWith(color: Colors.white)),
+              style: AppTextStyles.heading6.copyWith(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+          ),
         ),
       ),
     );

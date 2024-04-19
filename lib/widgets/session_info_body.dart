@@ -574,9 +574,9 @@ Widget getChargingSessionWidgetByState(BuildContext context, String state, doubl
             ),
             Text(
               soc.toStringAsFixed(0) + "%",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 60,
-                color: AppColors.white,
+                color: Theme.of(context).colorScheme.surface,
               ),
             ),
           ],

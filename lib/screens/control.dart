@@ -97,7 +97,7 @@ class _ControlState extends ConsumerState<Control> {
       child:
           //floatingActionButton: const PionixCloseButton(),
           Container(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.background,
         child: Stack(
           children: [
             Column(

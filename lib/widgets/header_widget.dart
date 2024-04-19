@@ -95,8 +95,8 @@ class Header extends StatelessWidget {
                         onPressed: () {
                           Scaffold.of(context).openEndDrawer();
                           },
-                        child: const Icon(Icons.settings,
-                          color: AppColors.white,
+                        child: Icon(Icons.settings,
+                          color: Theme.of(context).colorScheme.onPrimary,
                           size: 48,
                         ),
                       )
@@ -108,9 +108,9 @@ class Header extends StatelessWidget {
                           );
                         },
                         backgroundColor: Theme.of(context).colorScheme.primary,
-                        child: const Icon(
-                          Icons.language, //Icons.language --> privateMode ? Icons.settings : Icons.language,
-                          color: AppColors.white,
+                        child: Icon(
+                          Icons.language,
+                          color: Theme.of(context).colorScheme.onPrimary,
                           size: 48,
                         ),
                       ),

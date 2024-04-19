@@ -556,7 +556,7 @@ class _ChargingDashboardScreenState
           if (_showProgressBar)
             Center(
               child: Container(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.background, //Needed to block view of underlying UI
                 child: const Center(
                   child:
                       CircularProgressIndicator(color: AppColors.primaryAmber),

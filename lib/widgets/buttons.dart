@@ -192,9 +192,9 @@ class PionixCloseButton extends StatelessWidget {
   final String title;
 
   ///if [inverted] == false, then the background will have the themes primary color
-  ///and the text will have the color [AppColors.white].
+  ///and the text will have the themes onPrimary color.
   ///If [inverted] == true, then the text will have the themes primary color
-  ///and the background will have the color [AppColors.white].
+  ///and the background will have the themes onPrimary color.
   final bool inverted;
   final Color color;
   final VoidCallback? onPressed;
@@ -224,8 +224,8 @@ class PionixCloseButton extends StatelessWidget {
       ),
       heroTag: getHeroTag(),
       icon: const Icon(Icons.cancel),
-      foregroundColor: (inverted) ? Theme.of(context).colorScheme.primary : AppColors.white,
-      backgroundColor: (inverted) ? AppColors.white : Theme.of(context).colorScheme.primary,
+      foregroundColor: (inverted) ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onPrimary,
+      backgroundColor: (inverted) ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.primary,
     );
   }
 }

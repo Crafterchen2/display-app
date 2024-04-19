@@ -63,8 +63,8 @@ class _FooterState extends State<Footer> {
                   margin: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
                       color: widget.isOnline
-                          ? AppColors.successLight
-                          : Colors.redAccent,
+                          ? Theme.of(context).colorScheme.tertiaryContainer
+                          : Theme.of(context).colorScheme.errorContainer,
                       shape: BoxShape.circle),
                 ),
               ],

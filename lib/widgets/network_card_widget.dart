@@ -24,7 +24,7 @@ class NetworkCardWidget extends StatelessWidget {
       this.isConnected = false,
       this.isSaved = false,
       this.strength = '',
-      this.strengthColor = Colors.white,
+      this.strengthColor = AppColors.white,
       this.signalLevel})
       : super(key: key);
 
@@ -84,7 +84,7 @@ class NetworkCardWidget extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               vertical: 4, horizontal: 8),
                           decoration: BoxDecoration(
-                              color: AppColors.successLight,
+                              color: Theme.of(context).colorScheme.tertiaryContainer,
                               borderRadius: BorderRadius.circular(4)),
                           child: Text('connected'.tr(),
                               style: AppTextStyles.heading3
