@@ -90,6 +90,7 @@ class Header extends StatelessWidget {
               child: Center(
                 child: (privateMode)
                     ? FloatingActionButton(
+                        heroTag: PionixCloseButton.getHeroTag(),
                         elevation: 20,
                         backgroundColor: Theme.of(context).colorScheme.primary,
                         onPressed: () {
@@ -101,6 +102,7 @@ class Header extends StatelessWidget {
                         ),
                       )
                     : FloatingActionButton(
+                        heroTag: PionixCloseButton.getHeroTag(),
                         elevation: 20,
                         onPressed: () async {
                           await Navigator.of(context).pushNamed(

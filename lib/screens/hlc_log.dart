@@ -183,8 +183,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
               backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => autoscroll = !autoscroll,
-              heroTag:
-                  "pauseHero", //prevent "Same hero tag error"; does not change functionality
+              heroTag: "pauseHero", //prevent "Same hero tag error"; does not change functionality
               child: autoscroll
                   ? const Icon(Icons.pause)
                   : const Icon(Icons.play_arrow),
@@ -193,16 +192,14 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
               backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => hlcLogList.clear(),
-              heroTag:
-                  "clearHero", //prevent "Same hero tag error"; does not change functionality
+              heroTag: "clearHero", //prevent "Same hero tag error"; does not change functionality
               child: const Icon(Icons.delete),
             ),
             FloatingActionButton(
               backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => annotateButtonPressed(),
-              heroTag:
-                  "annotateHero", //prevent "Same hero tag error"; does not change functionality
+              heroTag: "annotateHero", //prevent "Same hero tag error"; does not change functionality
               child: const Icon(Icons.message),
             ),
             const PionixCloseButton(
