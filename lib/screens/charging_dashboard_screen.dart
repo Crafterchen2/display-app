@@ -18,8 +18,6 @@ import 'package:pionixbox/data/providers/powermeter_provider.dart';
 import 'package:pionixbox/data/providers/selected_protocol_provider.dart';
 import 'package:pionixbox/data/providers/session_info_provider.dart';
 import 'package:pionixbox/data/providers/telemetry_provider.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/utils/circular_queue.dart';
 import 'package:pionixbox/utils/constants/helper.dart';
 import 'package:pionixbox/utils/enums.dart';
