@@ -25,6 +25,8 @@ import 'package:pionixbox/utils/globals.dart';
 import 'package:pionixbox/widgets/layout.dart';
 
 import '../mqtt.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 import '../utils/constants/keys.dart';
 import '../utils/datetime_formats.dart';
 import '../utils/routing/app_router.dart';
