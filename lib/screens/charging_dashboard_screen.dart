@@ -537,7 +537,9 @@ class _ChargingDashboardScreenState
           ),
         ],
       ),
-      backgroundColor: AppColors.white,
+      //TODO Handle with theme!
+      //reminder: we are in body of scaffold
+      //backgroundColor: AppColors.white,
       body: Stack(
         children: [
           BorderLayout(
@@ -559,7 +561,10 @@ class _ChargingDashboardScreenState
                 color: Theme.of(context).colorScheme.background, //Needed to block view of underlying UI
                 child: const Center(
                   child:
-                      CircularProgressIndicator(color: AppColors.primaryAmber),
+                      CircularProgressIndicator(
+                        //TODO Handle with theme!
+                        //color: AppColors.primaryAmber,
+                      ),
                 ),
               ),
             )
