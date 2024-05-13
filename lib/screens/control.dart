@@ -5,13 +5,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/data/models/config_paths.dart';
-import 'package:pionixbox/data/models/network_device_info.dart';
-import 'package:pionixbox/data/models/release_component.dart';
-import 'package:pionixbox/data/models/release_info.dart';
 import 'package:pionixbox/data/providers/application_info_provider.dart';
 import 'package:pionixbox/mqtt.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/utils/constants/helper.dart';
 import 'package:pionixbox/widgets/buttons.dart';
 
@@ -95,8 +90,8 @@ class _ControlState extends ConsumerState<Control> {
     // }
     return SingleChildScrollView(
       child:
-          //floatingActionButton: const PionixCloseButton(),
-          Container(
+      //floatingActionButton: const PionixCloseButton(),
+      Container(//Can this be removed?
         color: Theme.of(context).colorScheme.background,
         child: Stack(
           children: [
@@ -109,19 +104,23 @@ class _ControlState extends ConsumerState<Control> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.02),
+                              height: MediaQuery.of(context).size.height * 0.02),
                           Row(children: [
                             Flexible(
                                 child: Text(
-                              wrapString('Loaded config: $loadedConfig'),
-                              softWrap: true,
-                              style: AppTextStyles.subTitle4
-                                  .copyWith(color: Theme.of(context).colorScheme.primary),
-                            )),
+                                  wrapString('Loaded config: $loadedConfig'),
+                                  softWrap: true,
+                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    color: Theme.of(context).colorScheme.primary,
+                                  ),
+                                ),
+                            ),
                             Container()
-                          ])
-                        ])),
+                          ],
+                          ),
+                        ],
+                    ),
+                ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -159,8 +158,7 @@ class _ControlState extends ConsumerState<Control> {
                 const Padding(padding: EdgeInsets.only(bottom: 20)),
                 Text(
                   "EVerest configurations",
-                  style: AppTextStyles.heading3
-                      .copyWith(color: AppColors.primaryBlue),
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 ListView.builder(
                     shrinkWrap: true,
@@ -203,9 +201,9 @@ class ConfigInfoWidget extends StatelessWidget {
 
   const ConfigInfoWidget(
       {Key? key,
-      required this.header,
-      required this.configPaths,
-      required this.loadConfig})
+        required this.header,
+        required this.configPaths,
+        required this.loadConfig})
       : super(key: key);
 
   @override
@@ -214,7 +212,7 @@ class ConfigInfoWidget extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     return Padding(
       padding:
-          EdgeInsets.symmetric(horizontal: screenWidth * 0.02, vertical: 2),
+      EdgeInsets.symmetric(horizontal: screenWidth * 0.02, vertical: 2),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -229,8 +227,7 @@ class ConfigInfoWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
                   header,
-                  style: AppTextStyles.heading3
-                      .copyWith(color: AppColors.primaryBlue),
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
               Expanded(
@@ -250,14 +247,13 @@ class ConfigInfoWidget extends StatelessWidget {
                 return Row(children: [
                   Flexible(
                       child: Text(
-                    wrapString(value),
-                    softWrap: true,
-                    style: AppTextStyles.heading3
-                        .copyWith(color: AppColors.primaryBlue),
-                  )),
+                        wrapString(value),
+                        softWrap: true,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                  ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     child: PrimaryButton(
                       //width: screenWidth * 0.3,
                       onPressed: () {
@@ -270,8 +266,10 @@ class ConfigInfoWidget extends StatelessWidget {
                       child: Text('load'.tr()),
                     ),
                   ),
-                ]);
-              }),
+                ],
+              );
+            },
+          ),
         ],
       ),
     );

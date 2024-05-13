@@ -6,8 +6,6 @@ import 'package:pionixbox/data/models/network_device_info.dart';
 import 'package:pionixbox/screens/about.dart';
 import 'package:pionixbox/screens/control.dart';
 import 'package:pionixbox/screens/network_info.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
@@ -73,7 +71,7 @@ class _SystemInfoState extends State<SystemInfo> {
               //toolbarHeight: 70,
               automaticallyImplyLeading: false,
               flexibleSpace: TabBar(
-                labelStyle: AppTextStyles.subTitle4,
+                labelStyle: Theme.of(context).textTheme.titleLarge,
                 tabs: [
                   Tab(
                     icon: const Icon(Icons.info),

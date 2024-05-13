@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/widgets/buttons.dart';
 
 import '../data/models/application_info.dart';
@@ -146,8 +144,7 @@ class _LanguagePickerScreenState extends State<LanguagePickerScreen> {
                   width: 3.0)),
           child: Text(
             language.tr(),
-            style:
-                AppTextStyles.heading6.copyWith(color: Theme.of(context).colorScheme.secondary),
+            style: Theme.of(context).textTheme.displayLarge,
           ),
         ),
       ),

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import '../screens/session_detail_graphs.dart';
 import '../theme/app_colors.dart';
-import '../theme/app_text_styles.dart';
 import '../utils/circular_queue.dart';
 
 class SessionDetailCardWidget extends StatelessWidget {
@@ -41,8 +40,8 @@ class SessionDetailCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: (MediaQuery.of(context).size.width <
-              ((adjustScale(stretchThreshold ?? cardWidth) * 2) +
-                  adjustScale(stretchSensitivity)))
+          ((adjustScale(stretchThreshold ?? cardWidth) * 2) +
+              adjustScale(stretchSensitivity)))
           ? null
           : adjustScale(cardWidth),
       child: Container(
@@ -68,8 +67,9 @@ class SessionDetailCardWidget extends StatelessWidget {
                         children: [
                           Text(
                             sectionTitle,
-                            style: AppTextStyles.subTitle4
-                                .copyWith(color: Colors.white),
+                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
                           ),
                           Icon(
                             (expanded)
@@ -114,13 +114,16 @@ class SingleInfoCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: AppTextStyles.digitsHeading3.copyWith(color: Colors.white),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary
+                ),
               ),
               Text(
                 value,
                 textAlign: TextAlign.start,
-                style:
-                    AppTextStyles.digitsHeading3.copyWith(color: Colors.white),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
             ],
           ),
@@ -228,11 +231,11 @@ class _LineChartCardContent extends State<LineChartCardContent> {
     List<List<FlSpot>> points = [];
 
     List<Color> colors = [
-      AppColors.primaryAmber,
+    Theme.of(context).colorScheme.secondary,
       AppColors.chartTomato,
       AppColors.chartFuchsiaRose,
       AppColors.chartImperial,
-      AppColors.primaryBlue,
+      Theme.of(context).colorScheme.primary,
       const Color.fromARGB(255, 255, 0, 0),
       const Color.fromARGB(255, 0, 255, 0),
       const Color.fromARGB(255, 0, 0, 255),
@@ -260,7 +263,7 @@ class _LineChartCardContent extends State<LineChartCardContent> {
       labels.add(Text(
         widget.values[i].label,
         style:
-            AppTextStyles.heading3.copyWith(color: colors[i % colors.length]),
+        Theme.of(context).textTheme.titleLarge?.copyWith(color: colors[i % colors.length]),
       ));
       for (var j = 0; j < widget.values[i].values.length; j++) {
         points[i].add(FlSpot(j.toDouble(), widget.values[i].values[j]));
@@ -323,7 +326,7 @@ class _LineChartCardContent extends State<LineChartCardContent> {
                 ),
               ),
               Expanded(
-                  child: chart,
+                child: chart,
               ),
             ],
           ),

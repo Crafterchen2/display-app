@@ -4,8 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:pionixbox/data/models/application_info.dart';
 import 'package:pionixbox/main.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/widgets/dialogs.dart';
 
 import '../mqtt.dart';
@@ -134,8 +132,8 @@ class _LandingScreenState extends State<LandingScreen> {
   }
 
   Future<void> privateConfirmationDialog(
-    BuildContext context,
-  ) async {
+      BuildContext context,
+      ) async {
     showDialog(
         context: context,
         builder: (ctz) {
@@ -159,8 +157,8 @@ class _LandingScreenState extends State<LandingScreen> {
   }
 
   Future<void> publicConfirmationDialog(
-    BuildContext context,
-  ) async {
+      BuildContext context,
+      ) async {
     showDialog(
         context: context,
         builder: (ctz) {
@@ -207,10 +205,10 @@ class SquareButtonWidget extends StatelessWidget {
         ),
         child: Center(
           child: Text(text,
-              textAlign: TextAlign.center,
-              style: AppTextStyles.heading6.copyWith(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.displayLarge?.copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
           ),
         ),
       ),
@@ -245,8 +243,7 @@ class InitializingProgressWidget extends StatelessWidget {
             ),
             child: Text(
               'initializing'.tr(),
-              style:
-                  AppTextStyles.subTitle4.copyWith(fontWeight: FontWeight.w700),
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
           ),
         ],

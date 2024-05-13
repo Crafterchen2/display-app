@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/data/models/network_device_info.dart';
 import 'package:pionixbox/data/providers/hostname_provider.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
@@ -69,7 +67,7 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
   @override
   Widget build(BuildContext context) {
     final hostname =
-        ref.watch(hostnameStreamProvider).whenOrNull(data: (data) => data);
+    ref.watch(hostnameStreamProvider).whenOrNull(data: (data) => data);
     if (hostname != null) {
       hostnameString = hostname;
     }
@@ -79,45 +77,50 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
         children: [
           _showProgress
               ? Center(
-                  child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.primary,
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ) : Column(
+            children: [
+              Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal:
+                      MediaQuery.of(context).size.width * 0.02),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height *
+                                0.03),
+                        Row(children: [
+                          Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8),
+                              child: Text(
+                                'Hostname: $hostnameString',
+                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                   ),
-                )
-              : Column(
-                  children: [
-                    Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal:
-                                MediaQuery.of(context).size.width * 0.02),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                  height: MediaQuery.of(context).size.height *
-                                      0.03),
-                              Row(children: [
-                                Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    child: Text(
-                                      'Hostname: $hostnameString',
-                                      style: AppTextStyles.subTitle4.copyWith(
-                                          color: Theme.of(context).colorScheme.primary),
-                                    ))
-                              ])
-                            ])),
-                    Expanded(
-                      child: ListView.builder(
-                          padding: const EdgeInsets.only(bottom: 100),
-                          itemCount: devices.length,
-                          itemBuilder: (builder, index) {
-                            return NetworkDeviceInfoWidget(
-                              info: devices[index],
-                            );
-                          }),
-                    ),
-                  ],
+              ),
+              Expanded(
+                child: ListView.builder(
+                    padding: const EdgeInsets.only(bottom: 100),
+                    itemCount: devices.length,
+                    itemBuilder: (builder, index) {
+                      return NetworkDeviceInfoWidget(
+                        info: devices[index],
+                      );
+                    },
                 ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -151,8 +154,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
                   "network_interface".tr() + ": ${info.interface}",
-                  style: AppTextStyles.heading3
-                      .copyWith(color: AppColors.primaryBlue),
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
               Expanded(
@@ -174,8 +176,9 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                   if (info.ipv4[index].isNotEmpty) {
                     return Text(
                       'IPv4: ${info.ipv4[index]}',
-                      style: AppTextStyles.subTitle4
-                          .copyWith(color: Theme.of(context).colorScheme.primary),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     );
                   } else {
                     return const SizedBox.shrink();
@@ -192,8 +195,9 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                   if (info.ipv6[index].isNotEmpty) {
                     return Text(
                       'IPv6: ${info.ipv6[index]}',
-                      style: AppTextStyles.subTitle4
-                          .copyWith(color: Theme.of(context).colorScheme.primary),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     );
                   } else {
                     return const SizedBox.shrink();
@@ -204,8 +208,9 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 'MAC: ${info.mac}',
-                style: AppTextStyles.subTitle4
-                    .copyWith(color: Theme.of(context).colorScheme.primary),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               )),
         ],
       ),

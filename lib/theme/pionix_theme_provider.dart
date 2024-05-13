@@ -16,8 +16,8 @@ class PionixThemeProvider {
       primarySeed: const Color(0xFF092551),
       secondarySeed: const Color(0xffffac02),
       tertiarySeed: const Color(0xff00531f),
-      whiteSeed: const Color(0xffffffff),
-      blackSeed: const Color(0xff1a1a1a),
+      whiteSeed: const Color(0xFFFFFFFF),
+      blackSeed: const Color(0xff262626),
     );
   }
 
@@ -30,15 +30,11 @@ class PionixThemeProvider {
       textBaseline: TextBaseline.alphabetic,
       fontStyle: FontStyle.normal,
     );
-    TextStyle robotoMonoFont = TextStyle(
-      color: customLightScheme.primary,
-      fontFamily: 'RobotoMono',
-      textBaseline: TextBaseline.alphabetic,
-      fontStyle: FontStyle.normal,
-      fontFeatures: const [FontFeature.tabularFigures()],
-    );
     const TextStyle bold = TextStyle(
       fontWeight: FontWeight.bold,
+    );
+    TextStyle primaryTextColor = TextStyle(
+        color: customLightScheme.primary
     );
     return ThemeData(
       colorScheme: customLightScheme,
@@ -137,16 +133,30 @@ class PionixThemeProvider {
         surfaceTintColor: Colors.transparent,
         toolbarHeight: 70,
       ),
-      textTheme: const TextTheme(
-        displaySmall: bold,
-        displayMedium: bold,
-        displayLarge: bold,
-        headlineSmall: bold,
-        headlineMedium: bold,
-        headlineLarge: bold,
-        //titleSmall: bold,
-        //titleMedium: bold,
-        //titleLarge: bold,
+      textTheme: TextTheme(
+        displayLarge: bold.copyWith(
+          color: customLightScheme.secondary,
+          height: 1.3,
+        ),
+        displayMedium: primaryTextColor.copyWith(
+          height: 1.3,
+          fontWeight: FontWeight.w500,
+        ),
+        displaySmall: primaryTextColor,
+        headlineLarge: primaryTextColor.merge(bold),
+        headlineMedium: primaryTextColor.copyWith(
+            fontWeight: FontWeight.w500
+        ),
+        headlineSmall: primaryTextColor,
+        titleLarge: urbanistFont.merge(primaryTextColor),
+        titleMedium: urbanistFont.merge(primaryTextColor),
+        titleSmall: urbanistFont.merge(primaryTextColor),
+        labelLarge: primaryTextColor,
+        labelMedium: primaryTextColor,
+        labelSmall: primaryTextColor,
+        bodyLarge: primaryTextColor,
+        bodyMedium: primaryTextColor,
+        bodySmall: primaryTextColor,
       ),
       useMaterial3: true,
     );

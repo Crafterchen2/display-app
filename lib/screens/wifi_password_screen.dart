@@ -1,10 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/widgets/keyboard.dart';
 import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 
-import '../theme/app_colors.dart';
 import '../widgets/buttons.dart';
 import '../widgets/text_fields.dart';
 
@@ -49,13 +47,13 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
                 child: SizedBox(
-                    width: double.infinity,
-                    child: Text(
-                      widget.ssid,
-                      style: AppTextStyles.heading3.copyWith(
-                        color: AppColors.primaryBlue,
-                      ),
-                    )),
+                  width: double.infinity,
+                  child: Text(
+                    widget.ssid,
+                    style: Theme.of(context).textTheme.titleLarge,
+
+                  ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
@@ -120,37 +118,37 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
           ),
           _showKeyboard
               ? OrientationBuilder(builder: (context, orientation) {
-                  return Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        orientation == Orientation.landscape
-                            ? Container(
-                                color: Theme.of(context).colorScheme.secondary,
-                                child: PionixVirtualKeyboard(
-                                    height: 300,
-                                    fontSize: 32,
-                                    textColor: Theme.of(context).colorScheme.primary,
-                                    textController: widget.passwordController,
-                                    customLayoutKeys:
-                                        VirtualKeyboardPionixLayoutKeys(),
-                                    type: VirtualKeyboardType.Alphanumeric,
-                                    onKeyPress: (key) => _onKeyPress(key)),
-                              )
-                            : Container(
-                                color: Theme.of(context).colorScheme.secondary,
-                                child: PionixVirtualKeyboard(
-                                    height: 500,
-                                    fontSize: 32,
-                                    textColor: Theme.of(context).colorScheme.primary,
-                                    textController: widget.passwordController,
-                                    defaultLayouts: const [
-                                      VirtualKeyboardDefaultLayouts.English
-                                    ],
-                                    type: VirtualKeyboardType.Alphanumeric,
-                                    onKeyPress: (key) => _onKeyPress(key)),
-                              )
-                      ]);
-                })
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  orientation == Orientation.landscape
+                      ? Container(
+                    color: Theme.of(context).colorScheme.secondary,
+                    child: PionixVirtualKeyboard(
+                        height: 300,
+                        fontSize: 32,
+                        textColor: Theme.of(context).colorScheme.primary,
+                        textController: widget.passwordController,
+                        customLayoutKeys:
+                        VirtualKeyboardPionixLayoutKeys(),
+                        type: VirtualKeyboardType.Alphanumeric,
+                        onKeyPress: (key) => _onKeyPress(key)),
+                  )
+                      : Container(
+                    color: Theme.of(context).colorScheme.secondary,
+                    child: PionixVirtualKeyboard(
+                        height: 500,
+                        fontSize: 32,
+                        textColor: Theme.of(context).colorScheme.primary,
+                        textController: widget.passwordController,
+                        defaultLayouts: const [
+                          VirtualKeyboardDefaultLayouts.English
+                        ],
+                        type: VirtualKeyboardType.Alphanumeric,
+                        onKeyPress: (key) => _onKeyPress(key)),
+                  )
+                ]);
+          })
               : const SizedBox(),
         ],
       ),

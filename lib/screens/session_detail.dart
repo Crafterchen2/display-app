@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:pionixbox/main.dart';
 import 'package:pionixbox/screens/session_detail_graphs.dart';
 import 'package:pionixbox/screens/session_detail_screen.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/widgets/buttons.dart';
 
 class SessionDetail extends StatefulWidget {
@@ -64,7 +62,7 @@ class _SessionDetailState extends State<SessionDetail> with SingleTickerProvider
   TabBar makeTabBar() {
     return TabBar(
       controller: tabController,
-          labelStyle: AppTextStyles.subTitle4,
+          labelStyle: Theme.of(context).textTheme.titleLarge,
           indicatorColor: Theme.of(context).colorScheme.secondary,
           indicatorWeight: adjustScale(3),
           tabs: [

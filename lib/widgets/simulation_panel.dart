@@ -52,31 +52,31 @@ class _SimulationPanelState extends State<SimulationPanel> {
 
   List<Widget> makeMenuButtons() {
     return [
-      PrimaryButton(
+      FilledButton(
         child: const Text('Plug In'),
         onPressed: plugIn,
       ),
-      PrimaryButton(
+      FilledButton(
         child: const Text('Plug Out'),
         onPressed: plugOut,
       ),
-      PrimaryButton(
+      FilledButton(
         child: const Text('Resume by car'),
         onPressed: resumeByCar,
       ),
-      PrimaryButton(
+      FilledButton(
         child: const Text('Pause by car'),
         onPressed: pauseByCar,
       ),
-      PrimaryButton(
+      FilledButton(
         child: const Text('Enable Simulation'),
         onPressed: enableSimulation,
       ),
-      PrimaryButton(
+      FilledButton(
         child: const Text('Disable Simulation'),
         onPressed: disableSimulation,
       ),
-      PrimaryButton(
+      FilledButton(
         child: const Text('Charging Simulation'),
         onPressed: chargingSimulation,
       ),

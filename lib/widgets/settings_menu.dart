@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:pionixbox/main.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/utils/routing/app_router.dart';
 import 'package:pionixbox/widgets/settings_menu_button.dart';
 
@@ -44,7 +43,6 @@ class _SettingsMenuState extends State<SettingsMenu> {
                 SettingMenuButton(
                   icon: Icons.wifi_protected_setup,
                   title: tr('wifi_setup'),
-                  style: AppTextStyles.horizontalMenuButton,
                   onPressed: () {
                     Navigator.of(context).pushNamed(AppRoutes.wifiSetupScreen, arguments: {
                       'init': false,
@@ -55,7 +53,6 @@ class _SettingsMenuState extends State<SettingsMenu> {
                 SettingMenuButton(
                   icon: Icons.settings,
                   title: tr('simulation'),
-                  style: AppTextStyles.horizontalMenuButton,
                   onPressed: () {
                     Navigator.of(context).pushNamed(AppRoutes.simulationScreen);
                     //Navigator.of(context)
@@ -68,7 +65,6 @@ class _SettingsMenuState extends State<SettingsMenu> {
                 SettingMenuButton(
                   icon: Icons.language,
                   title: tr('language'),
-                  style: AppTextStyles.horizontalMenuButton,
                   onPressed: () async {
                     await Navigator.of(context)
                         .pushNamed(AppRoutes.languagePickerScreen)
@@ -81,7 +77,6 @@ class _SettingsMenuState extends State<SettingsMenu> {
               SettingMenuButton(
                 icon: Icons.info_outline,
                 title: tr('system_info'),
-                style: AppTextStyles.horizontalMenuButton,
                 onPressed: () {
                   Navigator.of(context).pushNamed(AppRoutes.systemInfo);
                 },
@@ -89,7 +84,6 @@ class _SettingsMenuState extends State<SettingsMenu> {
               SettingMenuButton(
                 icon: Icons.restore,
                 title: tr('reset'),
-                style: AppTextStyles.horizontalMenuButton,
                 onPressed: () {
                   widget.resetInitialised(context);
                 },
@@ -97,7 +91,6 @@ class _SettingsMenuState extends State<SettingsMenu> {
               SettingMenuButton(
                 icon: Icons.restart_alt,
                 title: tr('reboot'),
-                style: AppTextStyles.horizontalMenuButton,
                 onPressed: () {
                   widget.rebootCharger(context);
                 },

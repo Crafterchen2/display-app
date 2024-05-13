@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:pionixbox/main.dart';
 
-import '../theme/app_colors.dart';
-import '../theme/app_text_styles.dart';
-
 class SettingMenuButton extends StatelessWidget {
   final IconData icon;
   final String title;
   final VoidCallback onPressed;
-  final TextStyle style;
+  final TextStyle? style;
 
   const SettingMenuButton({
     Key? key,
     required this.icon,
     required this.title,
     required this.onPressed,
-    this.style = AppTextStyles.subTitle4,
+    this.style,
   }) : super(key: key);
 
   @override
@@ -49,7 +46,7 @@ class SettingMenuButton extends StatelessWidget {
                         ),
                         child: Text(
                           title,
-                          style: style,
+                          style: style ?? Theme.of(context).textTheme.displaySmall,
                           textAlign: TextAlign.center,
                         ),
                       )

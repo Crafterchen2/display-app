@@ -1,9 +1,8 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 
-import '../theme/app_colors.dart';
 import '../utils/datetime_formats.dart';
 
 class Footer extends StatefulWidget {
@@ -54,7 +53,11 @@ class _FooterState extends State<Footer> {
               children: [
                 Text(
                   widget.isOnline ? 'Online' : 'Offline',
-                  style: AppTextStyles.subTitle4,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: widget.isOnline
+                        ? Theme.of(context).colorScheme.onTertiaryContainer
+                        : Theme.of(context).colorScheme.onErrorContainer,
+                  ),
                 ),
                 const SizedBox(width: 8),
                 Container(
@@ -79,8 +82,11 @@ class _FooterState extends State<Footer> {
               children: [
                 Text(
                   dateTimeFormat.format(DateTime.now()),
-                  style: AppTextStyles.digitsHeading3
-                      .copyWith(color: Theme.of(context).colorScheme.primary),
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontFeatures: [
+                      const FontFeature.tabularFigures(),
+                    ],
+                  ),
                 ),
                 const SizedBox(width: 50),
               ],

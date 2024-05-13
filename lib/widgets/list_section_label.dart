@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
-import '../theme/app_text_styles.dart';
-
 class ListSectionLabel extends StatelessWidget {
   final String label;
 
@@ -25,8 +22,9 @@ class ListSectionLabel extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
             child: Text(
               label,
-              style: AppTextStyles.subTitle4
-                  .copyWith(color: Theme.of(context).colorScheme.primary),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
           ),
           Expanded(

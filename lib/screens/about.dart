@@ -8,8 +8,6 @@ import 'package:pionixbox/data/models/network_device_info.dart';
 import 'package:pionixbox/data/models/release_component.dart';
 import 'package:pionixbox/data/models/release_info.dart';
 import 'package:pionixbox/data/providers/application_info_provider.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 
 class About extends ConsumerStatefulWidget {
   const About({
@@ -118,8 +116,7 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
                   component.name,
-                  style: AppTextStyles.heading3
-                      .copyWith(color: AppColors.primaryBlue),
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
               Expanded(
@@ -135,22 +132,25 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 component.description,
-                style: AppTextStyles.subTitle4
-                    .copyWith(color: Theme.of(context).colorScheme.primary),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               )),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 "version".tr() + ": ${component.version}",
-                style: AppTextStyles.subTitle4
-                    .copyWith(color: Theme.of(context).colorScheme.primary),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               )),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 "license".tr() + ": ${component.license}",
-                style: AppTextStyles.subTitle4
-                    .copyWith(color: Theme.of(context).colorScheme.primary),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ))
         ],
       ),

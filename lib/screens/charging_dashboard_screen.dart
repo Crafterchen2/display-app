@@ -25,8 +25,6 @@ import 'package:pionixbox/utils/globals.dart';
 import 'package:pionixbox/widgets/layout.dart';
 
 import '../mqtt.dart';
-import '../theme/app_colors.dart';
-import '../theme/app_text_styles.dart';
 import '../utils/constants/keys.dart';
 import '../utils/datetime_formats.dart';
 import '../utils/routing/app_router.dart';
@@ -120,13 +118,11 @@ class _ChargingDashboardScreenState
   Widget build(BuildContext context) {
     extractArguments(context);
     connector = ref.watch(connectorProvider);
-    final chargerinfo =
-        ref.watch(chargerInfoStreamProvider).whenOrNull(data: (data) => data);
+    final chargerinfo = ref.watch(chargerInfoStreamProvider).whenOrNull(data: (data) => data);
     if (chargerinfo != null) {
       chargerInfo = chargerinfo;
     }
-    final powermeter =
-        ref.watch(powermeterStreamProvider).whenOrNull(data: (data) => data);
+    final powermeter = ref.watch(powermeterStreamProvider).whenOrNull(data: (data) => data);
     if (powermeter != null) {
       powerMeter = powermeter;
       if (powerMeter.power_W != null) {
@@ -189,8 +185,7 @@ class _ChargingDashboardScreenState
       }
     }
 
-    final telemetry =
-        ref.watch(telemetryStreamProvider).whenOrNull(data: (data) => data);
+    final telemetry = ref.watch(telemetryStreamProvider).whenOrNull(data: (data) => data);
     if (telemetry != null) {
       bufferedTelemetry.fanRPM.add(telemetry.fan_rpm);
       bufferedTelemetry.rcdCurrent.add(telemetry.rcd_current);
@@ -208,8 +203,7 @@ class _ChargingDashboardScreenState
         _current = limits.max_current;
       }
     }
-    final sessioninfo =
-        ref.watch(sessionInfoStreamProvider).whenOrNull(data: (data) => data);
+    final sessioninfo = ref.watch(sessionInfoStreamProvider).whenOrNull(data: (data) => data);
     if (sessioninfo != null) {
       _status = sessioninfo.state;
       _chargedEnergy = sessioninfo.charged_energy_wh / 1000.0;
@@ -229,8 +223,7 @@ class _ChargingDashboardScreenState
         _minCurrentA = hardwareCapabilities.min_current_A_import;
       }
     }
-    final evInfo =
-        ref.watch(evInfoStreamProvider).whenOrNull(data: (data) => data);
+    final evInfo = ref.watch(evInfoStreamProvider).whenOrNull(data: (data) => data);
     if (evInfo != null) {
       if (evInfo.evcc_id != null) {
         // not basic charging
@@ -285,9 +278,10 @@ class _ChargingDashboardScreenState
             ),
             child: Text(
               "Navigation", //TODO Localisation
+              //If buttons change to "labelLarge", maybe change to "titleLarge"?
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    color: AppColors.white,
-                  ),
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
             ),
           ),
           const Divider(),
@@ -335,9 +329,7 @@ class _ChargingDashboardScreenState
               },
               icon: const Icon(Icons.details),
               label: Text("Details", //TODO Localisation
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.white,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),
@@ -353,9 +345,7 @@ class _ChargingDashboardScreenState
               },
               icon: const Icon(Icons.compare_arrows),
               label: Text("HLC log", //TODO Localisation
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.white,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),
@@ -366,7 +356,7 @@ class _ChargingDashboardScreenState
             ),
             child: Text("Einstellungen", //TODO Localisation
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    color: AppColors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
           ),
@@ -388,9 +378,7 @@ class _ChargingDashboardScreenState
                 );
               },
               label: Text(tr('wifi_setup'),
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.white,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               icon: const Icon(Icons.wifi_protected_setup),
             ),
@@ -403,13 +391,10 @@ class _ChargingDashboardScreenState
             ),
             child: FilledButton.icon(
               onPressed: () async {
-                await Navigator.of(context)
-                    .pushNamed(AppRoutes.languagePickerScreen);
+                await Navigator.of(context).pushNamed(AppRoutes.languagePickerScreen);
               },
               label: Text(tr('language'),
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.white,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               icon: const Icon(Icons.language),
             ),
@@ -425,9 +410,7 @@ class _ChargingDashboardScreenState
                 Navigator.of(context).pushNamed(AppRoutes.systemInfo);
               },
               label: Text(tr('system_info'),
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.white,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               icon: const Icon(Icons.info_outline),
             ),
@@ -503,7 +486,7 @@ class _ChargingDashboardScreenState
                 );
               },
               style: Theme.of(context).filledButtonTheme.style?.copyWith(
-                backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).colorScheme.error)
+                  backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).colorScheme.error)
               ),
               label: Text(
                 tr('reboot'),
@@ -528,9 +511,7 @@ class _ChargingDashboardScreenState
                 Navigator.of(context).pushNamed(AppRoutes.simulationScreen);
               },
               label: Text(tr('simulation'),
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.white,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               icon: const Icon(Icons.settings),
             ),
@@ -561,10 +542,10 @@ class _ChargingDashboardScreenState
                 color: Theme.of(context).colorScheme.background, //Needed to block view of underlying UI
                 child: const Center(
                   child:
-                      CircularProgressIndicator(
-                        //TODO Handle with theme!
-                        //color: AppColors.primaryAmber,
-                      ),
+                  CircularProgressIndicator(
+                    //TODO Handle with theme!
+                    //color: AppColors.primaryAmber,
+                  ),
                 ),
               ),
             )
@@ -591,39 +572,40 @@ class _ChargingDashboardScreenState
       duration: _duration,
       online: _online,
       seeMorePressed: (ref
-                  .watch(powermeterStreamProvider)
-                  .whenOrNull(data: (data) => data) !=
-              null)
+          .watch(powermeterStreamProvider)
+          .whenOrNull(data: (data) => data) !=
+          null)
           ? () async {
-              /*final result = */ await Navigator.of(context).pushNamed(
-                  AppRoutes.sessionDetailScreen,
-                  arguments: {}).then((value) {
-                setState(() {});
-              });
-            }
+        /*final result = */ await Navigator.of(context).pushNamed(
+            AppRoutes.sessionDetailScreen,
+            arguments: {}).then((value) {
+          setState(() {});
+          },
+        );
+      }
           : () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  elevation: 20,
-                  duration: const Duration(
-                    seconds: 2,
-                  ),
-                  content: const Text(
-                      'You are offline. Try again or check wifi Settings.'), //TODO: Localization
-                  action: SnackBarAction(
-                    label: 'Open Wifi settings', //TODO: Localization
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(
-                        AppRoutes.wifiSetupScreen,
-                        arguments: {
-                          'init': false,
-                        },
-                      );
-                    },
-                  ),
-                ),
-              );
-            },
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            elevation: 20,
+            duration: const Duration(
+              seconds: 2,
+            ),
+            content: const Text(
+                'You are offline. Try again or check wifi Settings.'), //TODO: Localization
+            action: SnackBarAction(
+              label: 'Open Wifi settings', //TODO: Localization
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  AppRoutes.wifiSetupScreen,
+                  arguments: {
+                    'init': false,
+                  },
+                );
+              },
+            ),
+          ),
+        );
+      },
       onPauseCharging: () => performAction(pauseCharging),
       onResumeCharging: () => performAction(resumeCharging),
       onCurrentChanged: (value) {
@@ -657,36 +639,36 @@ class _ChargingDashboardScreenState
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: _online
-                                ? Theme.of(context).colorScheme.tertiaryContainer
-                                : Theme.of(context).colorScheme.errorContainer,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: _online
+                            ? Theme.of(context).colorScheme.tertiaryContainer
+                            : Theme.of(context).colorScheme.errorContainer,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                          horizontal: 12,
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 4, horizontal: 12),
-                          child: Text(
-                            _online ? 'online'.tr() : 'offline'.tr(),
-                            style: AppTextStyles.subTitle2
-                                .copyWith(color: Colors.white),
-                          ),
-                        )),
+                        child: Text(
+                          _online ? 'online'.tr() : 'offline'.tr(),
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
                       selectedProtocolString,
-                      style: AppTextStyles.digitsSubTitle2
-                          .copyWith(color: Colors.grey),
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
                       dateTimeFormat.format(DateTime.now()),
-                      style: AppTextStyles.digitsSubTitle2
-                          .copyWith(color: Colors.grey),
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                   )
                 ],
@@ -701,7 +683,7 @@ class _ChargingDashboardScreenState
   ScrollPhysics makeScrollPhysics() {
     ScrollPhysics physics = const BouncingScrollPhysics();
     final ScrollPhysics mergedPhysics =
-        physics.applyTo(const AlwaysScrollableScrollPhysics());
+    physics.applyTo(const AlwaysScrollableScrollPhysics());
     return mergedPhysics;
   }
 

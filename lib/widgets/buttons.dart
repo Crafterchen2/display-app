@@ -1,9 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-
-import '../theme/app_text_styles.dart';
 
 class PrimaryButton extends ElevatedButton {
 
@@ -26,38 +23,41 @@ class PrimaryButton extends ElevatedButton {
 class SecondaryButton extends StatelessWidget {
   final String title;
   final VoidCallback onPressed;
-  final Color color;
-  final Color borderColor;
-  final Color highlightBorderColor;
-  final Color textColor;
+  final Color? color;
+  final Color? borderColor;
+  final Color? highlightBorderColor;
+  final Color? textColor;
   final double borderThickness;
 
   const SecondaryButton({
     Key? key,
     required this.title,
     required this.onPressed,
-    this.color = AppColors.white,
-    this.borderColor = AppColors.primaryAmber,
-    this.highlightBorderColor = AppColors.primaryBlue,
-    this.textColor = AppColors.primaryBlue,
+    this.color,
+    this.borderColor,
+    this.highlightBorderColor,
+    this.textColor,
     this.borderThickness = 4,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: borderColor,
+      color: borderColor ?? Theme.of(context).colorScheme.secondary,
       child: InkWell(
         onTap: onPressed,
-        highlightColor: highlightBorderColor,
+        highlightColor: highlightBorderColor ?? Theme.of(context).colorScheme.primary,
         splashColor: Colors.transparent,
         child: Padding(
           padding: EdgeInsets.all(borderThickness),
           child: Container(
-            color: color,
+            color: color ?? Theme.of(context).colorScheme.surface,
             child: Center(
               child: Text(title.toUpperCase(),
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(color: textColor)),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: textColor ?? Theme.of(context).colorScheme.primary,
+                  ),
+              ),
             ),
           ),
         ),
@@ -75,22 +75,23 @@ class SwitchSettingsButton extends StatelessWidget {
   final TextStyle titleStyle;
   final Color textColor;
   final double height;
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
+  //Not used, can be removed.
   const SwitchSettingsButton({
     Key? key,
     this.margin = const EdgeInsets.only(left: 16.0, right: 8.0),
     required this.title,
     required this.value,
     required this.onChanged,
-    this.titleStyle = AppTextStyles.subTitle4,
+    required this.titleStyle,
     this.padding = const EdgeInsets.only(
       left: 16.0,
       right: 8.0,
     ),
     this.textColor = Colors.black,
     this.height = 56.0,
-    this.backgroundColor = AppColors.primaryBlue,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
@@ -99,7 +100,7 @@ class SwitchSettingsButton extends StatelessWidget {
       margin: margin,
       child: Container(
         decoration: BoxDecoration(
-          color: backgroundColor,
+          color: backgroundColor ?? Theme.of(context).colorScheme.primary,
           borderRadius: BorderRadius.circular(8.0),
           border: Border.all(color: Colors.white10),
         ),
@@ -135,22 +136,23 @@ class ActionButtonWithTitleBar extends StatelessWidget {
   final TextStyle titleStyle;
   final Color textColor;
   final double height;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final Icon icon;
 
+  //Not used, can be removed.
   const ActionButtonWithTitleBar({
     Key? key,
     this.margin = const EdgeInsets.only(left: 16.0, right: 8.0),
     required this.title,
     required this.onPressed,
-    this.titleStyle = AppTextStyles.subTitle4,
+    required this.titleStyle,
     this.padding = const EdgeInsets.only(
       left: 16.0,
       right: 8.0,
     ),
     this.textColor = Colors.black,
     this.height = 56.0,
-    this.backgroundColor = AppColors.primaryBlue,
+    this.backgroundColor,
     required this.icon,
   }) : super(key: key);
 
@@ -163,7 +165,7 @@ class ActionButtonWithTitleBar extends StatelessWidget {
         margin: margin,
         child: Container(
           decoration: BoxDecoration(
-            color: backgroundColor,
+            color: backgroundColor ?? Theme.of(context).colorScheme.primary,
             borderRadius: BorderRadius.circular(8.0),
             border: Border.all(color: Colors.white10),
           ),
@@ -263,7 +265,7 @@ class CircularLabeledIconButton extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           label,
-          style: AppTextStyles.subTitle2,
+          style: Theme.of(context).textTheme.titleMedium,
         )
       ],
     );

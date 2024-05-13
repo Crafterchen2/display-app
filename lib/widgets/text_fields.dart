@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 
 class IconTextField extends StatefulWidget {
   final Icon icon;
@@ -18,15 +16,15 @@ class IconTextField extends StatefulWidget {
 
   IconTextField(
       {Key? key,
-      required this.icon,
-      required this.controller,
-      this.hintText = '',
-      this.keyboardType = TextInputType.text,
-      this.focusNode,
-      this.onTap,
-      this.visible = false,
-      this.decoration,
-      this.hidden = true})
+        required this.icon,
+        required this.controller,
+        this.hintText = '',
+        this.keyboardType = TextInputType.text,
+        this.focusNode,
+        this.onTap,
+        this.visible = false,
+        this.decoration,
+        this.hidden = true})
       : super(key: key);
 
   @override
@@ -55,30 +53,27 @@ class _IconTextFieldState extends State<IconTextField> {
               onTap: widget.onTap,
               controller: widget.controller,
               focusNode: widget.focusNode,
-              style: AppTextStyles.heading3.copyWith(
-                color: AppColors.primaryBlue,
-              ),
+              style: Theme.of(context).textTheme.titleLarge,
               decoration: InputDecoration(
                   alignLabelWithHint: true,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   hintText: widget.hintText,
-                  hintStyle: AppTextStyles.heading3
-                      .copyWith(color: Colors.grey.shade400)),
+                  hintStyle: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.grey.shade400)),
             ),
           ),
           widget.hidden
               ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      widget.visible = !widget.visible;
-                    });
-                  },
-                  icon: Icon(
-                    widget.visible ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.grey.shade400,
-                    size: 28,
-                  ))
+              onPressed: () {
+                setState(() {
+                  widget.visible = !widget.visible;
+                });
+              },
+              icon: Icon(
+                widget.visible ? Icons.visibility : Icons.visibility_off,
+                color: Colors.grey.shade400,
+                size: 28,
+              ))
               : Container()
         ],
       ),

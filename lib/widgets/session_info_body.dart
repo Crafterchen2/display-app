@@ -1,16 +1,16 @@
+import 'dart:ui';
+
 import 'package:easy_localization/easy_localization.dart'
-    as _virtualKeyboardBackspaceEventPeriod;
+as _virtualKeyboardBackspaceEventPeriod;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/mqtt.dart';
-import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/utils/enums.dart';
 import 'package:pionixbox/utils/globals.dart';
 import 'package:pionixbox/utils/number_tools.dart';
 import 'package:pionixbox/utils/routing/app_router.dart';
 
 import '../main.dart';
-import '../theme/app_text_styles.dart';
 import '../utils/constants/helper.dart';
 import '../utils/constants/keys.dart';
 import 'buttons.dart';
@@ -132,15 +132,17 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   Widget build(BuildContext context) {
     String currentSliderLabel = widget.current.toStringAsFixed(1);
     //Change the snapping behavior below is sufficient.
+    double snapped = 300;
+    double offset = 20;
     NumberSnap carSideWidth = NumberSnap(
-      parameter: MediaQuery.of(context).size.width - adjustScale(300),
-      snapped: adjustScale(280),
+      parameter: MediaQuery.of(context).size.width - adjustScale(snapped),
+      snapped: adjustScale(snapped - offset),
       threshold: adjustScale(150),
     );
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: adjustScale(10),
+          horizontal: adjustScale(offset / 2),
         ),
         child: Wrap(
           crossAxisAlignment: WrapCrossAlignment.start,
@@ -165,7 +167,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               alignment: Alignment.topLeft,
                               child: Text(
                                 'status'.tr(),
-                                style: AppTextStyles.subTitle4,
+                                style: Theme.of(context).textTheme.headlineMedium,
                               ),
                             ),
                             Text(
@@ -173,8 +175,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                   .toUpperCase(),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
-                              style:
-                                  AppTextStyles.heading6.copyWith(fontSize: 32),
+                              style: Theme.of(context).textTheme.displayLarge,
                             ),
                           ],
                         ),
@@ -184,24 +185,27 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           SizedBox(
                             height: adjustScale(60),
                             width: carSideWidth.snapNumber(),
-                            child: (widget.state == ChargingState.charging)
-                                ? SecondaryButton(
-                                    title: 'pause'.tr(),
-                                    onPressed: widget.onPauseCharging,
-                                    textColor: AppColors.primaryAmber)
-                                : (pauseOrResumeChargingTitle(widget.state) !=
-                                            ChargingState.charging &&
-                                        widget.state !=
-                                            ChargingState.authRequired &&
-                                        pauseOrResumeChargingTitle(
-                                                widget.state) !=
-                                            '')
-                                    ? PrimaryButton(
-                                        child: Text('resume'.tr()),
-                                        onPressed: widget.onResumeCharging,
-                                        //textColor: Colors.white,
-                                      )
-                                    : Container(),
+                            child: (widget.state == ChargingState.charging) ?
+                            OutlinedButton(
+                              child: Text(
+                                'pause'.tr(),
+                                style: Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              onPressed: widget.onPauseCharging,
+                              //textColor: AppColors.primaryAmber,
+                            )
+                                : (pauseOrResumeChargingTitle(widget.state) != ChargingState.charging &&
+                                widget.state != ChargingState.authRequired &&
+                                pauseOrResumeChargingTitle(widget.state) != '') ?
+                            FilledButton(
+                              child: Text(
+                                'resume'.tr(),
+                                style: Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              onPressed: widget.onResumeCharging,
+                              //textColor: Colors.white,
+                            )
+                                : Container(),
                           ),
                         if (widget.state != ChargingState.authRequired &&
                             widget.current >= widget.minCurrentA &&
@@ -213,20 +217,23 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 children: [
                                   Text(
                                     'charge_upto'.tr() + ' ',
-                                    style: Theme.of(context).textTheme.titleLarge,
+                                    style: Theme.of(context).textTheme.headlineSmall,
                                   ),
                                   Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
                                         currentSliderLabel,
-                                        textAlign: TextAlign.start,
-                                        style: AppTextStyles.digitsHeading3,
+                                        textAlign: TextAlign.start,style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                        fontFeatures: [
+                                          const FontFeature.tabularFigures(),
+                                        ],
                                       ),
-                                      const Text(
+                                      ),
+                                      Text(
                                         ' A',
                                         textAlign: TextAlign.end,
-                                        style: AppTextStyles.digitsHeading3,
+                                        style: Theme.of(context).textTheme.headlineSmall,
                                       ),
                                     ],
                                   ),
@@ -267,7 +274,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
               ),
             SizedBox(
               width:
-                  carSideWidth.snapNumber(ovrSnapped: carSideWidth.parameter),
+              carSideWidth.snapNumber(ovrSnapped: carSideWidth.parameter),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -278,47 +285,47 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                     ),
                     child: widget.state == ChargingState.authRequired
                         ? Text(
-                            'swipe_your_card_please'.tr(),
-                            style: AppTextStyles.subTitle4,
-                          )
+                      'swipe_your_card_please'.tr(),
+                      style: Theme.of(context).textTheme.titleLarge,
+                    )
                         : Text(
-                            widget.state == 'unplugged'.tr()
-                                ? 'last_session'.tr()
-                                : 'current_session'.tr(),
-                            style: AppTextStyles.subTitle4,
-                          ),
+                      widget.state == 'unplugged'.tr()
+                          ? 'last_session'.tr()
+                          : 'current_session'.tr(),
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                   ),
                   widget.state == ChargingState.authRequired
                       ? Container()
                       : GestureDetector(
-                          onTap: widget.seeMorePressed,
-                          behavior: HitTestBehavior.opaque,
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                              minWidth: adjustScale(150),
+                        onTap: widget.seeMorePressed,
+                        behavior: HitTestBehavior.opaque,
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minWidth: carSideWidth.threshold,
+                          ),
+                          child: SizedBox(
+                        width: double.infinity,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 2,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 2,
-                                    color: Theme.of(context).colorScheme.primary,
-                                  ),
-                                  borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(12),
-                                    topLeft: Radius.circular(12),
-                                  ),
-                                ),
-                                child: Wrap(
-                                  alignment: WrapAlignment.spaceEvenly,
-                                  children:
-                                      _buildInfoCards(widget.chargerModelName),
-                                ),
-                              ),
+                            borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(12),
+                              topLeft: Radius.circular(12),
                             ),
                           ),
+                          child: Wrap(
+                            alignment: WrapAlignment.spaceEvenly,
+                            children:
+                            _buildInfoCards(widget.chargerModelName),
+                          ),
                         ),
+                      ),
+                    ),
+                  ),
                   Container(
                     transform: Matrix4.translationValues(0, -2, 0),
                     decoration: BoxDecoration(
@@ -351,7 +358,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           onTap: () async {
                             /*final result = */ await Navigator.of(context)
                                 .pushNamed(AppRoutes.hlcLogScreen,
-                                    arguments: {}).then((value) {
+                                arguments: {}).then((value) {
                               setState(() {});
                             });
                           },
@@ -361,7 +368,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                             child: Text(
                               "See HLC comm log", //TODO Localisation
                               style:
-                                  AppTextStyles.horizontalMenuButton.copyWith(
+                              Theme.of(context).textTheme.displaySmall?.copyWith(
                                 color: Colors.grey,
                               ),
                               softWrap: true,
@@ -457,7 +464,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           ),
                         ),
                       ],
-                    )
+                    ),
                 ],
               ),
             ),
@@ -476,7 +483,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text(label, style: AppTextStyles.digitsHeading3),
+          Text(label,
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
           if (iconPath != null)
             SizedBox(
               height: adjustScale(10.0),
@@ -492,8 +501,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             ),
           Text(
             value,
-            style: AppTextStyles.digitsHeading3
-                .copyWith(color: Theme.of(context).colorScheme.primary),
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
           if (iconPath == null)
             SizedBox(
@@ -535,8 +543,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             alignment: Alignment.bottomRight,
             children: [
               Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                   child: getChargingSessionWidgetByState(context, widget.state, adjustScale(96), adjustScale(320), widget.soc)),
               // if (widget.state == 'ChargingPausedEVSE' ||
               //     widget.state == 'ChargingPausedEV')

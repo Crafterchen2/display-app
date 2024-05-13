@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:pionixbox/data/models/network_device_info.dart';
 import 'package:pionixbox/main.dart';
 import 'package:pionixbox/screens/landing_screen.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/widgets/buttons.dart';
 
 import '../mqtt.dart';
@@ -109,7 +107,7 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                               _connected
                                   ? 'CONNECTED TO LAN'.tr()
                                   : 'NO NETWORK FOUND'.tr(),
-                              style: AppTextStyles.heading6.copyWith(
+                              style: Theme.of(context).textTheme.displayLarge?.copyWith(
                                 color: _connected
                                     ? Theme.of(context).colorScheme.onTertiaryContainer
                                     : Theme.of(context).colorScheme.onErrorContainer,
