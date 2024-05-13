@@ -212,8 +212,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
               'Interface: ${info.interface}',
-              style: AppTextStyles.subTitle4.copyWith(
-                  color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w700),
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
           ),
           SizedBox(height: screenHeight * 0.02),
@@ -221,8 +220,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
               'IPV4: ${info.ipv4.isEmpty ? '----------' : info.ipv4}',
-              style: AppTextStyles.subTitle4.copyWith(
-                  color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w700),
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
           ),
         ],

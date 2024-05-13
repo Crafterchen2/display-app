@@ -181,7 +181,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
               _appInfo.mode == 'unknown'
                   ? AppRoutes.landingScreen
                   : AppRoutes.chargingDashboardScreen,
-              (Route<dynamic> route) => false,
+                  (Route<dynamic> route) => false,
               arguments: {
                 'private_mode': _appInfo.mode == 'private',
               });
@@ -274,8 +274,8 @@ class SquareButtonWidget extends StatelessWidget {
                 width: screenWidth * 0.2,
               ),
               Text(text,
-                  style: AppTextStyles.heading6
-                      .copyWith(color: Theme.of(context).colorScheme.primary)),
+                  style: Theme.of(context).textTheme.displayLarge,//.copyWith(color: Theme.of(context).colorScheme.primary),
+              ),
             ],
           ),
         ),
@@ -314,8 +314,7 @@ class InitializingProgressWidget extends StatelessWidget {
             ),
             child: Text(
               message.toUpperCase(),
-              style:
-                  AppTextStyles.subTitle4.copyWith(fontWeight: FontWeight.w700),
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
           ),
         ],
