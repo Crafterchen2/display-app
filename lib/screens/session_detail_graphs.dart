@@ -7,7 +7,6 @@ import 'package:pionixbox/data/providers/limits_provider.dart';
 import 'package:pionixbox/data/providers/powermeter_provider.dart';
 import 'package:pionixbox/main.dart';
 import 'package:pionixbox/screens/general_detail_screen.dart';
-import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/utils/circular_queue.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/info_cards.dart';

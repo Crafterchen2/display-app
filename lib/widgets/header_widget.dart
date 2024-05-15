@@ -1,18 +1,14 @@
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/main.dart';
-import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/widgets/buttons.dart';
-import 'package:pionixbox/widgets/restart_widget.dart';
 
 import '../mqtt.dart';
 import '../screens/initializing_screen.dart';
 import '../utils/constants/keys.dart';
 import '../utils/routing/app_router.dart';
-import 'dialogs.dart';
 
 const everestLogo = 'assets/icons/everest_horizontal_color_logo.svg';
 const rpiLogo = 'assets/icons/powered_by_raspberry_pi_logo_black.svg';

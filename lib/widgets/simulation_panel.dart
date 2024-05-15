@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pionixbox/main.dart';
-import 'package:pionixbox/theme/app_colors.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
