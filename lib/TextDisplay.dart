@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart.disabled';
 import 'package:pionixbox/theme/pionix_theme_provider.dart';
 
 void main() async {
