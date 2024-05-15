@@ -132,8 +132,8 @@ class _LandingScreenState extends State<LandingScreen> {
   }
 
   Future<void> privateConfirmationDialog(
-      BuildContext context,
-      ) async {
+    BuildContext context,
+  ) async {
     showDialog(
         context: context,
         builder: (ctz) {
@@ -157,8 +157,8 @@ class _LandingScreenState extends State<LandingScreen> {
   }
 
   Future<void> publicConfirmationDialog(
-      BuildContext context,
-      ) async {
+    BuildContext context,
+  ) async {
     showDialog(
         context: context,
         builder: (ctz) {
@@ -204,11 +204,12 @@ class SquareButtonWidget extends StatelessWidget {
           borderRadius: const BorderRadius.all(Radius.circular(16)),
         ),
         child: Center(
-          child: Text(text,
+          child: Text(
+            text,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.displayLarge?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
           ),
         ),
       ),

@@ -88,6 +88,7 @@ class _SystemInfoState extends State<SystemInfo> {
                 ],
               ),
             ),
-            body: const TabBarView(children: [About(), NetworkInfo(), Control()])));
+            body: const TabBarView(
+                children: [About(), NetworkInfo(), Control()])));
   }
 }

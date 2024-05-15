@@ -1,5 +1,4 @@
 class NumberSnap {
-
   ///The number determining whether to snap or not.
   final double parameter;
 
@@ -29,11 +28,13 @@ class NumberSnap {
     double? ovrThreshold,
     double? ovrSnapped,
     double? ovrUnsnapped,
-  }){
+  }) {
     return isSnapped(
       ovrParameter: ovrParameter,
       ovrThreshold: ovrThreshold,
-    ) ? (ovrSnapped ?? snapped) : (ovrUnsnapped ?? unsnapped);
+    )
+        ? (ovrSnapped ?? snapped)
+        : (ovrUnsnapped ?? unsnapped);
   }
 
   ///Returns [parameter] > [threshold].
@@ -42,8 +43,7 @@ class NumberSnap {
   bool isSnapped({
     double? ovrParameter,
     double? ovrThreshold,
-  }){
+  }) {
     return (ovrParameter ?? parameter) > (ovrThreshold ?? threshold);
   }
-
 }

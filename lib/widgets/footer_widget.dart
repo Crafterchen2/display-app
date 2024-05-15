@@ -54,10 +54,10 @@ class _FooterState extends State<Footer> {
                 Text(
                   widget.isOnline ? 'Online' : 'Offline',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: widget.isOnline
-                        ? Theme.of(context).colorScheme.onTertiaryContainer
-                        : Theme.of(context).colorScheme.onErrorContainer,
-                  ),
+                        color: widget.isOnline
+                            ? Theme.of(context).colorScheme.onTertiaryContainer
+                            : Theme.of(context).colorScheme.onErrorContainer,
+                      ),
                 ),
                 const SizedBox(width: 8),
                 Container(

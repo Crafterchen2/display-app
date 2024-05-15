@@ -40,8 +40,8 @@ class SessionDetailCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: (MediaQuery.of(context).size.width <
-          ((adjustScale(stretchThreshold ?? cardWidth) * 2) +
-              adjustScale(stretchSensitivity)))
+              ((adjustScale(stretchThreshold ?? cardWidth) * 2) +
+                  adjustScale(stretchSensitivity)))
           ? null
           : adjustScale(cardWidth),
       child: Container(
@@ -67,9 +67,13 @@ class SessionDetailCardWidget extends StatelessWidget {
                         children: [
                           Text(
                             sectionTitle,
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
                           ),
                           Icon(
                             (expanded)
@@ -85,9 +89,7 @@ class SessionDetailCardWidget extends StatelessWidget {
                 ),
               ],
             ),
-            expanded
-                ? const Divider()
-                : Container(),
+            expanded ? const Divider() : Container(),
             if (expanded)
               expandContent, //...populateList(context) --> ListCardContent(unit: unit, map: map) --> expandContent
           ],
@@ -114,16 +116,17 @@ class SingleInfoCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimary
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
               ),
               Text(
                 value,
                 textAlign: TextAlign.start,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
               ),
             ],
           ),
@@ -181,7 +184,6 @@ class ListCardContent extends StatelessWidget {
 }
 
 class LineChartCardContent extends StatefulWidget {
-
   final String unit;
   final List<ChartValues> values;
   final VoidCallback onShowOverlayPressed;
@@ -231,7 +233,7 @@ class _LineChartCardContent extends State<LineChartCardContent> {
     List<List<FlSpot>> points = [];
 
     List<Color> colors = [
-    Theme.of(context).colorScheme.secondary,
+      Theme.of(context).colorScheme.secondary,
       AppColors.chartTomato,
       AppColors.chartFuchsiaRose,
       AppColors.chartImperial,
@@ -262,8 +264,10 @@ class _LineChartCardContent extends State<LineChartCardContent> {
       points.add([]);
       labels.add(Text(
         widget.values[i].label,
-        style:
-        Theme.of(context).textTheme.titleLarge?.copyWith(color: colors[i % colors.length]),
+        style: Theme.of(context)
+            .textTheme
+            .titleLarge
+            ?.copyWith(color: colors[i % colors.length]),
       ));
       for (var j = 0; j < widget.values[i].values.length; j++) {
         points[i].add(FlSpot(j.toDouble(), widget.values[i].values[j]));
@@ -276,7 +280,10 @@ class _LineChartCardContent extends State<LineChartCardContent> {
     }
 
     SizedBox chart = SizedBox(
-      height: (widget.showPopup) ? widget.chartHeight : MediaQuery.of(context).size.height*getChartHeightPercent() - adjustScale(0),
+      height: (widget.showPopup)
+          ? widget.chartHeight
+          : MediaQuery.of(context).size.height * getChartHeightPercent() -
+              adjustScale(0),
       child: LineChart(
         LineChartData(
           minY: minimums.first,
@@ -330,15 +337,17 @@ class _LineChartCardContent extends State<LineChartCardContent> {
               ),
             ],
           ),
-          if (widget.showPopup) TextButton(
-            onPressed: widget.onShowOverlayPressed,
-            style: const ButtonStyle(
-              overlayColor: MaterialStatePropertyAll<Color>(Colors.transparent),
+          if (widget.showPopup)
+            TextButton(
+              onPressed: widget.onShowOverlayPressed,
+              style: const ButtonStyle(
+                overlayColor:
+                    MaterialStatePropertyAll<Color>(Colors.transparent),
+              ),
+              child: Container(
+                height: chart.height,
+              ),
             ),
-            child: Container(
-              height: chart.height,
-            ),
-          ),
           //FloatingActionButton(onPressed: (){debugPrint("test");}),
           //SizedBox(
           //  height: 100,

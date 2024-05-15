@@ -76,7 +76,8 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container( //Is Container really necessary?
+      body: Container(
+        //Is Container really necessary?
         color: Theme.of(context).colorScheme.background,
         child: Stack(
           children: [
@@ -93,9 +94,11 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                         alignment: Alignment.centerLeft,
                         child: Container(
                           decoration: BoxDecoration(
-                              color: _connected
-                                  ? Theme.of(context).colorScheme.tertiaryContainer
-                                  : Theme.of(context).colorScheme.errorContainer,
+                            color: _connected
+                                ? Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer
+                                : Theme.of(context).colorScheme.errorContainer,
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
@@ -107,11 +110,18 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                               _connected
                                   ? 'CONNECTED TO LAN'.tr()
                                   : 'NO NETWORK FOUND'.tr(),
-                              style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                color: _connected
-                                    ? Theme.of(context).colorScheme.onTertiaryContainer
-                                    : Theme.of(context).colorScheme.onErrorContainer,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displayLarge
+                                  ?.copyWith(
+                                    color: _connected
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .onTertiaryContainer
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onErrorContainer,
+                                  ),
                             ),
                           ),
                         ),
@@ -128,7 +138,9 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Container(
-                          color: Theme.of(context).colorScheme.background, //Is this necessary?
+                          color: Theme.of(context)
+                              .colorScheme
+                              .background, //Is this necessary?
                           height: screenHeight * 0.2,
                           child: Padding(
                             padding: EdgeInsets.symmetric(
@@ -139,8 +151,12 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                               children: [
                                 SecondaryButton(
                                   title: 'Close',
-                                  borderColor: Theme.of(context).colorScheme.errorContainer,
-                                  textColor: Theme.of(context).colorScheme.errorContainer,
+                                  borderColor: Theme.of(context)
+                                      .colorScheme
+                                      .errorContainer,
+                                  textColor: Theme.of(context)
+                                      .colorScheme
+                                      .errorContainer,
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
@@ -149,9 +165,15 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                                 SizedBox(width: screenWidth * 0.03),
                                 PrimaryButton(
                                   child: const Text('Add WIFI'),
-                                  style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-                                    backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).colorScheme.errorContainer)
-                                  ),
+                                  style: Theme.of(context)
+                                      .elevatedButtonTheme
+                                      .style
+                                      ?.copyWith(
+                                          backgroundColor:
+                                              MaterialStateProperty.resolveWith(
+                                                  (states) => Theme.of(context)
+                                                      .colorScheme
+                                                      .errorContainer)),
                                   onPressed: () {
                                     Navigator.of(context).pushNamed(
                                         AppRoutes.wifiSetupScreen,
@@ -164,9 +186,15 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                                 SizedBox(width: screenWidth * 0.03),
                                 PrimaryButton(
                                   child: const Text('Done with SETUP'),
-                                  style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-                                      backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).colorScheme.tertiaryContainer)
-                                  ),
+                                  style: Theme.of(context)
+                                      .elevatedButtonTheme
+                                      .style
+                                      ?.copyWith(
+                                          backgroundColor:
+                                              MaterialStateProperty.resolveWith(
+                                                  (states) => Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiaryContainer)),
                                   onPressed: () {
                                     setInitialized();
                                     Navigator.of(context).pushAndRemoveUntil(

@@ -91,8 +91,9 @@ class Header extends StatelessWidget {
                         backgroundColor: Theme.of(context).colorScheme.primary,
                         onPressed: () {
                           Scaffold.of(context).openEndDrawer();
-                          },
-                        child: Icon(Icons.settings,
+                        },
+                        child: Icon(
+                          Icons.settings,
                           color: Theme.of(context).colorScheme.onPrimary,
                           size: 48,
                         ),

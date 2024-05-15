@@ -16,15 +16,15 @@ class IconTextField extends StatefulWidget {
 
   IconTextField(
       {Key? key,
-        required this.icon,
-        required this.controller,
-        this.hintText = '',
-        this.keyboardType = TextInputType.text,
-        this.focusNode,
-        this.onTap,
-        this.visible = false,
-        this.decoration,
-        this.hidden = true})
+      required this.icon,
+      required this.controller,
+      this.hintText = '',
+      this.keyboardType = TextInputType.text,
+      this.focusNode,
+      this.onTap,
+      this.visible = false,
+      this.decoration,
+      this.hidden = true})
       : super(key: key);
 
   @override
@@ -59,21 +59,24 @@ class _IconTextFieldState extends State<IconTextField> {
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   hintText: widget.hintText,
-                  hintStyle: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.grey.shade400)),
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(color: Colors.grey.shade400)),
             ),
           ),
           widget.hidden
               ? IconButton(
-              onPressed: () {
-                setState(() {
-                  widget.visible = !widget.visible;
-                });
-              },
-              icon: Icon(
-                widget.visible ? Icons.visibility : Icons.visibility_off,
-                color: Colors.grey.shade400,
-                size: 28,
-              ))
+                  onPressed: () {
+                    setState(() {
+                      widget.visible = !widget.visible;
+                    });
+                  },
+                  icon: Icon(
+                    widget.visible ? Icons.visibility : Icons.visibility_off,
+                    color: Colors.grey.shade400,
+                    size: 28,
+                  ))
               : Container()
         ],
       ),

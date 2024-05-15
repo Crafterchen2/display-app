@@ -50,7 +50,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
     const oneSec = Duration(milliseconds: 20);
     _timer = Timer.periodic(
       oneSec,
-          (Timer timer) {
+      (Timer timer) {
         if (_progress == 1.0) {
           setState(() {
             timer.cancel();
@@ -74,7 +74,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
       progressMessage = 'connection_failed'.tr();
       // reconnecting...
       _reconnectMessageTimer = Timer(const Duration(seconds: 3),
-              () => progressMessage = 'reconnecting'.tr());
+          () => progressMessage = 'reconnecting'.tr());
       _reconnectTimer =
           Timer(const Duration(seconds: 5), () => _connect(context));
     }
@@ -94,69 +94,71 @@ class _InitializingScreenState extends State<InitializingScreen> {
               children: [
                 waitingIndicator
                     ? Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const Expanded(
-                        child:
-                        SizedBox.expand(child: EverestLogoWidget()),
-                      ),
-                      Column(
-                        children: [
-                          Divider(
-                            thickness: adjustScale(2),
-                            color: Colors.grey,
-                            height: adjustScale(50),
-                            indent: adjustScale(20),
-                            endIndent: adjustScale(20),
-                          ),
-                          LinearProgressIndicator(
-                            color: Theme.of(context).colorScheme.primary,
-                            minHeight: adjustScale(10),
-                            backgroundColor: Colors.grey.shade300,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: screenHeight * 0.02,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Expanded(
+                              child:
+                                  SizedBox.expand(child: EverestLogoWidget()),
                             ),
-                            child: Text(
-                              progressMessage.toUpperCase(),
-                              style: Theme.of(context).textTheme.headlineLarge,
+                            Column(
+                              children: [
+                                Divider(
+                                  thickness: adjustScale(2),
+                                  color: Colors.grey,
+                                  height: adjustScale(50),
+                                  indent: adjustScale(20),
+                                  endIndent: adjustScale(20),
+                                ),
+                                LinearProgressIndicator(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  minHeight: adjustScale(10),
+                                  backgroundColor: Colors.grey.shade300,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    top: screenHeight * 0.02,
+                                  ),
+                                  child: Text(
+                                    progressMessage.toUpperCase(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineLarge,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
+                          ],
+                        ),
+                      )
                     : Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SquareButtonWidget(
-                          iconUrl: 'assets/icons/icon_wifi.svg',
-                          text: 'wifi'.tr(),
-                          onPressed: () {
-                            Navigator.of(context).pushNamed(
-                                AppRoutes.wifiSetupScreen,
-                                arguments: {
-                                  'init': true,
-                                });
-                          }),
-                      SquareButtonWidget(
-                          iconUrl: 'assets/icons/icon_lan.svg',
-                          text: 'lan'.tr(),
-                          onPressed: () {
-                            Navigator.of(context).pushNamed(
-                                AppRoutes.lanInfoScreen,
-                                arguments: {
-                                  'init': true,
-                                });
-                          })
-                    ],
-                  ),
-                )
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SquareButtonWidget(
+                                iconUrl: 'assets/icons/icon_wifi.svg',
+                                text: 'wifi'.tr(),
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(
+                                      AppRoutes.wifiSetupScreen,
+                                      arguments: {
+                                        'init': true,
+                                      });
+                                }),
+                            SquareButtonWidget(
+                                iconUrl: 'assets/icons/icon_lan.svg',
+                                text: 'lan'.tr(),
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(
+                                      AppRoutes.lanInfoScreen,
+                                      arguments: {
+                                        'init': true,
+                                      });
+                                })
+                          ],
+                        ),
+                      )
               ],
             ),
           ),
@@ -181,7 +183,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
               _appInfo.mode == 'unknown'
                   ? AppRoutes.landingScreen
                   : AppRoutes.chargingDashboardScreen,
-                  (Route<dynamic> route) => false,
+              (Route<dynamic> route) => false,
               arguments: {
                 'private_mode': _appInfo.mode == 'private',
               });
@@ -273,8 +275,11 @@ class SquareButtonWidget extends StatelessWidget {
                 height: screenWidth * 0.2,
                 width: screenWidth * 0.2,
               ),
-              Text(text,
-                  style: Theme.of(context).textTheme.displayLarge,//.copyWith(color: Theme.of(context).colorScheme.primary),
+              Text(
+                text,
+                style: Theme.of(context)
+                    .textTheme
+                    .displayLarge, //.copyWith(color: Theme.of(context).colorScheme.primary),
               ),
             ],
           ),

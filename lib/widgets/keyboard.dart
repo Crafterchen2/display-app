@@ -283,6 +283,7 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
   VirtualKeyboardType type = VirtualKeyboardType.Alphanumeric;
   Function? onKeyPress;
   TextEditingController textController = TextEditingController();
+
   /// The builder function will be called for each Key object.
   Widget Function(BuildContext context, PionixVirtualKeyboardKey key)? builder;
   late double height;
@@ -292,6 +293,7 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
   late bool alwaysCaps;
   late bool reverseLayout;
   late VirtualKeyboardPionixLayoutKeys customLayoutKeys;
+
   /// Text Style for keys.
   late TextStyle textStyle;
 

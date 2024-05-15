@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart'
-as _virtual_keyboard_backspace_event_period;
+    as _virtual_keyboard_backspace_event_period;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/mqtt.dart';
@@ -167,12 +167,12 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               alignment: Alignment.topLeft,
                               child: Text(
                                 'status'.tr(),
-                                style: Theme.of(context).textTheme.headlineMedium,
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
                               ),
                             ),
                             Text(
-                              chargingStateTitle(widget.state)
-                                  .toUpperCase(),
+                              chargingStateTitle(widget.state).toUpperCase(),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                               style: Theme.of(context).textTheme.displayLarge,
@@ -185,27 +185,35 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           SizedBox(
                             height: adjustScale(60),
                             width: carSideWidth.snapNumber(),
-                            child: (widget.state == ChargingState.charging) ?
-                            OutlinedButton(
-                              child: Text(
-                                'pause'.tr(),
-                                style: Theme.of(context).textTheme.headlineMedium,
-                              ),
-                              onPressed: widget.onPauseCharging,
-                              //textColor: AppColors.primaryAmber,
-                            )
-                                : (pauseOrResumeChargingTitle(widget.state) != ChargingState.charging &&
-                                widget.state != ChargingState.authRequired &&
-                                pauseOrResumeChargingTitle(widget.state) != '') ?
-                            FilledButton(
-                              child: Text(
-                                'resume'.tr(),
-                                style: Theme.of(context).textTheme.headlineMedium,
-                              ),
-                              onPressed: widget.onResumeCharging,
-                              //textColor: Colors.white,
-                            )
-                                : Container(),
+                            child: (widget.state == ChargingState.charging)
+                                ? OutlinedButton(
+                                    child: Text(
+                                      'pause'.tr(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium,
+                                    ),
+                                    onPressed: widget.onPauseCharging,
+                                    //textColor: AppColors.primaryAmber,
+                                  )
+                                : (pauseOrResumeChargingTitle(widget.state) !=
+                                            ChargingState.charging &&
+                                        widget.state !=
+                                            ChargingState.authRequired &&
+                                        pauseOrResumeChargingTitle(
+                                                widget.state) !=
+                                            '')
+                                    ? FilledButton(
+                                        child: Text(
+                                          'resume'.tr(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineMedium,
+                                        ),
+                                        onPressed: widget.onResumeCharging,
+                                        //textColor: Colors.white,
+                                      )
+                                    : Container(),
                           ),
                         if (widget.state != ChargingState.authRequired &&
                             widget.current >= widget.minCurrentA &&
@@ -217,23 +225,31 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 children: [
                                   Text(
                                     'charge_upto'.tr() + ' ',
-                                    style: Theme.of(context).textTheme.headlineSmall,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall,
                                   ),
                                   Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
                                         currentSliderLabel,
-                                        textAlign: TextAlign.start,style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                        fontFeatures: [
-                                          const FontFeature.tabularFigures(),
-                                        ],
-                                      ),
+                                        textAlign: TextAlign.start,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall
+                                            ?.copyWith(
+                                          fontFeatures: [
+                                            const FontFeature.tabularFigures(),
+                                          ],
+                                        ),
                                       ),
                                       Text(
                                         ' A',
                                         textAlign: TextAlign.end,
-                                        style: Theme.of(context).textTheme.headlineSmall,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall,
                                       ),
                                     ],
                                   ),
@@ -243,7 +259,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                   min: widget.minCurrentA,
                                   max: widget.maxCurrentA,
                                   label: currentSliderLabel,
-                                  activeColor: Theme.of(context).colorScheme.secondary,
+                                  activeColor:
+                                      Theme.of(context).colorScheme.secondary,
                                   inactiveColor: Colors.grey,
                                   onChanged: (val) {
                                     setState(() {});
@@ -274,7 +291,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
               ),
             SizedBox(
               width:
-              carSideWidth.snapNumber(ovrSnapped: carSideWidth.parameter),
+                  carSideWidth.snapNumber(ovrSnapped: carSideWidth.parameter),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -285,47 +302,48 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                     ),
                     child: widget.state == ChargingState.authRequired
                         ? Text(
-                      'swipe_your_card_please'.tr(),
-                      style: Theme.of(context).textTheme.titleLarge,
-                    )
+                            'swipe_your_card_please'.tr(),
+                            style: Theme.of(context).textTheme.titleLarge,
+                          )
                         : Text(
-                      widget.state == 'unplugged'.tr()
-                          ? 'last_session'.tr()
-                          : 'current_session'.tr(),
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
+                            widget.state == 'unplugged'.tr()
+                                ? 'last_session'.tr()
+                                : 'current_session'.tr(),
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
                   ),
                   widget.state == ChargingState.authRequired
                       ? Container()
                       : GestureDetector(
-                        onTap: widget.seeMorePressed,
-                        behavior: HitTestBehavior.opaque,
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            minWidth: carSideWidth.threshold,
-                          ),
-                          child: SizedBox(
-                        width: double.infinity,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 2,
-                              color: Theme.of(context).colorScheme.primary,
+                          onTap: widget.seeMorePressed,
+                          behavior: HitTestBehavior.opaque,
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minWidth: carSideWidth.threshold,
                             ),
-                            borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(12),
-                              topLeft: Radius.circular(12),
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 2,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
+                                  borderRadius: const BorderRadius.only(
+                                    topRight: Radius.circular(12),
+                                    topLeft: Radius.circular(12),
+                                  ),
+                                ),
+                                child: Wrap(
+                                  alignment: WrapAlignment.spaceEvenly,
+                                  children:
+                                      _buildInfoCards(widget.chargerModelName),
+                                ),
+                              ),
                             ),
-                          ),
-                          child: Wrap(
-                            alignment: WrapAlignment.spaceEvenly,
-                            children:
-                            _buildInfoCards(widget.chargerModelName),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
                   Container(
                     transform: Matrix4.translationValues(0, -2, 0),
                     decoration: BoxDecoration(
@@ -358,7 +376,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           onTap: () async {
                             /*final result = */ await Navigator.of(context)
                                 .pushNamed(AppRoutes.hlcLogScreen,
-                                arguments: {}).then((value) {
+                                    arguments: {}).then((value) {
                               setState(() {});
                             });
                           },
@@ -367,10 +385,12 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                             alignment: Alignment.center,
                             child: Text(
                               "See HLC comm log", //TODO Localisation
-                              style:
-                              Theme.of(context).textTheme.displaySmall?.copyWith(
-                                color: Colors.grey,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .displaySmall
+                                  ?.copyWith(
+                                    color: Colors.grey,
+                                  ),
                               softWrap: true,
                               maxLines: 4,
                             ),
@@ -483,7 +503,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text(label,
+          Text(
+            label,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           if (iconPath != null)
@@ -543,8 +564,10 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             alignment: Alignment.bottomRight,
             children: [
               Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                  child: getChargingSessionWidgetByState(context, widget.state, adjustScale(96), adjustScale(320), widget.soc)),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  child: getChargingSessionWidgetByState(context, widget.state,
+                      adjustScale(96), adjustScale(320), widget.soc)),
               // if (widget.state == 'ChargingPausedEVSE' ||
               //     widget.state == 'ChargingPausedEV')
               // SvgPicture.asset(
@@ -562,7 +585,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   }
 }
 
-Widget getChargingSessionWidgetByState(BuildContext context, String state, double height, double width, double? soc) {
+Widget getChargingSessionWidgetByState(BuildContext context, String state,
+    double height, double width, double? soc) {
   if (state == 'Charging') {
     return Stack(alignment: Alignment.bottomCenter, children: <Widget>[
       ChargingAnimationWidget(),

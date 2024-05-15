@@ -133,24 +133,24 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
               child: Text(
                 component.description,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
               )),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 "version".tr() + ": ${component.version}",
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
               )),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 "license".tr() + ": ${component.license}",
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
               ))
         ],
       ),

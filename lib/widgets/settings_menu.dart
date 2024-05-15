@@ -33,7 +33,9 @@ class _SettingsMenuState extends State<SettingsMenu> {
     return SizedBox.expand(
       child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(adjustScale(10),),
+          padding: EdgeInsets.all(
+            adjustScale(10),
+          ),
           child: Wrap(
             alignment: WrapAlignment.center,
             spacing: adjustScale(10),
@@ -44,9 +46,12 @@ class _SettingsMenuState extends State<SettingsMenu> {
                   icon: Icons.wifi_protected_setup,
                   title: tr('wifi_setup'),
                   onPressed: () {
-                    Navigator.of(context).pushNamed(AppRoutes.wifiSetupScreen, arguments: {
-                      'init': false,
-                    },);
+                    Navigator.of(context).pushNamed(
+                      AppRoutes.wifiSetupScreen,
+                      arguments: {
+                        'init': false,
+                      },
+                    );
                   },
                 ),
               if (widget.setupSimulation)

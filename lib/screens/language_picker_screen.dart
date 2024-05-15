@@ -76,7 +76,9 @@ class _LanguagePickerScreenState extends State<LanguagePickerScreen> {
   Widget build(BuildContext context) {
     // Create a DateFormat for the current locale
     return Scaffold(
-      floatingActionButton: const PionixCloseButton(inverted: true,),
+      floatingActionButton: const PionixCloseButton(
+        inverted: true,
+      ),
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -139,8 +141,9 @@ class _LanguagePickerScreenState extends State<LanguagePickerScreen> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
               border: Border.all(
-                  color:
-                      selected ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.primary,
+                  color: selected
+                      ? Theme.of(context).colorScheme.secondary
+                      : Theme.of(context).colorScheme.primary,
                   width: 3.0)),
           child: Text(
             language.tr(),

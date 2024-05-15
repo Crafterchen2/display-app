@@ -4,7 +4,6 @@ import 'package:pionixbox/main.dart';
 import '../widgets/info_cards.dart';
 
 class GeneralDetailScreen extends StatelessWidget {
-
   final List<SessionDetailCardWidget> infoCards;
   final List<SessionDetailCardWidget> fullInfoCards;
 
@@ -36,8 +35,9 @@ class GeneralDetailScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Wrap(spacing: adjustScale(16),
-                children: infoCards,
+            Wrap(
+              spacing: adjustScale(16),
+              children: infoCards,
             ),
             minorDivider,
             Padding(

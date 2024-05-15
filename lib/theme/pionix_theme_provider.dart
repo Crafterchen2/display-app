@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class PionixThemeProvider {
@@ -10,7 +9,7 @@ class PionixThemeProvider {
 
   PionixThemeProvider({
     this.schemeSrc,
-  }){
+  }) {
     schemeSrc ??= SimpleColorScheme(
       primarySeed: const Color(0xFF092551),
       secondarySeed: const Color(0xffffac02),
@@ -32,9 +31,7 @@ class PionixThemeProvider {
     const TextStyle bold = TextStyle(
       fontWeight: FontWeight.bold,
     );
-    TextStyle primaryTextColor = TextStyle(
-        color: customLightScheme.primary
-    );
+    TextStyle primaryTextColor = TextStyle(color: customLightScheme.primary);
     return ThemeData(
       colorScheme: customLightScheme,
       sliderTheme: SliderThemeData(
@@ -43,15 +40,21 @@ class PionixThemeProvider {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.disabled)) return customLightScheme.onSurface.withOpacity(backgroundDisabledOpacity);
+            if (states.contains(MaterialState.disabled))
+              return customLightScheme.onSurface
+                  .withOpacity(backgroundDisabledOpacity);
             return customLightScheme.primary;
           }),
           foregroundColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.disabled)) return customLightScheme.onSurface.withOpacity(foregroundDisabledOpacity);
-            if (states.contains(MaterialState.hovered)) return customLightScheme.onPrimary;
+            if (states.contains(MaterialState.disabled))
+              return customLightScheme.onSurface
+                  .withOpacity(foregroundDisabledOpacity);
+            if (states.contains(MaterialState.hovered))
+              return customLightScheme.onPrimary;
             return customLightScheme.secondary;
           }),
-          surfaceTintColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
+          surfaceTintColor:
+              MaterialStateProperty.resolveWith((states) => Colors.transparent),
           elevation: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.disabled)) return 0;
             if (states.contains(MaterialState.pressed)) return 2;
@@ -66,23 +69,34 @@ class PionixThemeProvider {
           shape: MaterialStateProperty.resolveWith((states) => buttonShape),
           elevation: MaterialStateProperty.resolveWith((states) => 0),
           backgroundColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.disabled)) return customLightScheme.onSurface.withOpacity(backgroundDisabledOpacity);
+            if (states.contains(MaterialState.disabled))
+              return customLightScheme.onSurface
+                  .withOpacity(backgroundDisabledOpacity);
             return customLightScheme.secondary;
           }),
           foregroundColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.disabled)) return customLightScheme.onSurface.withOpacity(foregroundDisabledOpacity);
+            if (states.contains(MaterialState.disabled))
+              return customLightScheme.onSurface
+                  .withOpacity(foregroundDisabledOpacity);
             return customLightScheme.primary;
           }),
-          surfaceTintColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
+          surfaceTintColor:
+              MaterialStateProperty.resolveWith((states) => Colors.transparent),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
           shape: MaterialStateProperty.resolveWith((states) => buttonShape),
           side: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.disabled)) return BorderSide(width: 1, color: customLightScheme.onSurface.withOpacity(backgroundDisabledOpacity));
-            if (states.contains(MaterialState.pressed)) return BorderSide(width: 1, color: customLightScheme.primary);
-            if (states.contains(MaterialState.hovered)) return BorderSide(width: 4, color: customLightScheme.primary);
+            if (states.contains(MaterialState.disabled))
+              return BorderSide(
+                  width: 1,
+                  color: customLightScheme.onSurface
+                      .withOpacity(backgroundDisabledOpacity));
+            if (states.contains(MaterialState.pressed))
+              return BorderSide(width: 1, color: customLightScheme.primary);
+            if (states.contains(MaterialState.hovered))
+              return BorderSide(width: 4, color: customLightScheme.primary);
             return BorderSide(width: 2, color: customLightScheme.primary);
           }),
         ),
@@ -98,10 +112,15 @@ class PionixThemeProvider {
         focusElevation: 10,
         foregroundColor: customLightScheme.onPrimary,
       ),
-      switchTheme: SwitchThemeData(thumbColor: MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.disabled)) return customLightScheme.onSurface.withOpacity(foregroundDisabledOpacity);
-        if (states.contains(MaterialState.selected)) return customLightScheme.onPrimary;
-        if (states.contains(MaterialState.hovered)) return customLightScheme.onSurfaceVariant;
+      switchTheme: SwitchThemeData(
+          thumbColor: MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.disabled))
+          return customLightScheme.onSurface
+              .withOpacity(foregroundDisabledOpacity);
+        if (states.contains(MaterialState.selected))
+          return customLightScheme.onPrimary;
+        if (states.contains(MaterialState.hovered))
+          return customLightScheme.onSurfaceVariant;
         return customLightScheme.primary;
       })),
       scrollbarTheme: ScrollbarThemeData(
@@ -121,7 +140,8 @@ class PionixThemeProvider {
         thickness: 2,
       ),
       tabBarTheme: TabBarTheme(
-        overlayColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
+        overlayColor:
+            MaterialStateProperty.resolveWith((states) => Colors.transparent),
         labelColor: customLightScheme.onPrimary,
         unselectedLabelColor: customLightScheme.primaryContainer,
         indicatorColor: customLightScheme.secondary,
@@ -144,9 +164,7 @@ class PionixThemeProvider {
         ),
         displaySmall: primaryTextColor,
         headlineLarge: primaryTextColor.merge(bold),
-        headlineMedium: primaryTextColor.copyWith(
-            fontWeight: FontWeight.w500
-        ),
+        headlineMedium: primaryTextColor.copyWith(fontWeight: FontWeight.w500),
         headlineSmall: primaryTextColor,
         titleLarge: urbanistFont.merge(primaryTextColor),
         titleMedium: urbanistFont.merge(primaryTextColor),
@@ -174,11 +192,15 @@ class PionixThemeProvider {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.disabled)) return customDarkScheme.onSurface.withOpacity(backgroundDisabledOpacity);
+            if (states.contains(MaterialState.disabled))
+              return customDarkScheme.onSurface
+                  .withOpacity(backgroundDisabledOpacity);
             return customDarkScheme.secondary;
           }),
           foregroundColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.disabled)) return customDarkScheme.onSurface.withOpacity(foregroundDisabledOpacity);
+            if (states.contains(MaterialState.disabled))
+              return customDarkScheme.onSurface
+                  .withOpacity(foregroundDisabledOpacity);
             return customDarkScheme.onSecondary;
           }),
           surfaceTintColor: MaterialStateProperty.resolveWith((states) {
@@ -214,10 +236,15 @@ class PionixThemeProvider {
         focusElevation: 10,
         foregroundColor: customDarkScheme.onPrimary,
       ),
-      switchTheme: SwitchThemeData(thumbColor: MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.disabled)) return customDarkScheme.onSurface.withOpacity(foregroundDisabledOpacity);
-        if (states.contains(MaterialState.selected)) return customDarkScheme.onPrimary;
-        if (states.contains(MaterialState.hovered)) return customDarkScheme.onSurfaceVariant;
+      switchTheme: SwitchThemeData(
+          thumbColor: MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.disabled))
+          return customDarkScheme.onSurface
+              .withOpacity(foregroundDisabledOpacity);
+        if (states.contains(MaterialState.selected))
+          return customDarkScheme.onPrimary;
+        if (states.contains(MaterialState.hovered))
+          return customDarkScheme.onSurfaceVariant;
         return customDarkScheme.primary;
       })),
       scrollbarTheme: ScrollbarThemeData(
@@ -285,10 +312,14 @@ class SimpleColorScheme {
     lightGrey = Color.lerp(whiteSeed, blackSeed, lightGreyLerp)!;
     grey = Color.lerp(whiteSeed, blackSeed, greyLerp)!;
     darkGrey = Color.lerp(whiteSeed, blackSeed, darkGreyLerp)!;
-    onPrimary = Color.lerp(primarySeed, whiteForPrimaryLerp ? whiteSeed : blackSeed, onPrimaryLerp)!;
-    onSecondary = Color.lerp(secondarySeed, whiteForSecondaryLerp ? whiteSeed : blackSeed, onSecondaryLerp)!;
-    onTertiary = Color.lerp(tertiarySeed, whiteForTertiaryLerp ? whiteSeed : blackSeed, onTertiaryLerp)!;
-    onError = Color.lerp(errorSeed, whiteForErrorLerp ? whiteSeed : blackSeed, onErrorLerp)!;
+    onPrimary = Color.lerp(primarySeed,
+        whiteForPrimaryLerp ? whiteSeed : blackSeed, onPrimaryLerp)!;
+    onSecondary = Color.lerp(secondarySeed,
+        whiteForSecondaryLerp ? whiteSeed : blackSeed, onSecondaryLerp)!;
+    onTertiary = Color.lerp(tertiarySeed,
+        whiteForTertiaryLerp ? whiteSeed : blackSeed, onTertiaryLerp)!;
+    onError = Color.lerp(
+        errorSeed, whiteForErrorLerp ? whiteSeed : blackSeed, onErrorLerp)!;
     lightScheme = makeLightScheme();
     darkScheme = makeDarkScheme();
   }

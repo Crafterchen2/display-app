@@ -118,11 +118,13 @@ class _ChargingDashboardScreenState
   Widget build(BuildContext context) {
     extractArguments(context);
     connector = ref.watch(connectorProvider);
-    final chargerinfo = ref.watch(chargerInfoStreamProvider).whenOrNull(data: (data) => data);
+    final chargerinfo =
+        ref.watch(chargerInfoStreamProvider).whenOrNull(data: (data) => data);
     if (chargerinfo != null) {
       chargerInfo = chargerinfo;
     }
-    final powermeter = ref.watch(powermeterStreamProvider).whenOrNull(data: (data) => data);
+    final powermeter =
+        ref.watch(powermeterStreamProvider).whenOrNull(data: (data) => data);
     if (powermeter != null) {
       powerMeter = powermeter;
       if (powerMeter.power_W != null) {
@@ -185,7 +187,8 @@ class _ChargingDashboardScreenState
       }
     }
 
-    final telemetry = ref.watch(telemetryStreamProvider).whenOrNull(data: (data) => data);
+    final telemetry =
+        ref.watch(telemetryStreamProvider).whenOrNull(data: (data) => data);
     if (telemetry != null) {
       bufferedTelemetry.fanRPM.add(telemetry.fan_rpm);
       bufferedTelemetry.rcdCurrent.add(telemetry.rcd_current);
@@ -203,7 +206,8 @@ class _ChargingDashboardScreenState
         _current = limits.max_current;
       }
     }
-    final sessioninfo = ref.watch(sessionInfoStreamProvider).whenOrNull(data: (data) => data);
+    final sessioninfo =
+        ref.watch(sessionInfoStreamProvider).whenOrNull(data: (data) => data);
     if (sessioninfo != null) {
       _status = sessioninfo.state;
       _chargedEnergy = sessioninfo.charged_energy_wh / 1000.0;
@@ -223,7 +227,8 @@ class _ChargingDashboardScreenState
         _minCurrentA = hardwareCapabilities.min_current_A_import;
       }
     }
-    final evInfo = ref.watch(evInfoStreamProvider).whenOrNull(data: (data) => data);
+    final evInfo =
+        ref.watch(evInfoStreamProvider).whenOrNull(data: (data) => data);
     if (evInfo != null) {
       if (evInfo.evcc_id != null) {
         // not basic charging
@@ -280,13 +285,13 @@ class _ChargingDashboardScreenState
               "Navigation", //TODO Localisation
               //If buttons change to "labelLarge", maybe change to "titleLarge"?
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
             ),
           ),
           const Divider(),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
@@ -294,47 +299,48 @@ class _ChargingDashboardScreenState
             ),
             child: FilledButton.icon(
               onPressed: (ref
-                  .watch(powermeterStreamProvider)
-                  .whenOrNull(data: (data) => data) !=
-                  null)
+                          .watch(powermeterStreamProvider)
+                          .whenOrNull(data: (data) => data) !=
+                      null)
                   ? () async {
-                /*final result = */ await Navigator.of(context).pushNamed(
-                    AppRoutes.sessionDetailScreen,
-                    arguments: {}).then((value) {
-                  setState(() {});
-                });
-              }
+                      /*final result = */ await Navigator.of(context).pushNamed(
+                          AppRoutes.sessionDetailScreen,
+                          arguments: {}).then((value) {
+                        setState(() {});
+                      });
+                    }
                   : () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    elevation: 20,
-                    duration: const Duration(
-                      seconds: 2,
-                    ),
-                    content: const Text(
-                        'You are offline. Try again or check wifi Settings.'), //TODO: Localization
-                    action: SnackBarAction(
-                      label: 'Open Wifi settings', //TODO: Localization
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(
-                          AppRoutes.wifiSetupScreen,
-                          arguments: {
-                            'init': false,
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                );
-              },
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          elevation: 20,
+                          duration: const Duration(
+                            seconds: 2,
+                          ),
+                          content: const Text(
+                              'You are offline. Try again or check wifi Settings.'), //TODO: Localization
+                          action: SnackBarAction(
+                            label: 'Open Wifi settings', //TODO: Localization
+                            onPressed: () {
+                              Navigator.of(context).pushNamed(
+                                AppRoutes.wifiSetupScreen,
+                                arguments: {
+                                  'init': false,
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    },
               icon: const Icon(Icons.details),
-              label: Text("Details", //TODO Localisation
+              label: Text(
+                "Details", //TODO Localisation
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
@@ -344,25 +350,27 @@ class _ChargingDashboardScreenState
                 await Navigator.of(context).pushNamed(AppRoutes.hlcLogScreen);
               },
               icon: const Icon(Icons.compare_arrows),
-              label: Text("HLC log", //TODO Localisation
+              label: Text(
+                "HLC log", //TODO Localisation
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               right: 10,
             ),
-            child: Text("Einstellungen", //TODO Localisation
+            child: Text(
+              "Einstellungen", //TODO Localisation
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
             ),
           ),
           const Divider(),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
@@ -377,30 +385,33 @@ class _ChargingDashboardScreenState
                   },
                 );
               },
-              label: Text(tr('wifi_setup'),
+              label: Text(
+                tr('wifi_setup'),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               icon: const Icon(Icons.wifi_protected_setup),
             ),
           ),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
             ),
             child: FilledButton.icon(
               onPressed: () async {
-                await Navigator.of(context).pushNamed(AppRoutes.languagePickerScreen);
+                await Navigator.of(context)
+                    .pushNamed(AppRoutes.languagePickerScreen);
               },
-              label: Text(tr('language'),
+              label: Text(
+                tr('language'),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               icon: const Icon(Icons.language),
             ),
           ),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
@@ -409,14 +420,15 @@ class _ChargingDashboardScreenState
               onPressed: () {
                 Navigator.of(context).pushNamed(AppRoutes.systemInfo);
               },
-              label: Text(tr('system_info'),
+              label: Text(
+                tr('system_info'),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               icon: const Icon(Icons.info_outline),
             ),
           ),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
@@ -445,13 +457,13 @@ class _ChargingDashboardScreenState
                 );
               },
               style: Theme.of(context).filledButtonTheme.style?.copyWith(
-                  backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).colorScheme.error)
-              ),
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) => Theme.of(context).colorScheme.error)),
               label: Text(
                 tr('reset'),
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onError,
-                ),
+                      color: Theme.of(context).colorScheme.onError,
+                    ),
               ),
               icon: Icon(
                 Icons.restore,
@@ -460,7 +472,7 @@ class _ChargingDashboardScreenState
             ),
           ),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
@@ -486,13 +498,13 @@ class _ChargingDashboardScreenState
                 );
               },
               style: Theme.of(context).filledButtonTheme.style?.copyWith(
-                  backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).colorScheme.error)
-              ),
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) => Theme.of(context).colorScheme.error)),
               label: Text(
                 tr('reboot'),
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onError,
-                ),
+                      color: Theme.of(context).colorScheme.onError,
+                    ),
               ),
               icon: Icon(
                 Icons.restart_alt,
@@ -501,7 +513,7 @@ class _ChargingDashboardScreenState
             ),
           ),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
@@ -510,7 +522,8 @@ class _ChargingDashboardScreenState
               onPressed: () {
                 Navigator.of(context).pushNamed(AppRoutes.simulationScreen);
               },
-              label: Text(tr('simulation'),
+              label: Text(
+                tr('simulation'),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               icon: const Icon(Icons.settings),
@@ -539,13 +552,14 @@ class _ChargingDashboardScreenState
           if (_showProgressBar)
             Center(
               child: Container(
-                color: Theme.of(context).colorScheme.background, //Needed to block view of underlying UI
+                color: Theme.of(context)
+                    .colorScheme
+                    .background, //Needed to block view of underlying UI
                 child: const Center(
-                  child:
-                  CircularProgressIndicator(
-                    //TODO Handle with theme!
-                    //color: AppColors.primaryAmber,
-                  ),
+                  child: CircularProgressIndicator(
+                      //TODO Handle with theme!
+                      //color: AppColors.primaryAmber,
+                      ),
                 ),
               ),
             )
@@ -572,40 +586,40 @@ class _ChargingDashboardScreenState
       duration: _duration,
       online: _online,
       seeMorePressed: (ref
-          .watch(powermeterStreamProvider)
-          .whenOrNull(data: (data) => data) !=
-          null)
+                  .watch(powermeterStreamProvider)
+                  .whenOrNull(data: (data) => data) !=
+              null)
           ? () async {
-        /*final result = */ await Navigator.of(context).pushNamed(
-            AppRoutes.sessionDetailScreen,
-            arguments: {}).then((value) {
-          setState(() {});
-          },
-        );
-      }
+              /*final result = */ await Navigator.of(context)
+                  .pushNamed(AppRoutes.sessionDetailScreen, arguments: {}).then(
+                (value) {
+                  setState(() {});
+                },
+              );
+            }
           : () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            elevation: 20,
-            duration: const Duration(
-              seconds: 2,
-            ),
-            content: const Text(
-                'You are offline. Try again or check wifi Settings.'), //TODO: Localization
-            action: SnackBarAction(
-              label: 'Open Wifi settings', //TODO: Localization
-              onPressed: () {
-                Navigator.of(context).pushNamed(
-                  AppRoutes.wifiSetupScreen,
-                  arguments: {
-                    'init': false,
-                  },
-                );
-              },
-            ),
-          ),
-        );
-      },
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  elevation: 20,
+                  duration: const Duration(
+                    seconds: 2,
+                  ),
+                  content: const Text(
+                      'You are offline. Try again or check wifi Settings.'), //TODO: Localization
+                  action: SnackBarAction(
+                    label: 'Open Wifi settings', //TODO: Localization
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(
+                        AppRoutes.wifiSetupScreen,
+                        arguments: {
+                          'init': false,
+                        },
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
       onPauseCharging: () => performAction(pauseCharging),
       onResumeCharging: () => performAction(resumeCharging),
       onCurrentChanged: (value) {
@@ -683,7 +697,7 @@ class _ChargingDashboardScreenState
   ScrollPhysics makeScrollPhysics() {
     ScrollPhysics physics = const BouncingScrollPhysics();
     final ScrollPhysics mergedPhysics =
-    physics.applyTo(const AlwaysScrollableScrollPhysics());
+        physics.applyTo(const AlwaysScrollableScrollPhysics());
     return mergedPhysics;
   }
 

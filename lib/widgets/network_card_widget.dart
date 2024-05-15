@@ -17,14 +17,14 @@ class NetworkCardWidget extends StatelessWidget {
 
   const NetworkCardWidget(
       {Key? key,
-        required this.ssid,
-        required this.onPressed,
-        required this.onSavedPressed,
-        this.isConnected = false,
-        this.isSaved = false,
-        this.strength = '',
-        this.strengthColor = AppColors.white,
-        this.signalLevel})
+      required this.ssid,
+      required this.onPressed,
+      required this.onSavedPressed,
+      this.isConnected = false,
+      this.isSaved = false,
+      this.strength = '',
+      this.strengthColor = AppColors.white,
+      this.signalLevel})
       : super(key: key);
 
   @override
@@ -39,102 +39,118 @@ class NetworkCardWidget extends StatelessWidget {
               children: [
                 ssid != 'Hidden SSID'
                     ? SvgPicture.asset(
-                  getWifiIcon(signalLevel ?? -50),
-                  height: 40,
-                  width: 40,
-                )
+                        getWifiIcon(signalLevel ?? -50),
+                        height: 40,
+                        width: 40,
+                      )
                     : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Icon(
-                    Icons.block_rounded,
-                    size: 40,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Icon(
+                          Icons.block_rounded,
+                          size: 40,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
                 const SizedBox(
                   width: 12,
                 ),
                 Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          ssid,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      ssid,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                           ),
-                        ),
-                        (isSaved)
-                            ? Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: Text(
-                            'saved'.tr(),
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
+                    ),
+                    (isSaved)
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Text(
+                              'saved'.tr(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
                             ),
-                          ),
-                        )
-                            : const SizedBox(),
-                      ],
-                    )),
+                          )
+                        : const SizedBox(),
+                  ],
+                )),
                 isConnected
                     ? Center(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 4, horizontal: 8),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.tertiaryContainer,
-                        borderRadius: BorderRadius.circular(4)),
-                    child: Text('connected'.tr(),
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontSize: 18,
-                        color: Theme.of(context).colorScheme.onTertiaryContainer,
-                      ),
-                    ),
-                  ),
-                )
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 8),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                              borderRadius: BorderRadius.circular(4)),
+                          child: Text(
+                            'connected'.tr(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  fontSize: 18,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onTertiaryContainer,
+                                ),
+                          ),
+                        ),
+                      )
                     : const SizedBox(),
                 strength.isNotEmpty
                     ? Center(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 4, horizontal: 8),
-                    decoration: BoxDecoration(
-                        color: strengthColor,
-                        borderRadius: BorderRadius.circular(4)),
-                    child: Text(strength,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontSize: 18,
-                        color: Theme.of(context).colorScheme.surface,
-                      ),
-                    ),
-                  ),
-                )
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 8),
+                          decoration: BoxDecoration(
+                              color: strengthColor,
+                              borderRadius: BorderRadius.circular(4)),
+                          child: Text(
+                            strength,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  fontSize: 18,
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
+                          ),
+                        ),
+                      )
                     : const SizedBox(),
                 isSaved
                     ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: onSavedPressed,
-                      child: Container(
-                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: onSavedPressed,
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Icon(
+                              Icons.settings,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 48,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Icon(
-                          Icons.settings,
+                          Icons.chevron_right,
+                          size: 40,
                           color: Theme.of(context).colorScheme.primary,
-                          size: 48,
                         ),
                       ),
-                    ),
-                )
-                    : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Icon(
-                    Icons.chevron_right,
-                    size: 40,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
               ],
             ),
           ),

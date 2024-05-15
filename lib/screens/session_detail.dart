@@ -14,10 +14,11 @@ class SessionDetail extends StatefulWidget {
   State<SessionDetail> createState() => _SessionDetailState();
 }
 
-class _SessionDetailState extends State<SessionDetail> with SingleTickerProviderStateMixin {
-
+class _SessionDetailState extends State<SessionDetail>
+    with SingleTickerProviderStateMixin {
   SessionDetailGraphs graphs = SessionDetailGraphs();
-  late TabController tabController;// = MyTabController(length: 2, vsync: this, graphs: graphs);
+  late TabController
+      tabController; // = MyTabController(length: 2, vsync: this, graphs: graphs);
 
   @override
   void initState() {
@@ -47,8 +48,11 @@ class _SessionDetailState extends State<SessionDetail> with SingleTickerProvider
     );
   }
 
-  TabController makeTabController(){
-    TabController controller = TabController(length: 2, vsync: this,);
+  TabController makeTabController() {
+    TabController controller = TabController(
+      length: 2,
+      vsync: this,
+    );
     controller.addListener(() {
       //setState(() {
       //  _selectedIndex = _controller.index;
@@ -62,40 +66,38 @@ class _SessionDetailState extends State<SessionDetail> with SingleTickerProvider
   TabBar makeTabBar() {
     return TabBar(
       controller: tabController,
-          labelStyle: Theme.of(context).textTheme.titleLarge,
-          indicatorColor: Theme.of(context).colorScheme.secondary,
-          indicatorWeight: adjustScale(3),
-          tabs: [
-            Tab(
-              icon: const Icon(Icons.info),
-              text: "session_details".tr(),
-            ),
-            Tab(
-              icon: const Icon(Icons.insights),
-              text: "session_details_graphs".tr(),
-            ),
-          ],
-        );
+      labelStyle: Theme.of(context).textTheme.titleLarge,
+      indicatorColor: Theme.of(context).colorScheme.secondary,
+      indicatorWeight: adjustScale(3),
+      tabs: [
+        Tab(
+          icon: const Icon(Icons.info),
+          text: "session_details".tr(),
+        ),
+        Tab(
+          icon: const Icon(Icons.insights),
+          text: "session_details_graphs".tr(),
+        ),
+      ],
+    );
   }
 
   Widget makeTabBarView() {
     return TabBarView(
       controller: tabController,
       children: [const SessionDetailScreen(), graphs],
-      );
+    );
   }
-
 }
 
-class MyTabController extends TabController{
-
+class MyTabController extends TabController {
   final SessionDetailGraphs graphs;
 
   MyTabController({
     required super.length,
     required super.vsync,
     required this.graphs,
-  }){
+  }) {
     addListener(() {
       //setState(() {
       //  _selectedIndex = _controller.index;
@@ -104,5 +106,4 @@ class MyTabController extends TabController{
       graphs.resetOverlay();
     });
   }
-
 }

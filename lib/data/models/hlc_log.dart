@@ -11,11 +11,9 @@ class HlcLog {
   final bool iso15118;
   final String msg;
 
-  HlcLog(this.origin, this.target,
-      this.iso15118, this.msg);
+  HlcLog(this.origin, this.target, this.iso15118, this.msg);
 
-  factory HlcLog.fromJson(Map<String, dynamic> json) =>
-      _$HlcLogFromJson(json);
+  factory HlcLog.fromJson(Map<String, dynamic> json) => _$HlcLogFromJson(json);
 
   Map<String, dynamic> toJson() => _$HlcLogToJson(this);
 }

@@ -70,7 +70,8 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SingleInfoCard(
-                    title: 'Powermeter ID', value: powerMeter.meter_id.toString()),
+                    title: 'Powermeter ID',
+                    value: powerMeter.meter_id.toString()),
                 const Divider(
                   color: Colors.white10,
                   thickness: 2,
@@ -194,11 +195,13 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                         "fan".tr():
                             bufferedTelemetry.fanRPM.last().toStringAsFixed(0) +
                                 " RPM",
-                        "rcd_current".tr():
-                            bufferedTelemetry.rcdCurrent.last().toStringAsFixed(3) +
-                                " A",
+                        "rcd_current".tr(): bufferedTelemetry.rcdCurrent
+                                .last()
+                                .toStringAsFixed(3) +
+                            " A",
                         "relais_on".tr(): bufferedTelemetry.relaisOn.last(),
-                        "supply_voltage_12V".tr(): bufferedTelemetry.supplyVoltage12V
+                        "supply_voltage_12V".tr(): bufferedTelemetry
+                                .supplyVoltage12V
                                 .last()
                                 .toStringAsFixed(2) +
                             " V",
@@ -207,9 +210,10 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                                 .last()
                                 .toStringAsFixed(2) +
                             " V",
-                        "temperature".tr():
-                            bufferedTelemetry.temperature.last().toStringAsFixed(1) +
-                                " °C",
+                        "temperature".tr(): bufferedTelemetry.temperature
+                                .last()
+                                .toStringAsFixed(1) +
+                            " °C",
                       },
                     ),
                   ),

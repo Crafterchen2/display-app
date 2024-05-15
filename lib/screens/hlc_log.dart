@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/data/models/hlc_log.dart';
@@ -105,10 +104,13 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
           children: [
             Flexible(
                 child: Text(
-                  buildHlcLogString(hlcLog),
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.blueAccent),
-                  softWrap: true,
-                ))
+              buildHlcLogString(hlcLog),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge
+                  ?.copyWith(color: Colors.blueAccent),
+              softWrap: true,
+            ))
           ],
         ));
       } else if (hlcLog.origin == "CAR") {
@@ -119,10 +121,13 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
           children: [
             Flexible(
                 child: Text(
-                  buildHlcLogString(hlcLog),
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.yellowAccent),
-                  softWrap: true,
-                ))
+              buildHlcLogString(hlcLog),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge
+                  ?.copyWith(color: Colors.yellowAccent),
+              softWrap: true,
+            ))
           ],
         ));
       } else if (hlcLog.origin == "SYS") {
@@ -132,12 +137,14 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
           children: [
             Flexible(
                 child: Text(
-                  buildHlcLogString(hlcLog),
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimary, //Is this necessary?
+              buildHlcLogString(hlcLog),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onPrimary, //Is this necessary?
                   ),
-                  softWrap: true,
-                ))
+              softWrap: true,
+            ))
           ],
         ));
       }
@@ -172,7 +179,8 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
               backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => autoscroll = !autoscroll,
-              heroTag: "pauseHero", //prevent "Same hero tag error"; does not change functionality
+              heroTag:
+                  "pauseHero", //prevent "Same hero tag error"; does not change functionality
               child: autoscroll
                   ? const Icon(Icons.pause)
                   : const Icon(Icons.play_arrow),
@@ -181,14 +189,16 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
               backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => hlcLogList.clear(),
-              heroTag: "clearHero", //prevent "Same hero tag error"; does not change functionality
+              heroTag:
+                  "clearHero", //prevent "Same hero tag error"; does not change functionality
               child: const Icon(Icons.delete),
             ),
             FloatingActionButton(
               backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => annotateButtonPressed(),
-              heroTag: "annotateHero", //prevent "Same hero tag error"; does not change functionality
+              heroTag:
+                  "annotateHero", //prevent "Same hero tag error"; does not change functionality
               child: const Icon(Icons.message),
             ),
             const PionixCloseButton(
@@ -216,19 +226,18 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                       thickness: 2,
                     ),
                     SizedBox(
-                        height: MediaQuery.of(context).size.height -
-                            adjustScale(132),
-                        child: SingleChildScrollView(
-                            controller: scrollController,
-                            child: ListView.builder(
-                              primary: false,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: logEntries.length,
-                              itemBuilder: (context, index) =>
-                              logEntries[index],
-                            ),
+                      height:
+                          MediaQuery.of(context).size.height - adjustScale(132),
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        child: ListView.builder(
+                          primary: false,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: logEntries.length,
+                          itemBuilder: (context, index) => logEntries[index],
                         ),
+                      ),
                     ),
                   ],
                 ),
@@ -236,69 +245,76 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
             ),
           ),
           _showKeyboard
-              ? OrientationBuilder(builder: (context, orientation) {
-            return SizedBox(
-                height:
-                MediaQuery.of(context).size.height - adjustScale(132),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: IconTextField(
-                            hintText: 'Enter annotation',
-                            onTap: () {
-                              setState(() {
-                                _showKeyboard = true;
-                              });
-                            },
-                            visible: true,
-                            hidden: false,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.onPrimary,
+              ? OrientationBuilder(
+                  builder: (context, orientation) {
+                    return SizedBox(
+                      height:
+                          MediaQuery.of(context).size.height - adjustScale(132),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: IconTextField(
+                                hintText: 'Enter annotation',
+                                onTap: () {
+                                  setState(() {
+                                    _showKeyboard = true;
+                                  });
+                                },
+                                visible: true,
+                                hidden: false,
+                                decoration: BoxDecoration(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                                icon: Icon(
+                                  Icons.message,
+                                  color: Colors.grey.shade400,
+                                  size: 28,
+                                ),
+                                controller: annotateController,
+                              ),
                             ),
-                            icon: Icon(
-                              Icons.message,
-                              color: Colors.grey.shade400,
-                              size: 28,
-                            ),
-                            controller: annotateController,
                           ),
-                        ),
+                          orientation == Orientation.landscape
+                              ? Container(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  child: PionixVirtualKeyboard(
+                                      height: 300,
+                                      fontSize: 32,
+                                      textColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      textController: annotateController,
+                                      customLayoutKeys:
+                                          VirtualKeyboardPionixLayoutKeys(),
+                                      type: VirtualKeyboardType.Alphanumeric,
+                                      onKeyPress: (key) => _onKeyPress(key)),
+                                )
+                              : Container(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  child: PionixVirtualKeyboard(
+                                      height: 500,
+                                      fontSize: 32,
+                                      textColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      textController: annotateController,
+                                      defaultLayouts: const [
+                                        VirtualKeyboardDefaultLayouts.English
+                                      ],
+                                      type: VirtualKeyboardType.Alphanumeric,
+                                      onKeyPress: (key) => _onKeyPress(key)),
+                                ),
+                        ],
                       ),
-                      orientation == Orientation.landscape
-                          ? Container(
-                        color: Theme.of(context).colorScheme.secondary,
-                        child: PionixVirtualKeyboard(
-                            height: 300,
-                            fontSize: 32,
-                            textColor: Theme.of(context).colorScheme.primary,
-                            textController: annotateController,
-                            customLayoutKeys:
-                            VirtualKeyboardPionixLayoutKeys(),
-                            type: VirtualKeyboardType.Alphanumeric,
-                            onKeyPress: (key) => _onKeyPress(key)),
-                      )
-                          : Container(
-                        color: Theme.of(context).colorScheme.secondary,
-                        child: PionixVirtualKeyboard(
-                            height: 500,
-                            fontSize: 32,
-                            textColor: Theme.of(context).colorScheme.primary,
-                            textController: annotateController,
-                            defaultLayouts: const [
-                              VirtualKeyboardDefaultLayouts.English
-                            ],
-                            type: VirtualKeyboardType.Alphanumeric,
-                            onKeyPress: (key) => _onKeyPress(key)),
-                      ),
-                    ],
-                ),
-            );
-          },
-          ) : const SizedBox(),
+                    );
+                  },
+                )
+              : const SizedBox(),
         ],
       ),
     );
@@ -320,7 +336,10 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
           });
 
           if (loggingPath != "") {
-            String annotationPath = loggingPath + "/annotation_" + DateTime.now().toUtc().toIso8601String() + ".txt";
+            String annotationPath = loggingPath +
+                "/annotation_" +
+                DateTime.now().toUtc().toIso8601String() +
+                ".txt";
             final File file = File(annotationPath);
             await file.create(recursive: true, exclusive: false);
             await file.writeAsString(annotateController.text);

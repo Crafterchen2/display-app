@@ -89,36 +89,42 @@ class _ControlState extends ConsumerState<Control> {
     // }
     return SingleChildScrollView(
       child:
-      //floatingActionButton: const PionixCloseButton(),
-      Container(//Can this be removed?
+          //floatingActionButton: const PionixCloseButton(),
+          Container(
+        //Can this be removed?
         color: Theme.of(context).colorScheme.background,
         child: Stack(
           children: [
             Column(
               children: [
                 Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * 0.02),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.02),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
+                      Row(
                         children: [
-                          SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.02),
-                          Row(children: [
-                            Flexible(
-                                child: Text(
-                                  wrapString('Loaded config: $loadedConfig'),
-                                  softWrap: true,
-                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: Theme.of(context).colorScheme.primary,
+                          Flexible(
+                            child: Text(
+                              wrapString('Loaded config: $loadedConfig'),
+                              softWrap: true,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
                                   ),
-                                ),
                             ),
-                            Container()
-                          ],
                           ),
+                          Container()
                         ],
-                    ),
+                      ),
+                    ],
+                  ),
                 ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -135,7 +141,8 @@ class _ControlState extends ConsumerState<Control> {
                                 mqtt.publish(
                                     "everest_api/control/cmd/restart", "1");
                               },
-                              child: const Text("Restart everest-control.service"),
+                              child:
+                                  const Text("Restart everest-control.service"),
                             ),
                           ),
                           Padding(
@@ -200,9 +207,9 @@ class ConfigInfoWidget extends StatelessWidget {
 
   const ConfigInfoWidget(
       {Key? key,
-        required this.header,
-        required this.configPaths,
-        required this.loadConfig})
+      required this.header,
+      required this.configPaths,
+      required this.loadConfig})
       : super(key: key);
 
   @override
@@ -210,7 +217,7 @@ class ConfigInfoWidget extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     return Padding(
       padding:
-      EdgeInsets.symmetric(horizontal: screenWidth * 0.02, vertical: 2),
+          EdgeInsets.symmetric(horizontal: screenWidth * 0.02, vertical: 2),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -218,7 +225,8 @@ class ConfigInfoWidget extends StatelessWidget {
             children: [
               Container(
                 height: 1,
-                width: screenWidth * 0.1, //TODO: Remove dependency on screen dimensions
+                width: screenWidth *
+                    0.1, //TODO: Remove dependency on screen dimensions
                 color: Theme.of(context).colorScheme.primary,
               ),
               Padding(
@@ -237,21 +245,23 @@ class ConfigInfoWidget extends StatelessWidget {
             ],
           ),
           ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: configPaths.length,
-              itemBuilder: (builder, index) {
-                String value = configPaths.elementAt(index);
-                return Row(children: [
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: configPaths.length,
+            itemBuilder: (builder, index) {
+              String value = configPaths.elementAt(index);
+              return Row(
+                children: [
                   Flexible(
-                      child: Text(
-                        wrapString(value),
-                        softWrap: true,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
+                    child: Text(
+                      wrapString(value),
+                      softWrap: true,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     child: PrimaryButton(
                       //width: screenWidth * 0.3,
                       onPressed: () {

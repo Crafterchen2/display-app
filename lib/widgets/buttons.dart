@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class PrimaryButton extends ElevatedButton {
-
   const PrimaryButton({
     super.key,
     required super.onPressed,
@@ -17,7 +16,6 @@ class PrimaryButton extends ElevatedButton {
     super.statesController,
     required super.child,
   });
-
 }
 
 class SecondaryButton extends StatelessWidget {
@@ -46,17 +44,19 @@ class SecondaryButton extends StatelessWidget {
       color: borderColor ?? Theme.of(context).colorScheme.secondary,
       child: InkWell(
         onTap: onPressed,
-        highlightColor: highlightBorderColor ?? Theme.of(context).colorScheme.primary,
+        highlightColor:
+            highlightBorderColor ?? Theme.of(context).colorScheme.primary,
         splashColor: Colors.transparent,
         child: Padding(
           padding: EdgeInsets.all(borderThickness),
           child: Container(
             color: color ?? Theme.of(context).colorScheme.surface,
             child: Center(
-              child: Text(title.toUpperCase(),
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: textColor ?? Theme.of(context).colorScheme.primary,
-                  ),
+              child: Text(
+                title.toUpperCase(),
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: textColor ?? Theme.of(context).colorScheme.primary,
+                    ),
               ),
             ),
           ),
@@ -209,7 +209,7 @@ class PionixCloseButton extends StatelessWidget {
     this.onPressed,
   });
 
-  static String getHeroTag(){
+  static String getHeroTag() {
     return "PionixClose";
   }
 
@@ -226,8 +226,12 @@ class PionixCloseButton extends StatelessWidget {
       ),
       heroTag: getHeroTag(),
       icon: const Icon(Icons.cancel),
-      foregroundColor: (inverted) ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onPrimary,
-      backgroundColor: (inverted) ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.primary,
+      foregroundColor: (inverted)
+          ? Theme.of(context).colorScheme.primary
+          : Theme.of(context).colorScheme.onPrimary,
+      backgroundColor: (inverted)
+          ? Theme.of(context).colorScheme.onPrimary
+          : Theme.of(context).colorScheme.primary,
     );
   }
 }

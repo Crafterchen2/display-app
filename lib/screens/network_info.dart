@@ -67,7 +67,7 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
   @override
   Widget build(BuildContext context) {
     final hostname =
-    ref.watch(hostnameStreamProvider).whenOrNull(data: (data) => data);
+        ref.watch(hostnameStreamProvider).whenOrNull(data: (data) => data);
     if (hostname != null) {
       hostnameString = hostname;
     }
@@ -77,50 +77,56 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
         children: [
           _showProgress
               ? Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ) : Column(
-            children: [
-              Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal:
-                      MediaQuery.of(context).size.width * 0.02),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height *
-                                0.03),
-                        Row(children: [
-                          Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8),
-                              child: Text(
-                                'Hostname: $hostnameString',
-                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  color: Theme.of(context).colorScheme.primary,
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                )
+              : Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.02),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.03),
+                          Row(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                child: Text(
+                                  'Hostname: $hostnameString',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                  ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 100),
-                    itemCount: devices.length,
-                    itemBuilder: (builder, index) {
-                      return NetworkDeviceInfoWidget(
-                        info: devices[index],
-                      );
-                    },
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.only(bottom: 100),
+                        itemCount: devices.length,
+                        itemBuilder: (builder, index) {
+                          return NetworkDeviceInfoWidget(
+                            info: devices[index],
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
         ],
       ),
     );
@@ -177,8 +183,8 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                     return Text(
                       'IPv4: ${info.ipv4[index]}',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                     );
                   } else {
                     return const SizedBox.shrink();
@@ -196,8 +202,8 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                     return Text(
                       'IPv6: ${info.ipv6[index]}',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                     );
                   } else {
                     return const SizedBox.shrink();
@@ -209,8 +215,8 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
               child: Text(
                 'MAC: ${info.mac}',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
               )),
         ],
       ),

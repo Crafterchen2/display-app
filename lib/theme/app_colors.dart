@@ -4,6 +4,7 @@ class AppColors {
   ///replaced by Theme.of(context).colorscheme.primary
   @Deprecated('replaced by Theme.of(context).colorscheme.primary')
   static const Color primaryBlue = Color(0xFF092551);
+
   ///replaced by Theme.of(context).colorscheme.secondary
   @Deprecated('replaced by Theme.of(context).colorscheme.secondary')
   static const Color primaryAmber = Color(0xFFFFAC02);

@@ -17,8 +17,15 @@ class SessionInfo {
   final List<Error> active_permanent_faults;
   final List<Error> active_errors;
 
-  SessionInfo(this.charged_energy_wh, this.discharged_energy_wh, this.charging_duration_s, this.datetime,
-      this.latest_total_w, this.state, this.active_permanent_faults, this.active_errors);
+  SessionInfo(
+      this.charged_energy_wh,
+      this.discharged_energy_wh,
+      this.charging_duration_s,
+      this.datetime,
+      this.latest_total_w,
+      this.state,
+      this.active_permanent_faults,
+      this.active_errors);
 
   factory SessionInfo.fromJson(Map<String, dynamic> json) =>
       _$SessionInfoFromJson(json);

@@ -18,21 +18,32 @@ class SettingMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: (MediaQuery.of(context).size.width < (adjustScale(235)*2)+adjustScale(30)) ? null : adjustScale(235),
-      height: (MediaQuery.of(context).size.width < (adjustScale(235)*2)+adjustScale(30)) ? null : adjustScale(235),
+      width: (MediaQuery.of(context).size.width <
+              (adjustScale(235) * 2) + adjustScale(30))
+          ? null
+          : adjustScale(235),
+      height: (MediaQuery.of(context).size.width <
+              (adjustScale(235) * 2) + adjustScale(30))
+          ? null
+          : adjustScale(235),
       child: GestureDetector(
         onTap: onPressed,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(adjustScale(12)),
-            color: Theme.of(context).colorScheme.secondary, //AppColors.white --> Theme.of(context).colorScheme.secondary //NOTE: I don't know if this is actually better yet, must check further
+            color: Theme.of(context)
+                .colorScheme
+                .secondary, //AppColors.white --> Theme.of(context).colorScheme.secondary //NOTE: I don't know if this is actually better yet, must check further
           ),
           child: Center(
             child: Row(
               children: [
                 Expanded(
                   child: Wrap(
-                    alignment: (MediaQuery.of(context).size.width < (adjustScale(235)*2)+adjustScale(30)) ? WrapAlignment.spaceBetween: WrapAlignment.center,
+                    alignment: (MediaQuery.of(context).size.width <
+                            (adjustScale(235) * 2) + adjustScale(30))
+                        ? WrapAlignment.spaceBetween
+                        : WrapAlignment.center,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Icon(
@@ -42,11 +53,15 @@ class SettingMenuButton extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                          right: (MediaQuery.of(context).size.width < (adjustScale(235)*2)+adjustScale(30)) ? adjustScale(10) : 0,
+                          right: (MediaQuery.of(context).size.width <
+                                  (adjustScale(235) * 2) + adjustScale(30))
+                              ? adjustScale(10)
+                              : 0,
                         ),
                         child: Text(
                           title,
-                          style: style ?? Theme.of(context).textTheme.displaySmall,
+                          style:
+                              style ?? Theme.of(context).textTheme.displaySmall,
                           textAlign: TextAlign.center,
                         ),
                       )

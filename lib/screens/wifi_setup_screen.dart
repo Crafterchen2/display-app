@@ -161,9 +161,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final apState = ref
-        .watch(apStateStreamProvider)
-        .whenOrNull(data: (data) => data);
+    final apState =
+        ref.watch(apStateStreamProvider).whenOrNull(data: (data) => data);
     if (apState != null) {
       apStateString = apState;
       if (apStateString == "enabled") {
@@ -178,7 +177,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       floatingActionButton:
-      !_showPasswordScreen ? const PionixCloseButton() : null,
+          !_showPasswordScreen ? const PionixCloseButton() : null,
       body: Stack(
         children: [
           Column(
@@ -189,109 +188,129 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             ],
           ),
           initialisingScreen
-              ? Align( //This seems like duplicated code. needs investigation.
-            alignment: Alignment.bottomRight,
-            child: Container(
-              color: Theme.of(context).colorScheme.background,
-              height: screenHeight * 0.2,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 0.02,
-                    vertical: screenHeight * 0.01),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              ? Align(
+                  //This seems like duplicated code. needs investigation.
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    color: Theme.of(context).colorScheme.background,
+                    height: screenHeight * 0.2,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.02,
+                          vertical: screenHeight * 0.01),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SecondaryButton(
+                            title: 'close'.tr(),
+                            borderColor:
+                                Theme.of(context).colorScheme.errorContainer,
+                            textColor:
+                                Theme.of(context).colorScheme.errorContainer,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            //width: screenWidth * 0.2,
+                          ),
+                          SizedBox(width: screenWidth * 0.03),
+                          PrimaryButton(
+                            child: const Text('Add LAN'),
+                            style: Theme.of(context)
+                                .elevatedButtonTheme
+                                .style
+                                ?.copyWith(
+                                    backgroundColor:
+                                        MaterialStateProperty.resolveWith(
+                                            (states) => Theme.of(context)
+                                                .colorScheme
+                                                .errorContainer)),
+                            onPressed: () {
+                              Navigator.of(context).pushNamed(
+                                  AppRoutes.lanInfoScreen,
+                                  arguments: {
+                                    'init': true,
+                                  });
+                            },
+                            //width: screenWidth * 0.3,
+                          ),
+                          SizedBox(width: screenWidth * 0.03),
+                          PrimaryButton(
+                            child: const Text('Done with SETUP'),
+                            style: Theme.of(context)
+                                .elevatedButtonTheme
+                                .style
+                                ?.copyWith(
+                                    backgroundColor:
+                                        MaterialStateProperty.resolveWith(
+                                            (states) => Theme.of(context)
+                                                .colorScheme
+                                                .tertiaryContainer)),
+                            onPressed: () {
+                              setInitialized();
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(builder: (context) {
+                                return const LandingScreen();
+                              }), (Route<dynamic> route) => false);
+                            },
+                            //width: screenWidth * 0.3,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : Stack(
                   children: [
-                    SecondaryButton(
-                      title: 'close'.tr(),
-                      borderColor: Theme.of(context).colorScheme.errorContainer,
-                      textColor: Theme.of(context).colorScheme.errorContainer,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      //width: screenWidth * 0.2,
-                    ),
-                    SizedBox(width: screenWidth * 0.03),
-                    PrimaryButton(
-                      child: const Text('Add LAN'),
-                      style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-                          backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).colorScheme.errorContainer)
+                    //Why is this a Stack? it has just 1 child
+                    Visibility(
+                      visible: bannerVisible,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          bannerText,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.background,
+                              ),
+                        ),
                       ),
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(
-                            AppRoutes.lanInfoScreen,
-                            arguments: {
-                              'init': true,
-                            });
-                      },
-                      //width: screenWidth * 0.3,
-                    ),
-                    SizedBox(width: screenWidth * 0.03),
-                    PrimaryButton(
-                      child: const Text('Done with SETUP'),
-                      style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-                          backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).colorScheme.tertiaryContainer)
-                      ),
-                      onPressed: () {
-                        setInitialized();
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) {
-                              return const LandingScreen();
-                            }), (Route<dynamic> route) => false);
-                      },
-                      //width: screenWidth * 0.3,
                     ),
                   ],
                 ),
-              ),
-            ),
-          )
-              : Stack(children: [ //Why is this a Stack? it has just 1 child
-            Visibility(
-              visible: bannerVisible,
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  bannerText,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.background,
-                  ),
-                ),
-              ),
-            ),
-          ],
-          ),
           _showPasswordScreen
               ? WifiPasswordScreen(
-              ssid: _selectedSSID,
-              isSaved: getSavedNetworkFromSSID(_selectedSSID) != null,
-              passwordController: passwordController,
-              passwordFocusNode: passwordFocusNode,
-              onConnectPressed: () {
-                connectToNetwork(context);
-                passwordController.clear();
-                setState(() {
-                  _showPasswordScreen = false;
-                });
-              },
-              onBackPressed: () {
-                passwordController.clear();
-                setState(() {
-                  _showPasswordScreen = false;
-                });
-              },
-              onForgetPressed: () async {
-                final savedNetwork = getSavedNetworkFromSSID(_selectedSSID);
-                if (savedNetwork != null) {
-                  await forgetConfirmationDialog(context,
-                      interface: savedNetwork.interface,
-                      networkId: savedNetwork.network_id,
-                      ssid: _selectedSSID);
-                }
-                passwordController.clear();
-                setState(() {
-                  _showPasswordScreen = false;
-                });
-              })
+                  ssid: _selectedSSID,
+                  isSaved: getSavedNetworkFromSSID(_selectedSSID) != null,
+                  passwordController: passwordController,
+                  passwordFocusNode: passwordFocusNode,
+                  onConnectPressed: () {
+                    connectToNetwork(context);
+                    passwordController.clear();
+                    setState(() {
+                      _showPasswordScreen = false;
+                    });
+                  },
+                  onBackPressed: () {
+                    passwordController.clear();
+                    setState(() {
+                      _showPasswordScreen = false;
+                    });
+                  },
+                  onForgetPressed: () async {
+                    final savedNetwork = getSavedNetworkFromSSID(_selectedSSID);
+                    if (savedNetwork != null) {
+                      await forgetConfirmationDialog(context,
+                          interface: savedNetwork.interface,
+                          networkId: savedNetwork.network_id,
+                          ssid: _selectedSSID);
+                    }
+                    passwordController.clear();
+                    setState(() {
+                      _showPasswordScreen = false;
+                    });
+                  })
               : const SizedBox(),
         ],
       ),
@@ -328,7 +347,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   }
 
   SavedNetwork? getSavedNetworkFromSSID(String ssid) {
-    final network = configuredNetworks.firstWhereOrNull((element) => element.ssid == ssid);
+    final network =
+        configuredNetworks.firstWhereOrNull((element) => element.ssid == ssid);
     if (network == null) {
       return null;
     }
@@ -424,8 +444,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
 
   Future<void> forgetConfirmationDialog(BuildContext context,
       {required String ssid,
-        required String interface,
-        required int networkId}) async {
+      required String interface,
+      required int networkId}) async {
     showDialog(
         context: context,
         builder: (ctz) {
@@ -537,13 +557,19 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                             children: [
                               Text(
                                 'ap'.tr(),
-                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.onPrimary,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                    ),
                               ),
                               Switch(
-                                activeColor: Theme.of(context).colorScheme.secondary,
+                                activeColor:
+                                    Theme.of(context).colorScheme.secondary,
                                 value: _ap,
                                 onChanged: (val) {
                                   _wifi = val || true;
@@ -565,13 +591,19 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                             children: [
                               Text(
                                 'wifi'.tr(),
-                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.onPrimary,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                    ),
                               ),
                               Switch(
-                                activeColor: Theme.of(context).colorScheme.secondary,
+                                activeColor:
+                                    Theme.of(context).colorScheme.secondary,
                                 value: _wifi,
                                 onChanged: (val) {
                                   _wifi = val;

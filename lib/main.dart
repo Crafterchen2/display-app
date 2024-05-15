@@ -12,6 +12,7 @@ import 'package:auto_orientation/auto_orientation.dart';
 
 late double screenWidth;
 late double screenHeight;
+
 /// [uiScale] should be used to determine any kind of manual size adjustment of
 /// a widget or font or similar. It's not recommended to make f.e. a widget
 /// dependant on the size of the screen / window, as weird UI movements will
@@ -27,7 +28,7 @@ double uiScale = 1.0;
 
 ///Convenience method.
 ///Multiplies parameter number with variable [uiScale] and returns the product.
-double adjustScale(double number){
+double adjustScale(double number) {
   return number * uiScale;
 }
 

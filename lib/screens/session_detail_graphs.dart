@@ -355,7 +355,8 @@ class _SessionDetailGraphsState extends ConsumerState<SessionDetailGraphs> {
                 unit: '',
                 map: {
                   "fan".tr():
-                      bufferedTelemetry.fanRPM.last().toStringAsFixed(0) + " RPM",
+                      bufferedTelemetry.fanRPM.last().toStringAsFixed(0) +
+                          " RPM",
                   "rcd_current".tr():
                       bufferedTelemetry.rcdCurrent.last().toStringAsFixed(3) +
                           " A",
@@ -381,6 +382,6 @@ class _SessionDetailGraphsState extends ConsumerState<SessionDetailGraphs> {
   }
 }
 
-double getChartHeightPercent(){
-return 0.7;
+double getChartHeightPercent() {
+  return 0.7;
 }

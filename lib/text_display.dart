@@ -23,7 +23,6 @@ class DisplayTester extends StatelessWidget {
 }
 
 class TextDisplayHome extends StatelessWidget {
-
   const TextDisplayHome({
     super.key,
   });
@@ -37,77 +36,92 @@ class TextDisplayHome extends StatelessWidget {
           children: [
             const Text("Fonts"),
             FontDisplay(
-              child: Text("headlineSmall",
+              child: Text(
+                "headlineSmall",
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
             FontDisplay(
-              child: Text("headlineMedium",
+              child: Text(
+                "headlineMedium",
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
             FontDisplay(
-              child: Text("headlineLarge",
+              child: Text(
+                "headlineLarge",
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
             ),
             FontDisplay(
-              child: Text("displaySmall",
+              child: Text(
+                "displaySmall",
                 style: Theme.of(context).textTheme.displaySmall,
               ),
             ),
             FontDisplay(
-              child: Text("displayMedium",
+              child: Text(
+                "displayMedium",
                 style: Theme.of(context).textTheme.displayMedium,
               ),
             ),
             FontDisplay(
-              child: Text("displayLarge",
+              child: Text(
+                "displayLarge",
                 style: Theme.of(context).textTheme.displayLarge,
               ),
             ),
             FontDisplay(
-              child: Text("titleSmall",
+              child: Text(
+                "titleSmall",
                 style: Theme.of(context).textTheme.titleSmall,
               ),
             ),
             FontDisplay(
-              child: Text("titleMedium",
+              child: Text(
+                "titleMedium",
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
             FontDisplay(
-              child: Text("titleLarge",
+              child: Text(
+                "titleLarge",
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             FontDisplay(
-              child: Text("labelSmall",
+              child: Text(
+                "labelSmall",
                 style: Theme.of(context).textTheme.labelSmall,
               ),
             ),
             FontDisplay(
-              child: Text("labelMedium",
+              child: Text(
+                "labelMedium",
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             ),
             FontDisplay(
-              child: Text("labelLarge",
+              child: Text(
+                "labelLarge",
                 style: Theme.of(context).textTheme.labelLarge,
               ),
             ),
             FontDisplay(
-              child: Text("bodySmall",
+              child: Text(
+                "bodySmall",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
             FontDisplay(
-              child: Text("bodyMedium",
+              child: Text(
+                "bodyMedium",
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
             FontDisplay(
-              child: Text("bodyLarge",
+              child: Text(
+                "bodyLarge",
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
