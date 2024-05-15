@@ -137,6 +137,7 @@ class PionixThemeProvider {
         displayLarge: bold.copyWith(
           color: customLightScheme.secondary,
           height: 1.3,
+          fontSize: 32,
         ),
         displayMedium: primaryTextColor.copyWith(
           height: 1.3,
