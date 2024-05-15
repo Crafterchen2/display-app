@@ -222,7 +222,7 @@ class PionixCloseButton extends StatelessWidget {
           },
       label: Text(
         title.tr(),
-        textScaleFactor: 2,
+        textScaler: const TextScaler.linear(2),
       ),
       heroTag: getHeroTag(),
       icon: const Icon(Icons.cancel),
