@@ -47,8 +47,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: SettingsMenu(
-        setup_wifi: setupWifi,
-        setup_simulation: setupSimulation,
+        setupWifi: setupWifi,
+        setupSimulation: setupSimulation,
         localization: localization,
         resetInitialised: resetConfirmationDialog,
         rebootCharger: rebootConfirmationDialog,

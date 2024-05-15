@@ -5,8 +5,8 @@ import 'package:pionixbox/utils/routing/app_router.dart';
 import 'package:pionixbox/widgets/settings_menu_button.dart';
 
 class SettingsMenu extends StatefulWidget {
-  final bool setup_wifi;
-  final bool setup_simulation;
+  final bool setupWifi;
+  final bool setupSimulation;
   final bool localization;
   final Future<void> Function(BuildContext) resetInitialised;
   final Future<void> Function(BuildContext) rebootCharger;
@@ -14,8 +14,8 @@ class SettingsMenu extends StatefulWidget {
   final EdgeInsetsGeometry margin;
   const SettingsMenu({
     Key? key,
-    required this.setup_wifi,
-    required this.setup_simulation,
+    required this.setupWifi,
+    required this.setupSimulation,
     required this.localization,
     required this.resetInitialised,
     required this.rebootCharger,
@@ -39,7 +39,7 @@ class _SettingsMenuState extends State<SettingsMenu> {
             spacing: adjustScale(10),
             runSpacing: adjustScale(10),
             children: [
-              if (widget.setup_wifi)
+              if (widget.setupWifi)
                 SettingMenuButton(
                   icon: Icons.wifi_protected_setup,
                   title: tr('wifi_setup'),
@@ -49,7 +49,7 @@ class _SettingsMenuState extends State<SettingsMenu> {
                     },);
                   },
                 ),
-              if (widget.setup_simulation)
+              if (widget.setupSimulation)
                 SettingMenuButton(
                   icon: Icons.settings,
                   title: tr('simulation'),

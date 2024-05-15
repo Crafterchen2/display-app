@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart'
-as _virtualKeyboardBackspaceEventPeriod;
+as _virtual_keyboard_backspace_event_period;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/mqtt.dart';
