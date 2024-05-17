@@ -307,7 +307,8 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                                         VirtualKeyboardDefaultLayouts.English
                                       ],
                                       type: VirtualKeyboardType.Alphanumeric,
-                                      onKeyPress: (key) => _onKeyPress(key)),
+                                      onKeyPress: (key) => _onKeyPress(key),
+                                    ),
                                 ),
                         ],
                       ),
