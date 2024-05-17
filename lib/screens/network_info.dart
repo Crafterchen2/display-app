@@ -85,15 +85,14 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.02,
-                        ),
+                        horizontal: MediaQuery.of(context).size.width * 0.02,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.03,
-                                ),
+                            height: MediaQuery.of(context).size.height * 0.03,
+                          ),
                           Row(
                             children: [
                               Padding(
@@ -213,14 +212,14 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                 }),
           ),
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                'MAC: ${info.mac}',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              'MAC: ${info.mac}',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
             ),
+          ),
         ],
       ),
     );

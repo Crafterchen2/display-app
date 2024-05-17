@@ -305,9 +305,10 @@ class _ChargingDashboardScreenState
                   ? () async {
                       await Navigator.of(context).pushNamed(
                           AppRoutes.sessionDetailScreen,
-                          arguments: {}).then((value) {
-                        setState(() {});
-                      },
+                          arguments: {}).then(
+                        (value) {
+                          setState(() {});
+                        },
                       );
                     }
                   : () {

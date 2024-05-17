@@ -97,9 +97,10 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
 
       if (device.wireless && device.blocked == false) {
         if (mounted) {
-          setState(() {
-            _wifi = true;
-          },
+          setState(
+            () {
+              _wifi = true;
+            },
           );
         }
 
@@ -150,15 +151,18 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   void showBanner(String title) {
     bannerText = title;
     bannerVisible = true;
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        setState(() {
-          bannerVisible = false;
-          bannerText = "";
-        },
-        );
-      }
-    },
+    Future.delayed(
+      const Duration(seconds: 3),
+      () {
+        if (mounted) {
+          setState(
+            () {
+              bannerVisible = false;
+              bannerText = "";
+            },
+          );
+        }
+      },
     );
   }
 
@@ -222,19 +226,19 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                                 .elevatedButtonTheme
                                 .style
                                 ?.copyWith(
-                                    backgroundColor:
-                                        MaterialStateProperty.resolveWith(
-                                            (states) => Theme.of(context)
-                                                .colorScheme
-                                                .errorContainer,
-                                              ),
-                                            ),
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith(
+                                    (states) => Theme.of(context)
+                                        .colorScheme
+                                        .errorContainer,
+                                  ),
+                                ),
                             onPressed: () {
                               Navigator.of(context).pushNamed(
-                                  AppRoutes.lanInfoScreen,
-                                  arguments: {
-                                    'init': true,
-                                  },
+                                AppRoutes.lanInfoScreen,
+                                arguments: {
+                                  'init': true,
+                                },
                               );
                             },
                             //width: screenWidth * 0.3,
@@ -246,13 +250,13 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                                 .elevatedButtonTheme
                                 .style
                                 ?.copyWith(
-                                    backgroundColor:
-                                        MaterialStateProperty.resolveWith(
-                                            (states) => Theme.of(context)
-                                                .colorScheme
-                                                .tertiaryContainer,
-                                              ),
-                                            ),
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith(
+                                    (states) => Theme.of(context)
+                                        .colorScheme
+                                        .tertiaryContainer,
+                                  ),
+                                ),
                             onPressed: () {
                               setInitialized();
                               Navigator.of(context).pushAndRemoveUntil(
@@ -261,7 +265,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                                     return const LandingScreen();
                                   },
                                 ),
-                                  (Route<dynamic> route) => false,
+                                (Route<dynamic> route) => false,
                               );
                             },
                           ),
@@ -271,20 +275,17 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                   ),
                 )
               : Visibility(
-                visible: bannerVisible,
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    bannerText,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(
-                          color: Theme.of(context).colorScheme.background,
-                        ),
+                  visible: bannerVisible,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      bannerText,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: Theme.of(context).colorScheme.background,
+                          ),
+                    ),
                   ),
                 ),
-              ),
           _showPasswordScreen
               ? WifiPasswordScreen(
                   ssid: _selectedSSID,
@@ -633,13 +634,13 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                       )))),
           if (_wifi)
             SizedBox(
-                width: screenWidth,
-                child: LinearProgressIndicator(
-                  color: Theme.of(context).colorScheme.primary,
-                  minHeight: 5,
-                  backgroundColor: Colors.grey.shade300,
-                ),
+              width: screenWidth,
+              child: LinearProgressIndicator(
+                color: Theme.of(context).colorScheme.primary,
+                minHeight: 5,
+                backgroundColor: Colors.grey.shade300,
               ),
+            ),
         ],
       ),
       if (_wifi)
@@ -651,13 +652,14 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                 }))
       else
         Center(
-            child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                child: Text('please_enable_wifi'.tr(),
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ),
-              ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            child: Text(
+              'please_enable_wifi'.tr(),
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
+        ),
     ]);
   }
 }

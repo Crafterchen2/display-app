@@ -63,38 +63,38 @@ class _SystemInfoState extends State<SystemInfo> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 3,
-        child: Scaffold(
-            floatingActionButton: const PionixCloseButton(),
-            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              flexibleSpace: TabBar(
-                labelStyle: Theme.of(context).textTheme.titleLarge,
-                tabs: [
-                  Tab(
-                    icon: const Icon(Icons.info),
-                    text: "about".tr(),
-                  ),
-                  Tab(
-                    icon: const Icon(Icons.network_wifi_sharp),
-                    text: "network".tr(),
-                  ),
-                  Tab(
-                    icon: const Icon(Icons.tune),
-                    text: "control".tr(),
-                  ),
-                ],
+      length: 3,
+      child: Scaffold(
+        floatingActionButton: const PionixCloseButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          flexibleSpace: TabBar(
+            labelStyle: Theme.of(context).textTheme.titleLarge,
+            tabs: [
+              Tab(
+                icon: const Icon(Icons.info),
+                text: "about".tr(),
               ),
-            ),
-            body: const TabBarView(
-                children: [
-                  About(),
-                  NetworkInfo(),
-                  Control(),
-                ],
-            ),
+              Tab(
+                icon: const Icon(Icons.network_wifi_sharp),
+                text: "network".tr(),
+              ),
+              Tab(
+                icon: const Icon(Icons.tune),
+                text: "control".tr(),
+              ),
+            ],
+          ),
         ),
+        body: const TabBarView(
+          children: [
+            About(),
+            NetworkInfo(),
+            Control(),
+          ],
+        ),
+      ),
     );
   }
 }

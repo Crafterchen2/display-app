@@ -55,15 +55,15 @@ class _IconTextFieldState extends State<IconTextField> {
               focusNode: widget.focusNode,
               style: Theme.of(context).textTheme.titleLarge,
               decoration: InputDecoration(
-                  alignLabelWithHint: true,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  hintText: widget.hintText,
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .titleLarge
-                      ?.copyWith(color: Colors.grey.shade400),
-                    ),
+                alignLabelWithHint: true,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                hintText: widget.hintText,
+                hintStyle: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(color: Colors.grey.shade400),
+              ),
             ),
           ),
           widget.hidden

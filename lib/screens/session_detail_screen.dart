@@ -70,9 +70,9 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SingleInfoCard(
-                    title: 'Powermeter ID',
-                    value: powerMeter.meter_id.toString(),
-                  ),
+                  title: 'Powermeter ID',
+                  value: powerMeter.meter_id.toString(),
+                ),
                 const Divider(
                   color: Colors.white10,
                   thickness: 2,

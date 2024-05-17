@@ -169,13 +169,13 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                                       .elevatedButtonTheme
                                       .style
                                       ?.copyWith(
-                                          backgroundColor:
-                                              MaterialStateProperty.resolveWith(
-                                                  (states) => Theme.of(context)
-                                                      .colorScheme
-                                                      .errorContainer,
-                                                    ),
-                                                  ),
+                                        backgroundColor:
+                                            MaterialStateProperty.resolveWith(
+                                          (states) => Theme.of(context)
+                                              .colorScheme
+                                              .errorContainer,
+                                        ),
+                                      ),
                                   onPressed: () {
                                     Navigator.of(context).pushNamed(
                                         AppRoutes.wifiSetupScreen,
@@ -192,13 +192,13 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                                       .elevatedButtonTheme
                                       .style
                                       ?.copyWith(
-                                          backgroundColor:
-                                              MaterialStateProperty.resolveWith(
-                                                  (states) => Theme.of(context)
-                                                      .colorScheme
-                                                      .tertiaryContainer,
-                                                    ),
-                                                  ),
+                                        backgroundColor:
+                                            MaterialStateProperty.resolveWith(
+                                          (states) => Theme.of(context)
+                                              .colorScheme
+                                              .tertiaryContainer,
+                                        ),
+                                      ),
                                   onPressed: () {
                                     setInitialized();
                                     Navigator.of(context).pushAndRemoveUntil(

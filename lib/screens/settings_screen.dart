@@ -76,23 +76,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
     BuildContext context,
   ) async {
     showDialog(
-        context: context,
-        builder: (ctz) {
-          return BasicDialog(
-            title: 'reset_app_to_factory_defaults'.tr(),
-            positiveText: 'reset'.tr(),
-            negativeText: 'cancel'.tr(),
-            content: 'reset_app_to_factory_defaults_explanation'.tr(),
-            onPositivePressed: () {
-              Navigator.pop(context);
-              resetInitialised();
-            },
-            onNegativePressed: () {
-              Navigator.pop(context);
-            },
-          );
-        },
-      );
+      context: context,
+      builder: (ctz) {
+        return BasicDialog(
+          title: 'reset_app_to_factory_defaults'.tr(),
+          positiveText: 'reset'.tr(),
+          negativeText: 'cancel'.tr(),
+          content: 'reset_app_to_factory_defaults_explanation'.tr(),
+          onPositivePressed: () {
+            Navigator.pop(context);
+            resetInitialised();
+          },
+          onNegativePressed: () {
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
   }
 
   Future<void> rebootConfirmationDialog(

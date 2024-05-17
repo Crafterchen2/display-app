@@ -63,19 +63,20 @@ class _AboutState extends ConsumerState<About> {
             children: [
               const Padding(padding: EdgeInsets.only(bottom: 20)),
               Text(
-                "EVerest ${releaseInfo.version} @ ${releaseInfo.channel} channel".tr(),
+                "EVerest ${releaseInfo.version} @ ${releaseInfo.channel} channel"
+                    .tr(),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               Expanded(
                 child: ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 100),
-                    itemCount: releaseInfo.components.length,
-                    itemBuilder: (builder, index) {
-                      return ReleaseComponentInfoWidget(
-                        component: releaseInfo.components[index],
-                      );
-                    },
-                  ),
+                  padding: const EdgeInsets.only(bottom: 100),
+                  itemCount: releaseInfo.components.length,
+                  itemBuilder: (builder, index) {
+                    return ReleaseComponentInfoWidget(
+                      component: releaseInfo.components[index],
+                    );
+                  },
+                ),
               ),
             ],
           ),

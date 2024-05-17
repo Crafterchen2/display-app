@@ -41,15 +41,17 @@ class _LandingScreenState extends State<LandingScreen> {
     } catch (e) {
       debugPrint(
           'connecting MQTT server/ getting app info failed with exception: $e');
-      setState(() {
-        // _showProgress = false;
-      },
+      setState(
+        () {
+          // _showProgress = false;
+        },
       );
     }
 
-    setState(() {
-      // _showProgress = false;
-    },
+    setState(
+      () {
+        // _showProgress = false;
+      },
     );
   }
 
@@ -71,17 +73,17 @@ class _LandingScreenState extends State<LandingScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SquareButtonWidget(
-                        text: 'private_mode'.tr(),
-                        onPressed: () {
-                          privateConfirmationDialog(context);
-                        },
+                      text: 'private_mode'.tr(),
+                      onPressed: () {
+                        privateConfirmationDialog(context);
+                      },
                     ),
                     SizedBox(width: screenWidth * 0.1),
                     SquareButtonWidget(
-                        text: 'public_mode'.tr(),
-                        onPressed: () {
-                          publicConfirmationDialog(context);
-                        },
+                      text: 'public_mode'.tr(),
+                      onPressed: () {
+                        publicConfirmationDialog(context);
+                      },
                     )
                   ],
                 ),
@@ -138,27 +140,28 @@ class _LandingScreenState extends State<LandingScreen> {
     BuildContext context,
   ) async {
     showDialog(
-        context: context,
-        builder: (ctz) {
-          return BasicDialog(
-              title: 'private_mode'.tr(),
-              positiveText: 'private_mode_ok'.tr(),
-              negativeText: 'cancel'.tr(),
-              content: 'private_mode_explanation'.tr(),
-              onPositivePressed: () {
-                Navigator.pop(context);
-                setMode('private');
-                Navigator.of(context)
-                    .pushNamed(AppRoutes.chargingDashboardScreen, arguments: {
-                  'private_mode': true,
-                },
-                );
+      context: context,
+      builder: (ctz) {
+        return BasicDialog(
+          title: 'private_mode'.tr(),
+          positiveText: 'private_mode_ok'.tr(),
+          negativeText: 'cancel'.tr(),
+          content: 'private_mode_explanation'.tr(),
+          onPositivePressed: () {
+            Navigator.pop(context);
+            setMode('private');
+            Navigator.of(context).pushNamed(
+              AppRoutes.chargingDashboardScreen,
+              arguments: {
+                'private_mode': true,
               },
-              onNegativePressed: () {
-                Navigator.pop(context);
-              },
-          );
-        },
+            );
+          },
+          onNegativePressed: () {
+            Navigator.pop(context);
+          },
+        );
+      },
     );
   }
 
@@ -166,27 +169,28 @@ class _LandingScreenState extends State<LandingScreen> {
     BuildContext context,
   ) async {
     showDialog(
-        context: context,
-        builder: (ctz) {
-          return BasicDialog(
-              title: 'public_mode'.tr(),
-              positiveText: 'public_mode_ok'.tr(),
-              negativeText: 'cancel'.tr(),
-              content: 'public_mode_explanation'.tr(),
-              onPositivePressed: () {
-                Navigator.pop(context);
-                setMode('public');
-                Navigator.of(context)
-                    .pushNamed(AppRoutes.chargingDashboardScreen, arguments: {
-                  'private_mode': false,
-                },
-                );
+      context: context,
+      builder: (ctz) {
+        return BasicDialog(
+          title: 'public_mode'.tr(),
+          positiveText: 'public_mode_ok'.tr(),
+          negativeText: 'cancel'.tr(),
+          content: 'public_mode_explanation'.tr(),
+          onPositivePressed: () {
+            Navigator.pop(context);
+            setMode('public');
+            Navigator.of(context).pushNamed(
+              AppRoutes.chargingDashboardScreen,
+              arguments: {
+                'private_mode': false,
               },
-              onNegativePressed: () {
-                Navigator.pop(context);
-              },
-          );
-        },
+            );
+          },
+          onNegativePressed: () {
+            Navigator.pop(context);
+          },
+        );
+      },
     );
   }
 }
@@ -243,12 +247,12 @@ class InitializingProgressWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(
-              width: height * 0.5,
-              child: LinearProgressIndicator(
-                value: progress,
-                color: Theme.of(context).colorScheme.secondary,
-                backgroundColor: Colors.grey.shade300,
-              ),
+            width: height * 0.5,
+            child: LinearProgressIndicator(
+              value: progress,
+              color: Theme.of(context).colorScheme.secondary,
+              backgroundColor: Colors.grey.shade300,
+            ),
           ),
           SizedBox(
             height: height * 0.01,

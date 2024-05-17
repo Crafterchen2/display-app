@@ -115,40 +115,43 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
         ));
       } else if (hlcLog.origin == "CAR") {
         // add to right
-        widgets.add(Row(
-          key: UniqueKey(),
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Flexible(
+        widgets.add(
+          Row(
+            key: UniqueKey(),
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Flexible(
                 child: Text(
-              buildHlcLogString(hlcLog),
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(color: Colors.yellowAccent),
-              softWrap: true,
-            ),
-            )
-          ],
-        ),
+                  buildHlcLogString(hlcLog),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(color: Colors.yellowAccent),
+                  softWrap: true,
+                ),
+              )
+            ],
+          ),
         );
       } else if (hlcLog.origin == "SYS") {
-        widgets.add(Row(
-          key: UniqueKey(),
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Flexible(
+        widgets.add(
+          Row(
+            key: UniqueKey(),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
                 child: Text(
-              buildHlcLogString(hlcLog),
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onPrimary, //Is this necessary?
-                  ),
-              softWrap: true,
-            ),),
-          ],
-        ),
+                  buildHlcLogString(hlcLog),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onPrimary, //Is this necessary?
+                      ),
+                  softWrap: true,
+                ),
+              ),
+            ],
+          ),
         );
       }
     }
@@ -301,17 +304,17 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                                   color:
                                       Theme.of(context).colorScheme.secondary,
                                   child: PionixVirtualKeyboard(
-                                      height: 500,
-                                      fontSize: 32,
-                                      textColor:
-                                          Theme.of(context).colorScheme.primary,
-                                      textController: annotateController,
-                                      defaultLayouts: const [
-                                        VirtualKeyboardDefaultLayouts.English
-                                      ],
-                                      type: VirtualKeyboardType.Alphanumeric,
-                                      onKeyPress: (key) => _onKeyPress(key),
-                                    ),
+                                    height: 500,
+                                    fontSize: 32,
+                                    textColor:
+                                        Theme.of(context).colorScheme.primary,
+                                    textController: annotateController,
+                                    defaultLayouts: const [
+                                      VirtualKeyboardDefaultLayouts.English
+                                    ],
+                                    type: VirtualKeyboardType.Alphanumeric,
+                                    onKeyPress: (key) => _onKeyPress(key),
+                                  ),
                                 ),
                         ],
                       ),

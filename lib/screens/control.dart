@@ -99,14 +99,14 @@ class _ControlState extends ConsumerState<Control> {
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.02,
-                    ),
+                    horizontal: MediaQuery.of(context).size.width * 0.02,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
+                        height: MediaQuery.of(context).size.height * 0.02,
+                      ),
                       Row(
                         children: [
                           Flexible(
