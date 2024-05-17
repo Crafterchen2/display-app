@@ -68,7 +68,6 @@ class _SystemInfoState extends State<SystemInfo> {
             floatingActionButton: const PionixCloseButton(),
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             appBar: AppBar(
-              //toolbarHeight: 70,
               automaticallyImplyLeading: false,
               flexibleSpace: TabBar(
                 labelStyle: Theme.of(context).textTheme.titleLarge,
@@ -84,11 +83,18 @@ class _SystemInfoState extends State<SystemInfo> {
                   Tab(
                     icon: const Icon(Icons.tune),
                     text: "control".tr(),
-                  )
+                  ),
                 ],
               ),
             ),
             body: const TabBarView(
-                children: [About(), NetworkInfo(), Control()])));
+                children: [
+                  About(),
+                  NetworkInfo(),
+                  Control(),
+                ],
+            ),
+        ),
+    );
   }
 }

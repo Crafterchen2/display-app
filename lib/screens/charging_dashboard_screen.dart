@@ -303,11 +303,12 @@ class _ChargingDashboardScreenState
                           .whenOrNull(data: (data) => data) !=
                       null)
                   ? () async {
-                      /*final result = */ await Navigator.of(context).pushNamed(
+                      await Navigator.of(context).pushNamed(
                           AppRoutes.sessionDetailScreen,
                           arguments: {}).then((value) {
                         setState(() {});
-                      });
+                      },
+                      );
                     }
                   : () {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -531,9 +532,7 @@ class _ChargingDashboardScreenState
           ),
         ],
       ),
-      //TODO Handle with theme!
-      //reminder: we are in body of scaffold
-      //backgroundColor: AppColors.white,
+      //reminder: this is body of scaffold
       body: Stack(
         children: [
           BorderLayout(
@@ -545,7 +544,6 @@ class _ChargingDashboardScreenState
                 privateMode: privateMode,
               ),
               BorderLayoutSlot.center: makeSessionInfoBody(context),
-              ////const Spacer(flex: 2),
               BorderLayoutSlot.south: makeFooterBar(),
             },
           ),
@@ -556,10 +554,7 @@ class _ChargingDashboardScreenState
                     .colorScheme
                     .background, //Needed to block view of underlying UI
                 child: const Center(
-                  child: CircularProgressIndicator(
-                      //TODO Handle with theme!
-                      //color: AppColors.primaryAmber,
-                      ),
+                  child: CircularProgressIndicator(),
                 ),
               ),
             )

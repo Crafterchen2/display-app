@@ -194,7 +194,6 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                           .headlineMedium,
                                     ),
                                     onPressed: widget.onPauseCharging,
-                                    //textColor: AppColors.primaryAmber,
                                   )
                                 : (pauseOrResumeChargingTitle(widget.state) !=
                                             ChargingState.charging &&
@@ -211,7 +210,6 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                               .headlineMedium,
                                         ),
                                         onPressed: widget.onResumeCharging,
-                                        //textColor: Colors.white,
                                       )
                                     : Container(),
                           ),

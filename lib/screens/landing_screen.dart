@@ -43,18 +43,19 @@ class _LandingScreenState extends State<LandingScreen> {
           'connecting MQTT server/ getting app info failed with exception: $e');
       setState(() {
         // _showProgress = false;
-      });
+      },
+      );
     }
 
     setState(() {
       // _showProgress = false;
-    });
+    },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Colors.white,
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,13 +74,15 @@ class _LandingScreenState extends State<LandingScreen> {
                         text: 'private_mode'.tr(),
                         onPressed: () {
                           privateConfirmationDialog(context);
-                        }),
+                        },
+                    ),
                     SizedBox(width: screenWidth * 0.1),
                     SquareButtonWidget(
                         text: 'public_mode'.tr(),
                         onPressed: () {
                           publicConfirmationDialog(context);
-                        })
+                        },
+                    )
                   ],
                 ),
               ),
@@ -148,12 +151,15 @@ class _LandingScreenState extends State<LandingScreen> {
                 Navigator.of(context)
                     .pushNamed(AppRoutes.chargingDashboardScreen, arguments: {
                   'private_mode': true,
-                });
+                },
+                );
               },
               onNegativePressed: () {
                 Navigator.pop(context);
-              });
-        });
+              },
+          );
+        },
+    );
   }
 
   Future<void> publicConfirmationDialog(
@@ -173,12 +179,15 @@ class _LandingScreenState extends State<LandingScreen> {
                 Navigator.of(context)
                     .pushNamed(AppRoutes.chargingDashboardScreen, arguments: {
                   'private_mode': false,
-                });
+                },
+                );
               },
               onNegativePressed: () {
                 Navigator.pop(context);
-              });
-        });
+              },
+          );
+        },
+    );
   }
 }
 
@@ -220,7 +229,10 @@ class SquareButtonWidget extends StatelessWidget {
 class InitializingProgressWidget extends StatelessWidget {
   final double? progress;
 
-  const InitializingProgressWidget({Key? key, this.progress}) : super(key: key);
+  const InitializingProgressWidget({
+    Key? key,
+    this.progress,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -236,8 +248,11 @@ class InitializingProgressWidget extends StatelessWidget {
                 value: progress,
                 color: Theme.of(context).colorScheme.secondary,
                 backgroundColor: Colors.grey.shade300,
-              )),
-          SizedBox(height: height * 0.01),
+              ),
+          ),
+          SizedBox(
+            height: height * 0.01,
+          ),
           Padding(
             padding: EdgeInsets.only(
               top: height * 0.02,

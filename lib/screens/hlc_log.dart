@@ -127,9 +127,11 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                   .titleLarge
                   ?.copyWith(color: Colors.yellowAccent),
               softWrap: true,
-            ))
+            ),
+            )
           ],
-        ));
+        ),
+        );
       } else if (hlcLog.origin == "SYS") {
         widgets.add(Row(
           key: UniqueKey(),
@@ -144,9 +146,10 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                         .onPrimary, //Is this necessary?
                   ),
               softWrap: true,
-            ))
+            ),),
           ],
-        ));
+        ),
+        );
       }
     }
 

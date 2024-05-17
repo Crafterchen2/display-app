@@ -99,7 +99,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         if (mounted) {
           setState(() {
             _wifi = true;
-          });
+          },
+          );
         }
 
         break;
@@ -154,9 +155,11 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         setState(() {
           bannerVisible = false;
           bannerText = "";
-        });
+        },
+        );
       }
-    });
+    },
+    );
   }
 
   @override
@@ -231,7 +234,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                                   AppRoutes.lanInfoScreen,
                                   arguments: {
                                     'init': true,
-                                  });
+                                  },
+                              );
                             },
                             //width: screenWidth * 0.3,
                           ),
@@ -252,37 +256,35 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                             onPressed: () {
                               setInitialized();
                               Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(builder: (context) {
-                                return const LandingScreen();
-                              }), (Route<dynamic> route) => false);
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return const LandingScreen();
+                                  },
+                                ),
+                                  (Route<dynamic> route) => false,
+                              );
                             },
-                            //width: screenWidth * 0.3,
                           ),
                         ],
                       ),
                     ),
                   ),
                 )
-              : Stack(
-                  children: [
-                    //Why is this a Stack? it has just 1 child
-                    Visibility(
-                      visible: bannerVisible,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Text(
-                          bannerText,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.background,
-                              ),
+              : Visibility(
+                visible: bannerVisible,
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    bannerText,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(
+                          color: Theme.of(context).colorScheme.background,
                         ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
+              ),
           _showPasswordScreen
               ? WifiPasswordScreen(
                   ssid: _selectedSSID,
