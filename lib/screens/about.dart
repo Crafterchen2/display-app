@@ -79,7 +79,8 @@ class _AboutState extends ConsumerState<About> {
                       return ReleaseComponentInfoWidget(
                         component: releaseInfo.components[index],
                       );
-                    }),
+                    },
+                  ),
               ),
             ],
           ),
