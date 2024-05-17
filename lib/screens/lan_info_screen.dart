@@ -173,7 +173,9 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                                               MaterialStateProperty.resolveWith(
                                                   (states) => Theme.of(context)
                                                       .colorScheme
-                                                      .errorContainer)),
+                                                      .errorContainer,
+                                                    ),
+                                                  ),
                                   onPressed: () {
                                     Navigator.of(context).pushNamed(
                                         AppRoutes.wifiSetupScreen,
