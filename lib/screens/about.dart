@@ -63,12 +63,7 @@ class _AboutState extends ConsumerState<About> {
             children: [
               const Padding(padding: EdgeInsets.only(bottom: 20)),
               Text(
-                "EVerest " +
-                    releaseInfo.version +
-                    " @ " +
-                    releaseInfo.channel +
-                    " " +
-                    "channel".tr(),
+                "EVerest ${releaseInfo.version} @ ${releaseInfo.channel} channel".tr(),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               Expanded(
