@@ -636,7 +636,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                   color: Theme.of(context).colorScheme.primary,
                   minHeight: 5,
                   backgroundColor: Colors.grey.shade300,
-                )),
+                ),
+              ),
         ],
       ),
       if (_wifi)
