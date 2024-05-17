@@ -85,7 +85,8 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.02),
+                          horizontal: MediaQuery.of(context).size.width * 0.02,
+                        ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
