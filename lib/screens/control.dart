@@ -104,7 +104,8 @@ class _ControlState extends ConsumerState<Control> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02),
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
                       Row(
                         children: [
                           Flexible(
