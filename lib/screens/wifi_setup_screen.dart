@@ -223,7 +223,9 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                                         MaterialStateProperty.resolveWith(
                                             (states) => Theme.of(context)
                                                 .colorScheme
-                                                .errorContainer)),
+                                                .errorContainer,
+                                              ),
+                                            ),
                             onPressed: () {
                               Navigator.of(context).pushNamed(
                                   AppRoutes.lanInfoScreen,
