@@ -92,7 +92,8 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
                         children: [
                           SizedBox(
                               height:
-                                  MediaQuery.of(context).size.height * 0.03),
+                                  MediaQuery.of(context).size.height * 0.03,
+                                ),
                           Row(
                             children: [
                               Padding(
