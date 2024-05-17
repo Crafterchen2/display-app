@@ -283,7 +283,6 @@ class _ChargingDashboardScreenState
             ),
             child: Text(
               "Navigation", //TODO Localisation
-              //If buttons change to "labelLarge", maybe change to "titleLarge"?
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
