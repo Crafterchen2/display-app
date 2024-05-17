@@ -91,7 +91,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Navigator.pop(context);
             },
           );
-        });
+        },
+      );
   }
 
   Future<void> rebootConfirmationDialog(
