@@ -196,7 +196,9 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                                               MaterialStateProperty.resolveWith(
                                                   (states) => Theme.of(context)
                                                       .colorScheme
-                                                      .tertiaryContainer)),
+                                                      .tertiaryContainer,
+                                                    ),
+                                                  ),
                                   onPressed: () {
                                     setInitialized();
                                     Navigator.of(context).pushAndRemoveUntil(
