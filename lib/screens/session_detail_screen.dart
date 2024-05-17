@@ -71,7 +71,8 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
               children: [
                 SingleInfoCard(
                     title: 'Powermeter ID',
-                    value: powerMeter.meter_id.toString()),
+                    value: powerMeter.meter_id.toString(),
+                  ),
                 const Divider(
                   color: Colors.white10,
                   thickness: 2,
