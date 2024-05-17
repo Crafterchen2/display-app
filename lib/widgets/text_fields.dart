@@ -62,7 +62,8 @@ class _IconTextFieldState extends State<IconTextField> {
                   hintStyle: Theme.of(context)
                       .textTheme
                       .titleLarge
-                      ?.copyWith(color: Colors.grey.shade400)),
+                      ?.copyWith(color: Colors.grey.shade400),
+                    ),
             ),
           ),
           widget.hidden
