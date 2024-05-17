@@ -651,7 +651,10 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                 child: Text('please_enable_wifi'.tr(),
-                    style: Theme.of(context).textTheme.titleLarge)))
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ),
+              ),
     ]);
   }
 }
