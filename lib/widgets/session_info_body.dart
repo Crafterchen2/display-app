@@ -1,7 +1,6 @@
 import 'dart:ui';
 
-import 'package:easy_localization/easy_localization.dart'
-    as _virtual_keyboard_backspace_event_period;
+import 'package:easy_localization/easy_localization.dart' as _virtual_keyboard_backspace_event_period;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/mqtt.dart';
@@ -9,6 +8,7 @@ import 'package:pionixbox/utils/enums.dart';
 import 'package:pionixbox/utils/globals.dart';
 import 'package:pionixbox/utils/number_tools.dart';
 import 'package:pionixbox/utils/routing/app_router.dart';
+import 'package:pionixbox/widgets/layout.dart';
 
 import '../main.dart';
 import '../utils/constants/helper.dart';
@@ -116,13 +116,11 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     try {
       await mqtt.connect();
       mqtt.subscribe("everest_external/umwc/relais_on", parseRelaisOn);
-      mqtt.subscribe(
-          "everest_external/umwc/output_voltage", parseOutputVoltage);
+      mqtt.subscribe("everest_external/umwc/output_voltage", parseOutputVoltage);
       mqtt.subscribe("everest_external/umwc/cp_hi", parseCpHi);
       mqtt.subscribe("everest_external/umwc/cp_lo", parseCpLo);
       mqtt.subscribe("everest_external/umwc/pwm_dc", parsePwmDc);
-      mqtt.subscribe(
-          "everest_external/nodered/1/state/state_string", parseStateString);
+      mqtt.subscribe("everest_external/nodered/1/state/state_string", parseStateString);
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
     }
@@ -132,12 +130,13 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   Widget build(BuildContext context) {
     String currentSliderLabel = widget.current.toStringAsFixed(1);
     //Change the snapping behavior below is sufficient.
-    double snapped = 300;
-    double offset = 20;
+    double snapped = 300; //Width of left side when unsnapped
+    double offset = 20; //This is to accomodate Padding
+    double threshold = 180;
     NumberSnap carSideWidth = NumberSnap(
       parameter: MediaQuery.of(context).size.width - adjustScale(snapped),
       snapped: adjustScale(snapped - offset),
-      threshold: adjustScale(150),
+      threshold: adjustScale(threshold),
     );
     return SingleChildScrollView(
       child: Padding(
@@ -167,8 +166,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               alignment: Alignment.topLeft,
                               child: Text(
                                 'status'.tr(),
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium,
+                                style: Theme.of(context).textTheme.headlineMedium,
                               ),
                             ),
                             Text(
@@ -180,52 +178,15 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           ],
                         ),
                         _buildImageWidget(context),
-                        if (widget.chargingMode == ChargingMode.unknown ||
-                            widget.chargingMode == ChargingMode.basicAC)
-                          SizedBox(
-                            height: adjustScale(60),
-                            width: carSideWidth.snapNumber(),
-                            child: (widget.state == ChargingState.charging)
-                                ? OutlinedButton(
-                                    child: Text(
-                                      'pause'.tr(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineMedium,
-                                    ),
-                                    onPressed: widget.onPauseCharging,
-                                  )
-                                : (pauseOrResumeChargingTitle(widget.state) !=
-                                            ChargingState.charging &&
-                                        widget.state !=
-                                            ChargingState.authRequired &&
-                                        pauseOrResumeChargingTitle(
-                                                widget.state) !=
-                                            '')
-                                    ? FilledButton(
-                                        child: Text(
-                                          'resume'.tr(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headlineMedium,
-                                        ),
-                                        onPressed: widget.onResumeCharging,
-                                      )
-                                    : Container(),
-                          ),
-                        if (widget.state != ChargingState.authRequired &&
-                            widget.current >= widget.minCurrentA &&
-                            widget.current <= widget.maxCurrentA)
+                        if (widget.chargingMode == ChargingMode.unknown || widget.chargingMode == ChargingMode.basicAC) makeChargeControlButton(context, carSideWidth.snapNumber()),
+                        if (widget.state != ChargingState.authRequired && widget.current >= widget.minCurrentA && widget.current <= widget.maxCurrentA)
                           Column(
-                            //mainAxisSize: MainAxisSize.min,
                             children: [
                               Wrap(
                                 children: [
                                   Text(
                                     'charge_upto'.tr() + ' ',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall,
+                                    style: Theme.of(context).textTheme.headlineSmall,
                                   ),
                                   Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -233,10 +194,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                       Text(
                                         currentSliderLabel,
                                         textAlign: TextAlign.start,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineSmall
-                                            ?.copyWith(
+                                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                           fontFeatures: [
                                             const FontFeature.tabularFigures(),
                                           ],
@@ -245,51 +203,34 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                       Text(
                                         ' A',
                                         textAlign: TextAlign.end,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineSmall,
+                                        style: Theme.of(context).textTheme.headlineSmall,
                                       ),
                                     ],
                                   ),
                                 ],
                               ),
                               Slider(
-                                  min: widget.minCurrentA,
-                                  max: widget.maxCurrentA,
-                                  label: currentSliderLabel,
-                                  activeColor:
-                                      Theme.of(context).colorScheme.secondary,
-                                  inactiveColor: Colors.grey,
-                                  onChanged: (val) {
-                                    setState(() {});
-                                    widget.onCurrentChanged(val);
-                                  },
-                                  value: widget.current),
+                                min: widget.minCurrentA,
+                                max: widget.maxCurrentA,
+                                label: currentSliderLabel,
+                                activeColor: Theme.of(context).colorScheme.secondary,
+                                inactiveColor: Colors.grey,
+                                onChanged: (val) {
+                                  setState(() {});
+                                  widget.onCurrentChanged(val);
+                                },
+                                value: widget.current,
+                              ),
                             ],
                           ),
                       ],
                     ),
                   ),
-                  //TODO fix err "Null check operator used on a null value"
-                  if (carSideWidth.isSnapped())
-                    SizedBox(
-                      height: adjustScale(350),
-                      child: VerticalDivider(
-                        thickness: adjustScale(2),
-                        color: Colors.grey,
-                      ),
-                    ),
                 ],
               ),
             ),
-            if (!carSideWidth.isSnapped())
-              Divider(
-                thickness: adjustScale(2),
-                color: Colors.grey,
-              ),
             SizedBox(
-              width:
-                  carSideWidth.snapNumber(ovrSnapped: carSideWidth.parameter),
+              width: carSideWidth.snapNumber(ovrSnapped: carSideWidth.parameter),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -304,191 +245,133 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                             style: Theme.of(context).textTheme.titleLarge,
                           )
                         : Text(
-                            widget.state == 'unplugged'.tr()
-                                ? 'last_session'.tr()
-                                : 'current_session'.tr(),
+                            widget.state == 'unplugged'.tr() ? 'last_session'.tr() : 'current_session'.tr(),
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                   ),
-                  widget.state == ChargingState.authRequired
+                  (widget.state == ChargingState.authRequired)
                       ? Container()
-                      : GestureDetector(
-                          onTap: widget.seeMorePressed,
-                          behavior: HitTestBehavior.opaque,
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                              minWidth: carSideWidth.threshold,
-                            ),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 2,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
+                      : SizedBox(
+                          width: double.infinity,
+                          child: InfoLayout(
+                            children: [
+                              SizedBox(
+                                width: double.infinity,
+                                child: TextButton(
+                                  onPressed: widget.seeMorePressed,
+                                  child: Wrap(
+                                    alignment: WrapAlignment.spaceAround,
+                                    children: _buildInfoCards(widget.chargerModelName),
                                   ),
-                                  borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(12),
-                                    topLeft: Radius.circular(12),
-                                  ),
-                                ),
-                                child: Wrap(
-                                  alignment: WrapAlignment.spaceEvenly,
-                                  children:
-                                      _buildInfoCards(widget.chargerModelName),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
-                  Container(
-                    transform: Matrix4.translationValues(0, -2, 0),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        left: BorderSide(
-                          color: Theme.of(context).colorScheme.primary,
-                          width: 2,
-                        ),
-                        bottom: BorderSide(
-                          color: Theme.of(context).colorScheme.primary,
-                          width: 2,
-                        ),
-                        right: BorderSide(
-                          color: Theme.of(context).colorScheme.primary,
-                          width: 2,
-                        ),
-                        top: BorderSide(
-                          color: Theme.of(context).colorScheme.primary,
-                          width: 2,
-                        ),
-                      ),
-                      borderRadius: const BorderRadius.only(
-                        bottomRight: Radius.circular(12),
-                        bottomLeft: Radius.circular(12),
-                      ),
-                    ),
-                    child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: GestureDetector(
-                          onTap: () async {
-                            /*final result = */ await Navigator.of(context)
-                                .pushNamed(AppRoutes.hlcLogScreen,
-                                    arguments: {}).then((value) {
-                              setState(() {});
-                            });
-                          },
-                          behavior: HitTestBehavior.opaque,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "See HLC comm log", //TODO Localisation
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displaySmall
-                                  ?.copyWith(
-                                    color: Colors.grey,
+                              (widget.chargerModelName != "MicroMegaWattCharger")
+                                  ? null
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 5,
+                                      ),
+                                      child: Wrap(
+                                        runSpacing: 10,
+                                        spacing: 10,
+                                        children: [
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish("everest_external/nodered/1/cmd/pause_charging", "1");
+                                            },
+                                            child: const Text("Pause"),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish("everest_external/nodered/1/cmd/resume_charging", "1");
+                                            },
+                                            child: const Text("Resume"),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish("everest_external/nodered/1/cmd/stop_transaction", "1");
+                                            },
+                                            child: const Text("Stop transaction"),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish("everest_external/nodered/1/cmd/emergency_stop", "1");
+                                            },
+                                            child: const Text("Emerg.Stp"),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish("everest_external/nodered/1/cmd/evse_malfunction", "1");
+                                            },
+                                            child: const Text("EVSE malf"),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish("everest_external/nodered/1/cmd/evse_utility_int", "1");
+                                            },
+                                            child: const Text("EVSEutil int"),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: TextButton(
+                                  onPressed: () async {
+                                    await Navigator.of(context).pushNamed(AppRoutes.hlcLogScreen, arguments: {}).then((value) {
+                                      setState(() {});
+                                    });
+                                  },
+                                  child: Text(
+                                    "See HLC comm log", //TODO Localisation
+                                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                          color: Colors.grey,
+                                        ),
+                                    softWrap: true,
+                                    maxLines: 4,
                                   ),
-                              softWrap: true,
-                              maxLines: 4,
-                            ),
-                          ),
-                        )),
-                  ),
-                  if (widget.chargerModelName == "MicroMegaWattCharger")
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 8),
-                          child: PrimaryButton(
-                            //width: screenWidth * 0.3,
-                            onPressed: () {
-                              mqtt.publish(
-                                  "everest_external/nodered/1/cmd/pause_charging",
-                                  "1");
-                            },
-                            child: const Text("Pause"),
+                                ),
+                              )
+                            ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 8),
-                          child: PrimaryButton(
-                            //width: screenWidth * 0.3,
-                            onPressed: () {
-                              mqtt.publish(
-                                  "everest_external/nodered/1/cmd/resume_charging",
-                                  "1");
-                            },
-                            child: const Text("Resume"),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 8),
-                          child: PrimaryButton(
-                            //width: screenWidth * 0.3,
-                            onPressed: () {
-                              mqtt.publish(
-                                  "everest_external/nodered/1/cmd/stop_transaction",
-                                  "1");
-                            },
-                            child: const Text("Stop transaction"),
-                          ),
-                        ),
-                      ],
-                    ),
-                  if (widget.chargerModelName == "MicroMegaWattCharger")
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 8),
-                          child: PrimaryButton(
-                            //width: screenWidth * 0.3,
-                            onPressed: () {
-                              mqtt.publish(
-                                  "everest_external/nodered/1/cmd/emergency_stop",
-                                  "1");
-                            },
-                            child: const Text("Emerg.Stp"),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 8),
-                          child: PrimaryButton(
-                            //width: screenWidth * 0.3,
-                            onPressed: () {
-                              mqtt.publish(
-                                  "everest_external/nodered/1/cmd/evse_malfunction",
-                                  "1");
-                            },
-                            child: const Text("EVSE malf"),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 8),
-                          child: PrimaryButton(
-                            //width: screenWidth * 0.3,
-                            onPressed: () {
-                              mqtt.publish(
-                                  "everest_external/nodered/1/cmd/evse_utility_int",
-                                  "1");
-                            },
-                            child: const Text("EVSEutil int"),
-                          ),
-                        ),
-                      ],
-                    ),
                 ],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget makeChargeControlButton(BuildContext context, double? width) {
+    var isChargingState = widget.state == ChargingState.charging;
+    var showResumeButton = pauseOrResumeChargingTitle(widget.state) != ChargingState.charging && widget.state != ChargingState.authRequired && pauseOrResumeChargingTitle(widget.state) != '';
+    if (!isChargingState && !showResumeButton) {
+      return SizedBox(
+        width: width,
+      );
+    }
+    return SizedBox(
+      height: adjustScale(60),
+      width: width,
+      child: (isChargingState)
+          ? OutlinedButton(
+              child: Text(
+                'pause'.tr(),
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              onPressed: widget.onPauseCharging,
+            )
+          : (showResumeButton)
+              ? FilledButton(
+                  child: Text(
+                    'resume'.tr(),
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  onPressed: widget.onResumeCharging,
+                )
+              : Container(),
     );
   }
 
@@ -506,21 +389,20 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           if (iconPath != null)
-            SizedBox(
-              height: adjustScale(10.0),
-            ),
-          if (iconPath != null)
-            SvgPicture.asset(
-              iconPath,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          if (iconPath != null)
-            SizedBox(
-              height: adjustScale(10),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+              ),
+              child: SvgPicture.asset(
+                iconPath,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
           Text(
             value,
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontFeatures: [
+              const FontFeature.tabularFigures(),
+            ]),
           ),
           if (iconPath == null)
             SizedBox(
@@ -534,8 +416,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   List<Widget> _buildInfoCards(String chargerModelName) {
     if (chargerModelName == "MicroMegaWattCharger") {
       return [
-        _buildSessionInfoCard(
-            null, outputVoltage.toStringAsFixed(2) + ' V', 'Output Voltage'),
+        _buildSessionInfoCard(null, outputVoltage.toStringAsFixed(2) + ' V', 'Output Voltage'),
         _buildSessionInfoCard(null, relaisState, 'Relais'),
         _buildSessionInfoCard(null, pwmDc.toStringAsFixed(0) + ' %', 'PWM DC'),
         _buildSessionInfoCard(null, cpHi.toStringAsFixed(2), 'CP Hi'),
@@ -544,12 +425,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       ];
     }
     return [
-      _buildSessionInfoCard('assets/icons/icon_power.svg',
-          widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
-      _buildSessionInfoCard('assets/icons/icon_energy.svg',
-          widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
-      _buildSessionInfoCard('assets/icons/icon_charging_duration.svg',
-          widget.duration + ' h', 'duration'.tr())
+      _buildSessionInfoCard('assets/icons/icon_power.svg', widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
+      _buildSessionInfoCard('assets/icons/icon_energy.svg', widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
+      _buildSessionInfoCard('assets/icons/icon_charging_duration.svg', widget.duration + ' h', 'duration'.tr())
     ];
   }
 
@@ -558,14 +436,20 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          //is this stack still required?
           Stack(
             alignment: Alignment.bottomRight,
             children: [
               Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                  child: getChargingSessionWidgetByState(context, widget.state,
-                      adjustScale(96), adjustScale(320), widget.soc)),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: getChargingSessionWidgetByState(
+                  context,
+                  widget.state,
+                  adjustScale(96),
+                  adjustScale(320),
+                  widget.soc,
+                ),
+              ),
               // if (widget.state == 'ChargingPausedEVSE' ||
               //     widget.state == 'ChargingPausedEV')
               // SvgPicture.asset(
@@ -583,8 +467,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   }
 }
 
-Widget getChargingSessionWidgetByState(BuildContext context, String state,
-    double height, double width, double? soc) {
+Widget getChargingSessionWidgetByState(BuildContext context, String state, double height, double width, double? soc) {
   if (state == 'Charging') {
     return Stack(alignment: Alignment.bottomCenter, children: <Widget>[
       ChargingAnimationWidget(),
@@ -615,7 +498,7 @@ Widget getChargingSessionWidgetByState(BuildContext context, String state,
     return SvgPicture.asset(
       getChargingSessionIconByState(state),
       height: height,
-      width: width,
+      //width: width,
     );
   }
 }
