@@ -163,6 +163,11 @@ class PionixThemeProvider {
         surfaceTintColor: Colors.transparent,
         toolbarHeight: 70,
       ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: customLightScheme.secondary,
+        actionBackgroundColor: customLightScheme.primary,
+        actionTextColor: customLightScheme.onPrimary,
+      ),
       textTheme: TextTheme(
         displayLarge: bold.copyWith(
           color: customLightScheme.secondary,
