@@ -271,7 +271,7 @@ class _ChargingDashboardScreenState
 
     return Scaffold(
       endDrawer: NavigationDrawer(
-        //TODO Handle with theme!
+        //FIXME: Handle with theme! Issue: values set in theme are not honored here, thus they need to be set explicitly.
         backgroundColor: Theme.of(context).colorScheme.primary,
         surfaceTintColor: Colors.transparent,
         elevation: 20,
