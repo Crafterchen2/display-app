@@ -580,10 +580,10 @@ class _ChargingDashboardScreenState
       latestTotalw: _latestTotalw,
       duration: _duration,
       online: _online,
-      seeMorePressed: (ref
+      seeMorePressed: (ref //TODO: This check might no longer be necessary --> Needs further investigation
                   .watch(powermeterStreamProvider)
                   .whenOrNull(data: (data) => data) !=
-              null)
+              null || true) //FIXME: Currently hacked for testing.
           ? () async {
               /*final result = */ await Navigator.of(context)
                   .pushNamed(AppRoutes.sessionDetailScreen, arguments: {}).then(
