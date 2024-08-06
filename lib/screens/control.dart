@@ -143,8 +143,7 @@ class _ControlState extends ConsumerState<Control> {
                                 mqtt.publish(
                                     "everest_api/control/cmd/restart", "1");
                               },
-                              child:
-                                  const Text("Restart everest-control.service"),
+                              child: const Text("Restart basecamp-control.service"),
                             ),
                           ),
                           Padding(
