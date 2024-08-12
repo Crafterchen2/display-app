@@ -261,6 +261,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                   onPressed: widget.seeMorePressed,
                                   child: Wrap(
                                     alignment: WrapAlignment.spaceAround,
+                                    spacing: (!carSideWidth.isSnapped()) ? 0 : (MediaQuery.of(context).size.width - carSideWidth.snapNumber())/14,
                                     children: _buildInfoCards(widget.chargerModelName),
                                   ),
                                 ),
