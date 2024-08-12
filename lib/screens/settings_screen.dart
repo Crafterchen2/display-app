@@ -8,6 +8,7 @@ import 'package:pionixbox/widgets/settings_menu.dart';
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
 
+@Deprecated("The Settings have been made obsolete by the NavigationDrawer.")
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({
     Key? key,

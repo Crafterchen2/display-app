@@ -12,6 +12,7 @@ import 'package:pionixbox/screens/wifi_setup_screen.dart';
 
 class AppRoutes {
   static const languagePickerScreen = '/language_picker_screen';
+  @Deprecated("The Settings have been made obsolete by the NavigationDrawer.")
   static const settingScreen = '/settings_screen';
   static const landingScreen = '/landing_screen';
   static const lanInfoScreen = '/lan_info_screen';
