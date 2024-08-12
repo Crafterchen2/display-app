@@ -484,10 +484,10 @@ class _ChargingDashboardScreenState
                   context: context,
                   builder: (ctz) {
                     return BasicDialog(
-                        title: 'reboot_charger'.tr(),
+                        title: ((getChargerModelName() == "MicroMegaWattCharger") ? 'reboot_umwc' : 'reboot_belaybox').tr(),
                         positiveText: 'reboot'.tr(),
                         negativeText: 'cancel'.tr(),
-                        content: 'reboot_charger_explanation'.tr(),
+                        content: (((getChargerModelName() == "MicroMegaWattCharger") ? 'reboot_umwc' : 'reboot_belaybox') + '_explanation').tr(),
                         onPositivePressed: () {
                           Navigator.pop(context);
                           mqtt.publish(Topic.reboot, '');
