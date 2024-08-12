@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart' as _virtual_keyboard_backspace_event_period;
@@ -259,10 +260,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 width: double.infinity,
                                 child: TextButton(
                                   onPressed: widget.seeMorePressed,
-                                  child: Wrap(
-                                    alignment: WrapAlignment.spaceAround,
-                                    spacing: (!carSideWidth.isSnapped()) ? 0 : (MediaQuery.of(context).size.width - carSideWidth.snapNumber())/14,
-                                    children: _buildInfoCards(widget.chargerModelName),
+                                  child: _buildInfoCards(
+                                    name: widget.chargerModelName,
+                                    width: (carSideWidth.isSnapped()) ? (MediaQuery.of(context).size.width - carSideWidth.snapNumber()) / 14 : null,
                                   ),
                                 ),
                               ),
@@ -394,7 +394,126 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     );
   }
 
-  Widget _buildSessionInfoCard(String? iconPath, String value, String label) {
+  Widget _buildInfoCards({required String name, double? width}) {
+    if (name == "MicroMegaWattCharger") {
+      List<Text> titles = [
+        const Text(
+          'Output Voltage : ',
+          textScaler: TextScaler.linear(2),
+        ),
+        const Text(
+          'Relais : ',
+          textScaler: TextScaler.linear(2),
+        ),
+        const Text(
+          'PWM DC : ',
+           textScaler: TextScaler.linear(2),
+        ),
+        const Text(
+          'CP Hi : ',
+          textScaler: TextScaler.linear(2),
+        ),
+        const Text(
+          'CP Lo : ',
+          textScaler: TextScaler.linear(2),
+        ),
+        const Text(
+          'State : ',
+          textScaler: TextScaler.linear(2),
+        ),
+      ];
+      List<Text> values = [
+        Text(
+          outputVoltage.toStringAsFixed(2) + ' V',
+          textScaler: const TextScaler.linear(2),
+        ),
+        Text(
+          relaisState,
+          textScaler: const TextScaler.linear(2),
+        ),
+        Text(
+          pwmDc.toStringAsFixed(0) + ' %',
+          textScaler: const TextScaler.linear(2),
+        ),
+        Text(
+          cpHi.toStringAsFixed(2),
+          textScaler: const TextScaler.linear(2),
+        ),
+        Text(
+          cpLo.toStringAsFixed(2),
+          textScaler: const TextScaler.linear(2),
+        ),
+        Text(
+          stateString,
+          textScaler: const TextScaler.linear(2),
+        ),
+      ];
+      double maxWidth = 0.0;
+      for (int i = 0; i < min(titles.length, values.length); i++) {
+        TextPainter tp = TextPainter(
+          text: TextSpan(
+            text: titles[i].data,
+            style: titles[i].style,
+          ),
+          textDirection: TextDirection.ltr,
+          textScaler: const TextScaler.linear(2),
+        );
+        tp.layout();
+        double w = tp.width;
+        tp = TextPainter(
+          text: TextSpan(
+            text: values[i].data,
+            style: values[i].style,
+          ),
+          textDirection: TextDirection.rtl,
+          textScaler: const TextScaler.linear(2),
+        );
+        tp.layout();
+        w += tp.width + 20;
+        maxWidth = max(maxWidth, w);
+      }
+      Color? aColor = Color.lerp(Theme.of(context).colorScheme.background, Theme.of(context).colorScheme.onBackground, 0.1)?.withAlpha(160);
+      Color? bColor = Color.lerp(Theme.of(context).colorScheme.background, Theme.of(context).colorScheme.onBackground, 0.25)?.withAlpha(160);
+      double w = maxWidth;//min(width ?? 0, maxWidth);
+      List<Widget> infos = [];
+      for (int i = 0; i < min(titles.length, values.length); i++) {
+        infos.add(_buildTextInfo((i % 2 == 0) ? aColor : bColor, values[i], titles[i], w));
+      }
+      return Wrap(
+        alignment: WrapAlignment.start,
+        children: infos,
+      );
+    } else {
+      return Wrap(
+        alignment: WrapAlignment.spaceAround,
+        spacing: (width == null) ? 0 : (MediaQuery.of(context).size.width - width)/14,
+        children: [
+          _buildIconInfo('assets/icons/icon_power.svg', widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
+          _buildIconInfo('assets/icons/icon_energy.svg', widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
+          _buildIconInfo('assets/icons/icon_charging_duration.svg', widget.duration + ' h', 'duration'.tr())
+        ],
+      );
+    }
+  }
+
+  Widget _buildTextInfo(Color? background, Text value, Text title, double width){
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      color: background,
+      child: SizedBox(
+        width: width,
+        child: Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          children: [
+            title,
+            value,
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIconInfo(String iconPath, String value, String label) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: adjustScale(10),
@@ -407,47 +526,24 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             label,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
-          if (iconPath != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 10,
-              ),
-              child: SvgPicture.asset(
-                iconPath,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
             ),
+            child: SvgPicture.asset(
+              iconPath,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
           Text(
             value,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontFeatures: [
               const FontFeature.tabularFigures(),
             ]),
           ),
-          if (iconPath == null)
-            SizedBox(
-              height: adjustScale(10),
-            ),
         ],
       ),
     );
-  }
-
-  List<Widget> _buildInfoCards(String chargerModelName) {
-    if (chargerModelName == "MicroMegaWattCharger") {
-      return [
-        _buildSessionInfoCard(null, outputVoltage.toStringAsFixed(2) + ' V', 'Output Voltage'),
-        _buildSessionInfoCard(null, relaisState, 'Relais'),
-        _buildSessionInfoCard(null, pwmDc.toStringAsFixed(0) + ' %', 'PWM DC'),
-        _buildSessionInfoCard(null, cpHi.toStringAsFixed(2), 'CP Hi'),
-        _buildSessionInfoCard(null, cpLo.toStringAsFixed(2), 'CP Lo'),
-        _buildSessionInfoCard(null, stateString, 'State'),
-      ];
-    }
-    return [
-      _buildSessionInfoCard('assets/icons/icon_power.svg', widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
-      _buildSessionInfoCard('assets/icons/icon_energy.svg', widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
-      _buildSessionInfoCard('assets/icons/icon_charging_duration.svg', widget.duration + ' h', 'duration'.tr())
-    ];
   }
 
   Widget _buildImageWidget(BuildContext context) {
