@@ -131,7 +131,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     String currentSliderLabel = widget.current.toStringAsFixed(1);
     //Change the snapping behavior below is sufficient.
     double snapped = 300; //Width of left side when unsnapped
-    double offset = 20; //This is to accomodate Padding
+    double offset = 20; //This is to accommodate Padding
     double threshold = 180;
     NumberSnap carSideWidth = NumberSnap(
       parameter: MediaQuery.of(context).size.width - adjustScale(snapped),
