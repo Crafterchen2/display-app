@@ -280,37 +280,55 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                             onPressed: () {
                                               mqtt.publish("everest_external/nodered/1/cmd/pause_charging", "1");
                                             },
-                                            child: const Text("Pause"),
+                                            child: const Text(
+                                              "Pause",
+                                              textScaler: TextScaler.linear(2),
+                                            ),
                                           ),
                                           PrimaryButton(
                                             onPressed: () {
                                               mqtt.publish("everest_external/nodered/1/cmd/resume_charging", "1");
                                             },
-                                            child: const Text("Resume"),
+                                            child: const Text(
+                                              "Resume",
+                                              textScaler: TextScaler.linear(2),
+                                            ),
                                           ),
                                           PrimaryButton(
                                             onPressed: () {
                                               mqtt.publish("everest_external/nodered/1/cmd/stop_transaction", "1");
                                             },
-                                            child: const Text("Stop transaction"),
+                                            child: const Text(
+                                              "Stop transaction",
+                                              textScaler: TextScaler.linear(2),
+                                            ),
                                           ),
                                           PrimaryButton(
                                             onPressed: () {
                                               mqtt.publish("everest_external/nodered/1/cmd/emergency_stop", "1");
                                             },
-                                            child: const Text("Emerg.Stp"),
+                                            child: const Text(
+                                              "Emerg.Stp",
+                                              textScaler: TextScaler.linear(2),
+                                            ),
                                           ),
                                           PrimaryButton(
                                             onPressed: () {
                                               mqtt.publish("everest_external/nodered/1/cmd/evse_malfunction", "1");
                                             },
-                                            child: const Text("EVSE malf"),
+                                            child: const Text(
+                                              "EVSE malf",
+                                              textScaler: TextScaler.linear(2),
+                                            ),
                                           ),
                                           PrimaryButton(
                                             onPressed: () {
                                               mqtt.publish("everest_external/nodered/1/cmd/evse_utility_int", "1");
                                             },
-                                            child: const Text("EVSEutil int"),
+                                            child: const Text(
+                                              "EVSEutil int",
+                                              textScaler: TextScaler.linear(2),
+                                            ),
                                           ),
                                         ],
                                       ),
