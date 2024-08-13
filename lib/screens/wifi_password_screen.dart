@@ -49,7 +49,9 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                   width: double.infinity,
                   child: Text(
                     widget.ssid,
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
                   ),
                 ),
               ),

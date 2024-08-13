@@ -42,6 +42,7 @@ class NetworkCardWidget extends StatelessWidget {
                         getWifiIcon(signalLevel ?? -50),
                         height: 40,
                         width: 40,
+                        color: Theme.of(context).colorScheme.onBackground,
                       )
                     : Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
