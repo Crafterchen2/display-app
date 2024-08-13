@@ -277,9 +277,11 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                   child: _buildInfoCards(
                                     name: widget.chargerModelName,
                                     width: (carSideWidth.isSnapped()) ? (MediaQuery.of(context).size.width - carSideWidth.snapNumber()) / 14 : null,
-                                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                          color: Theme.of(context).colorScheme.onBackground,
-                                        ),
+                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                      color: Theme.of(context).colorScheme.onBackground,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18
+                                    ),
                                   ),
                                 ),
                               ),
@@ -418,7 +420,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     double? width,
     TextStyle? style,
   }) {
-    if (name == "MicroMegaWattCharger") {
+    if (name == "MicroMegaWattCharger" || true) {
       List<Text> titles = [
         Text(
           'Output Voltage : ',
