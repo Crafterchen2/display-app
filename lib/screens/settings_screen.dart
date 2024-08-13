@@ -103,10 +103,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
         context: context,
         builder: (ctz) {
           return BasicDialog(
-              title: 'reboot_belaybox'.tr(), //No reference to model name, but this is deprecated anyway. --> WONTFIX
+            //No reference to model name, but this is deprecated anyway. --> WONTFIX
+              title: 'reboot_belaybox'.tr(),
               positiveText: 'reboot'.tr(),
               negativeText: 'cancel'.tr(),
-              content: 'reboot_belaybox_explanation'.tr(), //No reference to model name, but this is deprecated anyway. --> WONTFIX
+              //No reference to model name, but this is deprecated anyway. --> WONTFIX
+              content: 'reboot_belaybox_explanation'.tr(),
               onPositivePressed: () {
                 Navigator.pop(context);
                 reboot();

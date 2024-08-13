@@ -97,8 +97,10 @@ class BasicDialog extends StatelessWidget {
             child: Text(
               negativeText,
               style: TextStyle(
-                  color: Theme.of(context).colorScheme.onBackground, fontSize: 36),
-            )),
+                  color: Theme.of(context).colorScheme.onBackground,
+                  fontSize: 36),
+            ),
+        ),
         const SizedBox(
           width: 50,
         ),
@@ -109,7 +111,8 @@ class BasicDialog extends StatelessWidget {
               positiveText,
               style: TextStyle(
                   color: Theme.of(context).colorScheme.error, fontSize: 36),
-            ))
+            ),
+        )
       ],
     );
   }

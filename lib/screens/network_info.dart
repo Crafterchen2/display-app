@@ -157,8 +157,8 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                 child: Text(
                   "network_interface".tr() + ": ${info.interface}",
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
                 ),
               ),
               Expanded(
@@ -187,7 +187,8 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                   } else {
                     return const SizedBox.shrink();
                   }
-                }),
+                },
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -206,7 +207,8 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                   } else {
                     return const SizedBox.shrink();
                   }
-                }),
+                },
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),

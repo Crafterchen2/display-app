@@ -67,7 +67,9 @@ class _LandingScreenState extends State<LandingScreen> {
             Expanded(
               flex: 2,
               child: Padding(
-                padding: EdgeInsets.only(top: screenHeight * 0.0),
+                padding: EdgeInsets.only(
+                  top: screenHeight * 0.0,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +86,7 @@ class _LandingScreenState extends State<LandingScreen> {
                       onPressed: () {
                         publicConfirmationDialog(context);
                       },
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -195,6 +197,8 @@ class _LandingScreenState extends State<LandingScreen> {
   }
 }
 
+//FIXME: This should be in library "buttons.dart.
+//Also, in landing_screen.dart is exists a class with this name, too. maybe merge?
 class SquareButtonWidget extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;

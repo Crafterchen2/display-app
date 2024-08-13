@@ -49,8 +49,7 @@ class _AboutState extends ConsumerState<About> {
     if (appInfo != null) {
       if (appInfo.release_metadata_file != null &&
           appInfo.release_metadata_file != releaseMetadataFile) {
-        releaseMetadataFile =
-            appInfo.release_metadata_file ?? releaseMetadataFile;
+        releaseMetadataFile = appInfo.release_metadata_file ?? releaseMetadataFile;
         debugPrint("metadata file: $releaseMetadataFile");
         _read();
       }
@@ -63,11 +62,10 @@ class _AboutState extends ConsumerState<About> {
             children: [
               const Padding(padding: EdgeInsets.only(bottom: 20)),
               Text(
-                "EVerest ${releaseInfo.version} @ ${releaseInfo.channel} channel"
-                    .tr(),
+                "EVerest ${releaseInfo.version} @ ${releaseInfo.channel} channel".tr(),
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
-                ),
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
               ),
               Expanded(
                 child: ListView.builder(
@@ -88,6 +86,8 @@ class _AboutState extends ConsumerState<About> {
   }
 }
 
+//FIXME: Many dependencies on screen dimensions. ideally there would be none.
+//FIXME: There might be better Solutions to create spacing than an opaque Container without children.
 class ReleaseComponentInfoWidget extends StatelessWidget {
   final ReleaseComponent component;
 
@@ -99,11 +99,15 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+      padding: EdgeInsets.symmetric(
+        horizontal: screenWidth * 0.02,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: screenHeight * 0.03),
+          SizedBox(
+            height: screenHeight * 0.03,
+          ),
           Row(
             children: [
               Container(
@@ -116,8 +120,8 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
                 child: Text(
                   component.name,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
                 ),
               ),
               Expanded(
@@ -128,7 +132,9 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: screenHeight * 0.03),
+          SizedBox(
+              height:
+                  screenHeight * 0.03),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
@@ -136,7 +142,8 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
-              )),
+              ),
+          ),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
@@ -144,7 +151,8 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
-              )),
+              ),
+          ),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
@@ -152,7 +160,8 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
-              ))
+              ),
+          )
         ],
       ),
     );

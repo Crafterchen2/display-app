@@ -40,29 +40,29 @@ class PionixThemeProvider {
     );
     TextStyle primaryTextColor = TextStyle(color: scheme.primary);
     var text = TextTheme(
-        displayLarge: bold.copyWith(
-          color: scheme.secondary,
-          height: 1.3,
-          fontSize: 32,
-        ),
-        displayMedium: primaryTextColor.copyWith(
-          height: 1.3,
-          fontWeight: FontWeight.w500,
-        ),
-        displaySmall: primaryTextColor,
-        headlineLarge: primaryTextColor.merge(bold),
-        headlineMedium: primaryTextColor.copyWith(fontWeight: FontWeight.w500),
-        headlineSmall: primaryTextColor,
-        titleLarge: urbanistFont.merge(primaryTextColor),
-        titleMedium: urbanistFont.merge(primaryTextColor),
-        titleSmall: urbanistFont.merge(primaryTextColor),
-        labelLarge: primaryTextColor,
-        labelMedium: primaryTextColor,
-        labelSmall: primaryTextColor,
-        bodyLarge: primaryTextColor,
-        bodyMedium: primaryTextColor,
-        bodySmall: primaryTextColor,
-      );
+      displayLarge: bold.copyWith(
+        color: scheme.secondary,
+        height: 1.3,
+        fontSize: 32,
+      ),
+      displayMedium: primaryTextColor.copyWith(
+        height: 1.3,
+        fontWeight: FontWeight.w500,
+      ),
+      displaySmall: primaryTextColor,
+      headlineLarge: primaryTextColor.merge(bold),
+      headlineMedium: primaryTextColor.copyWith(fontWeight: FontWeight.w500),
+      headlineSmall: primaryTextColor,
+      titleLarge: urbanistFont.merge(primaryTextColor),
+      titleMedium: urbanistFont.merge(primaryTextColor),
+      titleSmall: urbanistFont.merge(primaryTextColor),
+      labelLarge: primaryTextColor,
+      labelMedium: primaryTextColor,
+      labelSmall: primaryTextColor,
+      bodyLarge: primaryTextColor,
+      bodyMedium: primaryTextColor,
+      bodySmall: primaryTextColor,
+    );
     return ThemeData(
       colorScheme: scheme,
       sliderTheme: SliderThemeData(
@@ -297,8 +297,8 @@ class SimpleColorScheme {
       background: whiteSeed,
       onBackground: primarySeed,
       surface: whiteSeed,
-      surfaceVariant: lighterGrey,
       onSurface: primarySeed,
+      surfaceVariant: lighterGrey,
       onSurfaceVariant: blackSeed,
       outline: grey,
       outlineVariant: lightGrey,
@@ -333,8 +333,8 @@ class SimpleColorScheme {
       background: blackSeed,
       onBackground: onPrimary,
       surface: blackSeed,
-      surfaceVariant: darkGrey,
       onSurface: onPrimary,
+      surfaceVariant: darkGrey,
       onSurfaceVariant: whiteSeed,
       outline: lightGrey,
       outlineVariant: grey,

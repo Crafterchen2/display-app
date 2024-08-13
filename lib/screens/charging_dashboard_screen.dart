@@ -42,8 +42,7 @@ class ChargingDashboardScreen extends ConsumerStatefulWidget {
       _ChargingDashboardScreenState();
 }
 
-class _ChargingDashboardScreenState
-    extends ConsumerState<ChargingDashboardScreen> {
+class _ChargingDashboardScreenState extends ConsumerState<ChargingDashboardScreen> {
   late String _status;
   late String _energyTotal;
   late double _chargedEnergy;
@@ -106,10 +105,8 @@ class _ChargingDashboardScreenState
     try {
       await mqtt.connect();
       final connector = ref.watch(connectorProvider);
-      mqtt.subscribe(
-          "everest_api/" + connector + "/var/hlc_log", parseHlcLogMsg);
-      mqtt.subscribe("everest_api/" + connector + "/var/logging_path",
-          parseLoggingPathMsg);
+      mqtt.subscribe("everest_api/" + connector + "/var/hlc_log", parseHlcLogMsg);
+      mqtt.subscribe("everest_api/" + connector + "/var/logging_path", parseLoggingPathMsg);
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
     }
@@ -188,8 +185,7 @@ class _ChargingDashboardScreenState
       }
     }
 
-    final telemetry =
-        ref.watch(telemetryStreamProvider).whenOrNull(data: (data) => data);
+    final telemetry = ref.watch(telemetryStreamProvider).whenOrNull(data: (data) => data);
     if (telemetry != null) {
       bufferedTelemetry.fanRPM.add(telemetry.fan_rpm);
       bufferedTelemetry.rcdCurrent.add(telemetry.rcd_current);
@@ -207,8 +203,7 @@ class _ChargingDashboardScreenState
         _current = limits.max_current;
       }
     }
-    final sessioninfo =
-        ref.watch(sessionInfoStreamProvider).whenOrNull(data: (data) => data);
+    final sessioninfo = ref.watch(sessionInfoStreamProvider).whenOrNull(data: (data) => data);
     if (sessioninfo != null) {
       _status = sessioninfo.state;
       _chargedEnergy = sessioninfo.charged_energy_wh / 1000.0;
@@ -217,9 +212,7 @@ class _ChargingDashboardScreenState
       _duration =
           durationFormat(Duration(seconds: sessioninfo.charging_duration_s));
     }
-    final hardwareCapabilities = ref
-        .watch(hardwareCapabilitiesStreamProvider)
-        .whenOrNull(data: (data) => data);
+    final hardwareCapabilities = ref.watch(hardwareCapabilitiesStreamProvider).whenOrNull(data: (data) => data);
     if (hardwareCapabilities != null) {
       if (hardwareCapabilities.max_current_A_import >= 6.0) {
         _maxCurrentA = hardwareCapabilities.max_current_A_import;
@@ -228,8 +221,7 @@ class _ChargingDashboardScreenState
         _minCurrentA = hardwareCapabilities.min_current_A_import;
       }
     }
-    final evInfo =
-        ref.watch(evInfoStreamProvider).whenOrNull(data: (data) => data);
+    final evInfo = ref.watch(evInfoStreamProvider).whenOrNull(data: (data) => data);
     if (evInfo != null) {
       if (evInfo.evcc_id != null) {
         // not basic charging
@@ -243,9 +235,7 @@ class _ChargingDashboardScreenState
       }
     }
 
-    final selectedProtocol = ref
-        .watch(selectedProtocolStreamProvider)
-        .whenOrNull(data: (data) => data);
+    final selectedProtocol = ref.watch(selectedProtocolStreamProvider).whenOrNull(data: (data) => data);
     if (selectedProtocol != null) {
       selectedProtocolString = selectedProtocol;
       if (selectedProtocol == "IEC61851-1") {
@@ -318,8 +308,9 @@ class _ChargingDashboardScreenState
                           duration: const Duration(
                             seconds: 2,
                           ),
-                          content: const Text(
-                              'You are offline. Try again or check wifi Settings.'), //TODO: Localization
+                          //TODO: Localization
+                          //FIXME: This might also be displayed for other reasons, then the message doesn't fit
+                          content: const Text('You are offline. Try again or check wifi Settings.'),
                           action: SnackBarAction(
                             label: 'Open Wifi settings', //TODO: Localization
                             onPressed: () {
@@ -485,17 +476,27 @@ class _ChargingDashboardScreenState
                   context: context,
                   builder: (ctz) {
                     return BasicDialog(
-                        title: ((getChargerModelName() == "MicroMegaWattCharger") ? 'reboot_umwc' : 'reboot_belaybox').tr(),
+                        title:
+                            ((getChargerModelName() == "MicroMegaWattCharger")
+                                    ? 'reboot_umwc'
+                                    : 'reboot_belaybox')
+                                .tr(),
                         positiveText: 'reboot'.tr(),
                         negativeText: 'cancel'.tr(),
-                        content: (((getChargerModelName() == "MicroMegaWattCharger") ? 'reboot_umwc' : 'reboot_belaybox') + '_explanation').tr(),
+                        content:
+                            (((getChargerModelName() == "MicroMegaWattCharger")
+                                        ? 'reboot_umwc'
+                                        : 'reboot_belaybox') +
+                                    '_explanation')
+                                .tr(),
                         onPositivePressed: () {
                           Navigator.pop(context);
                           mqtt.publish(Topic.reboot, '');
                         },
                         onNegativePressed: () {
                           Navigator.pop(context);
-                        });
+                        },
+                    );
                   },
                 );
               },
@@ -575,14 +576,12 @@ class _ChargingDashboardScreenState
           if (_showProgressBar)
             Center(
               child: Container(
-                color: Theme.of(context)
-                    .colorScheme
-                    .background, //Needed to block view of underlying UI
+                color: Theme.of(context).colorScheme.background, //Needed to block view of underlying UI
                 child: const Center(
                   child: CircularProgressIndicator(),
                 ),
               ),
-            )
+            ),
         ],
       ),
     );
@@ -704,7 +703,7 @@ class _ChargingDashboardScreenState
                       dateTimeFormat.format(DateTime.now()),
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

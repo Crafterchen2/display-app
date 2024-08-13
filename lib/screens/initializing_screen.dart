@@ -73,10 +73,8 @@ class _InitializingScreenState extends State<InitializingScreen> {
       debugPrint('Loading failed, Error: $e');
       progressMessage = 'connection_failed'.tr();
       // reconnecting...
-      _reconnectMessageTimer = Timer(const Duration(seconds: 3),
-          () => progressMessage = 'reconnecting'.tr());
-      _reconnectTimer =
-          Timer(const Duration(seconds: 5), () => _connect(context));
+      _reconnectMessageTimer = Timer(const Duration(seconds: 3), () => progressMessage = 'reconnecting'.tr());
+      _reconnectTimer = Timer(const Duration(seconds: 5), () => _connect(context));
     }
   }
 
@@ -154,11 +152,13 @@ class _InitializingScreenState extends State<InitializingScreen> {
                                       AppRoutes.lanInfoScreen,
                                       arguments: {
                                         'init': true,
-                                      });
-                                })
+                                      },
+                                  );
+                                },
+                            )
                           ],
                         ),
-                      )
+                      ),
               ],
             ),
           ),
@@ -240,6 +240,8 @@ class _InitializingScreenState extends State<InitializingScreen> {
   }
 }
 
+//FIXME: This should be in library "buttons.dart.
+//Also, in landing_screen.dart is exists a class with this name, too. maybe merge?
 class SquareButtonWidget extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
