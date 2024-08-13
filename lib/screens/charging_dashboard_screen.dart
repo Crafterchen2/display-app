@@ -623,8 +623,12 @@ class _ChargingDashboardScreenState extends ConsumerState<ChargingDashboardScree
                   duration: const Duration(
                     seconds: 2,
                   ),
-                  content: const Text(
-                      'You are offline. Try again or check wifi Settings.'), //TODO: Localization
+                  content: Text(
+                    'You are offline. Try again or check wifi Settings.',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ), //TODO: Localization
                   action: SnackBarAction(
                     label: 'Open Wifi settings', //TODO: Localization
                     onPressed: () {
