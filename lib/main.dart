@@ -46,6 +46,8 @@ void main() async {
   ));
 }
 
+ValueNotifier<ThemeMode> brightnessNotifier = ValueNotifier(ThemeMode.light);
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -62,17 +64,22 @@ class MyApp extends StatelessWidget {
 
     PionixThemeProvider themeProvider = PionixThemeProvider();
 
-    return MaterialApp(
-      title: 'Pionix Box',
-      debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.light,
-      theme: themeProvider.getLightTheme(),
-      darkTheme: themeProvider.getDarkTheme(),
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      onGenerateRoute: (settings) => AppRouter.onGenerateRoute(settings),
-      home: const InitializingScreen(),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: brightnessNotifier,
+      builder: (context, brightnessValue, child) {
+        return MaterialApp(
+          title: 'Pionix Box',
+          debugShowCheckedModeBanner: false,
+          themeMode: brightnessValue,
+          theme: themeProvider.getLightTheme(),
+          darkTheme: themeProvider.getDarkTheme(),
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          onGenerateRoute: (settings) => AppRouter.onGenerateRoute(settings),
+          home: const InitializingScreen(),
+        );
+      },
     );
   }
 }

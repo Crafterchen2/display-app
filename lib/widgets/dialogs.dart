@@ -85,11 +85,11 @@ class BasicDialog extends StatelessWidget {
       title: Text(
         title,
         style: TextStyle(
-            color: Theme.of(context).colorScheme.primary, fontSize: 40),
+            color: Theme.of(context).colorScheme.onBackground, fontSize: 40),
       ),
       content: Text(content,
           style: TextStyle(
-              color: Theme.of(context).colorScheme.primary, fontSize: 30)),
+              color: Theme.of(context).colorScheme.onBackground, fontSize: 30)),
       actions: <Widget>[
         TextButton(
             // color: Colors.green,
@@ -97,7 +97,7 @@ class BasicDialog extends StatelessWidget {
             child: Text(
               negativeText,
               style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary, fontSize: 36),
+                  color: Theme.of(context).colorScheme.onBackground, fontSize: 36),
             )),
         const SizedBox(
           width: 50,
@@ -108,7 +108,7 @@ class BasicDialog extends StatelessWidget {
             child: Text(
               positiveText,
               style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary, fontSize: 36),
+                  color: Theme.of(context).colorScheme.error, fontSize: 36),
             ))
       ],
     );

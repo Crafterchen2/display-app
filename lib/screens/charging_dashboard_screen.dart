@@ -23,6 +23,7 @@ import 'package:pionixbox/utils/constants/helper.dart';
 import 'package:pionixbox/utils/enums.dart';
 import 'package:pionixbox/utils/globals.dart';
 import 'package:pionixbox/widgets/layout.dart';
+import 'package:pionixbox/main.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
@@ -511,6 +512,30 @@ class _ChargingDashboardScreenState
                 Icons.restart_alt,
                 color: Theme.of(context).colorScheme.onError,
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 10,
+              bottom: 5,
+              right: 10,
+            ),
+            child: FilledButton.icon(
+              onPressed: () {
+                brightnessNotifier.value =
+                    (Theme.of(context).brightness == Brightness.light)
+                        ? ThemeMode.dark
+                        : ThemeMode.light;
+              },
+              label: Text(
+                (Theme.of(context).brightness == Brightness.light)
+                    ? "Dark mode"
+                    : "Light mode", //TODO: Localisation
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              icon: Icon((Theme.of(context).brightness == Brightness.light)
+                  ? Icons.dark_mode
+                  : Icons.light_mode),
             ),
           ),
           Padding(

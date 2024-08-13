@@ -90,113 +90,108 @@ class _ControlState extends ConsumerState<Control> {
     return SingleChildScrollView(
       child:
           //floatingActionButton: const PionixCloseButton(),
-          Container(
-        //Can this be removed?
-        color: Theme.of(context).colorScheme.background,
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.02,
+          Stack(
+            children: [
+              Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.02,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                wrapString('Loaded config: $loadedConfig'),
+                                softWrap: true,
+                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                      color: Theme.of(context).colorScheme.onBackground,
+                                    ),
+                              ),
+                            ),
+                            Container(),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              wrapString('Loaded config: $loadedConfig'),
-                              softWrap: true,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
-                                  ?.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 8),
+                              child: PrimaryButton(
+                                //width: screenWidth * 0.3,
+                                onPressed: () {
+                                  mqtt.publish(
+                                      "everest_api/control/cmd/restart", "1");
+                                },
+                                child: const Text(
+                                    "Restart basecamp-control.service"),
+                              ),
                             ),
-                          ),
-                          Container(),
-                        ],
-                      ),
-                    ],
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 8),
+                              child: PrimaryButton(
+                                //width: screenWidth * 0.3,
+                                onPressed: () {
+                                  mqtt.publish(
+                                      "everest_api/control/cmd/restart_display_app",
+                                      "1");
+                                },
+                                child: const Text("Restart display-app.service"),
+                              ),
+                            ),
+                          ],
+                        )
+                      ]),
+                  const Padding(padding: EdgeInsets.only(bottom: 20)),
+                  Text(
+                    "EVerest configurations",
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
                   ),
-                ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 8),
-                            child: PrimaryButton(
-                              //width: screenWidth * 0.3,
-                              onPressed: () {
-                                mqtt.publish(
-                                    "everest_api/control/cmd/restart", "1");
-                              },
-                              child: const Text("Restart basecamp-control.service"),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 8),
-                            child: PrimaryButton(
-                              //width: screenWidth * 0.3,
-                              onPressed: () {
-                                mqtt.publish(
-                                    "everest_api/control/cmd/restart_display_app",
-                                    "1");
-                              },
-                              child: const Text("Restart display-app.service"),
-                            ),
-                          ),
-                        ],
-                      )
-                    ]),
-                const Padding(padding: EdgeInsets.only(bottom: 20)),
-                Text(
-                  "EVerest configurations",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: configInfo.length,
-                    itemBuilder: (builder, index) {
-                      String header = configInfo.keys.elementAt(index);
-                      return ConfigInfoWidget(
-                        header: header,
-                        configPaths: configInfo.values.elementAt(index),
-                        loadConfig: loadConfig,
-                      );
-                    }),
-                ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: configDirInfo.length,
-                    itemBuilder: (builder, index) {
-                      String header = configDirInfo.keys.elementAt(index);
-                      return ConfigInfoWidget(
-                        header: header,
-                        configPaths: configDirInfo.values.elementAt(index),
-                        loadConfig: loadConfig,
-                      );
-                    }),
-                const SizedBox(height: 100),
-              ],
-            ),
-          ],
-        ),
-      ),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: configInfo.length,
+                      itemBuilder: (builder, index) {
+                        String header = configInfo.keys.elementAt(index);
+                        return ConfigInfoWidget(
+                          header: header,
+                          configPaths: configInfo.values.elementAt(index),
+                          loadConfig: loadConfig,
+                        );
+                      }),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: configDirInfo.length,
+                      itemBuilder: (builder, index) {
+                        String header = configDirInfo.keys.elementAt(index);
+                        return ConfigInfoWidget(
+                          header: header,
+                          configPaths: configDirInfo.values.elementAt(index),
+                          loadConfig: loadConfig,
+                        );
+                      }),
+                  const SizedBox(height: 100),
+                ],
+              ),
+            ],
+          ),
     );
   }
 }
@@ -228,19 +223,21 @@ class ConfigInfoWidget extends StatelessWidget {
                 height: 1,
                 width: screenWidth *
                     0.1, //TODO: Remove dependency on screen dimensions
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
                   header,
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
                 ),
               ),
               Expanded(
                 child: Container(
                   height: 1,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.onBackground,
                 ),
               ),
             ],
@@ -257,7 +254,9 @@ class ConfigInfoWidget extends StatelessWidget {
                     child: Text(
                       wrapString(value),
                       softWrap: true,
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
                     ),
                   ),
                   Padding(

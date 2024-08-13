@@ -167,7 +167,10 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               alignment: Alignment.topLeft,
                               child: Text(
                                 'status'.tr(),
-                                style: Theme.of(context).textTheme.headlineMedium,
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                      color: Theme.of(context).colorScheme.onBackground,
+                                    ),
                               ),
                             ),
                             Text(
@@ -187,7 +190,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 children: [
                                   Text(
                                     'charge_upto'.tr() + ' ',
-                                    style: Theme.of(context).textTheme.headlineSmall,
+                                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                      color: Theme.of(context).colorScheme.onBackground,
+                                    ),
                                   ),
                                   Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -199,12 +204,15 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                           fontFeatures: [
                                             const FontFeature.tabularFigures(),
                                           ],
+                                          color: Theme.of(context).colorScheme.onBackground,
                                         ),
                                       ),
                                       Text(
                                         ' A',
                                         textAlign: TextAlign.end,
-                                        style: Theme.of(context).textTheme.headlineSmall,
+                                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                          color: Theme.of(context).colorScheme.onBackground,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -243,11 +251,17 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                     child: widget.state == ChargingState.authRequired
                         ? Text(
                             'swipe_your_card_please'.tr(),
-                            style: Theme.of(context).textTheme.titleLarge,
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
                           )
                         : Text(
-                            widget.state == 'unplugged'.tr() ? 'last_session'.tr() : 'current_session'.tr(),
-                            style: Theme.of(context).textTheme.titleLarge,
+                            widget.state == 'unplugged'.tr()
+                                ? 'last_session'.tr()
+                                : 'current_session'.tr(),
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
                           ),
                   ),
                   (widget.state == ChargingState.authRequired)
@@ -262,7 +276,13 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                   onPressed: widget.seeMorePressed,
                                   child: _buildInfoCards(
                                     name: widget.chargerModelName,
-                                    width: (carSideWidth.isSnapped()) ? (MediaQuery.of(context).size.width - carSideWidth.snapNumber()) / 14 : null,
+                                    width: (carSideWidth.isSnapped())
+                                        ? (MediaQuery.of(context).size.width -
+                                                carSideWidth.snapNumber()) / 14
+                                        : null,
+                                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                      color: Theme.of(context).colorScheme.onBackground,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -394,58 +414,62 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     );
   }
 
-  Widget _buildInfoCards({required String name, double? width}) {
-    if (name == "MicroMegaWattCharger") {
+  Widget _buildInfoCards({
+    required String name,
+    double? width,
+    TextStyle? style,
+  }) {
+    if (name == "MicroMegaWattCharger" || true) {
       List<Text> titles = [
-        const Text(
+        Text(
           'Output Voltage : ',
-          textScaler: TextScaler.linear(2),
+          style: style,
         ),
-        const Text(
+        Text(
           'Relais : ',
-          textScaler: TextScaler.linear(2),
+          style: style,
         ),
-        const Text(
+        Text(
           'PWM DC : ',
-           textScaler: TextScaler.linear(2),
+          style: style,
         ),
-        const Text(
+        Text(
           'CP Hi : ',
-          textScaler: TextScaler.linear(2),
+          style: style,
         ),
-        const Text(
+        Text(
           'CP Lo : ',
-          textScaler: TextScaler.linear(2),
+          style: style,
         ),
-        const Text(
+        Text(
           'State : ',
-          textScaler: TextScaler.linear(2),
+          style: style,
         ),
       ];
       List<Text> values = [
         Text(
           outputVoltage.toStringAsFixed(2) + ' V',
-          textScaler: const TextScaler.linear(2),
+          style: style,
         ),
         Text(
           relaisState,
-          textScaler: const TextScaler.linear(2),
+          style: style,
         ),
         Text(
           pwmDc.toStringAsFixed(0) + ' %',
-          textScaler: const TextScaler.linear(2),
+          style: style,
         ),
         Text(
           cpHi.toStringAsFixed(2),
-          textScaler: const TextScaler.linear(2),
+          style: style,
         ),
         Text(
           cpLo.toStringAsFixed(2),
-          textScaler: const TextScaler.linear(2),
+          style: style,
         ),
         Text(
           stateString,
-          textScaler: const TextScaler.linear(2),
+          style: style,
         ),
       ];
       double maxWidth = 0.0;
@@ -456,7 +480,6 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             style: titles[i].style,
           ),
           textDirection: TextDirection.ltr,
-          textScaler: const TextScaler.linear(2),
         );
         tp.layout();
         double w = tp.width;
@@ -466,18 +489,17 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             style: values[i].style,
           ),
           textDirection: TextDirection.rtl,
-          textScaler: const TextScaler.linear(2),
         );
         tp.layout();
         w += tp.width + 20;
         maxWidth = max(maxWidth, w);
       }
-      Color? aColor = Color.lerp(Theme.of(context).colorScheme.background, Theme.of(context).colorScheme.onBackground, 0.1)?.withAlpha(160);
-      Color? bColor = Color.lerp(Theme.of(context).colorScheme.background, Theme.of(context).colorScheme.onBackground, 0.25)?.withAlpha(160);
-      double w = maxWidth;//min(width ?? 0, maxWidth);
+      Color? aColor = Color.lerp(Theme.of(context).colorScheme.background, Theme.of(context).colorScheme.onBackground, 0.2)?.withAlpha(160);
+      Color? bColor = Color.lerp(Theme.of(context).colorScheme.background, Theme.of(context).colorScheme.onBackground, 0.4)?.withAlpha(160);
       List<Widget> infos = [];
       for (int i = 0; i < min(titles.length, values.length); i++) {
-        infos.add(_buildTextInfo((i % 2 == 0) ? aColor : bColor, values[i], titles[i], w));
+        infos.add(_buildTextInfo(
+            (i % 2 == 0) ? aColor : bColor, values[i], titles[i], maxWidth));
       }
       return Wrap(
         alignment: WrapAlignment.start,
@@ -532,7 +554,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             ),
             child: SvgPicture.asset(
               iconPath,
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
           ),
           Text(
@@ -596,7 +618,7 @@ Widget getChargingSessionWidgetByState(BuildContext context, String state, doubl
                 foreground: Paint()
                   ..style = PaintingStyle.stroke
                   ..strokeWidth = 8
-                  ..color = Theme.of(context).colorScheme.primary,
+                  ..color = Theme.of(context).colorScheme.onBackground,
               ),
             ),
             Text(

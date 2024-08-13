@@ -65,7 +65,9 @@ class _AboutState extends ConsumerState<About> {
               Text(
                 "EVerest ${releaseInfo.version} @ ${releaseInfo.channel} channel"
                     .tr(),
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
               ),
               Expanded(
                 child: ListView.builder(
@@ -113,7 +115,9 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
                   component.name,
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
                 ),
               ),
               Expanded(
@@ -130,7 +134,7 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
               child: Text(
                 component.description,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
               )),
           Padding(
@@ -138,7 +142,7 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
               child: Text(
                 "version".tr() + ": ${component.version}",
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
               )),
           Padding(
@@ -146,7 +150,7 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
               child: Text(
                 "license".tr() + ": ${component.license}",
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
               ))
         ],

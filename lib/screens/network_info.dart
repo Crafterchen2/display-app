@@ -100,13 +100,8 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
                                     const EdgeInsets.symmetric(horizontal: 8),
                                 child: Text(
                                   'Hostname: $hostnameString',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge
-                                      ?.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
+                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                        color: Theme.of(context).colorScheme.onBackground,
                                       ),
                                 ),
                               ),
@@ -155,19 +150,21 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
               Container(
                 height: 1,
                 width: screenWidth * 0.1,
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
                   "network_interface".tr() + ": ${info.interface}",
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
                 ),
               ),
               Expanded(
                 child: Container(
                   height: 1,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.onBackground,
                 ),
               ),
             ],
@@ -184,7 +181,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                     return Text(
                       'IPv4: ${info.ipv4[index]}',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.onBackground,
                           ),
                     );
                   } else {
@@ -203,7 +200,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                     return Text(
                       'IPv6: ${info.ipv6[index]}',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.onBackground,
                           ),
                     );
                   } else {
@@ -216,7 +213,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
             child: Text(
               'MAC: ${info.mac}',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
             ),
           ),
