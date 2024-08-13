@@ -125,8 +125,7 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                                 child: PionixVirtualKeyboard(
                                     height: 300,
                                     fontSize: 32,
-                                    textColor:
-                                        Theme.of(context).colorScheme.primary,
+                                    textColor: Theme.of(context).colorScheme.primary,
                                     textController: widget.passwordController,
                                     customLayoutKeys:
                                         VirtualKeyboardPionixLayoutKeys(),
@@ -147,8 +146,10 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                                     type: VirtualKeyboardType.Alphanumeric,
                                     onKeyPress: (key) => _onKeyPress(key)),
                               )
-                      ]);
-                })
+                      ],
+                  );
+                },
+          )
               : const SizedBox(),
         ],
       ),

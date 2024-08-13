@@ -140,6 +140,11 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       threshold: adjustScale(threshold),
     );
     const scaler = TextScaler.linear(1.7);
+
+    var s = MediaQuery.of(context).size;
+
+    //debugPrint("size: $s");
+
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -286,7 +291,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                   ),
                                 ),
                               ),
-                              (widget.chargerModelName != "MicroMegaWattCharger")
+                              (widget.chargerModelName != "MicroMegaWattCharger" && false)
                                   ? null
                                   : Padding(
                                       padding: const EdgeInsets.symmetric(
