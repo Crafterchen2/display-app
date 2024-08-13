@@ -139,6 +139,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       snapped: adjustScale(snapped - offset),
       threshold: adjustScale(threshold),
     );
+    const scaler = TextScaler.linear(1.7);
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -301,7 +302,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                             },
                                             child: const Text(
                                               "Pause",
-                                              textScaler: TextScaler.linear(2),
+                                              textScaler: scaler,
                                             ),
                                           ),
                                           PrimaryButton(
@@ -310,7 +311,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                             },
                                             child: const Text(
                                               "Resume",
-                                              textScaler: TextScaler.linear(2),
+                                              textScaler: scaler,
                                             ),
                                           ),
                                           PrimaryButton(
@@ -319,7 +320,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                             },
                                             child: const Text(
                                               "Stop transaction",
-                                              textScaler: TextScaler.linear(2),
+                                              textScaler: scaler,
                                             ),
                                           ),
                                           PrimaryButton(
@@ -328,7 +329,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                             },
                                             child: const Text(
                                               "Emerg.Stp",
-                                              textScaler: TextScaler.linear(2),
+                                              textScaler: scaler,
                                             ),
                                           ),
                                           PrimaryButton(
@@ -337,7 +338,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                             },
                                             child: const Text(
                                               "EVSE malf",
-                                              textScaler: TextScaler.linear(2),
+                                              textScaler: scaler,
                                             ),
                                           ),
                                           PrimaryButton(
@@ -346,7 +347,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                             },
                                             child: const Text(
                                               "EVSEutil int",
-                                              textScaler: TextScaler.linear(2),
+                                              textScaler: scaler,
                                             ),
                                           ),
                                         ],
