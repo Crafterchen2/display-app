@@ -50,8 +50,8 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                   child: Text(
                     widget.ssid,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
                   ),
                 ),
               ),
@@ -117,8 +117,9 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
             ],
           ),
           _showKeyboard
-              ? OrientationBuilder(builder: (context, orientation) {
-                  return Column(
+              ? OrientationBuilder(
+                  builder: (context, orientation) {
+                    return Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         orientation == Orientation.landscape
@@ -127,7 +128,8 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                                 child: PionixVirtualKeyboard(
                                     height: 300,
                                     fontSize: 32,
-                                    textColor: Theme.of(context).colorScheme.primary,
+                                    textColor:
+                                        Theme.of(context).colorScheme.primary,
                                     textController: widget.passwordController,
                                     customLayoutKeys:
                                         VirtualKeyboardPionixLayoutKeys(),
@@ -149,9 +151,9 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                                     onKeyPress: (key) => _onKeyPress(key)),
                               )
                       ],
-                  );
-                },
-          )
+                    );
+                  },
+                )
               : const SizedBox(),
         ],
       ),

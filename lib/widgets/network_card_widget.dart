@@ -70,8 +70,13 @@ class NetworkCardWidget extends StatelessWidget {
                               padding: const EdgeInsets.only(top: 4.0),
                               child: Text(
                                 'saved'.tr(),
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                      color: Theme.of(context).colorScheme.onBackground,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
                                     ),
                               ),
                             )
@@ -82,13 +87,23 @@ class NetworkCardWidget extends StatelessWidget {
                 isConnected
                     ? Center(
                         child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                          decoration: BoxDecoration(color: Theme.of(context).colorScheme.tertiaryContainer, borderRadius: BorderRadius.circular(4)),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 8),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                              borderRadius: BorderRadius.circular(4)),
                           child: Text(
                             'connected'.tr(),
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
                                   fontSize: 18,
-                                  color: Theme.of(context).colorScheme.onTertiaryContainer,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onTertiaryContainer,
                                 ),
                           ),
                         ),
@@ -97,11 +112,17 @@ class NetworkCardWidget extends StatelessWidget {
                 strength.isNotEmpty
                     ? Center(
                         child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                          decoration: BoxDecoration(color: strengthColor, borderRadius: BorderRadius.circular(4)),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 8),
+                          decoration: BoxDecoration(
+                              color: strengthColor,
+                              borderRadius: BorderRadius.circular(4)),
                           child: Text(
                             strength,
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
                                   fontSize: 18,
                                   color: Theme.of(context).colorScheme.surface,
                                 ),

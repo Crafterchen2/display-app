@@ -23,12 +23,17 @@ class PionixVirtualKeyboardKey {
   final VirtualKeyboardKeyType keyType;
   final PionixVirtualKeyboardKeyAction? action;
 
-  PionixVirtualKeyboardKey({this.text, this.capsText, required this.keyType, this.action}) {
+  PionixVirtualKeyboardKey(
+      {this.text, this.capsText, required this.keyType, this.action}) {
     if (text == null && action != null) {
-      text = action == PionixVirtualKeyboardKeyAction.Space ? ' ' : (action == PionixVirtualKeyboardKeyAction.Return ? '\n' : '');
+      text = action == PionixVirtualKeyboardKeyAction.Space
+          ? ' '
+          : (action == PionixVirtualKeyboardKeyAction.Return ? '\n' : '');
     }
     if (capsText == null && action != null) {
-      capsText = action == PionixVirtualKeyboardKeyAction.Space ? ' ' : (action == PionixVirtualKeyboardKeyAction.Return ? '\n' : '');
+      capsText = action == PionixVirtualKeyboardKeyAction.Space
+          ? ' '
+          : (action == PionixVirtualKeyboardKeyAction.Return ? '\n' : '');
     }
   }
 }
@@ -70,26 +75,114 @@ const List<List> _defaultEnglishLayout = [
   // Row 1
   ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
   // Row 2
-  ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', PionixVirtualKeyboardKeyAction.Backspace],
+  [
+    'q',
+    'w',
+    'e',
+    'r',
+    't',
+    'y',
+    'u',
+    'i',
+    'o',
+    'p',
+    PionixVirtualKeyboardKeyAction.Backspace
+  ],
   // Row 3
-  ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', PionixVirtualKeyboardKeyAction.Return],
+  [
+    'a',
+    's',
+    'd',
+    'f',
+    'g',
+    'h',
+    'j',
+    'k',
+    'l',
+    ';',
+    '\'',
+    PionixVirtualKeyboardKeyAction.Return
+  ],
   // Row 4
-  [PionixVirtualKeyboardKeyAction.Shift, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', PionixVirtualKeyboardKeyAction.Shift],
+  [
+    PionixVirtualKeyboardKeyAction.Shift,
+    'z',
+    'x',
+    'c',
+    'v',
+    'b',
+    'n',
+    'm',
+    ',',
+    '.',
+    '/',
+    PionixVirtualKeyboardKeyAction.Shift
+  ],
   // Row 5
-  [PionixVirtualKeyboardKeyAction.SwitchToSpecialCharacters, '@', PionixVirtualKeyboardKeyAction.Space, '&', '_'],
+  [
+    PionixVirtualKeyboardKeyAction.SwitchToSpecialCharacters,
+    '@',
+    PionixVirtualKeyboardKeyAction.Space,
+    '&',
+    '_'
+  ],
 ];
 
 const List<List> _defaultSpecialCharactersLayout = [
   // Row 1
   ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
   // Row 2
-  ['@', '#', '\$', '_', '&', '-', '+', '(', ')', '/', PionixVirtualKeyboardKeyAction.Backspace],
+  [
+    '@',
+    '#',
+    '\$',
+    '_',
+    '&',
+    '-',
+    '+',
+    '(',
+    ')',
+    '/',
+    PionixVirtualKeyboardKeyAction.Backspace
+  ],
   // Row 3
-  ['*', '"', '\'', ':', ';', '!', '?', '[', ']', '{', '}', PionixVirtualKeyboardKeyAction.Return],
+  [
+    '*',
+    '"',
+    '\'',
+    ':',
+    ';',
+    '!',
+    '?',
+    '[',
+    ']',
+    '{',
+    '}',
+    PionixVirtualKeyboardKeyAction.Return
+  ],
   // Row 4
-  [PionixVirtualKeyboardKeyAction.Shift, '~', '`', '|', '^', '°', '=', '\\', '%', '€', '§', PionixVirtualKeyboardKeyAction.Shift],
+  [
+    PionixVirtualKeyboardKeyAction.Shift,
+    '~',
+    '`',
+    '|',
+    '^',
+    '°',
+    '=',
+    '\\',
+    '%',
+    '€',
+    '§',
+    PionixVirtualKeyboardKeyAction.Shift
+  ],
   // Row 5
-  [PionixVirtualKeyboardKeyAction.SwitchFromSpecialCharacters, '<', PionixVirtualKeyboardKeyAction.Space, '>', '_'],
+  [
+    PionixVirtualKeyboardKeyAction.SwitchFromSpecialCharacters,
+    '<',
+    PionixVirtualKeyboardKeyAction.Space,
+    '>',
+    '_'
+  ],
 ];
 
 /// The default keyboard height. Can be overridden by passing
@@ -125,7 +218,8 @@ class PionixVirtualKeyboard extends StatefulWidget {
   final TextEditingController? textController;
 
   /// The builder function will be called for each Key object.
-  final Widget Function(BuildContext context, PionixVirtualKeyboardKey key)? builder;
+  final Widget Function(BuildContext context, PionixVirtualKeyboardKey key)?
+      builder;
 
   /// Set to true if you want only to show Caps letters.
   final bool alwaysCaps;
@@ -192,7 +286,8 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
       switch (key.action) {
         case PionixVirtualKeyboardKeyAction.Backspace:
           if (textController.text.isEmpty) return;
-          textController.text = textController.text.substring(0, textController.text.length - 1);
+          textController.text =
+              textController.text.substring(0, textController.text.length - 1);
           break;
         case PionixVirtualKeyboardKeyAction.Return:
           textController.text += '\n';
@@ -245,7 +340,8 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
     textController = widget.textController ?? TextEditingController();
     width = widget.width;
     type = widget.type;
-    customLayoutKeys = widget.customLayoutKeys ?? VirtualKeyboardPionixLayoutKeys();
+    customLayoutKeys =
+        widget.customLayoutKeys ?? VirtualKeyboardPionixLayoutKeys();
     onKeyPress = widget.onKeyPress;
     height = widget.height;
     textColor = widget.textColor;
@@ -277,7 +373,8 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
   }
 
   /// Returns a list of `VirtualKeyboardKey` objects.
-  List<PionixVirtualKeyboardKey> _getKeyboardRowKeys(VirtualKeyboardPionixLayoutKeys layoutKeys, rowNum) {
+  List<PionixVirtualKeyboardKey> _getKeyboardRowKeys(
+      VirtualKeyboardPionixLayoutKeys layoutKeys, rowNum) {
     // Generate VirtualKeyboardKey objects for each row.
     return List.generate(layoutKeys.activeLayout[rowNum].length, (int keyNum) {
       // Get key string value.
@@ -291,28 +388,34 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
           keyType: VirtualKeyboardKeyType.String,
         );
       } else {
-        var action = layoutKeys.activeLayout[rowNum][keyNum] as PionixVirtualKeyboardKeyAction;
-        return PionixVirtualKeyboardKey(keyType: VirtualKeyboardKeyType.Action, action: action);
+        var action = layoutKeys.activeLayout[rowNum][keyNum]
+            as PionixVirtualKeyboardKeyAction;
+        return PionixVirtualKeyboardKey(
+            keyType: VirtualKeyboardKeyType.Action, action: action);
       }
     });
   }
 
   /// Returns a list of VirtualKeyboard rows with `VirtualKeyboardKey` objects.
-  List<List<PionixVirtualKeyboardKey>> _getKeyboardRows(VirtualKeyboardPionixLayoutKeys layoutKeys) {
+  List<List<PionixVirtualKeyboardKey>> _getKeyboardRows(
+      VirtualKeyboardPionixLayoutKeys layoutKeys) {
     // Generate lists for each keyboard row.
-    return List.generate(layoutKeys.activeLayout.length, (int rowNum) => _getKeyboardRowKeys(layoutKeys, rowNum));
+    return List.generate(layoutKeys.activeLayout.length,
+        (int rowNum) => _getKeyboardRowKeys(layoutKeys, rowNum));
   }
 
   /// Returns the rows for keyboard.
   List<Widget> _rows() {
     // Get the keyboard Rows
-    List<List<PionixVirtualKeyboardKey>> keyboardRows = _getKeyboardRows(customLayoutKeys);
+    List<List<PionixVirtualKeyboardKey>> keyboardRows =
+        _getKeyboardRows(customLayoutKeys);
 
     // Generate keyboard row.
     List<Widget> rows = List.generate(keyboardRows.length, (int rowNum) {
       var items = List.generate(keyboardRows[rowNum].length, (int keyNum) {
         // Get the VirtualKeyboardKey object.
-        PionixVirtualKeyboardKey virtualKeyboardKey = keyboardRows[rowNum][keyNum];
+        PionixVirtualKeyboardKey virtualKeyboardKey =
+            keyboardRows[rowNum][keyNum];
 
         Widget keyWidget;
 
@@ -368,7 +471,9 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
           height: height / customLayoutKeys.activeLayout.length,
           child: Center(
             child: Text(
-              alwaysCaps ? key.capsText! : (isShiftEnabled ? key.capsText! : key.text!),
+              alwaysCaps
+                  ? key.capsText!
+                  : (isShiftEnabled ? key.capsText! : key.text!),
               style: textStyle,
             ),
           ),
@@ -389,14 +494,17 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
           onLongPress: () {
             longPress = true;
             // Start sending backspace key events while longPress is true
-            Timer.periodic(const Duration(milliseconds: _virtualKeyboardBackspaceEventPeriod), (timer) {
-              if (longPress) {
-                _onKeyPress(key);
-              } else {
-                // Cancel timer.
-                timer.cancel();
-              }
-            },
+            Timer.periodic(
+              const Duration(
+                  milliseconds: _virtualKeyboardBackspaceEventPeriod),
+              (timer) {
+                if (longPress) {
+                  _onKeyPress(key);
+                } else {
+                  // Cancel timer.
+                  timer.cancel();
+                }
+              },
             );
           },
           onLongPressUp: () {
@@ -433,30 +541,33 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
         break;
       case PionixVirtualKeyboardKeyAction.SwitchLanguage:
         actionKey = GestureDetector(
-            onTap: () {
-              setState(() {
+          onTap: () {
+            setState(
+              () {
                 customLayoutKeys.switchLanguage();
               },
-              );
-            },
-            child: SizedBox(
-              height: double.infinity,
-              width: double.infinity,
-              child: Icon(
-                Icons.language,
-                color: textColor,
-              ),
+            );
+          },
+          child: SizedBox(
+            height: double.infinity,
+            width: double.infinity,
+            child: Icon(
+              Icons.language,
+              color: textColor,
             ),
+          ),
         );
         break;
       case PionixVirtualKeyboardKeyAction.SwitchToSpecialCharacters:
         actionKey = GestureDetector(
             onTap: () {
-              setState(() {
-                // widget.specialCharacters = true;
-                isSpecialCharactersEnabled = true;
-                customLayoutKeys.switchSpecialCharacters(isSpecialCharactersEnabled);
-              },
+              setState(
+                () {
+                  // widget.specialCharacters = true;
+                  isSpecialCharactersEnabled = true;
+                  customLayoutKeys
+                      .switchSpecialCharacters(isSpecialCharactersEnabled);
+                },
               );
             },
             child: SizedBox(child: Text("?123", style: textStyle)));
@@ -464,10 +575,12 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
       case PionixVirtualKeyboardKeyAction.SwitchFromSpecialCharacters:
         actionKey = GestureDetector(
             onTap: () {
-              setState(() {
-                isSpecialCharactersEnabled = false;
-                customLayoutKeys.switchSpecialCharacters(isSpecialCharactersEnabled);
-              },
+              setState(
+                () {
+                  isSpecialCharactersEnabled = false;
+                  customLayoutKeys
+                      .switchSpecialCharacters(isSpecialCharactersEnabled);
+                },
               );
             },
             child: SizedBox(child: Text("ABC", style: textStyle)));
@@ -478,9 +591,10 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
       onTap: () {
         if (key.action == PionixVirtualKeyboardKeyAction.Shift) {
           if (!alwaysCaps) {
-            setState(() {
-              isShiftEnabled = !isShiftEnabled;
-            },
+            setState(
+              () {
+                isShiftEnabled = !isShiftEnabled;
+              },
             );
           }
         }
@@ -495,7 +609,9 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
     );
 
     if (key.action == PionixVirtualKeyboardKeyAction.Space) {
-      return SizedBox(width: (width ?? MediaQuery.of(context).size.width) / 2, child: widget);
+      return SizedBox(
+          width: (width ?? MediaQuery.of(context).size.width) / 2,
+          child: widget);
     } else {
       return Expanded(child: widget);
     }

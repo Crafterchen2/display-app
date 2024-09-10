@@ -69,7 +69,8 @@ class _ControlState extends ConsumerState<Control> {
   void loadConfig(String config) {
     Map<String, String> changeConfig = {};
     changeConfig["config_path"] = config;
-    mqtt.publish("everest_api/control/cmd/change_config", json.encode(changeConfig).toString());
+    mqtt.publish("everest_api/control/cmd/change_config",
+        json.encode(changeConfig).toString());
   }
 
   @override
@@ -109,8 +110,13 @@ class _ControlState extends ConsumerState<Control> {
                           child: Text(
                             wrapString('Loaded config: $loadedConfig'),
                             softWrap: true,
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  color: Theme.of(context).colorScheme.onBackground,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
                                 ),
                           ),
                         ),
@@ -121,37 +127,39 @@ class _ControlState extends ConsumerState<Control> {
                 ),
               ),
               Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 8),
-                          child: PrimaryButton(
-                            //width: screenWidth * 0.3,
-                            onPressed: () {
-                              mqtt.publish("everest_api/control/cmd/restart", "1");
-                            },
-                            child:
-                                const Text("Restart basecamp-control.service"),
-                          ),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 8),
+                        child: PrimaryButton(
+                          //width: screenWidth * 0.3,
+                          onPressed: () {
+                            mqtt.publish(
+                                "everest_api/control/cmd/restart", "1");
+                          },
+                          child: const Text("Restart basecamp-control.service"),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 8),
-                          child: PrimaryButton(
-                            //width: screenWidth * 0.3,
-                            onPressed: () {
-                              mqtt.publish("everest_api/control/cmd/restart_display_app", "1");
-                            },
-                            child: const Text("Restart display-app.service"),
-                          ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 8),
+                        child: PrimaryButton(
+                          //width: screenWidth * 0.3,
+                          onPressed: () {
+                            mqtt.publish(
+                                "everest_api/control/cmd/restart_display_app",
+                                "1");
+                          },
+                          child: const Text("Restart display-app.service"),
                         ),
-                      ],
-                    )
-                  ],
+                      ),
+                    ],
+                  )
+                ],
               ),
               const Padding(padding: EdgeInsets.only(bottom: 20)),
               Text(
@@ -161,30 +169,30 @@ class _ControlState extends ConsumerState<Control> {
                     ),
               ),
               ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: configInfo.length,
-                  itemBuilder: (builder, index) {
-                    String header = configInfo.keys.elementAt(index);
-                    return ConfigInfoWidget(
-                      header: header,
-                      configPaths: configInfo.values.elementAt(index),
-                      loadConfig: loadConfig,
-                    );
-                  },
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: configInfo.length,
+                itemBuilder: (builder, index) {
+                  String header = configInfo.keys.elementAt(index);
+                  return ConfigInfoWidget(
+                    header: header,
+                    configPaths: configInfo.values.elementAt(index),
+                    loadConfig: loadConfig,
+                  );
+                },
               ),
               ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: configDirInfo.length,
-                  itemBuilder: (builder, index) {
-                    String header = configDirInfo.keys.elementAt(index);
-                    return ConfigInfoWidget(
-                      header: header,
-                      configPaths: configDirInfo.values.elementAt(index),
-                      loadConfig: loadConfig,
-                    );
-                  },
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: configDirInfo.length,
+                itemBuilder: (builder, index) {
+                  String header = configDirInfo.keys.elementAt(index);
+                  return ConfigInfoWidget(
+                    header: header,
+                    configPaths: configDirInfo.values.elementAt(index),
+                    loadConfig: loadConfig,
+                  );
+                },
               ),
               const SizedBox(height: 100),
             ],

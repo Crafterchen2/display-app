@@ -92,26 +92,26 @@ class BasicDialog extends StatelessWidget {
               color: Theme.of(context).colorScheme.onBackground, fontSize: 30)),
       actions: <Widget>[
         TextButton(
-            // color: Colors.green,
-            onPressed: onNegativePressed,
-            child: Text(
-              negativeText,
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.onBackground,
-                  fontSize: 36),
-            ),
+          // color: Colors.green,
+          onPressed: onNegativePressed,
+          child: Text(
+            negativeText,
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.onBackground,
+                fontSize: 36),
+          ),
         ),
         const SizedBox(
           width: 50,
         ),
         TextButton(
-            // color: Colors.redAccent,
-            onPressed: onPositivePressed,
-            child: Text(
-              positiveText,
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.error, fontSize: 36),
-            ),
+          // color: Colors.redAccent,
+          onPressed: onPositivePressed,
+          child: Text(
+            positiveText,
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.error, fontSize: 36),
+          ),
         )
       ],
     );

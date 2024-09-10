@@ -49,7 +49,8 @@ class _AboutState extends ConsumerState<About> {
     if (appInfo != null) {
       if (appInfo.release_metadata_file != null &&
           appInfo.release_metadata_file != releaseMetadataFile) {
-        releaseMetadataFile = appInfo.release_metadata_file ?? releaseMetadataFile;
+        releaseMetadataFile =
+            appInfo.release_metadata_file ?? releaseMetadataFile;
         debugPrint("metadata file: $releaseMetadataFile");
         _read();
       }
@@ -62,7 +63,8 @@ class _AboutState extends ConsumerState<About> {
             children: [
               const Padding(padding: EdgeInsets.only(bottom: 20)),
               Text(
-                "EVerest ${releaseInfo.version} @ ${releaseInfo.channel} channel".tr(),
+                "EVerest ${releaseInfo.version} @ ${releaseInfo.channel} channel"
+                    .tr(),
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
@@ -132,35 +134,33 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
-              height:
-                  screenHeight * 0.03),
+          SizedBox(height: screenHeight * 0.03),
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                component.description,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              component.description,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
           ),
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                "version".tr() + ": ${component.version}",
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              "version".tr() + ": ${component.version}",
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
           ),
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                "license".tr() + ": ${component.license}",
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              "license".tr() + ": ${component.license}",
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
           )
         ],
       ),

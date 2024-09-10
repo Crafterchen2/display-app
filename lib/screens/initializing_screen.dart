@@ -73,8 +73,10 @@ class _InitializingScreenState extends State<InitializingScreen> {
       debugPrint('Loading failed, Error: $e');
       progressMessage = 'connection_failed'.tr();
       // reconnecting...
-      _reconnectMessageTimer = Timer(const Duration(seconds: 3), () => progressMessage = 'reconnecting'.tr());
-      _reconnectTimer = Timer(const Duration(seconds: 5), () => _connect(context));
+      _reconnectMessageTimer = Timer(const Duration(seconds: 3),
+          () => progressMessage = 'reconnecting'.tr());
+      _reconnectTimer =
+          Timer(const Duration(seconds: 5), () => _connect(context));
     }
   }
 
@@ -145,16 +147,16 @@ class _InitializingScreenState extends State<InitializingScreen> {
                                       });
                                 }),
                             SquareButtonWidget(
-                                iconUrl: 'assets/icons/icon_lan.svg',
-                                text: 'lan'.tr(),
-                                onPressed: () {
-                                  Navigator.of(context).pushNamed(
-                                      AppRoutes.lanInfoScreen,
-                                      arguments: {
-                                        'init': true,
-                                      },
-                                  );
-                                },
+                              iconUrl: 'assets/icons/icon_lan.svg',
+                              text: 'lan'.tr(),
+                              onPressed: () {
+                                Navigator.of(context).pushNamed(
+                                  AppRoutes.lanInfoScreen,
+                                  arguments: {
+                                    'init': true,
+                                  },
+                                );
+                              },
                             )
                           ],
                         ),

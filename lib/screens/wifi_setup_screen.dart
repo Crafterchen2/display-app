@@ -57,7 +57,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   }
 
   void extractArguments(BuildContext context) {
-    final i = (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{}) as Map;
+    final i = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
     initialisingScreen = i["init"];
     setState(() {});
   }
@@ -72,10 +73,13 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   void _connect() async {
     try {
       await mqtt.connect();
-      mqtt.subscribe("everest_api/setup/var/wifi_info", parseAvailableNetworksInfo);
-      mqtt.subscribe("everest_api/setup/var/configured_networks", parseConfiguredNetworksInfo);
+      mqtt.subscribe(
+          "everest_api/setup/var/wifi_info", parseAvailableNetworksInfo);
+      mqtt.subscribe("everest_api/setup/var/configured_networks",
+          parseConfiguredNetworksInfo);
 
-      mqtt.subscribe("everest_api/setup/var/network_device_info", networkDeviceInfo);
+      mqtt.subscribe(
+          "everest_api/setup/var/network_device_info", networkDeviceInfo);
 
       enableWifiScanning();
       scanWifi();
@@ -111,7 +115,11 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     configuredNetworks.clear();
     final networks = jsonDecode(message);
     for (final n in networks) {
-      final cn = ConfiguredNetwork(networkId: n['network_id'], ssid: n["ssid"], interface: n['interface'], isConnected: n['connected']);
+      final cn = ConfiguredNetwork(
+          networkId: n['network_id'],
+          ssid: n["ssid"],
+          interface: n['interface'],
+          isConnected: n['connected']);
       configuredNetworks.add(cn);
     }
     if (mounted) {
@@ -131,7 +139,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     availableNetworks.clear();
     final networks = jsonDecode(message);
     for (final n in networks) {
-      availableNetworks.add(AvailableNetwork(n['ssid'], n["frequency"], n['signal_level']));
+      availableNetworks
+          .add(AvailableNetwork(n['ssid'], n["frequency"], n['signal_level']));
     }
     filterAvailableNetworks();
     if (mounted) {
@@ -159,7 +168,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final apState = ref.watch(apStateStreamProvider).whenOrNull(data: (data) => data);
+    final apState =
+        ref.watch(apStateStreamProvider).whenOrNull(data: (data) => data);
     if (apState != null) {
       apStateString = apState;
       if (apStateString == "enabled") {
@@ -173,7 +183,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      floatingActionButton: !_showPasswordScreen ? const PionixCloseButton() : null,
+      floatingActionButton:
+          !_showPasswordScreen ? const PionixCloseButton() : null,
       body: Stack(
         children: [
           Column(
@@ -190,14 +201,18 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                     color: Theme.of(context).colorScheme.background,
                     height: screenHeight * 0.2,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02, vertical: screenHeight * 0.01),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.02,
+                          vertical: screenHeight * 0.01),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           SecondaryButton(
                             title: 'close'.tr(),
-                            borderColor: Theme.of(context).colorScheme.errorContainer,
-                            textColor: Theme.of(context).colorScheme.errorContainer,
+                            borderColor:
+                                Theme.of(context).colorScheme.errorContainer,
+                            textColor:
+                                Theme.of(context).colorScheme.errorContainer,
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -206,9 +221,15 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                           SizedBox(width: screenWidth * 0.03),
                           PrimaryButton(
                             child: const Text('Add LAN'),
-                            style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-                                  backgroundColor: MaterialStateProperty.resolveWith(
-                                    (states) => Theme.of(context).colorScheme.errorContainer,
+                            style: Theme.of(context)
+                                .elevatedButtonTheme
+                                .style
+                                ?.copyWith(
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith(
+                                    (states) => Theme.of(context)
+                                        .colorScheme
+                                        .errorContainer,
                                   ),
                                 ),
                             onPressed: () {
@@ -224,9 +245,15 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                           SizedBox(width: screenWidth * 0.03),
                           PrimaryButton(
                             child: const Text('Done with SETUP'),
-                            style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-                                  backgroundColor: MaterialStateProperty.resolveWith(
-                                    (states) => Theme.of(context).colorScheme.tertiaryContainer,
+                            style: Theme.of(context)
+                                .elevatedButtonTheme
+                                .style
+                                ?.copyWith(
+                                  backgroundColor:
+                                      MaterialStateProperty.resolveWith(
+                                    (states) => Theme.of(context)
+                                        .colorScheme
+                                        .tertiaryContainer,
                                   ),
                                 ),
                             onPressed: () {
@@ -280,7 +307,10 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                   onForgetPressed: () async {
                     final savedNetwork = getSavedNetworkFromSSID(_selectedSSID);
                     if (savedNetwork != null) {
-                      await forgetConfirmationDialog(context, interface: savedNetwork.interface, networkId: savedNetwork.network_id, ssid: _selectedSSID);
+                      await forgetConfirmationDialog(context,
+                          interface: savedNetwork.interface,
+                          networkId: savedNetwork.network_id,
+                          ssid: _selectedSSID);
                     }
                     passwordController.clear();
                     setState(() {
@@ -301,29 +331,35 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       {
         final savedNetwork = getSavedNetworkFromSSID(_selectedSSID);
         if (savedNetwork != null) {
-          debugPrint("Removing existing network $_selectedSSID with network id ${savedNetwork.network_id}");
+          debugPrint(
+              "Removing existing network $_selectedSSID with network id ${savedNetwork.network_id}");
           removeNetwork(savedNetwork.interface, savedNetwork.network_id);
         }
       }
       final psk = await generatePSK(_selectedSSID, passwordController.text);
-      final payload = "{\"interface\": \"wlan0\", \"ssid\": \"$_selectedSSID\", \"psk\": \"$psk\"}";
+      final payload =
+          "{\"interface\": \"wlan0\", \"ssid\": \"$_selectedSSID\", \"psk\": \"$psk\"}";
       mqtt.publish(Topic.addNetwork, payload);
       debugPrint("Added network $_selectedSSID");
       final savedNetwork = getSavedNetworkFromSSID(_selectedSSID);
       if (savedNetwork != null) {
-        debugPrint("Selecting network $_selectedSSID with network id ${savedNetwork.network_id}");
-        final payloadSelectNetwork = "{\"interface\": \"${savedNetwork.interface}\", \"network_id\": ${savedNetwork.network_id}}";
+        debugPrint(
+            "Selecting network $_selectedSSID with network id ${savedNetwork.network_id}");
+        final payloadSelectNetwork =
+            "{\"interface\": \"${savedNetwork.interface}\", \"network_id\": ${savedNetwork.network_id}}";
         selectNetwork(payloadSelectNetwork);
       }
     }
   }
 
   SavedNetwork? getSavedNetworkFromSSID(String ssid) {
-    final network = configuredNetworks.firstWhereOrNull((element) => element.ssid == ssid);
+    final network =
+        configuredNetworks.firstWhereOrNull((element) => element.ssid == ssid);
     if (network == null) {
       return null;
     }
-    return SavedNetwork(network_id: network.networkId, interface: network.interface);
+    return SavedNetwork(
+        network_id: network.networkId, interface: network.interface);
   }
 
   void enableNetwork(String payload) {
@@ -391,7 +427,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     mqtt.publish(Topic.scanWifi, '');
   }
 
-  Future<void> confirmationDialog(BuildContext context, {required ConfiguredNetwork cn}) async {
+  Future<void> confirmationDialog(BuildContext context,
+      {required ConfiguredNetwork cn}) async {
     showDialog(
         context: context,
         builder: (ctz) {
@@ -411,7 +448,10 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         });
   }
 
-  Future<void> forgetConfirmationDialog(BuildContext context, {required String ssid, required String interface, required int networkId}) async {
+  Future<void> forgetConfirmationDialog(BuildContext context,
+      {required String ssid,
+      required String interface,
+      required int networkId}) async {
     showDialog(
         context: context,
         builder: (ctz) {
@@ -453,7 +493,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                 await confirmationDialog(context, cn: cn);
                 // PionixSnackBar.infoSnackBar(context, 'Removing Network');
               } else {
-                final payload = "{\"interface\": \"${cn.interface}\", \"network_id\": ${cn.networkId}}";
+                final payload =
+                    "{\"interface\": \"${cn.interface}\", \"network_id\": ${cn.networkId}}";
                 enableNetwork(payload);
                 selectNetwork(payload);
                 showBanner('Connecting to network $_selectedSSID');
@@ -474,7 +515,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     if (availableNetworks.isNotEmpty) {
       final ids = availableNetworks.map((e) => e.ssid).toSet();
       availableNetworks.retainWhere((element) => ids.remove(element.ssid));
-      availableNetworks.sort((a, b) => b.signal_level.compareTo(a.signal_level));
+      availableNetworks
+          .sort((a, b) => b.signal_level.compareTo(a.signal_level));
       for (final an in availableNetworks) {
         items.add(NetworkCardWidget(
           ssid: an.ssid.isNotEmpty ? an.ssid : 'Hidden SSID',
@@ -524,13 +566,18 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                         children: [
                           Text(
                             'ap'.tr(),
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
                                   fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.onPrimary,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
                                 ),
                           ),
                           Switch(
-                            activeColor: Theme.of(context).colorScheme.secondary,
+                            activeColor:
+                                Theme.of(context).colorScheme.secondary,
                             value: _ap,
                             onChanged: (val) {
                               _wifi = val || true;
@@ -552,13 +599,18 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                         children: [
                           Text(
                             'wifi'.tr(),
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
                                   fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.onPrimary,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
                                 ),
                           ),
                           Switch(
-                            activeColor: Theme.of(context).colorScheme.secondary,
+                            activeColor:
+                                Theme.of(context).colorScheme.secondary,
                             value: _wifi,
                             onChanged: (val) {
                               _wifi = val;

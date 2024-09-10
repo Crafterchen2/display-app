@@ -54,8 +54,8 @@ class _IconTextFieldState extends State<IconTextField> {
               controller: widget.controller,
               focusNode: widget.focusNode,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
               decoration: InputDecoration(
                 alignLabelWithHint: true,
                 enabledBorder: InputBorder.none,

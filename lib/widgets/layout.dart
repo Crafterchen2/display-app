@@ -19,7 +19,8 @@ class BorderLayout extends StatelessWidget {
         Row(
           children: [
             Expanded(
-                child: (widgets.containsKey(BorderLayoutSlot.north) && widgets[BorderLayoutSlot.north] != null)
+                child: (widgets.containsKey(BorderLayoutSlot.north) &&
+                        widgets[BorderLayoutSlot.north] != null)
                     ? widgets[BorderLayoutSlot.north]!
                     : Container()),
           ],
@@ -30,7 +31,8 @@ class BorderLayout extends StatelessWidget {
               Column(
                 children: [
                   Expanded(
-                      child: (widgets.containsKey(BorderLayoutSlot.west) && widgets[BorderLayoutSlot.west] != null)
+                      child: (widgets.containsKey(BorderLayoutSlot.west) &&
+                              widgets[BorderLayoutSlot.west] != null)
                           ? widgets[BorderLayoutSlot.west]!
                           : Container()),
                 ],
@@ -40,7 +42,8 @@ class BorderLayout extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
-                        child: (widgets.containsKey(BorderLayoutSlot.center) && widgets[BorderLayoutSlot.center] != null)
+                        child: (widgets.containsKey(BorderLayoutSlot.center) &&
+                                widgets[BorderLayoutSlot.center] != null)
                             ? widgets[BorderLayoutSlot.center]!
                             : Container()),
                   ],
@@ -49,7 +52,8 @@ class BorderLayout extends StatelessWidget {
               Column(
                 children: [
                   Expanded(
-                      child: (widgets.containsKey(BorderLayoutSlot.east) && widgets[BorderLayoutSlot.east] != null)
+                      child: (widgets.containsKey(BorderLayoutSlot.east) &&
+                              widgets[BorderLayoutSlot.east] != null)
                           ? widgets[BorderLayoutSlot.east]!
                           : Container()),
                 ],
@@ -60,7 +64,8 @@ class BorderLayout extends StatelessWidget {
         Row(
           children: [
             Expanded(
-                child: (widgets.containsKey(BorderLayoutSlot.south) && widgets[BorderLayoutSlot.south] != null)
+                child: (widgets.containsKey(BorderLayoutSlot.south) &&
+                        widgets[BorderLayoutSlot.south] != null)
                     ? widgets[BorderLayoutSlot.south]!
                     : Container()),
           ],

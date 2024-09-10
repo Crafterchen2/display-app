@@ -1,7 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:easy_localization/easy_localization.dart' as _virtual_keyboard_backspace_event_period;
+import 'package:easy_localization/easy_localization.dart'
+    as _virtual_keyboard_backspace_event_period;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/mqtt.dart';
@@ -117,11 +118,13 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     try {
       await mqtt.connect();
       mqtt.subscribe("everest_external/umwc/relais_on", parseRelaisOn);
-      mqtt.subscribe("everest_external/umwc/output_voltage", parseOutputVoltage);
+      mqtt.subscribe(
+          "everest_external/umwc/output_voltage", parseOutputVoltage);
       mqtt.subscribe("everest_external/umwc/cp_hi", parseCpHi);
       mqtt.subscribe("everest_external/umwc/cp_lo", parseCpLo);
       mqtt.subscribe("everest_external/umwc/pwm_dc", parsePwmDc);
-      mqtt.subscribe("everest_external/nodered/1/state/state_string", parseStateString);
+      mqtt.subscribe(
+          "everest_external/nodered/1/state/state_string", parseStateString);
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
     }
@@ -173,8 +176,13 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               alignment: Alignment.topLeft,
                               child: Text(
                                 'status'.tr(),
-                                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                      color: Theme.of(context).colorScheme.onBackground,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
                                     ),
                               ),
                             ),
@@ -187,17 +195,26 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           ],
                         ),
                         _buildImageWidget(context),
-                        if (widget.chargingMode == ChargingMode.unknown || widget.chargingMode == ChargingMode.basicAC)
-                          makeChargeControlButton(context, carSideWidth.snapNumber()),
-                        if (widget.state != ChargingState.authRequired && widget.current >= widget.minCurrentA && widget.current <= widget.maxCurrentA)
+                        if (widget.chargingMode == ChargingMode.unknown ||
+                            widget.chargingMode == ChargingMode.basicAC)
+                          makeChargeControlButton(
+                              context, carSideWidth.snapNumber()),
+                        if (widget.state != ChargingState.authRequired &&
+                            widget.current >= widget.minCurrentA &&
+                            widget.current <= widget.maxCurrentA)
                           Column(
                             children: [
                               Wrap(
                                 children: [
                                   Text(
                                     'charge_upto'.tr() + ' ',
-                                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                          color: Theme.of(context).colorScheme.onBackground,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall
+                                        ?.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground,
                                         ),
                                   ),
                                   Row(
@@ -206,18 +223,28 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                       Text(
                                         currentSliderLabel,
                                         textAlign: TextAlign.start,
-                                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall
+                                            ?.copyWith(
                                           fontFeatures: [
                                             const FontFeature.tabularFigures(),
                                           ],
-                                          color: Theme.of(context).colorScheme.onBackground,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground,
                                         ),
                                       ),
                                       Text(
                                         ' A',
                                         textAlign: TextAlign.end,
-                                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                              color: Theme.of(context).colorScheme.onBackground,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onBackground,
                                             ),
                                       ),
                                     ],
@@ -228,7 +255,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 min: widget.minCurrentA,
                                 max: widget.maxCurrentA,
                                 label: currentSliderLabel,
-                                activeColor: Theme.of(context).colorScheme.secondary,
+                                activeColor:
+                                    Theme.of(context).colorScheme.secondary,
                                 inactiveColor: Colors.grey,
                                 onChanged: (val) {
                                   setState(() {});
@@ -259,14 +287,26 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                     child: widget.state == ChargingState.authRequired
                         ? Text(
                             'swipe_your_card_please'.tr(),
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  color: Theme.of(context).colorScheme.onBackground,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
                                 ),
                           )
                         : Text(
-                            widget.state == 'unplugged'.tr() ? 'last_session'.tr() : 'current_session'.tr(),
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  color: Theme.of(context).colorScheme.onBackground,
+                            widget.state == 'unplugged'.tr()
+                                ? 'last_session'.tr()
+                                : 'current_session'.tr(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
                                 ),
                           ),
                   ),
@@ -282,16 +322,26 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                   onPressed: widget.seeMorePressed,
                                   child: _buildInfoCards(
                                     name: widget.chargerModelName,
-                                    width: (carSideWidth.isSnapped()) ? (MediaQuery.of(context).size.width - carSideWidth.snapNumber()) / 14 : null,
-                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                      color: Theme.of(context).colorScheme.onBackground,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18
-                                    ),
+                                    width: (carSideWidth.isSnapped())
+                                        ? (MediaQuery.of(context).size.width -
+                                                carSideWidth.snapNumber()) /
+                                            14
+                                        : null,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 18),
                                   ),
                                 ),
                               ),
-                              (widget.chargerModelName != "MicroMegaWattCharger" && false)
+                              (widget.chargerModelName !=
+                                          "MicroMegaWattCharger" &&
+                                      false)
                                   ? null
                                   : Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -303,7 +353,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                         children: [
                                           PrimaryButton(
                                             onPressed: () {
-                                              mqtt.publish("everest_external/nodered/1/cmd/pause_charging", "1");
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/pause_charging",
+                                                  "1");
                                             },
                                             child: const Text(
                                               "Pause",
@@ -312,7 +364,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                           ),
                                           PrimaryButton(
                                             onPressed: () {
-                                              mqtt.publish("everest_external/nodered/1/cmd/resume_charging", "1");
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/resume_charging",
+                                                  "1");
                                             },
                                             child: const Text(
                                               "Resume",
@@ -321,7 +375,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                           ),
                                           PrimaryButton(
                                             onPressed: () {
-                                              mqtt.publish("everest_external/nodered/1/cmd/stop_transaction", "1");
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/stop_transaction",
+                                                  "1");
                                             },
                                             child: const Text(
                                               "Stop transaction",
@@ -330,7 +386,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                           ),
                                           PrimaryButton(
                                             onPressed: () {
-                                              mqtt.publish("everest_external/nodered/1/cmd/emergency_stop", "1");
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/emergency_stop",
+                                                  "1");
                                             },
                                             child: const Text(
                                               "Emerg.Stp",
@@ -339,7 +397,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                           ),
                                           PrimaryButton(
                                             onPressed: () {
-                                              mqtt.publish("everest_external/nodered/1/cmd/evse_malfunction", "1");
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/evse_malfunction",
+                                                  "1");
                                             },
                                             child: const Text(
                                               "EVSE malf",
@@ -348,7 +408,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                           ),
                                           PrimaryButton(
                                             onPressed: () {
-                                              mqtt.publish("everest_external/nodered/1/cmd/evse_utility_int", "1");
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/evse_utility_int",
+                                                  "1");
                                             },
                                             child: const Text(
                                               "EVSEutil int",
@@ -362,13 +424,18 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 width: double.infinity,
                                 child: TextButton(
                                   onPressed: () async {
-                                    await Navigator.of(context).pushNamed(AppRoutes.hlcLogScreen, arguments: {}).then((value) {
+                                    await Navigator.of(context).pushNamed(
+                                        AppRoutes.hlcLogScreen,
+                                        arguments: {}).then((value) {
                                       setState(() {});
                                     });
                                   },
                                   child: Text(
                                     "See HLC comm log", //TODO Localisation
-                                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall
+                                        ?.copyWith(
                                           color: Colors.grey,
                                         ),
                                     softWrap: true,
@@ -390,9 +457,10 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
 
   Widget makeChargeControlButton(BuildContext context, double? width) {
     var isChargingState = widget.state == ChargingState.charging;
-    var showResumeButton = pauseOrResumeChargingTitle(widget.state) != ChargingState.charging
-        && widget.state != ChargingState.authRequired
-        && pauseOrResumeChargingTitle(widget.state) != '';
+    var showResumeButton =
+        pauseOrResumeChargingTitle(widget.state) != ChargingState.charging &&
+            widget.state != ChargingState.authRequired &&
+            pauseOrResumeChargingTitle(widget.state) != '';
     if (!isChargingState && !showResumeButton) {
       return SizedBox(
         width: width,
@@ -501,11 +569,16 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
         w += tp.width + 20;
         maxWidth = max(maxWidth, w);
       }
-      Color? aColor = Color.lerp(Theme.of(context).colorScheme.background, Theme.of(context).colorScheme.onBackground, 0.2)?.withAlpha(160);
-      Color? bColor = Color.lerp(Theme.of(context).colorScheme.background, Theme.of(context).colorScheme.onBackground, 0.4)?.withAlpha(160);
+      Color? aColor = Color.lerp(Theme.of(context).colorScheme.background,
+              Theme.of(context).colorScheme.onBackground, 0.2)
+          ?.withAlpha(160);
+      Color? bColor = Color.lerp(Theme.of(context).colorScheme.background,
+              Theme.of(context).colorScheme.onBackground, 0.4)
+          ?.withAlpha(160);
       List<Widget> infos = [];
       for (int i = 0; i < min(titles.length, values.length); i++) {
-        infos.add(_buildTextInfo((i % 2 == 0) ? aColor : bColor, values[i], titles[i], maxWidth));
+        infos.add(_buildTextInfo(
+            (i % 2 == 0) ? aColor : bColor, values[i], titles[i], maxWidth));
       }
       return Wrap(
         alignment: WrapAlignment.start,
@@ -514,17 +587,23 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     } else {
       return Wrap(
         alignment: WrapAlignment.spaceAround,
-        spacing: (width == null) ? 0 : (MediaQuery.of(context).size.width - width) / 14,
+        spacing: (width == null)
+            ? 0
+            : (MediaQuery.of(context).size.width - width) / 14,
         children: [
-          _buildIconInfo('assets/icons/icon_power.svg', widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
-          _buildIconInfo('assets/icons/icon_energy.svg', widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
-          _buildIconInfo('assets/icons/icon_charging_duration.svg', widget.duration + ' h', 'duration'.tr())
+          _buildIconInfo('assets/icons/icon_power.svg',
+              widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
+          _buildIconInfo('assets/icons/icon_energy.svg',
+              widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
+          _buildIconInfo('assets/icons/icon_charging_duration.svg',
+              widget.duration + ' h', 'duration'.tr())
         ],
       );
     }
   }
 
-  Widget _buildTextInfo(Color? background, Text value, Text title, double width) {
+  Widget _buildTextInfo(
+      Color? background, Text value, Text title, double width) {
     return Container(
       padding: const EdgeInsets.all(8.0),
       color: background,
@@ -612,7 +691,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   }
 }
 
-Widget getChargingSessionWidgetByState(BuildContext context, String state, double height, double width, double? soc) {
+Widget getChargingSessionWidgetByState(BuildContext context, String state,
+    double height, double width, double? soc) {
   if (state == 'Charging') {
     return Stack(alignment: Alignment.bottomCenter, children: <Widget>[
       ChargingAnimationWidget(),

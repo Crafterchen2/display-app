@@ -100,8 +100,13 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
                                     const EdgeInsets.symmetric(horizontal: 8),
                                 child: Text(
                                   'Hostname: $hostnameString',
-                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                        color: Theme.of(context).colorScheme.onBackground,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
                                       ),
                                 ),
                               ),
@@ -173,41 +178,41 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: ListView.builder(
-                physics: const ClampingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: info.ipv4.length,
-                itemBuilder: (builder, index) {
-                  if (info.ipv4[index].isNotEmpty) {
-                    return Text(
-                      'IPv4: ${info.ipv4[index]}',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.onBackground,
-                          ),
-                    );
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                },
+              physics: const ClampingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: info.ipv4.length,
+              itemBuilder: (builder, index) {
+                if (info.ipv4[index].isNotEmpty) {
+                  return Text(
+                    'IPv4: ${info.ipv4[index]}',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: ListView.builder(
-                physics: const ClampingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: info.ipv6.length,
-                itemBuilder: (builder, index) {
-                  if (info.ipv6[index].isNotEmpty) {
-                    return Text(
-                      'IPv6: ${info.ipv6[index]}',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.onBackground,
-                          ),
-                    );
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                },
+              physics: const ClampingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: info.ipv6.length,
+              itemBuilder: (builder, index) {
+                if (info.ipv6[index].isNotEmpty) {
+                  return Text(
+                    'IPv6: ${info.ipv6[index]}',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
             ),
           ),
           Padding(
