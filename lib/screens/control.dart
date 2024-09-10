@@ -161,7 +161,7 @@ class _ControlState extends ConsumerState<Control> {
                   ),
                 ],
               ),
-              const Padding(padding: EdgeInsets.only(bottom: 20)),
+              const SizedBox(height: 20),
               Text(
                 "EVerest configurations",
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
