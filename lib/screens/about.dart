@@ -71,7 +71,7 @@ class _AboutState extends ConsumerState<About> {
               ),
               Expanded(
                 child: ListView.builder(
-                  padding: const SizedBox(height: 100),
+                  padding: const EdgeInsets.only(bottom: 100),
                   itemCount: releaseInfo.components.length,
                   itemBuilder: (builder, index) {
                     return ReleaseComponentInfoWidget(
