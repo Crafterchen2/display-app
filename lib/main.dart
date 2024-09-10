@@ -46,7 +46,7 @@ void main() async {
   ));
 }
 
-ValueNotifier<ThemeMode> brightnessNotifier = ValueNotifier(ThemeMode.light);
+ValueNotifier<ThemeMode> themeModeNotifier = ValueNotifier(ThemeMode.light);
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
     PionixThemeProvider themeProvider = PionixThemeProvider();
 
     return ValueListenableBuilder<ThemeMode>(
-      valueListenable: brightnessNotifier,
+      valueListenable: themeModeNotifier,
       builder: (context, brightnessValue, child) {
         return MaterialApp(
           title: 'Pionix Box',

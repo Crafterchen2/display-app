@@ -533,7 +533,7 @@ class _ChargingDashboardScreenState
             ),
             child: FilledButton.icon(
               onPressed: () {
-                brightnessNotifier.value =
+                themeModeNotifier.value =
                     (Theme.of(context).brightness == Brightness.light)
                         ? ThemeMode.dark
                         : ThemeMode.light;
