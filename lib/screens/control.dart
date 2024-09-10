@@ -135,7 +135,6 @@ class _ControlState extends ConsumerState<Control> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 8),
                         child: PrimaryButton(
-                          //width: screenWidth * 0.3,
                           onPressed: () {
                             mqtt.publish(
                                 "everest_api/control/cmd/restart", "1");
