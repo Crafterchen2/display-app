@@ -158,7 +158,7 @@ class _ControlState extends ConsumerState<Control> {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
               const Padding(padding: EdgeInsets.only(bottom: 20)),
