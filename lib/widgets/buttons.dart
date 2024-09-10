@@ -66,130 +66,6 @@ class SecondaryButton extends StatelessWidget {
   }
 }
 
-class SwitchSettingsButton extends StatelessWidget {
-  final EdgeInsetsGeometry margin;
-  final EdgeInsets padding;
-  final String title;
-  final bool value;
-  final ValueChanged<bool> onChanged;
-  final TextStyle titleStyle;
-  final Color textColor;
-  final double height;
-  final Color? backgroundColor;
-
-  //Not used, can be removed.
-  const SwitchSettingsButton({
-    Key? key,
-    this.margin = const EdgeInsets.only(left: 16.0, right: 8.0),
-    required this.title,
-    required this.value,
-    required this.onChanged,
-    required this.titleStyle,
-    this.padding = const EdgeInsets.only(
-      left: 16.0,
-      right: 8.0,
-    ),
-    this.textColor = Colors.black,
-    this.height = 56.0,
-    this.backgroundColor,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: margin,
-      child: Container(
-        decoration: BoxDecoration(
-          color: backgroundColor ?? Theme.of(context).colorScheme.primary,
-          borderRadius: BorderRadius.circular(8.0),
-          border: Border.all(color: Colors.white10),
-        ),
-        child: Container(
-          padding: padding,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Expanded(
-                child: Text(
-                  title,
-                  style: titleStyle,
-                ),
-              ),
-              Switch(
-                activeColor: Theme.of(context).colorScheme.secondary,
-                value: value,
-                onChanged: onChanged,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ActionButtonWithTitleBar extends StatelessWidget {
-  final EdgeInsetsGeometry margin;
-  final EdgeInsets padding;
-  final String title;
-  final VoidCallback onPressed;
-  final TextStyle titleStyle;
-  final Color textColor;
-  final double height;
-  final Color? backgroundColor;
-  final Icon icon;
-
-  //Not used, can be removed.
-  const ActionButtonWithTitleBar({
-    Key? key,
-    this.margin = const EdgeInsets.only(left: 16.0, right: 8.0),
-    required this.title,
-    required this.onPressed,
-    required this.titleStyle,
-    this.padding = const EdgeInsets.only(
-      left: 16.0,
-      right: 8.0,
-    ),
-    this.textColor = Colors.black,
-    this.height = 56.0,
-    this.backgroundColor,
-    required this.icon,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onPressed,
-      child: Container(
-        margin: margin,
-        child: Container(
-          decoration: BoxDecoration(
-            color: backgroundColor ?? Theme.of(context).colorScheme.primary,
-            borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(color: Colors.white10),
-          ),
-          child: Container(
-            padding: padding,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    title,
-                    style: titleStyle,
-                  ),
-                ),
-                icon,
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class PionixCloseButton extends StatelessWidget {
   final String title;
 
@@ -270,7 +146,7 @@ class CircularLabeledIconButton extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.titleMedium,
-        )
+        ),
       ],
     );
   }
