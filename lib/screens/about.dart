@@ -61,7 +61,7 @@ class _AboutState extends ConsumerState<About> {
         children: [
           Column(
             children: [
-              const Padding(padding: EdgeInsets.only(bottom: 20)),
+              const SizedBox(height: 20),
               Text(
                 "EVerest ${releaseInfo.version} @ ${releaseInfo.channel} channel"
                     .tr(),
