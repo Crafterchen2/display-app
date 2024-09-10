@@ -340,8 +340,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 ),
                               ),
                               (widget.chargerModelName !=
-                                          "MicroMegaWattCharger" &&
-                                      false)
+                                          "MicroMegaWattCharger")
                                   ? null
                                   : Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -494,7 +493,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     double? width,
     TextStyle? style,
   }) {
-    if (name == "MicroMegaWattCharger" || true) {
+    if (name == "MicroMegaWattCharger") {
       List<Text> titles = [
         Text(
           'Output Voltage : ',
