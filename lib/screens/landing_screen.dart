@@ -66,31 +66,26 @@ class _LandingScreenState extends State<LandingScreen> {
             const Expanded(flex: 1, child: EverestLogoWidget()),
             Expanded(
               flex: 2,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: screenHeight * 0.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SquareButtonWidget(
-                      text: 'private_mode'.tr(),
-                      onPressed: () {
-                        privateConfirmationDialog(context);
-                      },
-                    ),
-                    SizedBox(width: screenWidth * 0.1),
-                    SquareButtonWidget(
-                      text: 'public_mode'.tr(),
-                      onPressed: () {
-                        publicConfirmationDialog(context);
-                      },
-                    ),
-                  ],
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SquareButtonWidget(
+                    text: 'private_mode'.tr(),
+                    onPressed: () {
+                      privateConfirmationDialog(context);
+                    },
+                  ),
+                  SizedBox(width: screenWidth * 0.1),
+                  SquareButtonWidget(
+                    text: 'public_mode'.tr(),
+                    onPressed: () {
+                      publicConfirmationDialog(context);
+                    },
+                  ),
+                ],
               ),
-            )
+            ),
           ],
         ),
       ),
