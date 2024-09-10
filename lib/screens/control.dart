@@ -133,7 +133,9 @@ class _ControlState extends ConsumerState<Control> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 8),
+                            horizontal: 8,
+                            vertical: 8,
+                        ),
                         child: PrimaryButton(
                           onPressed: () {
                             mqtt.publish(
