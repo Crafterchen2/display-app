@@ -98,21 +98,24 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
     for (var hlcLog in hlcLogList) {
       if (hlcLog.origin == "EVSE") {
         // add to left
-        widgets.add(Row(
-          key: UniqueKey(),
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Flexible(
+        widgets.add(
+          Row(
+            key: UniqueKey(),
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Flexible(
                 child: Text(
-              buildHlcLogString(hlcLog),
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(color: Colors.blueAccent),
-              softWrap: true,
-            ))
-          ],
-        ));
+                  buildHlcLogString(hlcLog),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(color: Colors.blueAccent),
+                  softWrap: true,
+                ),
+              ),
+            ],
+          ),
+        );
       } else if (hlcLog.origin == "CAR") {
         // add to right
         widgets.add(
@@ -129,7 +132,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                       ?.copyWith(color: Colors.yellowAccent),
                   softWrap: true,
                 ),
-              )
+              ),
             ],
           ),
         );

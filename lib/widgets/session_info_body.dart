@@ -340,7 +340,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 ),
                               ),
                               (widget.chargerModelName !=
-                                          "MicroMegaWattCharger")
+                                      "MicroMegaWattCharger")
                                   ? null
                                   : Padding(
                                       padding: const EdgeInsets.symmetric(
