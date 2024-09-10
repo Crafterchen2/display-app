@@ -13,7 +13,7 @@ class DisplayTester extends StatelessWidget {
     var themeProvider = PionixThemeProvider();
     return MaterialApp(
       title: 'Pionix Box',
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: true,
       themeMode: ThemeMode.light,
       theme: themeProvider.getLightTheme(),
       darkTheme: themeProvider.getDarkTheme(),
