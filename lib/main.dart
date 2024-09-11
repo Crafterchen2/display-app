@@ -10,7 +10,9 @@ import 'package:pionixbox/utils/routing/app_router.dart';
 import 'package:pionixbox/widgets/restart_widget.dart';
 import 'package:auto_orientation/auto_orientation.dart';
 
+@Deprecated("We don't want to rely on screen width.")
 late double screenWidth;
+@Deprecated("We don't want to rely on screen height.")
 late double screenHeight;
 
 /// [uiScale] should be used to determine any kind of manual size adjustment of
