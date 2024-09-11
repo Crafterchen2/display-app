@@ -93,9 +93,7 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: _connected
-                              ? Theme.of(context)
-                                  .colorScheme
-                                  .tertiaryContainer
+                              ? Theme.of(context).colorScheme.tertiaryContainer
                               : Theme.of(context).colorScheme.errorContainer,
                         ),
                         child: Padding(

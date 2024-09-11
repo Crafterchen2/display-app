@@ -31,9 +31,7 @@ class SettingMenuButton extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(adjustScale(12)),
-            color: Theme.of(context)
-                .colorScheme
-                .secondary,
+            color: Theme.of(context).colorScheme.secondary,
           ),
           child: Center(
             child: Row(

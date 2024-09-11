@@ -216,7 +216,6 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            //width: screenWidth * 0.2,
                           ),
                           SizedBox(width: screenWidth * 0.03),
                           PrimaryButton(
@@ -240,7 +239,6 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                                 },
                               );
                             },
-                            //width: screenWidth * 0.3,
                           ),
                           SizedBox(width: screenWidth * 0.03),
                           PrimaryButton(
@@ -430,22 +428,24 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   Future<void> confirmationDialog(BuildContext context,
       {required ConfiguredNetwork cn}) async {
     showDialog(
-        context: context,
-        builder: (ctz) {
-          return BasicDialog(
-              title: cn.ssid,
-              positiveText: 'disconnect'.tr(),
-              negativeText: 'cancel'.tr(),
-              content: 'disconnect_this_network'.tr(),
-              onPositivePressed: () {
-                disableNetwork(cn.interface, cn.networkId);
-                Navigator.pop(context);
-                showBanner('$_selectedSSID disconnected');
-              },
-              onNegativePressed: () {
-                Navigator.pop(context);
-              });
-        });
+      context: context,
+      builder: (ctz) {
+        return BasicDialog(
+          title: cn.ssid,
+          positiveText: 'disconnect'.tr(),
+          negativeText: 'cancel'.tr(),
+          content: 'disconnect_this_network'.tr(),
+          onPositivePressed: () {
+            disableNetwork(cn.interface, cn.networkId);
+            Navigator.pop(context);
+            showBanner('$_selectedSSID disconnected');
+          },
+          onNegativePressed: () {
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
   }
 
   Future<void> forgetConfirmationDialog(BuildContext context,
@@ -453,26 +453,28 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       required String interface,
       required int networkId}) async {
     showDialog(
-        context: context,
-        builder: (ctz) {
-          return BasicDialog(
-              title: ssid,
-              positiveText: 'forget'.tr(),
-              negativeText: 'cancel'.tr(),
-              content: 'forget_this_network'.tr(),
-              onPositivePressed: () {
-                removeNetwork(interface, networkId);
+      context: context,
+      builder: (ctz) {
+        return BasicDialog(
+          title: ssid,
+          positiveText: 'forget'.tr(),
+          negativeText: 'cancel'.tr(),
+          content: 'forget_this_network'.tr(),
+          onPositivePressed: () {
+            removeNetwork(interface, networkId);
 
-                passwordController.clear();
-                setState(() {
-                  _showPasswordScreen = false;
-                });
-                Navigator.pop(context);
-              },
-              onNegativePressed: () {
-                Navigator.pop(context);
-              });
-        });
+            passwordController.clear();
+            setState(() {
+              _showPasswordScreen = false;
+            });
+            Navigator.pop(context);
+          },
+          onNegativePressed: () {
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
   }
 
   Widget sectionedListView() {
@@ -518,30 +520,34 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       availableNetworks
           .sort((a, b) => b.signal_level.compareTo(a.signal_level));
       for (final an in availableNetworks) {
-        items.add(NetworkCardWidget(
-          ssid: an.ssid.isNotEmpty ? an.ssid : 'Hidden SSID',
-          isConnected: an.ssid == connectedSsid,
-          isSaved: getSavedNetworkFromSSID(an.ssid) != null,
-          signalLevel: an.signal_level,
-          strengthColor: checkSignalStrengthColor(an.signal_level),
-          onPressed: () {
-            _selectedSSID = an.ssid;
-            setState(() {
-              _showPasswordScreen = true;
-            });
-          },
-          onSavedPressed: () {
-            debugPrint("on saved pressed");
-            _selectedSSID = an.ssid;
-            setState(() {
-              _showPasswordScreen = true;
-            });
-          },
-        ));
+        items.add(
+          NetworkCardWidget(
+            ssid: an.ssid.isNotEmpty ? an.ssid : 'Hidden SSID',
+            isConnected: an.ssid == connectedSsid,
+            isSaved: getSavedNetworkFromSSID(an.ssid) != null,
+            signalLevel: an.signal_level,
+            strengthColor: checkSignalStrengthColor(an.signal_level),
+            onPressed: () {
+              _selectedSSID = an.ssid;
+              setState(() {
+                _showPasswordScreen = true;
+              });
+            },
+            onSavedPressed: () {
+              debugPrint("on saved pressed");
+              _selectedSSID = an.ssid;
+              setState(() {
+                _showPasswordScreen = true;
+              });
+            },
+          ),
+        );
       }
-      items.add(SizedBox(
-        height: screenHeight * 0.3,
-      ));
+      items.add(
+        SizedBox(
+          height: screenHeight * 0.3,
+        ),
+      );
     }
     return Column(
       children: [
@@ -592,7 +598,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                               }
                               setState(() {});
                             },
-                          )
+                          ),
                         ],
                       ),
                       Row(
@@ -627,7 +633,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                               }
                               setState(() {});
                             },
-                          )
+                          ),
                         ],
                       ),
                     ],
