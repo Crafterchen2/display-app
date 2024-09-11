@@ -194,6 +194,7 @@ class _LandingScreenState extends State<LandingScreen> {
 
 //FIXME: This should be in library "buttons.dart.
 //Also, in landing_screen.dart is exists a class with this name, too. maybe merge?
+@Deprecated("Duplicate code, should be replaced with an equivalent widget.")
 class SquareButtonWidget extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
