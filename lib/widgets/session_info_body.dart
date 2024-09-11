@@ -144,10 +144,6 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     );
     const scaler = TextScaler.linear(1.7);
 
-    var s = MediaQuery.of(context).size;
-
-    //debugPrint("size: $s");
-
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(
