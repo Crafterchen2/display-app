@@ -1,7 +1,10 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:ui';
+
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:pionixbox/data/models/active_enable_disable_source.dart';
 import 'package:pionixbox/data/models/error.dart';
 
 part 'session_info.g.dart';
@@ -14,11 +17,22 @@ class SessionInfo {
   final DateTime datetime;
   final int latest_total_w;
   final String state;
-  final List<Error> active_permanent_faults;
-  final List<Error> active_errors;
+  final List<Error>? active_permanent_faults;
+  final List<Error>? active_errors;
+  final ActiveEnableDisableSource? active_enable_disable_source;
+  final bool? permanent_fault;
 
-  SessionInfo(this.charged_energy_wh, this.discharged_energy_wh, this.charging_duration_s, this.datetime,
-      this.latest_total_w, this.state, this.active_permanent_faults, this.active_errors);
+  SessionInfo(
+      this.charged_energy_wh,
+      this.discharged_energy_wh,
+      this.charging_duration_s,
+      this.datetime,
+      this.latest_total_w,
+      this.state,
+      this.active_permanent_faults,
+      this.active_errors,
+      this.active_enable_disable_source,
+      this.permanent_fault);
 
   factory SessionInfo.fromJson(Map<String, dynamic> json) =>
       _$SessionInfoFromJson(json);

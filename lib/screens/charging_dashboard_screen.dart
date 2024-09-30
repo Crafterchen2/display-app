@@ -193,8 +193,8 @@ class _ChargingDashboardScreenState
         ref.watch(telemetryStreamProvider).whenOrNull(data: (data) => data);
     if (telemetry != null) {
       bufferedTelemetry.fanRPM.add(telemetry.fan_rpm);
-      bufferedTelemetry.rcdCurrent.add(telemetry.rcd_current);
-      bufferedTelemetry.relaisOn.add(telemetry.relais_on);
+      bufferedTelemetry.rcdCurrent.add(telemetry.rcd_current == null ? 0 : telemetry.rcd_current!);
+      bufferedTelemetry.relaisOn.add(telemetry.relais_on == null ? false : telemetry.relais_on!);
       bufferedTelemetry.supplyVoltage12V.add(telemetry.supply_voltage_12V);
       bufferedTelemetry.supplyMinusVoltage12V
           .add(telemetry.supply_voltage_minus_12V);

@@ -13,12 +13,17 @@ SessionInfo _$SessionInfoFromJson(Map<String, dynamic> json) => SessionInfo(
       DateTime.parse(json['datetime'] as String),
       (json['latest_total_w'] as num).toInt(),
       json['state'] as String,
-      (json['active_permanent_faults'] as List<dynamic>)
-          .map((e) => Error.fromJson(e as Map<String, dynamic>))
+      (json['active_permanent_faults'] as List<dynamic>?)
+          ?.map((e) => Error.fromJson(e as Map<String, dynamic>))
           .toList(),
-      (json['active_errors'] as List<dynamic>)
-          .map((e) => Error.fromJson(e as Map<String, dynamic>))
+      (json['active_errors'] as List<dynamic>?)
+          ?.map((e) => Error.fromJson(e as Map<String, dynamic>))
           .toList(),
+      json['active_enable_disable_source'] == null
+          ? null
+          : ActiveEnableDisableSource.fromJson(
+              json['active_enable_disable_source'] as Map<String, dynamic>),
+      json['permanent_fault'] as bool?,
     );
 
 Map<String, dynamic> _$SessionInfoToJson(SessionInfo instance) =>
@@ -31,4 +36,6 @@ Map<String, dynamic> _$SessionInfoToJson(SessionInfo instance) =>
       'state': instance.state,
       'active_permanent_faults': instance.active_permanent_faults,
       'active_errors': instance.active_errors,
+      'active_enable_disable_source': instance.active_enable_disable_source,
+      'permanent_fault': instance.permanent_fault,
     };

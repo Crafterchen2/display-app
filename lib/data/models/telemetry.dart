@@ -7,8 +7,8 @@ part 'telemetry.g.dart';
 @JsonSerializable()
 class Telemetry {
   final double fan_rpm;
-  final double rcd_current;
-  final bool relais_on;
+  final double? rcd_current;
+  final bool? relais_on;
   final double supply_voltage_12V;
   final double supply_voltage_minus_12V;
   final double temperature;

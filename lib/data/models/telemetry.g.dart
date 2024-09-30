@@ -8,8 +8,8 @@ part of 'telemetry.dart';
 
 Telemetry _$TelemetryFromJson(Map<String, dynamic> json) => Telemetry(
       (json['fan_rpm'] as num).toDouble(),
-      (json['rcd_current'] as num).toDouble(),
-      json['relais_on'] as bool,
+      (json['rcd_current'] as num?)?.toDouble(),
+      json['relais_on'] as bool?,
       (json['supply_voltage_12V'] as num).toDouble(),
       (json['supply_voltage_minus_12V'] as num).toDouble(),
       (json['temperature'] as num).toDouble(),
