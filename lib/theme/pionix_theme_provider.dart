@@ -40,30 +40,6 @@ class PionixThemeProvider {
       fontWeight: FontWeight.bold,
     );
     TextStyle primaryTextColor = TextStyle(color: scheme.primary);
-    var text = TextTheme(
-      displayLarge: bold.copyWith(
-        color: scheme.secondary,
-        height: 1.3,
-        fontSize: 32,
-      ),
-      displayMedium: primaryTextColor.copyWith(
-        height: 1.3,
-        fontWeight: FontWeight.w500,
-      ),
-      displaySmall: primaryTextColor,
-      headlineLarge: primaryTextColor.merge(bold),
-      headlineMedium: primaryTextColor.copyWith(fontWeight: FontWeight.w500),
-      headlineSmall: primaryTextColor,
-      titleLarge: urbanistFont.merge(primaryTextColor),
-      titleMedium: urbanistFont.merge(primaryTextColor),
-      titleSmall: urbanistFont.merge(primaryTextColor),
-      labelLarge: primaryTextColor,
-      labelMedium: primaryTextColor,
-      labelSmall: primaryTextColor,
-      bodyLarge: primaryTextColor,
-      bodyMedium: primaryTextColor,
-      bodySmall: primaryTextColor,
-    );
     return ThemeData(
       colorScheme: scheme,
       sliderTheme: SliderThemeData(
@@ -195,7 +171,30 @@ class PionixThemeProvider {
         actionBackgroundColor: scheme.primary,
         actionTextColor: scheme.onPrimary,
       ),
-      textTheme: text,
+      textTheme: TextTheme(
+      displayLarge: bold.copyWith(
+        color: scheme.secondary,
+        height: 1.3,
+        fontSize: 32,
+      ),
+      displayMedium: primaryTextColor.copyWith(
+        height: 1.3,
+        fontWeight: FontWeight.w500,
+      ),
+      displaySmall: primaryTextColor,
+      headlineLarge: primaryTextColor.merge(bold),
+      headlineMedium: primaryTextColor.copyWith(fontWeight: FontWeight.w500),
+      headlineSmall: primaryTextColor,
+      titleLarge: urbanistFont.merge(primaryTextColor),
+      titleMedium: urbanistFont.merge(primaryTextColor),
+      titleSmall: urbanistFont.merge(primaryTextColor),
+      labelLarge: primaryTextColor,
+      labelMedium: primaryTextColor,
+      labelSmall: primaryTextColor,
+      bodyLarge: primaryTextColor,
+      bodyMedium: primaryTextColor,
+      bodySmall: primaryTextColor,
+    ),
       useMaterial3: true,
     );
   }
