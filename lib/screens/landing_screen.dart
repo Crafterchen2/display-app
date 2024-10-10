@@ -220,44 +220,6 @@ class _LandingScreenState extends State<LandingScreen> {
   }
 }
 
-//FIXME: This should be in library "buttons.dart.
-//Also, in landing_screen.dart is exists a class with this name, too. maybe merge?
-@Deprecated("Duplicate code, should be replaced with an equivalent widget.")
-class SquareButtonWidget extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-
-  const SquareButtonWidget({
-    Key? key,
-    required this.text,
-    required this.onPressed,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        height: screenHeight * 0.45,
-        width: screenHeight * 0.45,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary,
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-        ),
-        child: Center(
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class InitializingProgressWidget extends StatelessWidget {
   final double? progress;
 
