@@ -105,7 +105,6 @@ class _InitializingScreenState extends State<InitializingScreen> {
                               children: [
                                 Divider(
                                   thickness: adjustScale(2),
-                                  color: Colors.grey,
                                   height: adjustScale(50),
                                   indent: adjustScale(20),
                                   endIndent: adjustScale(20),
