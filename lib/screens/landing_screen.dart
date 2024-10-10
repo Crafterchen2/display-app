@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:pionixbox/data/models/application_info.dart';
-import 'package:pionixbox/main.dart';
 import 'package:pionixbox/widgets/buttons.dart';
 import 'package:pionixbox/widgets/dialogs.dart';
 
