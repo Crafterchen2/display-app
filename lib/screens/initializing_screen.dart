@@ -98,32 +98,21 @@ class _InitializingScreenState extends State<InitializingScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             const Expanded(
-                              child:
-                                  SizedBox.expand(child: EverestLogoWidget()),
+                              child: EverestLogoWidget(),
                             ),
-                            Column(
-                              children: [
-                                Divider(
-                                  thickness: adjustScale(2),
-                                  height: adjustScale(50),
-                                  indent: adjustScale(20),
-                                  endIndent: adjustScale(20),
-                                ),
-                                LinearProgressIndicator(
-                                  minHeight: adjustScale(10),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    top: screenHeight * 0.02,
-                                  ),
-                                  child: Text(
-                                    progressMessage.toUpperCase(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineLarge,
-                                  ),
-                                ),
-                              ],
+                            Divider(
+                              height: adjustScale(20),
+                              indent: adjustScale(20),
+                              endIndent: adjustScale(20),
+                            ),
+                            LinearProgressIndicator(
+                              minHeight: adjustScale(10),
+                            ),
+                            Text(
+                              progressMessage.toUpperCase(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineLarge,
                             ),
                           ],
                         ),
