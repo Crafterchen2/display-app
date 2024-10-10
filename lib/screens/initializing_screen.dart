@@ -111,9 +111,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
                                   endIndent: adjustScale(20),
                                 ),
                                 LinearProgressIndicator(
-                                  color: Theme.of(context).colorScheme.primary,
                                   minHeight: adjustScale(10),
-                                  backgroundColor: Colors.grey.shade300,
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(
