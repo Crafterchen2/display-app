@@ -4,6 +4,8 @@ import 'package:pionixbox/main.dart';
 import 'package:pionixbox/utils/routing/app_router.dart';
 import 'package:pionixbox/widgets/settings_menu_button.dart';
 
+import '../utils/routing/param_args.dart';
+
 class SettingsMenu extends StatefulWidget {
   final bool setupWifi;
   final bool setupSimulation;
@@ -49,7 +51,7 @@ class _SettingsMenuState extends State<SettingsMenu> {
                     Navigator.of(context).pushNamed(
                       AppRoutes.wifiSetupScreen,
                       arguments: {
-                        'init': false,
+                        'args' : const WifiSetupScreenArgs(false),
                       },
                     );
                   },

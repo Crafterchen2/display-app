@@ -9,6 +9,7 @@ import 'package:pionixbox/data/models/configured_network.dart';
 import 'package:pionixbox/data/models/saved_network.dart';
 import 'package:pionixbox/data/providers/ap_state_provider.dart';
 import 'package:pionixbox/screens/wifi_password_screen.dart';
+import 'package:pionixbox/utils/routing/param_args.dart';
 import 'package:pionixbox/widgets/buttons.dart';
 import 'package:pionixbox/widgets/dialogs.dart';
 import 'package:pionixbox/widgets/network_card_widget.dart';
@@ -57,9 +58,9 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   }
 
   void extractArguments(BuildContext context) {
-    final i = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
-    initialisingScreen = i["init"];
+    Map<String, dynamic>? map = (ModalRoute.of(context)?.settings.arguments) as Map<String, dynamic>;
+    WifiSetupScreenArgs args = map['args'] ?? const WifiSetupScreenArgs(false);
+    initialisingScreen = args.init;
     setState(() {});
   }
 
