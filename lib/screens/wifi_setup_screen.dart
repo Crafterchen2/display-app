@@ -180,8 +180,6 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         _ap = false;
       }
     }
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       floatingActionButton:
