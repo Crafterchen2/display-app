@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:pionixbox/data/models/application_info.dart';
 import 'package:pionixbox/main.dart';
+import 'package:pionixbox/widgets/buttons.dart';
 import 'package:pionixbox/widgets/dialogs.dart';
 
 import '../mqtt.dart';
@@ -57,31 +59,57 @@ class _LandingScreenState extends State<LandingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /*
+    * Using the screen size here (although we normally don't want to do that!)
+    * is acceptable, as this screen only contains 2 Buttons and should
+    * look the same for every screen.
+    * Using the screen size as f.e. padding in lists is less acceptable, because of
+    * possibly unpredictable stretching, moving etc.
+    * */
+    var sWidth = MediaQuery.of(context).size.width;
+    var sHeight = MediaQuery.of(context).size.height;
+    var buttonHeight = sHeight / 2 - 25;
+    var buttonWidth = sWidth / 2 - 25;
+    const double textScaleFactor = 1.6;
     return Scaffold(
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Expanded(flex: 1, child: EverestLogoWidget()),
+            const Expanded(child: EverestLogoWidget()),
             Expanded(
               flex: 2,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  SquareButtonWidget(
-                    text: 'private_mode'.tr(),
-                    onPressed: () {
-                      privateConfirmationDialog(context);
-                    },
+                  SizedBox(
+                    height: buttonHeight,
+                    width: buttonWidth,
+                    child: PrimaryButton(
+                      onPressed: () {
+                        privateConfirmationDialog(context);
+                      },
+                      child: Text(
+                        'private_mode'.tr(),
+                        textScaler: const TextScaler.linear(textScaleFactor),
+                      ),
+                    ),
                   ),
-                  SizedBox(width: screenWidth * 0.1),
-                  SquareButtonWidget(
-                    text: 'public_mode'.tr(),
-                    onPressed: () {
-                      publicConfirmationDialog(context);
-                    },
+                  SizedBox(
+                    height: buttonHeight,
+                    width: buttonWidth,
+                    child: PrimaryButton(
+                      onPressed: () {
+                        publicConfirmationDialog(context);
+                      },
+                      child: Text(
+                        'public_mode'.tr(),
+                        textScaler: const TextScaler.linear(textScaleFactor),
+                      ),
+                    ),
                   ),
                 ],
               ),
