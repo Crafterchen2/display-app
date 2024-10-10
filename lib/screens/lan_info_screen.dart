@@ -77,140 +77,118 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        elevation: 20,
+        backgroundColor: _connected
+            ? Theme.of(context).colorScheme.tertiaryContainer
+            : Theme.of(context).colorScheme.errorContainer,
+        foregroundColor: _connected
+            ? Theme.of(context).colorScheme.onTertiaryContainer
+            : Theme.of(context).colorScheme.onErrorContainer,
+        title: Text(
+          _connected
+              ? 'CONNECTED TO LAN'.tr()
+              : 'NO NETWORK FOUND'.tr(),
+          style: Theme.of(context).textTheme.displayLarge?.copyWith(
+            color: _connected
+                ? Theme.of(context).colorScheme.onTertiaryContainer
+                : Theme.of(context).colorScheme.onErrorContainer,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      bottomNavigationBar: BottomAppBar(
+        elevation: 20,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            OutlinedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: Theme.of(context).outlinedButtonTheme.style?.copyWith(
+                side: MaterialStateProperty.resolveWith((states) {
+                  if (states.contains(MaterialState.pressed)) {
+                    return BorderSide(
+                      width: 1,
+                      color: Theme.of(context).colorScheme.errorContainer,
+                    );
+                  }
+                  if (states.contains(MaterialState.hovered)) {
+                    return BorderSide(
+                      width: 4,
+                      color: Theme.of(context).colorScheme.errorContainer,
+                    );
+                  }
+                  return BorderSide(
+                    width: 2,
+                    color: Theme.of(context).colorScheme.errorContainer,
+                  );
+                }),
+              ),
+              child: const Text('Close'), //TODO translation
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 30,
+              ),
+              child: PrimaryButton(
+                child: const Text('Add WIFI'),
+                style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
+                  backgroundColor:
+                  MaterialStateProperty.resolveWith(
+                        (states) => Theme.of(context)
+                        .colorScheme
+                        .errorContainer,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(
+                      AppRoutes.wifiSetupScreen,
+                      arguments: {
+                        'init': true,
+                      });
+                },
+              ),
+            ),
+            PrimaryButton(
+              child: const Text('Done with SETUP'),
+              style: Theme.of(context)
+                  .elevatedButtonTheme
+                  .style
+                  ?.copyWith(
+                backgroundColor:
+                MaterialStateProperty.resolveWith(
+                      (states) => Theme.of(context)
+                      .colorScheme
+                      .tertiaryContainer,
+                ),
+              ),
+              onPressed: () {
+                setInitialized();
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) {
+                      return const LandingScreen();
+                    }), (Route<dynamic> route) => false);
+              },
+            ),
+          ],
+        ),
+      ),
       body: Stack(
         children: [
           _showProgress
-              ? Center(
-                  child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+              ? const Center(
+                  child: CircularProgressIndicator(),
                 )
-              : Column(
-                  children: [
-                    SizedBox(height: screenHeight * 0.1),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: _connected
-                              ? Theme.of(context).colorScheme.tertiaryContainer
-                              : Theme.of(context).colorScheme.errorContainer,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: screenWidth * 0.2,
-                              right: screenWidth * 0.02,
-                              top: screenHeight * 0.02,
-                              bottom: screenHeight * 0.02),
-                          child: Text(
-                            _connected
-                                ? 'CONNECTED TO LAN'.tr()
-                                : 'NO NETWORK FOUND'.tr(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .displayLarge
-                                ?.copyWith(
-                                  color: _connected
-                                      ? Theme.of(context)
-                                          .colorScheme
-                                          .onTertiaryContainer
-                                      : Theme.of(context)
-                                          .colorScheme
-                                          .onErrorContainer,
-                                ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                          itemCount: devices.length,
-                          itemBuilder: (builder, index) {
-                            return NetworkDeviceInfoWidget(
-                              info: devices[index],
-                            );
-                          }),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Container(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .background, //Is this necessary?
-                        height: screenHeight * 0.2,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: screenWidth * 0.02,
-                              vertical: screenHeight * 0.01),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              SecondaryButton(
-                                title: 'Close',
-                                borderColor: Theme.of(context)
-                                    .colorScheme
-                                    .errorContainer,
-                                textColor: Theme.of(context)
-                                    .colorScheme
-                                    .errorContainer,
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                //width: screenWidth * 0.2,
-                              ),
-                              SizedBox(width: screenWidth * 0.03),
-                              PrimaryButton(
-                                child: const Text('Add WIFI'),
-                                style: Theme.of(context)
-                                    .elevatedButtonTheme
-                                    .style
-                                    ?.copyWith(
-                                      backgroundColor:
-                                          MaterialStateProperty.resolveWith(
-                                        (states) => Theme.of(context)
-                                            .colorScheme
-                                            .errorContainer,
-                                      ),
-                                    ),
-                                onPressed: () {
-                                  Navigator.of(context).pushNamed(
-                                      AppRoutes.wifiSetupScreen,
-                                      arguments: {
-                                        'init': true,
-                                      });
-                                },
-                                //width: screenWidth * 0.3,
-                              ),
-                              SizedBox(width: screenWidth * 0.03),
-                              PrimaryButton(
-                                child: const Text('Done with SETUP'),
-                                style: Theme.of(context)
-                                    .elevatedButtonTheme
-                                    .style
-                                    ?.copyWith(
-                                      backgroundColor:
-                                          MaterialStateProperty.resolveWith(
-                                        (states) => Theme.of(context)
-                                            .colorScheme
-                                            .tertiaryContainer,
-                                      ),
-                                    ),
-                                onPressed: () {
-                                  setInitialized();
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(builder: (context) {
-                                    return const LandingScreen();
-                                  }), (Route<dynamic> route) => false);
-                                },
-                                //width: screenWidth * 0.3,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              : ListView.builder(
+                  itemCount: devices.length + 16,
+                  itemBuilder: (builder, index) {
+                    return NetworkDeviceInfoWidget(
+                      info: devices[index],
+                    );
+                  }),
         ],
       ),
     );
@@ -229,12 +207,10 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.2),
+    return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: screenHeight * 0.03),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
@@ -242,7 +218,6 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineLarge,
             ),
           ),
-          SizedBox(height: screenHeight * 0.02),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
