@@ -147,7 +147,7 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                   child: CircularProgressIndicator(),
                 )
               : ListView.builder(
-                  itemCount: devices.length + 16,
+                  itemCount: devices.length,
                   itemBuilder: (builder, index) {
                     return NetworkDeviceInfoWidget(
                       info: devices[index],
