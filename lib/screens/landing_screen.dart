@@ -228,26 +228,21 @@ class InitializingProgressWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     return Padding(
-      padding: EdgeInsets.only(top: height * 0.3),
+      padding: const EdgeInsets.only(top: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(
-            width: height * 0.5,
+          Expanded(
             child: LinearProgressIndicator(
               value: progress,
               color: Theme.of(context).colorScheme.secondary,
-              backgroundColor: Colors.grey.shade300,
+              backgroundColor: Theme.of(context).colorScheme.onSecondary,
             ),
           ),
-          SizedBox(
-            height: height * 0.01,
-          ),
           Padding(
-            padding: EdgeInsets.only(
-              top: height * 0.02,
+            padding: const EdgeInsets.only(
+              top: 15,
             ),
             child: Text(
               'initializing'.tr(),
