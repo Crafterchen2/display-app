@@ -121,29 +121,59 @@ class _InitializingScreenState extends State<InitializingScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
                           children: [
-                            SquareButtonWidget(
-                                iconUrl: 'assets/icons/icon_wifi.svg',
-                                text: 'wifi'.tr(),
+                            Expanded(
+                              child: OutlinedButton(
                                 onPressed: () {
                                   Navigator.of(context).pushNamed(
                                       AppRoutes.wifiSetupScreen,
                                       arguments: {
                                         'init': true,
-                                      });
-                                }),
-                            SquareButtonWidget(
-                              iconUrl: 'assets/icons/icon_lan.svg',
-                              text: 'lan'.tr(),
-                              onPressed: () {
-                                Navigator.of(context).pushNamed(
-                                  AppRoutes.lanInfoScreen,
-                                  arguments: {
-                                    'init': true,
-                                  },
-                                );
-                              },
-                            )
+                                      },
+                                  );
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/icons/icon_wifi.svg',
+                                    ),
+                                    Text(
+                                      'wifi'.tr(),
+                                      style: Theme.of(context).textTheme.displayLarge,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const VerticalDivider(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(
+                                    AppRoutes.lanInfoScreen,
+                                    arguments: {
+                                      'init': true,
+                                    },
+                                  );
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/icons/icon_lan.svg',
+                                    ),
+                                    Text(
+                                      'lan'.tr(),
+                                      style: Theme.of(context).textTheme.displayLarge,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
