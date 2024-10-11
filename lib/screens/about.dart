@@ -8,6 +8,7 @@ import 'package:pionixbox/data/models/network_device_info.dart';
 import 'package:pionixbox/data/models/release_component.dart';
 import 'package:pionixbox/data/models/release_info.dart';
 import 'package:pionixbox/data/providers/application_info_provider.dart';
+import 'package:pionixbox/main.dart';
 
 class About extends ConsumerStatefulWidget {
   const About({
@@ -56,7 +57,6 @@ class _AboutState extends ConsumerState<About> {
       }
     }
     return Scaffold(
-      //floatingActionButton: const PionixCloseButton(),
       body: Stack(
         children: [
           Column(
@@ -88,8 +88,6 @@ class _AboutState extends ConsumerState<About> {
   }
 }
 
-//FIXME: Many dependencies on screen dimensions. ideally there would be none.
-//FIXME: There might be better Solutions to create spacing than an opaque Container without children.
 class ReleaseComponentInfoWidget extends StatelessWidget {
   final ReleaseComponent component;
 
@@ -98,24 +96,20 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: screenWidth * 0.02,
+        horizontal: adjustScale(10),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: screenHeight * 0.03,
-          ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                height: 1,
-                width: screenWidth * 0.1,
-                color: Theme.of(context).colorScheme.primary,
+              Expanded(
+                child: Divider(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -127,14 +121,13 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: Container(
-                  height: 1,
+                flex: 5,
+                child: Divider(
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
             ],
           ),
-          SizedBox(height: screenHeight * 0.03),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
@@ -161,7 +154,7 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onBackground,
                   ),
             ),
-          )
+          ),
         ],
       ),
     );
