@@ -35,7 +35,6 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Stack(
@@ -79,7 +78,7 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                 alignment: Alignment.bottomRight,
                 child: Container(
                   alignment: Alignment.bottomRight,
-                  padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   width: double.infinity,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
