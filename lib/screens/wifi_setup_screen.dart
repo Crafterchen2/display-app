@@ -612,13 +612,10 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
               ),
             ),
             if (_wifi)
-              SizedBox(
-                width: screenWidth,
-                child: LinearProgressIndicator(
-                  color: Theme.of(context).colorScheme.primary,
-                  minHeight: 5,
-                  backgroundColor: Colors.grey.shade300,
-                ),
+              LinearProgressIndicator(
+                color: Theme.of(context).colorScheme.primary,
+                minHeight: 5,
+                backgroundColor: Colors.grey.shade300,
               ),
           ],
         ),
