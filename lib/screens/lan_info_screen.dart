@@ -97,37 +97,12 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
         ),
         centerTitle: true,
       ),
+      floatingActionButton: const PionixCloseButton(),
       bottomNavigationBar: BottomAppBar(
         elevation: 20,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            OutlinedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              style: Theme.of(context).outlinedButtonTheme.style?.copyWith(
-                side: MaterialStateProperty.resolveWith((states) {
-                  if (states.contains(MaterialState.pressed)) {
-                    return BorderSide(
-                      width: 1,
-                      color: Theme.of(context).colorScheme.errorContainer,
-                    );
-                  }
-                  if (states.contains(MaterialState.hovered)) {
-                    return BorderSide(
-                      width: 4,
-                      color: Theme.of(context).colorScheme.errorContainer,
-                    );
-                  }
-                  return BorderSide(
-                    width: 2,
-                    color: Theme.of(context).colorScheme.errorContainer,
-                  );
-                }),
-              ),
-              child: const Text('Close'), //TODO translation
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 30,
@@ -153,15 +128,10 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
             ),
             PrimaryButton(
               child: const Text('Done with SETUP'),
-              style: Theme.of(context)
-                  .elevatedButtonTheme
-                  .style
-                  ?.copyWith(
+              style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
                 backgroundColor:
                 MaterialStateProperty.resolveWith(
-                      (states) => Theme.of(context)
-                      .colorScheme
-                      .tertiaryContainer,
+                      (states) => Theme.of(context).colorScheme.tertiaryContainer,
                 ),
               ),
               onPressed: () {
@@ -187,7 +157,8 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                     return NetworkDeviceInfoWidget(
                       info: devices[index],
                     );
-                  }),
+                  },
+          ),
         ],
       ),
     );

@@ -182,8 +182,60 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     }
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      floatingActionButton:
-          !_showPasswordScreen ? const PionixCloseButton() : null,
+      floatingActionButton: !_showPasswordScreen ? const PionixCloseButton() : null,
+      bottomNavigationBar: !initialisingScreen ? null : BottomAppBar(
+        elevation: 20,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 30,
+              ),
+              child: PrimaryButton(
+                child: const Text('Add LAN'),
+                style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
+                  backgroundColor:
+                  MaterialStateProperty.resolveWith(
+                        (states) => Theme.of(context)
+                        .colorScheme
+                        .errorContainer,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(
+                    AppRoutes.lanInfoScreen,
+                    arguments: {
+                      'init': true,
+                    },
+                  );
+                },
+              ),
+            ),
+            PrimaryButton(
+              child: const Text('Done with SETUP'),
+              style: Theme.of(context)
+                  .elevatedButtonTheme
+                  .style
+                  ?.copyWith(
+                backgroundColor:
+                MaterialStateProperty.resolveWith(
+                      (states) => Theme.of(context)
+                      .colorScheme
+                      .tertiaryContainer,
+                ),
+              ),
+              onPressed: () {
+                setInitialized();
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) {
+                      return const LandingScreen();
+                    }), (Route<dynamic> route) => false);
+              },
+            ),
+          ],
+        ),
+      ),
       body: Stack(
         children: [
           Column(
@@ -193,84 +245,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
               Expanded(child: sectionedListView()),
             ],
           ),
-          initialisingScreen
-              ? Align(
-                  alignment: Alignment.bottomRight,
-                  child: Container(
-                    color: Theme.of(context).colorScheme.background,
-                    height: screenHeight * 0.2,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: screenWidth * 0.02,
-                          vertical: screenHeight * 0.01),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          SecondaryButton(
-                            title: 'close'.tr(),
-                            borderColor:
-                                Theme.of(context).colorScheme.errorContainer,
-                            textColor:
-                                Theme.of(context).colorScheme.errorContainer,
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                          SizedBox(width: screenWidth * 0.03),
-                          PrimaryButton(
-                            child: const Text('Add LAN'),
-                            style: Theme.of(context)
-                                .elevatedButtonTheme
-                                .style
-                                ?.copyWith(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith(
-                                    (states) => Theme.of(context)
-                                        .colorScheme
-                                        .errorContainer,
-                                  ),
-                                ),
-                            onPressed: () {
-                              Navigator.of(context).pushNamed(
-                                AppRoutes.lanInfoScreen,
-                                arguments: {
-                                  'init': true,
-                                },
-                              );
-                            },
-                          ),
-                          SizedBox(width: screenWidth * 0.03),
-                          PrimaryButton(
-                            child: const Text('Done with SETUP'),
-                            style: Theme.of(context)
-                                .elevatedButtonTheme
-                                .style
-                                ?.copyWith(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith(
-                                    (states) => Theme.of(context)
-                                        .colorScheme
-                                        .tertiaryContainer,
-                                  ),
-                                ),
-                            onPressed: () {
-                              setInitialized();
-                              Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return const LandingScreen();
-                                  },
-                                ),
-                                (Route<dynamic> route) => false,
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              : Visibility(
+          Visibility(
                   visible: bannerVisible,
                   child: Padding(
                     padding: const EdgeInsets.all(8),
