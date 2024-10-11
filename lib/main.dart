@@ -10,11 +10,6 @@ import 'package:pionixbox/utils/routing/app_router.dart';
 import 'package:pionixbox/widgets/restart_widget.dart';
 import 'package:auto_orientation/auto_orientation.dart';
 
-@Deprecated("We don't want to rely on screen width.")
-late double screenWidth;
-@Deprecated("We don't want to rely on screen height.")
-late double screenHeight;
-
 /// [uiScale] should be used to determine any kind of manual size adjustment of
 /// a widget or font or similar. It's not recommended to make f.e. a widget
 /// dependant on the size of the screen / window, as weird UI movements will
@@ -37,8 +32,6 @@ double adjustScale(double number) {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  screenWidth = ui.window.physicalSize.width / ui.window.devicePixelRatio;
-  screenHeight = ui.window.physicalSize.height / ui.window.devicePixelRatio;
   runApp(EasyLocalization(
     supportedLocales: const [Locale('en', 'US'), Locale('de', 'DE')],
     path: 'assets/translations',
