@@ -233,22 +233,15 @@ class ConfigInfoWidget extends StatelessWidget {
                         ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 2,
-                  ),
-                  child: PrimaryButton(
-                    //width: screenWidth * 0.3,
-                    onPressed: () {
-                      if (header == "configs") {
-                        loadConfig(value);
-                      } else {
-                        loadConfig(header + "/" + value);
-                      }
-                    },
-                    child: Text('load'.tr()),
-                  ),
+                PrimaryButton(
+                  onPressed: () {
+                    if (header == "configs") {
+                      loadConfig(value);
+                    } else {
+                      loadConfig(header + "/" + value);
+                    }
+                  },
+                  child: Text('load'.tr()),
                 ),
               ],
             );
