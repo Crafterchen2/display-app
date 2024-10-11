@@ -519,7 +519,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       List<Text> values = [
         Text(
           outputVoltage.toStringAsFixed(2) + ' V',
-          style: style,
+          style: style?.copyWith(
+            fontFeatures: [const FontFeature.tabularFigures()]
+          ),
         ),
         Text(
           relaisState,
@@ -527,15 +529,21 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
         ),
         Text(
           pwmDc.toStringAsFixed(0) + ' %',
-          style: style,
+          style: style?.copyWith(
+              fontFeatures: [const FontFeature.tabularFigures()]
+          ),
         ),
         Text(
           cpHi.toStringAsFixed(2),
-          style: style,
+          style: style?.copyWith(
+              fontFeatures: [const FontFeature.tabularFigures()]
+          ),
         ),
         Text(
           cpLo.toStringAsFixed(2),
-          style: style,
+          style: style?.copyWith(
+              fontFeatures: [const FontFeature.tabularFigures()]
+          ),
         ),
         Text(
           stateString,
