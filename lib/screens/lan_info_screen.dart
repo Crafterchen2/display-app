@@ -86,14 +86,12 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
             ? Theme.of(context).colorScheme.onTertiaryContainer
             : Theme.of(context).colorScheme.onErrorContainer,
         title: Text(
-          _connected
-              ? 'CONNECTED TO LAN'.tr()
-              : 'NO NETWORK FOUND'.tr(),
+          _connected ? 'CONNECTED TO LAN'.tr() : 'NO NETWORK FOUND'.tr(),
           style: Theme.of(context).textTheme.displayLarge?.copyWith(
-            color: _connected
-                ? Theme.of(context).colorScheme.onTertiaryContainer
-                : Theme.of(context).colorScheme.onErrorContainer,
-          ),
+                color: _connected
+                    ? Theme.of(context).colorScheme.onTertiaryContainer
+                    : Theme.of(context).colorScheme.onErrorContainer,
+              ),
         ),
         centerTitle: true,
       ),
@@ -110,36 +108,33 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
               child: PrimaryButton(
                 child: const Text('Add WIFI'),
                 style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-                  backgroundColor:
-                  MaterialStateProperty.resolveWith(
-                        (states) => Theme.of(context)
-                        .colorScheme
-                        .errorContainer,
-                  ),
-                ),
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                        (states) =>
+                            Theme.of(context).colorScheme.errorContainer,
+                      ),
+                    ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(
-                      AppRoutes.wifiSetupScreen,
-                      arguments: {
-                        'init': true,
-                      });
+                  Navigator.of(context)
+                      .pushNamed(AppRoutes.wifiSetupScreen, arguments: {
+                    'init': true,
+                  });
                 },
               ),
             ),
             PrimaryButton(
               child: const Text('Done with SETUP'),
               style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-                backgroundColor:
-                MaterialStateProperty.resolveWith(
-                      (states) => Theme.of(context).colorScheme.tertiaryContainer,
-                ),
-              ),
+                    backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) =>
+                          Theme.of(context).colorScheme.tertiaryContainer,
+                    ),
+                  ),
               onPressed: () {
                 setInitialized();
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) {
-                      return const LandingScreen();
-                    }), (Route<dynamic> route) => false);
+                  return const LandingScreen();
+                }), (Route<dynamic> route) => false);
               },
             ),
           ],
@@ -158,7 +153,7 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                       info: devices[index],
                     );
                   },
-          ),
+                ),
         ],
       ),
     );

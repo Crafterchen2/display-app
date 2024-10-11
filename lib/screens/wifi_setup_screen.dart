@@ -58,7 +58,8 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   }
 
   void extractArguments(BuildContext context) {
-    Map<String, dynamic>? map = (ModalRoute.of(context)?.settings.arguments) as Map<String, dynamic>;
+    Map<String, dynamic>? map =
+        (ModalRoute.of(context)?.settings.arguments) as Map<String, dynamic>;
     WifiSetupScreenArgs args = map['args'] ?? const WifiSetupScreenArgs(false);
     initialisingScreen = args.init;
     setState(() {});
@@ -182,60 +183,62 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     }
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      floatingActionButton: !_showPasswordScreen ? const PionixCloseButton() : null,
+      floatingActionButton:
+          !_showPasswordScreen ? const PionixCloseButton() : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
       bottomNavigationBar: BottomAppBar(
         elevation: 20,
-        child: !initialisingScreen ? null : Row(
-          //mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 30,
-              ),
-              child: PrimaryButton(
-                child: const Text('Add LAN'),
-                style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-                  backgroundColor:
-                  MaterialStateProperty.resolveWith(
-                        (states) => Theme.of(context)
-                        .colorScheme
-                        .errorContainer,
+        child: !initialisingScreen
+            ? null
+            : Row(
+                //mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                    ),
+                    child: PrimaryButton(
+                      child: const Text('Add LAN'),
+                      style: Theme.of(context)
+                          .elevatedButtonTheme
+                          .style
+                          ?.copyWith(
+                            backgroundColor: MaterialStateProperty.resolveWith(
+                              (states) =>
+                                  Theme.of(context).colorScheme.errorContainer,
+                            ),
+                          ),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(
+                          AppRoutes.lanInfoScreen,
+                          arguments: {
+                            'init': true,
+                          },
+                        );
+                      },
+                    ),
                   ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pushNamed(
-                    AppRoutes.lanInfoScreen,
-                    arguments: {
-                      'init': true,
+                  PrimaryButton(
+                    child: const Text('Done with SETUP'),
+                    style: Theme.of(context)
+                        .elevatedButtonTheme
+                        .style
+                        ?.copyWith(
+                          backgroundColor: MaterialStateProperty.resolveWith(
+                            (states) =>
+                                Theme.of(context).colorScheme.tertiaryContainer,
+                          ),
+                        ),
+                    onPressed: () {
+                      setInitialized();
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) {
+                        return const LandingScreen();
+                      }), (Route<dynamic> route) => false);
                     },
-                  );
-                },
+                  ),
+                ],
               ),
-            ),
-            PrimaryButton(
-              child: const Text('Done with SETUP'),
-              style: Theme.of(context)
-                  .elevatedButtonTheme
-                  .style
-                  ?.copyWith(
-                backgroundColor:
-                MaterialStateProperty.resolveWith(
-                      (states) => Theme.of(context)
-                      .colorScheme
-                      .tertiaryContainer,
-                ),
-              ),
-              onPressed: () {
-                setInitialized();
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) {
-                      return const LandingScreen();
-                    }), (Route<dynamic> route) => false);
-              },
-            ),
-          ],
-        ),
       ),
       body: Stack(
         children: [
@@ -247,17 +250,17 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             ],
           ),
           Visibility(
-                  visible: bannerVisible,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      bannerText,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.background,
-                          ),
+            visible: bannerVisible,
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                bannerText,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.background,
                     ),
-                  ),
-                ),
+              ),
+            ),
+          ),
           _showPasswordScreen
               ? WifiPasswordScreen(
                   ssid: _selectedSSID,

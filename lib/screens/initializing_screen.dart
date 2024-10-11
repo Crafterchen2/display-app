@@ -110,9 +110,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
                             ),
                             Text(
                               progressMessage.toUpperCase(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineLarge,
+                              style: Theme.of(context).textTheme.headlineLarge,
                             ),
                           ],
                         ),
@@ -127,21 +125,24 @@ class _InitializingScreenState extends State<InitializingScreen> {
                               child: OutlinedButton(
                                 onPressed: () {
                                   Navigator.of(context).pushNamed(
-                                      AppRoutes.wifiSetupScreen,
-                                      arguments: {
-                                        'init': true,
-                                      },
+                                    AppRoutes.wifiSetupScreen,
+                                    arguments: {
+                                      'init': true,
+                                    },
                                   );
                                 },
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     SvgPicture.asset(
                                       'assets/icons/icon_wifi.svg',
                                     ),
                                     Text(
                                       'wifi'.tr(),
-                                      style: Theme.of(context).textTheme.displayLarge,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displayLarge,
                                     ),
                                   ],
                                 ),
@@ -161,14 +162,17 @@ class _InitializingScreenState extends State<InitializingScreen> {
                                   );
                                 },
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     SvgPicture.asset(
                                       'assets/icons/icon_lan.svg',
                                     ),
                                     Text(
                                       'lan'.tr(),
-                                      style: Theme.of(context).textTheme.displayLarge,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displayLarge,
                                     ),
                                   ],
                                 ),

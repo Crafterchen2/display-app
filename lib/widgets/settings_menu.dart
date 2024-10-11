@@ -51,7 +51,7 @@ class _SettingsMenuState extends State<SettingsMenu> {
                     Navigator.of(context).pushNamed(
                       AppRoutes.wifiSetupScreen,
                       arguments: {
-                        'args' : const WifiSetupScreenArgs(false),
+                        'args': const WifiSetupScreenArgs(false),
                       },
                     );
                   },
