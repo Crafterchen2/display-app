@@ -183,10 +183,11 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       floatingActionButton: !_showPasswordScreen ? const PionixCloseButton() : null,
-      bottomNavigationBar: !initialisingScreen ? null : BottomAppBar(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
+      bottomNavigationBar: BottomAppBar(
         elevation: 20,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+        child: !initialisingScreen ? null : Row(
+          //mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -517,11 +518,6 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
           ),
         );
       }
-      items.add(
-        SizedBox(
-          height: screenHeight * 0.3,
-        ),
-      );
     }
     return Column(
       children: [

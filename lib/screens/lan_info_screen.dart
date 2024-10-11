@@ -98,10 +98,10 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
         centerTitle: true,
       ),
       floatingActionButton: const PionixCloseButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
       bottomNavigationBar: BottomAppBar(
         elevation: 20,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
