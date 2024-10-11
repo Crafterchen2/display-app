@@ -15,7 +15,6 @@ import 'package:pionixbox/widgets/dialogs.dart';
 import 'package:pionixbox/widgets/network_card_widget.dart';
 
 import '../data/models/network_device_info.dart';
-import '../main.dart';
 import '../mqtt.dart';
 import '../utils/constants/helper.dart';
 import '../utils/constants/keys.dart';
