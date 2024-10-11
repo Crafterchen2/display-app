@@ -224,15 +224,6 @@ class ConfigInfoWidget extends StatelessWidget {
             String value = configPaths.elementAt(index);
             return Row(
               children: [
-                Flexible(
-                  child: Text(
-                    wrapString(value),
-                    softWrap: true,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onBackground,
-                        ),
-                  ),
-                ),
                 PrimaryButton(
                   onPressed: () {
                     if (header == "configs") {
@@ -242,6 +233,13 @@ class ConfigInfoWidget extends StatelessWidget {
                     }
                   },
                   child: Text('load'.tr()),
+                ),
+                Text(
+                  wrapString(value),
+                  softWrap: true,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
                 ),
               ],
             );
