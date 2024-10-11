@@ -74,7 +74,8 @@ class _SystemInfoState extends State<SystemInfo> {
               automaticallyImplyLeading: false,
               backgroundColor: AppColors.primaryBlue,
               flexibleSpace: TabBar(
-                labelStyle: AppTextStyles.subTitle4,
+                labelStyle: AppTextStyles.subTitle4.copyWith(color: Colors.white),
+                unselectedLabelStyle: AppTextStyles.subTitle4.copyWith(color: Colors.grey),
                 tabs: [
                   Tab(
                     icon: const Icon(Icons.info),

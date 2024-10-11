@@ -8,6 +8,7 @@ import 'package:pionixbox/data/models/charger_info.dart';
 import 'package:pionixbox/data/models/hlc_log.dart';
 import 'package:pionixbox/data/models/limits.dart';
 import 'package:pionixbox/data/models/power_meter.dart';
+import 'package:pionixbox/data/models/session_info.dart';
 import 'package:pionixbox/data/providers/charger_info_provider.dart';
 import 'package:pionixbox/data/providers/connector_provider.dart';
 import 'package:pionixbox/data/providers/ev_info_provider.dart';
@@ -725,6 +726,11 @@ class _ChargingDashboardScreenState
     return mergedPhysics;
   }
 
+  parseEvManagerSessionInfo(String message) {
+    SessionInfo sessionInfo = parseSessionInfo(message);
+    _status = sessionInfo.state;
+  }
+
   ///
   /// getting server data
   ///
@@ -739,6 +745,7 @@ class _ChargingDashboardScreenState
           "everest_api/setup/var/supported_setup_features", parseConfigInfo);
       checkOnlineStatus();
       mqtt.subscribe("everest_api/setup/var/online_status", parseOnlineStatus);
+      mqtt.subscribe("everest_api/ev_manager/var/session_info", parseEvManagerSessionInfo);
     } catch (e) {
       debugPrint(e.toString());
       _status = 'Connection Error';

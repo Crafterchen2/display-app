@@ -9,11 +9,48 @@ import 'package:pionixbox/data/models/network_device_info.dart';
 import 'package:pionixbox/data/models/release_component.dart';
 import 'package:pionixbox/data/models/release_info.dart';
 import 'package:pionixbox/data/providers/application_info_provider.dart';
+import 'package:pionixbox/data/providers/connector_provider.dart';
 import 'package:pionixbox/mqtt.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/utils/constants/helper.dart';
 import 'package:pionixbox/widgets/buttons.dart';
+
+class AnimatedLinearProgressIndicator extends StatefulWidget {
+  const AnimatedLinearProgressIndicator({super.key});
+
+  @override
+  State<StatefulWidget> createState() =>
+      _AnimatedLinearProgressIndicatorState();
+}
+
+class _AnimatedLinearProgressIndicatorState
+    extends State<AnimatedLinearProgressIndicator>
+    with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+        animation: controller,
+        builder: (_, __) => LinearProgressIndicator(value: controller.value));
+  }
+}
 
 class Control extends ConsumerStatefulWidget {
   const Control({
@@ -29,6 +66,7 @@ class _ControlState extends ConsumerState<Control> {
   Map<String, List<String>> configInfo = {};
   Map<String, List<String>> configDirInfo = {};
   String loadedConfig = "";
+  DateTime lastConfigLoad = DateTime.now();
 
   @override
   void didChangeDependencies() {
@@ -51,6 +89,10 @@ class _ControlState extends ConsumerState<Control> {
       mqtt.publish("everest_api/control/cmd/get_config_paths", "0");
       mqtt.publish("everest_api/control/cmd/get_selected_config", "0");
 
+      final connector = ref.watch(connectorProvider);
+      mqtt.subscribe(
+          "everest_api/" + connector + "/var/datetime", handleDateTime);
+
       // mqtt.subscribe(
       //     "everest_api/setup/var/network_device_info", networkDeviceInfo);
 
@@ -66,17 +108,37 @@ class _ControlState extends ConsumerState<Control> {
     final configPaths = ConfigPaths.fromJson(jsonDecode(message));
     configInfo["configs"] = configPaths.configs;
     configDirInfo = configPaths.config_dirs;
+    setState(() {});
   }
 
   void parseSelectedConfig(String message) {
     loadedConfig = message;
+    setState(() {});
+  }
+
+  void handleDateTime(String _) {
+    if (lastConfigLoad
+        .add(const Duration(seconds: 3))
+        .isBefore(DateTime.now())) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+    }
   }
 
   void loadConfig(String config) {
+    lastConfigLoad = DateTime.now();
     Map<String, String> changeConfig = {};
     changeConfig["config_path"] = config;
     mqtt.publish("everest_api/control/cmd/change_config",
         json.encode(changeConfig).toString());
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+          elevation: 20,
+          duration: const Duration(days: 1),
+          content: Column(children: [
+            Text('loading_config'.tr() +': $config'),
+            const AnimatedLinearProgressIndicator()
+          ])),
+    );
   }
 
   @override

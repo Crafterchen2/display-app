@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart'
     as _virtualKeyboardBackspaceEventPeriod;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
+import 'package:pionixbox/data/models/ev_info.dart';
 import 'package:pionixbox/mqtt.dart';
 import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/utils/enums.dart';
@@ -71,6 +75,10 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   double cpLo = 0;
   double pwmDc = 0;
   String stateString = "Unknown";
+  double batteryPercentage = 0;
+  double targetVoltage = 0;
+  double targetCurrent = 0;
+  EvInfo? evManagerInfo;
 
   @override
   void didChangeDependencies() {
@@ -112,6 +120,17 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     }
   }
 
+  void parseBatteryPercentage(String message) {
+    batteryPercentage = double.parse(message);
+  }
+
+  void parseEvinfo(String message) {
+    evManagerInfo = EvInfo.fromJson(jsonDecode(message));
+    batteryPercentage = evManagerInfo?.soc ?? 0;
+    targetCurrent = evManagerInfo?.target_current ?? 0;
+    targetVoltage = evManagerInfo?.target_voltage ?? 0;
+  }
+
   void _connect() async {
     try {
       await mqtt.connect();
@@ -123,6 +142,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       mqtt.subscribe("everest_external/umwc/pwm_dc", parsePwmDc);
       mqtt.subscribe(
           "everest_external/nodered/1/state/state_string", parseStateString);
+      mqtt.subscribe(
+          "everest_api/umwcar/var/battery_percentage", parseBatteryPercentage);
+      mqtt.subscribe("everest_api/ev_manager/var/ev_info", parseEvinfo);
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
     }
@@ -169,8 +191,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               ),
                             ),
                             Text(
-                              chargingStateTitle(widget.state)
-                                  .toUpperCase(),
+                              chargingStateTitle(widget.state).toUpperCase(),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                               style:
@@ -369,14 +390,12 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           ),
                         )),
                   ),
-                  if (widget.chargerModelName == "MicroMegaWattCharger")
+                  if (widget.chargerModelName == ChargerModelName.microMegaWattCharger)
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 8),
+                          padding: const EdgeInsets.all(8),
                           child: PrimaryButton(
-                            //width: screenWidth * 0.3,
                             color: AppColors.primaryAmber,
                             onPressed: () {
                               mqtt.publish(
@@ -387,10 +406,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 8),
+                          padding: const EdgeInsets.all(8),
                           child: PrimaryButton(
-                            //width: screenWidth * 0.3,
                             color: AppColors.primaryAmber,
                             onPressed: () {
                               mqtt.publish(
@@ -401,10 +418,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 8),
+                          padding: const EdgeInsets.all(8),
                           child: PrimaryButton(
-                            //width: screenWidth * 0.3,
                             color: AppColors.primaryAmber,
                             onPressed: () {
                               mqtt.publish(
@@ -415,15 +430,51 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           ),
                         ),
                       ],
-                    ),
-                  if (widget.chargerModelName == "MicroMegaWattCharger")
+                    )
+                  else if (widget.chargerModelName == ChargerModelName.microMegaWattCar)
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 8),
+                          padding: const EdgeInsets.all(8),
                           child: PrimaryButton(
-                            //width: screenWidth * 0.3,
+                            color: AppColors.primaryAmber,
+                            onPressed: () {
+                              mqtt.publish(Topic.modifyChargingSessionTopic,
+                                  Payloads.isoPause);
+                            },
+                            title: 'pause'.tr(),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: PrimaryButton(
+                            color: AppColors.primaryAmber,
+                            onPressed: () {
+                              mqtt.publish(Topic.modifyChargingSessionTopic,
+                                  Payloads.isoResumeAC); // FIXME: only resumes AC sessions, resume DC here when we're DC charging
+                            },
+                            title: 'resume'.tr(),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: PrimaryButton(
+                            color: AppColors.primaryAmber,
+                            onPressed: () {
+                              mqtt.publish(Topic.modifyChargingSessionTopic,
+                                  Payloads.isoStop);
+                            },
+                            title: 'stop'.tr(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  if (widget.chargerModelName == ChargerModelName.microMegaWattCharger)
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: PrimaryButton(
                             color: AppColors.primaryAmber,
                             onPressed: () {
                               mqtt.publish(
@@ -434,10 +485,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 8),
+                          padding: const EdgeInsets.all(8),
                           child: PrimaryButton(
-                            //width: screenWidth * 0.3,
                             color: AppColors.primaryAmber,
                             onPressed: () {
                               mqtt.publish(
@@ -448,10 +497,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 8),
+                          padding: const EdgeInsets.all(8),
                           child: PrimaryButton(
-                            //width: screenWidth * 0.3,
                             color: AppColors.primaryAmber,
                             onPressed: () {
                               mqtt.publish(
@@ -461,6 +508,33 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                             title: "EVSEutil int",
                           ),
                         ),
+                      ],
+                    )
+                  else if (widget.chargerModelName == ChargerModelName.microMegaWattCar)
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: PrimaryButton(
+                            color: AppColors.primaryAmber,
+                            onPressed: () {
+                              mqtt.publish(Topic.modifyChargingSessionTopic,
+                                  Payloads.isoStartAC);
+                            },
+                            title: 'start_ac'.tr(),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: PrimaryButton(
+                            color: AppColors.primaryAmber,
+                            onPressed: () {
+                              mqtt.publish(Topic.modifyChargingSessionTopic,
+                                  Payloads.isoStartDC);
+                            },
+                            title: 'start_dc'.tr(),
+                          ),
+                        )
                       ],
                     )
                 ],
@@ -510,7 +584,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   }
 
   List<Widget> _buildInfoCards(String chargerModelName) {
-    if (chargerModelName == "MicroMegaWattCharger") {
+    if (chargerModelName == ChargerModelName.microMegaWattCharger) {
       return [
         _buildSessionInfoCard(
             null, outputVoltage.toStringAsFixed(2) + ' V', 'Output Voltage'),
@@ -519,6 +593,53 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
         _buildSessionInfoCard(null, cpHi.toStringAsFixed(2), 'CP Hi'),
         _buildSessionInfoCard(null, cpLo.toStringAsFixed(2), 'CP Lo'),
         _buildSessionInfoCard(null, stateString, 'State'),
+      ];
+    }
+    if (chargerModelName == ChargerModelName.microMegaWattCar) {
+      return [
+        Column(children: [
+          Text(
+            'battery_percentage'.tr(),
+            style: const TextStyle(fontSize: 20),
+          ),
+          LinearGauge(
+            start: 0,
+            steps: 10,
+            end: 100,
+            customLabels: const [
+              CustomRulerLabel(text: "0", value: 0),
+              CustomRulerLabel(text: "10", value: 10),
+              CustomRulerLabel(text: "20", value: 20),
+              CustomRulerLabel(text: "30", value: 30),
+              CustomRulerLabel(text: "40", value: 40),
+              CustomRulerLabel(text: "50", value: 50),
+              CustomRulerLabel(text: "60", value: 60),
+              CustomRulerLabel(text: "70", value: 70),
+              CustomRulerLabel(text: "80", value: 80),
+              CustomRulerLabel(text: "90", value: 90),
+              CustomRulerLabel(text: "100", value: 100)
+            ],
+            valueBar: [
+              ValueBar(
+                value: batteryPercentage,
+                valueBarThickness: 10,
+              )
+            ],
+            rulers: RulerStyle(
+                rulerPosition: RulerPosition.bottom,
+                textStyle: TextStyle(fontSize: 20)),
+          ),
+          Row(
+            children: [
+              _buildSessionInfoCard(null,
+                  (targetCurrent).toStringAsFixed(2) + ' A', 'CurrentDemand'),
+              _buildSessionInfoCard(
+                  null,
+                  (targetCurrent * targetVoltage).toStringAsFixed(2) + ' W',
+                  'CurrentDemand')
+            ],
+          ),
+        ])
       ];
     }
     return [

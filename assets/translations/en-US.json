@@ -105,5 +105,10 @@
   "relais_on": "Relais on",
   "supply_voltage_12V": "Supply voltage 12V",
   "supply_voltage_minus_12V": "Supply voltage -12V",
-  "temperature": "Temperature"
+  "temperature": "Temperature",
+  "control": "Control",
+  "start_ac": "Start.AC",
+  "start_dc": "Start.DC",
+  "loading_config": "Loading config",
+  "battery_percentage": "Battery %"
 }
