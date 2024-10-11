@@ -57,32 +57,34 @@ class _AboutState extends ConsumerState<About> {
       }
     }
     return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              const SizedBox(height: 20),
-              Text(
-                "EVerest ${releaseInfo.version} @ ${releaseInfo.channel} channel"
-                    .tr(),
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
+      body: Padding(
+        padding: const EdgeInsets.only(
+          top: 20,
+          right: 10,
+          left: 10,
+        ),
+        child: Column(
+          children: [
+            Text(
+              "EVerest ${releaseInfo.version} @ ${releaseInfo.channel} channel"
+                  .tr(),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.only(bottom: 100),
+                itemCount: releaseInfo.components.length,
+                itemBuilder: (builder, index) {
+                  return ReleaseComponentInfoWidget(
+                    component: releaseInfo.components[index],
+                  );
+                },
               ),
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 100),
-                  itemCount: releaseInfo.components.length,
-                  itemBuilder: (builder, index) {
-                    return ReleaseComponentInfoWidget(
-                      component: releaseInfo.components[index],
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -96,67 +98,62 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: adjustScale(10),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Divider(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Divider(
+                color: Theme.of(context).colorScheme.primary,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text(
-                  component.name,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
-                      ),
-                ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                component.name,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
               ),
-              Expanded(
-                flex: 5,
-                child: Divider(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+            ),
+            Expanded(
+              flex: 5,
+              child: Divider(
+                color: Theme.of(context).colorScheme.primary,
               ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              component.description,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
             ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text(
+            component.description,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              "version".tr() + ": ${component.version}",
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
-            ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text(
+            "version".tr() + ": ${component.version}",
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              "license".tr() + ": ${component.license}",
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
-            ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text(
+            "license".tr() + ": ${component.license}",
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
