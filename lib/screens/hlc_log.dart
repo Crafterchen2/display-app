@@ -148,7 +148,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: Theme.of(context)
                             .colorScheme
-                            .onPrimary, //Is this necessary?
+                            .onPrimary,
                       ),
                   softWrap: true,
                 ),
@@ -179,8 +179,10 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
-      floatingActionButton: Container(
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(
+          left: 40,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -188,8 +190,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
               backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => autoscroll = !autoscroll,
-              heroTag:
-                  "pauseHero", //prevent "Same hero tag error"; does not change functionality
+              heroTag: "pauseHero", //prevent "Same hero tag error"; doesn't change functionality
               child: autoscroll
                   ? const Icon(Icons.pause)
                   : const Icon(Icons.play_arrow),
@@ -198,16 +199,14 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
               backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => hlcLogList.clear(),
-              heroTag:
-                  "clearHero", //prevent "Same hero tag error"; does not change functionality
+              heroTag: "clearHero", //prevent "Same hero tag error"; doesn't change functionality
               child: const Icon(Icons.delete),
             ),
             FloatingActionButton(
               backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => annotateButtonPressed(),
-              heroTag:
-                  "annotateHero", //prevent "Same hero tag error"; does not change functionality
+              heroTag: "annotateHero", //prevent "Same hero tag error"; doesn't change functionality
               child: const Icon(Icons.message),
             ),
             const PionixCloseButton(
@@ -216,7 +215,10 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
+      bottomNavigationBar: BottomAppBar(
+        color: Theme.of(context).colorScheme.primary,
+      ),
       body: Stack(
         children: [
           Padding(
@@ -234,18 +236,14 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                       color: Colors.white10,
                       thickness: 2,
                     ),
-                    SizedBox(
-                      height:
-                          MediaQuery.of(context).size.height - adjustScale(132),
-                      child: SingleChildScrollView(
-                        controller: scrollController,
-                        child: ListView.builder(
-                          primary: false,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: logEntries.length,
-                          itemBuilder: (context, index) => logEntries[index],
-                        ),
+                    SingleChildScrollView(
+                      controller: scrollController,
+                      child: ListView.builder(
+                        primary: false,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: logEntries.length,
+                        itemBuilder: (context, index) => logEntries[index],
                       ),
                     ),
                   ],
@@ -253,78 +251,67 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
               ],
             ),
           ),
-          _showKeyboard
-              ? OrientationBuilder(
+          !_showKeyboard ? Container() :
+              OrientationBuilder(
                   builder: (context, orientation) {
-                    return SizedBox(
-                      height:
-                          MediaQuery.of(context).size.height - adjustScale(132),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: IconTextField(
-                                hintText: 'Enter annotation',
-                                onTap: () {
-                                  setState(() {
-                                    _showKeyboard = true;
-                                  });
-                                },
-                                visible: true,
-                                hidden: false,
-                                decoration: BoxDecoration(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                                icon: Icon(
-                                  Icons.message,
-                                  color: Colors.grey.shade400,
-                                  size: 28,
-                                ),
-                                controller: annotateController,
-                              ),
-                            ),
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconTextField(
+                          hintText: 'Enter annotation',
+                          onTap: () {
+                            setState(() {
+                              _showKeyboard = true;
+                            });
+                          },
+                          visible: true,
+                          hidden: false,
+                          decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).colorScheme.onPrimary,
                           ),
-                          orientation == Orientation.landscape
-                              ? Container(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  child: PionixVirtualKeyboard(
-                                      height: 300,
-                                      fontSize: 32,
-                                      textColor:
-                                          Theme.of(context).colorScheme.primary,
-                                      textController: annotateController,
-                                      customLayoutKeys:
-                                          VirtualKeyboardPionixLayoutKeys(),
-                                      type: VirtualKeyboardType.Alphanumeric,
-                                      onKeyPress: (key) => _onKeyPress(key)),
-                                )
-                              : Container(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  child: PionixVirtualKeyboard(
-                                    height: 500,
+                          icon: Icon(
+                            Icons.message,
+                            color: Colors.grey.shade400,
+                            size: 28,
+                          ),
+                          controller: annotateController,
+                        ),
+                        orientation == Orientation.landscape
+                            ? Container(
+                                color:
+                                    Theme.of(context).colorScheme.secondary,
+                                child: PionixVirtualKeyboard(
+                                    height: 300,
                                     fontSize: 32,
                                     textColor:
                                         Theme.of(context).colorScheme.primary,
                                     textController: annotateController,
-                                    defaultLayouts: const [
-                                      VirtualKeyboardDefaultLayouts.English
-                                    ],
+                                    customLayoutKeys:
+                                        VirtualKeyboardPionixLayoutKeys(),
                                     type: VirtualKeyboardType.Alphanumeric,
-                                    onKeyPress: (key) => _onKeyPress(key),
-                                  ),
+                                    onKeyPress: (key) => _onKeyPress(key)),
+                              )
+                            : Container(
+                                color:
+                                    Theme.of(context).colorScheme.secondary,
+                                child: PionixVirtualKeyboard(
+                                  height: 500,
+                                  fontSize: 32,
+                                  textColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  textController: annotateController,
+                                  defaultLayouts: const [
+                                    VirtualKeyboardDefaultLayouts.English
+                                  ],
+                                  type: VirtualKeyboardType.Alphanumeric,
+                                  onKeyPress: (key) => _onKeyPress(key),
                                 ),
-                        ],
-                      ),
+                              ),
+                      ],
                     );
                   },
-                )
-              : const SizedBox(),
+                ),
         ],
       ),
     );
