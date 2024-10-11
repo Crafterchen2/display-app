@@ -611,12 +611,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                 ),
               ),
             ),
-            if (_wifi)
-              LinearProgressIndicator(
-                color: Theme.of(context).colorScheme.primary,
-                minHeight: 5,
-                backgroundColor: Colors.grey.shade300,
-              ),
+            if (_wifi) const LinearProgressIndicator(),
           ],
         ),
         if (_wifi)
