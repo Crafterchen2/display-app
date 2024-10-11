@@ -234,12 +234,17 @@ class ConfigInfoWidget extends StatelessWidget {
                   },
                   child: Text('load'.tr()),
                 ),
-                Text(
-                  wrapString(value),
-                  softWrap: true,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
-                      ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 5,
+                  ),
+                  child: Text(
+                    wrapString(value),
+                    softWrap: true,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
+                  ),
                 ),
               ],
             );
