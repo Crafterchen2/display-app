@@ -262,57 +262,6 @@ class _InitializingScreenState extends State<InitializingScreen> {
   }
 }
 
-//FIXME: This should be in library "buttons.dart.
-@Deprecated("Duplicate code, should be replaced with an equivalent widget.")
-class SquareButtonWidget extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-  final double height;
-  final double width;
-  final String iconUrl;
-
-  const SquareButtonWidget({
-    Key? key,
-    required this.text,
-    required this.onPressed,
-    this.height = 200,
-    this.width = 200,
-    required this.iconUrl,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: SizedBox(
-        height: screenWidth * 0.4,
-        width: screenWidth * 0.4,
-        child: Material(
-          elevation: 3,
-          color: Theme.of(context).colorScheme.onPrimary,
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SvgPicture.asset(
-                iconUrl,
-                height: screenWidth * 0.2,
-                width: screenWidth * 0.2,
-              ),
-              Text(
-                text,
-                style: Theme.of(context)
-                    .textTheme
-                    .displayLarge, //.copyWith(color: Theme.of(context).colorScheme.primary),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class InitializingProgressWidget extends StatelessWidget {
   final double? progress;
   final String message;
