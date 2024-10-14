@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/utils/constants/helper.dart';
 
 import '../theme/app_colors.dart';
-import '../theme/app_text_styles.dart';
 
 class NetworkCardWidget extends StatelessWidget {
   final String ssid;
@@ -24,7 +23,7 @@ class NetworkCardWidget extends StatelessWidget {
       this.isConnected = false,
       this.isSaved = false,
       this.strength = '',
-      this.strengthColor = Colors.white,
+      this.strengthColor = AppColors.white,
       this.signalLevel})
       : super(key: key);
 
@@ -43,52 +42,70 @@ class NetworkCardWidget extends StatelessWidget {
                         getWifiIcon(signalLevel ?? -50),
                         height: 40,
                         width: 40,
+                        color: Theme.of(context).colorScheme.onBackground,
                       )
-                    : const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Icon(
                           Icons.block_rounded,
                           size: 40,
-                          color: AppColors.primaryBlue,
+                          color: Theme.of(context).colorScheme.onBackground,
                         ),
                       ),
                 const SizedBox(
                   width: 12,
                 ),
                 Expanded(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      ssid,
-                      style: AppTextStyles.heading3.copyWith(
-                        color: AppColors.primaryBlue,
-                      ),
-                    ),
-                    (isSaved)
-                        ? Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: Text(
-                              'saved'.tr(),
-                              style: AppTextStyles.subTitle2.copyWith(
-                                color: AppColors.primaryBlue,
-                              ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        ssid,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              color: Theme.of(context).colorScheme.onBackground,
                             ),
-                          )
-                        : const SizedBox(),
-                  ],
-                )),
+                      ),
+                      (isSaved)
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 4.0),
+                              child: Text(
+                                'saved'.tr(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
+                              ),
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
+                ),
                 isConnected
                     ? Center(
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               vertical: 4, horizontal: 8),
                           decoration: BoxDecoration(
-                              color: AppColors.successLight,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
                               borderRadius: BorderRadius.circular(4)),
-                          child: Text('connected'.tr(),
-                              style: AppTextStyles.heading3
-                                  .copyWith(fontSize: 18, color: Colors.white)),
+                          child: Text(
+                            'connected'.tr(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  fontSize: 18,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onTertiaryContainer,
+                                ),
+                          ),
                         ),
                       )
                     : const SizedBox(),
@@ -100,9 +117,16 @@ class NetworkCardWidget extends StatelessWidget {
                           decoration: BoxDecoration(
                               color: strengthColor,
                               borderRadius: BorderRadius.circular(4)),
-                          child: Text(strength,
-                              style: AppTextStyles.heading3
-                                  .copyWith(fontSize: 18, color: Colors.white)),
+                          child: Text(
+                            strength,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  fontSize: 18,
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
+                          ),
                         ),
                       )
                     : const SizedBox(),
@@ -114,19 +138,20 @@ class NetworkCardWidget extends StatelessWidget {
                           onTap: onSavedPressed,
                           child: Container(
                             alignment: Alignment.center,
-                            child: const Icon(
+                            child: Icon(
                               Icons.settings,
-                              color: AppColors.primaryBlue,
+                              color: Theme.of(context).colorScheme.onBackground,
                               size: 48,
                             ),
                           ),
-                        ))
-                    : const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Icon(
                           Icons.chevron_right,
                           size: 40,
-                          color: AppColors.primaryBlue,
+                          color: Theme.of(context).colorScheme.onBackground,
                         ),
                       ),
               ],
@@ -136,7 +161,7 @@ class NetworkCardWidget extends StatelessWidget {
           Container(
             height: 0.2,
             width: double.infinity,
-            color: AppColors.primaryBlue,
+            color: Theme.of(context).colorScheme.onBackground,
           ),
         ],
       ),

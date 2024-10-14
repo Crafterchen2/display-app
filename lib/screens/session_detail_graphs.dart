@@ -7,7 +7,6 @@ import 'package:pionixbox/data/providers/limits_provider.dart';
 import 'package:pionixbox/data/providers/powermeter_provider.dart';
 import 'package:pionixbox/main.dart';
 import 'package:pionixbox/screens/general_detail_screen.dart';
-import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/utils/circular_queue.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/info_cards.dart';
@@ -263,7 +262,7 @@ class _SessionDetailGraphsState extends ConsumerState<SessionDetailGraphs> {
       heightPercent: getChartHeightPercent(),
       enableDrag: true,
       elevation: 20,
-      backgroundColor: AppColors.primaryBlue,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       shape: RoundedRectangleBorder(
         side: const BorderSide(
           width: 2,
@@ -356,7 +355,8 @@ class _SessionDetailGraphsState extends ConsumerState<SessionDetailGraphs> {
                 unit: '',
                 map: {
                   "fan".tr():
-                      bufferedTelemetry.fanRPM.last().toStringAsFixed(0) + " RPM",
+                      bufferedTelemetry.fanRPM.last().toStringAsFixed(0) +
+                          " RPM",
                   "rcd_current".tr():
                       bufferedTelemetry.rcdCurrent.last().toStringAsFixed(3) +
                           " A",
@@ -382,6 +382,6 @@ class _SessionDetailGraphsState extends ConsumerState<SessionDetailGraphs> {
   }
 }
 
-double getChartHeightPercent(){
-return 0.7;
+double getChartHeightPercent() {
+  return 0.7;
 }

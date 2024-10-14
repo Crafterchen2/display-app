@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/screens/initializing_screen.dart';
+import 'package:pionixbox/theme/pionix_theme_provider.dart';
 import 'package:pionixbox/utils/routing/app_router.dart';
 import 'package:pionixbox/widgets/restart_widget.dart';
 import 'package:auto_orientation/auto_orientation.dart';
 
-late double screenWidth;
-late double screenHeight;
 /// [uiScale] should be used to determine any kind of manual size adjustment of
 /// a widget or font or similar. It's not recommended to make f.e. a widget
 /// dependant on the size of the screen / window, as weird UI movements will
@@ -26,15 +25,13 @@ double uiScale = 1.0;
 
 ///Convenience method.
 ///Multiplies parameter number with variable [uiScale] and returns the product.
-double adjustScale(double number){
+double adjustScale(double number) {
   return number * uiScale;
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  screenWidth = ui.window.physicalSize.width / ui.window.devicePixelRatio;
-  screenHeight = ui.window.physicalSize.height / ui.window.devicePixelRatio;
   runApp(EasyLocalization(
     supportedLocales: const [Locale('en', 'US'), Locale('de', 'DE')],
     path: 'assets/translations',
@@ -43,6 +40,8 @@ void main() async {
     child: const RestartWidget(child: ProviderScope(child: MyApp())),
   ));
 }
+
+ValueNotifier<ThemeMode> themeModeNotifier = ValueNotifier(ThemeMode.light);
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -58,17 +57,24 @@ class MyApp extends StatelessWidget {
     ]);
     AutoOrientation.fullAutoMode();
 
-    return MaterialApp(
-      title: 'Pionix Box',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      onGenerateRoute: (settings) => AppRouter.onGenerateRoute(settings),
-      home: const InitializingScreen(),
+    PionixThemeProvider themeProvider = PionixThemeProvider();
+
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeModeNotifier,
+      builder: (context, brightnessValue, child) {
+        return MaterialApp(
+          title: 'Pionix Box',
+          debugShowCheckedModeBanner: false,
+          themeMode: brightnessValue,
+          theme: themeProvider.getLightTheme(),
+          darkTheme: themeProvider.getDarkTheme(),
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          onGenerateRoute: (settings) => AppRouter.onGenerateRoute(settings),
+          home: const InitializingScreen(),
+        );
+      },
     );
   }
 }

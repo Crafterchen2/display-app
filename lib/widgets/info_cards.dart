@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import '../screens/session_detail_graphs.dart';
 import '../theme/app_colors.dart';
-import '../theme/app_text_styles.dart';
 import '../utils/circular_queue.dart';
 
 class SessionDetailCardWidget extends StatelessWidget {
@@ -51,7 +50,7 @@ class SessionDetailCardWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           border: Border.all(width: 2, color: Colors.white30),
-          color: AppColors.primaryBlue,
+          color: Theme.of(context).colorScheme.primary,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,14 +67,19 @@ class SessionDetailCardWidget extends StatelessWidget {
                         children: [
                           Text(
                             sectionTitle,
-                            style: AppTextStyles.subTitle4
-                                .copyWith(color: Colors.white),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
                           ),
                           Icon(
                             (expanded)
                                 ? Icons.keyboard_arrow_down_sharp
                                 : Icons.keyboard_arrow_right,
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             size: adjustScale(40),
                           )
                         ],
@@ -85,12 +89,7 @@ class SessionDetailCardWidget extends StatelessWidget {
                 ),
               ],
             ),
-            expanded
-                ? const Divider(
-                    color: Colors.white30,
-                    thickness: 2,
-                  )
-                : Container(),
+            expanded ? const Divider() : Container(),
             if (expanded)
               expandContent, //...populateList(context) --> ListCardContent(unit: unit, map: map) --> expandContent
           ],
@@ -117,13 +116,17 @@ class SingleInfoCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: AppTextStyles.digitsHeading3.copyWith(color: Colors.white),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
               ),
               Text(
                 value,
                 textAlign: TextAlign.start,
-                style:
-                    AppTextStyles.digitsHeading3.copyWith(color: Colors.white),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
               ),
             ],
           ),
@@ -181,7 +184,6 @@ class ListCardContent extends StatelessWidget {
 }
 
 class LineChartCardContent extends StatefulWidget {
-
   final String unit;
   final List<ChartValues> values;
   final VoidCallback onShowOverlayPressed;
@@ -231,11 +233,11 @@ class _LineChartCardContent extends State<LineChartCardContent> {
     List<List<FlSpot>> points = [];
 
     List<Color> colors = [
-      AppColors.primaryAmber,
+      Theme.of(context).colorScheme.secondary,
       AppColors.chartTomato,
       AppColors.chartFuchsiaRose,
       AppColors.chartImperial,
-      AppColors.primaryBlue,
+      Theme.of(context).colorScheme.primary,
       const Color.fromARGB(255, 255, 0, 0),
       const Color.fromARGB(255, 0, 255, 0),
       const Color.fromARGB(255, 0, 0, 255),
@@ -262,8 +264,10 @@ class _LineChartCardContent extends State<LineChartCardContent> {
       points.add([]);
       labels.add(Text(
         widget.values[i].label,
-        style:
-            AppTextStyles.heading3.copyWith(color: colors[i % colors.length]),
+        style: Theme.of(context)
+            .textTheme
+            .titleLarge
+            ?.copyWith(color: colors[i % colors.length]),
       ));
       for (var j = 0; j < widget.values[i].values.length; j++) {
         points[i].add(FlSpot(j.toDouble(), widget.values[i].values[j]));
@@ -276,7 +280,9 @@ class _LineChartCardContent extends State<LineChartCardContent> {
     }
 
     SizedBox chart = SizedBox(
-      height: (widget.showPopup) ? widget.chartHeight : MediaQuery.of(context).size.height*getChartHeightPercent() - adjustScale(0),
+      height: (widget.showPopup)
+          ? widget.chartHeight
+          : MediaQuery.of(context).size.height * getChartHeightPercent(),
       child: LineChart(
         LineChartData(
           minY: minimums.first,
@@ -326,19 +332,21 @@ class _LineChartCardContent extends State<LineChartCardContent> {
                 ),
               ),
               Expanded(
-                  child: chart,
+                child: chart,
               ),
             ],
           ),
-          if (widget.showPopup) TextButton(
-            onPressed: widget.onShowOverlayPressed,
-            style: const ButtonStyle(
-              overlayColor: MaterialStatePropertyAll<Color>(Colors.transparent),
+          if (widget.showPopup)
+            TextButton(
+              onPressed: widget.onShowOverlayPressed,
+              style: const ButtonStyle(
+                overlayColor:
+                    MaterialStatePropertyAll<Color>(Colors.transparent),
+              ),
+              child: Container(
+                height: chart.height,
+              ),
             ),
-            child: Container(
-              height: chart.height,
-            ),
-          ),
           //FloatingActionButton(onPressed: (){debugPrint("test");}),
           //SizedBox(
           //  height: 100,

@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/widgets/buttons.dart';
 
 import '../data/models/application_info.dart';
@@ -78,8 +76,10 @@ class _LanguagePickerScreenState extends State<LanguagePickerScreen> {
   Widget build(BuildContext context) {
     // Create a DateFormat for the current locale
     return Scaffold(
-      floatingActionButton: const PionixCloseButton(inverted: true,),
-      backgroundColor: AppColors.primaryBlue,
+      floatingActionButton: const PionixCloseButton(
+        inverted: true,
+      ),
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -105,10 +105,10 @@ class _LanguagePickerScreenState extends State<LanguagePickerScreen> {
                   //   ],
                   // ),
                 )
-              : const Expanded(
+              : Expanded(
                   child: Center(
                       child: CircularProgressIndicator(
-                  color: AppColors.primaryAmber,
+                  color: Theme.of(context).colorScheme.secondary,
                 ))),
         ],
       ),
@@ -141,13 +141,13 @@ class _LanguagePickerScreenState extends State<LanguagePickerScreen> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
               border: Border.all(
-                  color:
-                      selected ? AppColors.primaryAmber : AppColors.primaryBlue,
+                  color: selected
+                      ? Theme.of(context).colorScheme.secondary
+                      : Theme.of(context).colorScheme.primary,
                   width: 3.0)),
           child: Text(
             language.tr(),
-            style:
-                AppTextStyles.heading6.copyWith(color: AppColors.primaryAmber),
+            style: Theme.of(context).textTheme.displayLarge,
           ),
         ),
       ),

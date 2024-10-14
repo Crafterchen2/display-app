@@ -6,8 +6,6 @@ import 'package:pionixbox/data/models/network_device_info.dart';
 import 'package:pionixbox/screens/about.dart';
 import 'package:pionixbox/screens/control.dart';
 import 'package:pionixbox/screens/network_info.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
@@ -65,33 +63,38 @@ class _SystemInfoState extends State<SystemInfo> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 3,
-        child: Scaffold(
-            floatingActionButton: const PionixCloseButton(),
-            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-            appBar: AppBar(
-              toolbarHeight: 70,
-              automaticallyImplyLeading: false,
-              backgroundColor: AppColors.primaryBlue,
-              flexibleSpace: TabBar(
-                labelStyle: AppTextStyles.subTitle4.copyWith(color: Colors.white),
-                unselectedLabelStyle: AppTextStyles.subTitle4.copyWith(color: Colors.grey),
-                tabs: [
-                  Tab(
-                    icon: const Icon(Icons.info),
-                    text: "about".tr(),
-                  ),
-                  Tab(
-                    icon: const Icon(Icons.network_wifi_sharp),
-                    text: "network".tr(),
-                  ),
-                  Tab(
-                    icon: const Icon(Icons.tune),
-                    text: "control".tr(),
-                  )
-                ],
+      length: 3,
+      child: Scaffold(
+        floatingActionButton: const PionixCloseButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          flexibleSpace: TabBar(
+            labelStyle: Theme.of(context).textTheme.titleLarge,
+            tabs: [
+              Tab(
+                icon: const Icon(Icons.info),
+                text: "about".tr(),
               ),
-            ),
-            body: const TabBarView(children: [About(), NetworkInfo(), Control()])));
+              Tab(
+                icon: const Icon(Icons.network_wifi_sharp),
+                text: "network".tr(),
+              ),
+              Tab(
+                icon: const Icon(Icons.tune),
+                text: "control".tr(),
+              ),
+            ],
+          ),
+        ),
+        body: const TabBarView(
+          children: [
+            About(),
+            NetworkInfo(),
+            Control(),
+          ],
+        ),
+      ),
+    );
   }
 }

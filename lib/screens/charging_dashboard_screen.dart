@@ -19,13 +19,12 @@ import 'package:pionixbox/data/providers/powermeter_provider.dart';
 import 'package:pionixbox/data/providers/selected_protocol_provider.dart';
 import 'package:pionixbox/data/providers/session_info_provider.dart';
 import 'package:pionixbox/data/providers/telemetry_provider.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 import 'package:pionixbox/utils/circular_queue.dart';
 import 'package:pionixbox/utils/constants/helper.dart';
 import 'package:pionixbox/utils/enums.dart';
 import 'package:pionixbox/utils/globals.dart';
 import 'package:pionixbox/widgets/layout.dart';
+import 'package:pionixbox/main.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
@@ -274,8 +273,10 @@ class _ChargingDashboardScreenState
 
     return Scaffold(
       endDrawer: NavigationDrawer(
+        //FIXME: Handle with theme! Issue: values set in theme are not honored here, thus they need to be set explicitly.
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        surfaceTintColor: Colors.transparent,
         elevation: 20,
-        backgroundColor: AppColors.primaryBlue,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(
@@ -285,18 +286,13 @@ class _ChargingDashboardScreenState
             child: Text(
               "Navigation", //TODO Localisation
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    color: AppColors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
             ),
           ),
-          const Divider(
-            indent: 10,
-            endIndent: 10,
-            thickness: 2,
-            color: AppColors.white,
-          ),
+          const Divider(),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
@@ -304,52 +300,52 @@ class _ChargingDashboardScreenState
             ),
             child: FilledButton.icon(
               onPressed: (ref
-                  .watch(powermeterStreamProvider)
-                  .whenOrNull(data: (data) => data) !=
-                  null)
+                          .watch(powermeterStreamProvider)
+                          .whenOrNull(data: (data) => data) !=
+                      null)
                   ? () async {
-                /*final result = */ await Navigator.of(context).pushNamed(
-                    AppRoutes.sessionDetailScreen,
-                    arguments: {}).then((value) {
-                  setState(() {});
-                });
-              }
+                      await Navigator.of(context).pushNamed(
+                          AppRoutes.sessionDetailScreen,
+                          arguments: {}).then(
+                        (value) {
+                          setState(() {});
+                        },
+                      );
+                    }
                   : () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    elevation: 20,
-                    duration: const Duration(
-                      seconds: 2,
-                    ),
-                    content: const Text(
-                        'You are offline. Try again or check wifi Settings.'), //TODO: Localization
-                    action: SnackBarAction(
-                      label: 'Open Wifi settings', //TODO: Localization
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(
-                          AppRoutes.wifiSetupScreen,
-                          arguments: {
-                            'init': false,
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                );
-              },
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryAmber,
-              ),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          elevation: 20,
+                          duration: const Duration(
+                            seconds: 2,
+                          ),
+                          //TODO: Localization
+                          //FIXME: This might also be displayed for other reasons, then the message doesn't fit
+                          content: const Text(
+                              'You are offline. Try again or check wifi Settings.'),
+                          action: SnackBarAction(
+                            label: 'Open Wifi settings', //TODO: Localization
+                            onPressed: () {
+                              Navigator.of(context).pushNamed(
+                                AppRoutes.wifiSetupScreen,
+                                arguments: {
+                                  'init': false,
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    },
               icon: const Icon(Icons.details),
-              label: Text("Details", //TODO Localisation
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.white,
-                ),
+              label: Text(
+                "Details", //TODO Localisation
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
@@ -358,36 +354,28 @@ class _ChargingDashboardScreenState
               onPressed: () async {
                 await Navigator.of(context).pushNamed(AppRoutes.hlcLogScreen);
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryAmber,
-              ),
               icon: const Icon(Icons.compare_arrows),
-              label: Text("HLC log", //TODO Localisation
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.white,
-                ),
+              label: Text(
+                "HLC log", //TODO Localisation
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               right: 10,
             ),
-            child: Text("Einstellungen", //TODO Localisation
+            child: Text(
+              "Einstellungen", //TODO Localisation
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    color: AppColors.white,
-              ),
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
             ),
           ),
-          const Divider(
-            indent: 10,
-            endIndent: 10,
-            thickness: 2,
-            color: AppColors.white,
-          ),
+          const Divider(),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
@@ -402,19 +390,15 @@ class _ChargingDashboardScreenState
                   },
                 );
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryAmber,
-              ),
-              label: Text(tr('wifi_setup'),
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.white,
-                ),
+              label: Text(
+                tr('wifi_setup'),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               icon: const Icon(Icons.wifi_protected_setup),
             ),
           ),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
@@ -424,19 +408,15 @@ class _ChargingDashboardScreenState
                 await Navigator.of(context)
                     .pushNamed(AppRoutes.languagePickerScreen);
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryAmber,
-              ),
-              label: Text(tr('language'),
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.white,
-                ),
+              label: Text(
+                tr('language'),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               icon: const Icon(Icons.language),
             ),
           ),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
@@ -445,19 +425,15 @@ class _ChargingDashboardScreenState
               onPressed: () {
                 Navigator.of(context).pushNamed(AppRoutes.systemInfo);
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryAmber,
-              ),
-              label: Text(tr('system_info'),
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.white,
-                ),
+              label: Text(
+                tr('system_info'),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               icon: const Icon(Icons.info_outline),
             ),
           ),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
@@ -485,23 +461,23 @@ class _ChargingDashboardScreenState
                   },
                 );
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.errorContainer,
-              ),
+              style: Theme.of(context).filledButtonTheme.style?.copyWith(
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) => Theme.of(context).colorScheme.error)),
               label: Text(
                 tr('reset'),
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onErrorContainer,
-                ),
+                      color: Theme.of(context).colorScheme.onError,
+                    ),
               ),
               icon: Icon(
                 Icons.restore,
-                color: Theme.of(context).colorScheme.onErrorContainer,
+                color: Theme.of(context).colorScheme.onError,
               ),
             ),
           ),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
@@ -512,37 +488,70 @@ class _ChargingDashboardScreenState
                   context: context,
                   builder: (ctz) {
                     return BasicDialog(
-                        title: 'reboot_charger'.tr(),
-                        positiveText: 'reboot'.tr(),
-                        negativeText: 'cancel'.tr(),
-                        content: 'reboot_charger_explanation'.tr(),
-                        onPositivePressed: () {
-                          Navigator.pop(context);
-                          mqtt.publish(Topic.reboot, '');
-                        },
-                        onNegativePressed: () {
-                          Navigator.pop(context);
-                        });
+                      title: ((getChargerModelName() == "MicroMegaWattCharger")
+                              ? 'reboot_umwc'
+                              : 'reboot_belaybox')
+                          .tr(),
+                      positiveText: 'reboot'.tr(),
+                      negativeText: 'cancel'.tr(),
+                      content:
+                          (((getChargerModelName() == "MicroMegaWattCharger")
+                                      ? 'reboot_umwc'
+                                      : 'reboot_belaybox') +
+                                  '_explanation')
+                              .tr(),
+                      onPositivePressed: () {
+                        Navigator.pop(context);
+                        mqtt.publish(Topic.reboot, '');
+                      },
+                      onNegativePressed: () {
+                        Navigator.pop(context);
+                      },
+                    );
                   },
                 );
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.errorContainer,
-              ),
+              style: Theme.of(context).filledButtonTheme.style?.copyWith(
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) => Theme.of(context).colorScheme.error)),
               label: Text(
                 tr('reboot'),
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onErrorContainer,
-                ),
+                      color: Theme.of(context).colorScheme.onError,
+                    ),
               ),
               icon: Icon(
                 Icons.restart_alt,
-                color: Theme.of(context).colorScheme.onErrorContainer,
+                color: Theme.of(context).colorScheme.onError,
               ),
             ),
           ),
           Padding(
-            padding: const  EdgeInsets.only(
+            padding: const EdgeInsets.only(
+              left: 10,
+              bottom: 5,
+              right: 10,
+            ),
+            child: FilledButton.icon(
+              onPressed: () {
+                themeModeNotifier.value =
+                    (Theme.of(context).brightness == Brightness.light)
+                        ? ThemeMode.dark
+                        : ThemeMode.light;
+              },
+              label: Text(
+                (Theme.of(context).brightness == Brightness.light)
+                    ? "Dark mode"
+                    : "Light mode", //TODO: Localisation
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              icon: Icon((Theme.of(context).brightness == Brightness.light)
+                  ? Icons.dark_mode
+                  : Icons.light_mode),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
               left: 10,
               bottom: 5,
               right: 10,
@@ -551,20 +560,16 @@ class _ChargingDashboardScreenState
               onPressed: () {
                 Navigator.of(context).pushNamed(AppRoutes.simulationScreen);
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryAmber,
-              ),
-              label: Text(tr('simulation'),
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.white,
-                ),
+              label: Text(
+                tr('simulation'),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               icon: const Icon(Icons.settings),
             ),
           ),
         ],
       ),
-      backgroundColor: AppColors.white,
+      //reminder: this is body of scaffold
       body: Stack(
         children: [
           BorderLayout(
@@ -576,20 +581,20 @@ class _ChargingDashboardScreenState
                 privateMode: privateMode,
               ),
               BorderLayoutSlot.center: makeSessionInfoBody(context),
-              ////const Spacer(flex: 2),
               BorderLayoutSlot.south: makeFooterBar(),
             },
           ),
           if (_showProgressBar)
             Center(
               child: Container(
-                color: Colors.white,
+                color: Theme.of(context)
+                    .colorScheme
+                    .background, //Needed to block view of underlying UI
                 child: const Center(
-                  child:
-                      CircularProgressIndicator(color: AppColors.primaryAmber),
+                  child: CircularProgressIndicator(),
                 ),
               ),
-            )
+            ),
         ],
       ),
     );
@@ -617,11 +622,12 @@ class _ChargingDashboardScreenState
                   .whenOrNull(data: (data) => data) !=
               null)
           ? () async {
-              /*final result = */ await Navigator.of(context).pushNamed(
-                  AppRoutes.sessionDetailScreen,
-                  arguments: {}).then((value) {
-                setState(() {});
-              });
+              /*final result = */ await Navigator.of(context)
+                  .pushNamed(AppRoutes.sessionDetailScreen, arguments: {}).then(
+                (value) {
+                  setState(() {});
+                },
+              );
             }
           : () {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -630,8 +636,12 @@ class _ChargingDashboardScreenState
                   duration: const Duration(
                     seconds: 2,
                   ),
-                  content: const Text(
-                      'You are offline. Try again or check wifi Settings.'), //TODO: Localization
+                  content: Text(
+                    'You are offline. Try again or check wifi Settings.',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ), //TODO: Localization
                   action: SnackBarAction(
                     label: 'Open Wifi settings', //TODO: Localization
                     onPressed: () {
@@ -679,37 +689,38 @@ class _ChargingDashboardScreenState
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: _online
-                                ? AppColors.successLight
-                                : AppColors.errorLight),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 4, horizontal: 12),
-                          child: Text(
-                            _online ? 'online'.tr() : 'offline'.tr(),
-                            style: AppTextStyles.subTitle2
-                                .copyWith(color: Colors.white),
-                          ),
-                        )),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: _online
+                            ? Theme.of(context).colorScheme.tertiaryContainer
+                            : Theme.of(context).colorScheme.errorContainer,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                          horizontal: 12,
+                        ),
+                        child: Text(
+                          _online ? 'online'.tr() : 'offline'.tr(),
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
                       selectedProtocolString,
-                      style: AppTextStyles.digitsSubTitle2
-                          .copyWith(color: Colors.grey),
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
                       dateTimeFormat.format(DateTime.now()),
-                      style: AppTextStyles.digitsSubTitle2
-                          .copyWith(color: Colors.grey),
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

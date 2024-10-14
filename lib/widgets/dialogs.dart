@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pionixbox/theme/app_colors.dart';
 
 import '../main.dart';
 
@@ -26,23 +25,25 @@ showPionixBottomSheet({
 }) {
   showModalBottomSheet(
     context: context,
-    backgroundColor: backgroundColor ?? AppColors.white,
+    backgroundColor:
+        backgroundColor ?? Theme.of(context).colorScheme.background,
     barrierLabel: barrierLabel,
     elevation: elevation ?? 20,
-    shape: shape ?? RoundedRectangleBorder(
-      side: const BorderSide(
-        width: 2,
-        color: Colors.white30,
-      ),
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(adjustScale(12)),
-        topRight: Radius.circular(adjustScale(12)),
-      ),
-    ),
+    shape: shape ??
+        RoundedRectangleBorder(
+          side: const BorderSide(
+            width: 2,
+            color: Colors.white30,
+          ),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(adjustScale(12)),
+            topRight: Radius.circular(adjustScale(12)),
+          ),
+        ),
     clipBehavior: clipBehavior,
     constraints: constraints,
     barrierColor: barrierColor,
-    isScrollControlled: (heightPercent != null)? true : isScrollControlled,
+    isScrollControlled: (heightPercent != null) ? true : isScrollControlled,
     useRootNavigator: useRootNavigator,
     isDismissible: isDismissible,
     enableDrag: enableDrag,
@@ -51,7 +52,7 @@ showPionixBottomSheet({
     routeSettings: routeSettings,
     transitionAnimationController: transitionAnimationController,
     anchorPoint: anchorPoint,
-    builder: (context){
+    builder: (context) {
       return SizedBox(
         height: MediaQuery.of(context).size.height * (heightPercent ?? 0.5),
         child: builder.call(context),
@@ -83,30 +84,41 @@ class BasicDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(
         title,
-        style: const TextStyle(color: AppColors.primaryBlue, fontSize: 40),
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onBackground,
+          fontSize: 40,
+        ),
       ),
-      content: Text(content,
-          style: const TextStyle(color: AppColors.primaryBlue, fontSize: 30)),
+      content: Text(
+        content,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onBackground,
+          fontSize: 30,
+        ),
+      ),
       actions: <Widget>[
         TextButton(
-            // color: Colors.green,
-            onPressed: onNegativePressed,
-            child: Text(
-              negativeText,
-              style:
-                  const TextStyle(color: AppColors.primaryBlue, fontSize: 36),
-            )),
+          // color: Colors.green,
+          onPressed: onNegativePressed,
+          child: Text(
+            negativeText,
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.onBackground,
+                fontSize: 36),
+          ),
+        ),
         const SizedBox(
           width: 50,
         ),
         TextButton(
-            // color: Colors.redAccent,
-            onPressed: onPositivePressed,
-            child: Text(
-              positiveText,
-              style:
-                  const TextStyle(color: AppColors.primaryBlue, fontSize: 36),
-            ))
+          // color: Colors.redAccent,
+          onPressed: onPositivePressed,
+          child: Text(
+            positiveText,
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.error, fontSize: 36),
+          ),
+        ),
       ],
     );
   }

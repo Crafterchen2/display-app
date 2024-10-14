@@ -8,8 +8,7 @@ import 'package:pionixbox/data/models/network_device_info.dart';
 import 'package:pionixbox/data/models/release_component.dart';
 import 'package:pionixbox/data/models/release_info.dart';
 import 'package:pionixbox/data/providers/application_info_provider.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
+import 'package:pionixbox/main.dart';
 
 class About extends ConsumerStatefulWidget {
   const About({
@@ -58,35 +57,31 @@ class _AboutState extends ConsumerState<About> {
       }
     }
     return Scaffold(
-      //floatingActionButton: const PionixCloseButton(),
-      body: Container(
-        color: Colors.white,
-        child: Stack(
+      body: Padding(
+        padding: const EdgeInsets.only(
+          top: 20,
+          right: 10,
+          left: 10,
+        ),
+        child: Column(
           children: [
-            Column(
-              children: [
-                const Padding(padding: EdgeInsets.only(bottom: 20)),
-                Text(
-                  "EVerest " +
-                      releaseInfo.version +
-                      " @ " +
-                      releaseInfo.channel +
-                      " " +
-                      "channel".tr(),
-                  style: AppTextStyles.heading3
-                      .copyWith(color: AppColors.primaryBlue),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                      padding: const EdgeInsets.only(bottom: 100),
-                      itemCount: releaseInfo.components.length,
-                      itemBuilder: (builder, index) {
-                        return ReleaseComponentInfoWidget(
-                          component: releaseInfo.components[index],
-                        );
-                      }),
-                ),
-              ],
+            Text(
+              "EVerest ${releaseInfo.version} @ ${releaseInfo.channel} channel"
+                  .tr(),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.only(bottom: 100),
+                itemCount: releaseInfo.components.length,
+                itemBuilder: (builder, index) {
+                  return ReleaseComponentInfoWidget(
+                    component: releaseInfo.components[index],
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -103,61 +98,62 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: screenHeight * 0.03),
-          Row(
-            children: [
-              Container(
-                height: 1,
-                width: screenWidth * 0.1,
-                color: AppColors.primaryBlue,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Divider(
+                color: Theme.of(context).colorScheme.primary,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text(
-                  component.name,
-                  style: AppTextStyles.heading3
-                      .copyWith(color: AppColors.primaryBlue),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                component.name,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+              ),
+            ),
+            Expanded(
+              flex: 5,
+              child: Divider(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text(
+            component.description,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  height: 1,
-                  color: AppColors.primaryBlue,
-                ),
-              ),
-            ],
           ),
-          SizedBox(height: screenHeight * 0.03),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                component.description,
-                style: AppTextStyles.subTitle4
-                    .copyWith(color: AppColors.primaryBlue),
-              )),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                "version".tr() + ": ${component.version}",
-                style: AppTextStyles.subTitle4
-                    .copyWith(color: AppColors.primaryBlue),
-              )),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                "license".tr() + ": ${component.license}",
-                style: AppTextStyles.subTitle4
-                    .copyWith(color: AppColors.primaryBlue),
-              ))
-        ],
-      ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text(
+            "version".tr() + ": ${component.version}",
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text(
+            "license".tr() + ": ${component.license}",
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+          ),
+        ),
+      ],
     );
   }
 }

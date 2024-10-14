@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pionixbox/main.dart';
-import 'package:pionixbox/theme/app_colors.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
@@ -22,13 +21,18 @@ class _SimulationPanelState extends State<SimulationPanel> {
   Widget build(BuildContext context) {
     List<Widget> menuButtons = makeMenuButtons();
     return Scaffold(
-      backgroundColor: AppColors.primaryBlue,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       floatingActionButton: const PionixCloseButton(
         inverted: true,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0,),
+        padding: EdgeInsets.only(
+          bottom: adjustScale(80),
+          left: adjustScale(8),
+          right: adjustScale(8),
+          top: adjustScale(8),
+        ),
         child: ListView.separated(
           itemBuilder: (BuildContext context, int index) {
             return SizedBox(
@@ -45,34 +49,34 @@ class _SimulationPanelState extends State<SimulationPanel> {
     );
   }
 
-  List<Widget> makeMenuButtons(){
+  List<Widget> makeMenuButtons() {
     return [
-      PrimaryButton(
-        title: 'Plug In',
+      FilledButton(
+        child: const Text('Plug In'),
         onPressed: plugIn,
       ),
-      PrimaryButton(
-        title: 'Plug Out',
+      FilledButton(
+        child: const Text('Plug Out'),
         onPressed: plugOut,
       ),
-      PrimaryButton(
-        title: 'Resume by car',
+      FilledButton(
+        child: const Text('Resume by car'),
         onPressed: resumeByCar,
       ),
-      PrimaryButton(
-        title: 'Pause by car',
+      FilledButton(
+        child: const Text('Pause by car'),
         onPressed: pauseByCar,
       ),
-      PrimaryButton(
-        title: 'Enable Simulation',
+      FilledButton(
+        child: const Text('Enable Simulation'),
         onPressed: enableSimulation,
       ),
-      PrimaryButton(
-        title: 'Disable Simulation',
+      FilledButton(
+        child: const Text('Disable Simulation'),
         onPressed: disableSimulation,
       ),
-      PrimaryButton(
-        title: 'Charging Simulation',
+      FilledButton(
+        child: const Text('Charging Simulation'),
         onPressed: chargingSimulation,
       ),
     ];
