@@ -488,14 +488,14 @@ class _ChargingDashboardScreenState
                   context: context,
                   builder: (ctz) {
                     return BasicDialog(
-                      title: ((getChargerModelName() == "MicroMegaWattCharger")
+                      title: ((getChargerModelName() == ChargerModelName.microMegaWattCharger)
                               ? 'reboot_umwc'
                               : 'reboot_belaybox')
                           .tr(),
                       positiveText: 'reboot'.tr(),
                       negativeText: 'cancel'.tr(),
                       content:
-                          (((getChargerModelName() == "MicroMegaWattCharger")
+                          (((getChargerModelName() == ChargerModelName.microMegaWattCharger)
                                       ? 'reboot_umwc'
                                       : 'reboot_belaybox') +
                                   '_explanation')

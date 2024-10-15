@@ -339,7 +339,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 child: TextButton(
                                   onPressed: widget.seeMorePressed,
                                   child: _buildInfoCards(
-                                    name: widget.chargerModelName,
+                                    chargerModelName: widget.chargerModelName,
                                     width: (carSideWidth.isSnapped())
                                         ? (MediaQuery.of(context).size.width -
                                                 carSideWidth.snapNumber()) /
@@ -358,7 +358,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 ),
                               ),
                               (widget.chargerModelName !=
-                                      "MicroMegaWattCharger")
+                                      ChargerModelName.microMegaWattCharger)
                                   ? null
                                   : Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -507,11 +507,11 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   }
 
   Widget _buildInfoCards({
-    required String name,
+    required String chargerModelName,
     double? width,
     TextStyle? style,
   }) {
-    if (name == "MicroMegaWattCharger") {
+    if (chargerModelName == ChargerModelName.microMegaWattCharger) {
       List<Text> titles = [
         Text(
           'Output Voltage : ',
@@ -541,9 +541,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       List<Text> values = [
         Text(
           outputVoltage.toStringAsFixed(2) + ' V',
-          style: style?.copyWith(
-            fontFeatures: [const FontFeature.tabularFigures()]
-          ),
+          style: style
+              ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
         ),
         Text(
           relaisState,
@@ -551,21 +550,18 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
         ),
         Text(
           pwmDc.toStringAsFixed(0) + ' %',
-          style: style?.copyWith(
-              fontFeatures: [const FontFeature.tabularFigures()]
-          ),
+          style: style
+              ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
         ),
         Text(
           cpHi.toStringAsFixed(2),
-          style: style?.copyWith(
-              fontFeatures: [const FontFeature.tabularFigures()]
-          ),
+          style: style
+              ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
         ),
         Text(
           cpLo.toStringAsFixed(2),
-          style: style?.copyWith(
-              fontFeatures: [const FontFeature.tabularFigures()]
-          ),
+          style: style
+              ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
         ),
         Text(
           stateString,
@@ -609,6 +605,79 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
         alignment: WrapAlignment.start,
         children: infos,
       );
+    } else if (chargerModelName == ChargerModelName.microMegaWattCar) {
+      Text ampereLabel = Text(
+        (targetCurrent).toStringAsFixed(2) + ' A',
+        style:
+            style?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
+      );
+      TextPainter tp = TextPainter(
+        text: TextSpan(
+          text: ampereLabel.data! + "Current Demand",
+          style: ampereLabel.style,
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      double ampereWidth = tp.width;
+      return Column(children: [
+        Text(
+          'battery_percentage'.tr(),
+          style: const TextStyle(fontSize: 20),
+        ),
+        LinearGauge(
+          start: 0,
+          steps: 10,
+          end: 100,
+          customLabels: const [
+            CustomRulerLabel(text: "0", value: 0),
+            CustomRulerLabel(text: "10", value: 10),
+            CustomRulerLabel(text: "20", value: 20),
+            CustomRulerLabel(text: "30", value: 30),
+            CustomRulerLabel(text: "40", value: 40),
+            CustomRulerLabel(text: "50", value: 50),
+            CustomRulerLabel(text: "60", value: 60),
+            CustomRulerLabel(text: "70", value: 70),
+            CustomRulerLabel(text: "80", value: 80),
+            CustomRulerLabel(text: "90", value: 90),
+            CustomRulerLabel(text: "100", value: 100)
+          ],
+          valueBar: [
+            ValueBar(
+              value: batteryPercentage,
+              valueBarThickness: 10,
+            )
+          ],
+          rulers: RulerStyle(
+              rulerPosition: RulerPosition.bottom,
+              textStyle: TextStyle(fontSize: 20)),
+        ),
+        Wrap(
+          alignment: WrapAlignment.spaceAround,
+          children: [
+            _buildTextInfo(
+              null,
+              ampereLabel,
+              Text(
+                'Current Demand : ',
+                style: style,
+              ),
+              ampereWidth,
+            ),
+            _buildTextInfo(
+              null,
+              Text(
+                (targetCurrent * targetVoltage).toStringAsFixed(2) + ' W',
+                style: style,
+              ),
+              Text(
+                'Current Demand : ',
+                style: style,
+              ),
+              ampereWidth,
+            )
+          ],
+        ),
+      ]);
     } else {
       return Wrap(
         alignment: WrapAlignment.spaceAround,
