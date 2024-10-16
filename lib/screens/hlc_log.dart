@@ -217,6 +217,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
       bottomNavigationBar: BottomAppBar(
+        elevation: 0,
         color: Theme.of(context).colorScheme.primary,
       ),
       body: Stack(
