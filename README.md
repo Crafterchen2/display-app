@@ -1,6 +1,6 @@
-# pionixbox
+# Display App
 
-Flutter app for pionix charging box (Linux OS)
+Flutter app for uMWC, BelayBox and uMWCar
 
 ## Build for Raspberry Pi
 Run the following commands on a x64 Intel/AMD machine, you CAN NOT build the app directly on the Raspberry Pi!
