@@ -199,7 +199,9 @@ class _ControlState extends ConsumerState<Control> {
                 ),
                 Text(
                   "EVerest configurations",
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
                 ),
                 ListView.builder(
                   shrinkWrap: true,
@@ -258,7 +260,7 @@ class ConfigInfoWidget extends StatelessWidget {
           children: [
             Expanded(
               child: Divider(
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
             ),
             Padding(
@@ -273,7 +275,7 @@ class ConfigInfoWidget extends StatelessWidget {
             Expanded(
               flex: 5,
               child: Divider(
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
             ),
           ],
