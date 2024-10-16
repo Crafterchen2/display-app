@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pionixbox/main.dart';
 
-import '../theme/app_colors.dart';
 import '../widgets/info_cards.dart';
 
 class GeneralDetailScreen extends StatelessWidget {
-
   final List<SessionDetailCardWidget> infoCards;
   final List<SessionDetailCardWidget> fullInfoCards;
 
-  final Color backgroundColor;
   final Color boxOutlineColor;
 
   final Divider minorDivider;
@@ -19,7 +16,6 @@ class GeneralDetailScreen extends StatelessWidget {
     super.key,
     required this.infoCards,
     required this.fullInfoCards,
-    this.backgroundColor = AppColors.primaryBlue,
     this.boxOutlineColor = Colors.white30,
     this.minorDivider = const Divider(
       color: Colors.white10,
@@ -39,8 +35,9 @@ class GeneralDetailScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Wrap(spacing: adjustScale(16),
-                children: infoCards,
+            Wrap(
+              spacing: adjustScale(16),
+              children: infoCards,
             ),
             minorDivider,
             Padding(

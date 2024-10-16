@@ -178,11 +178,11 @@ String durationFormat(Duration duration) {
 //   return;
 // }
 
-String wrapString(String str){
-    String newStr = "";
-    for (var character in str.runes) {
-      newStr += String.fromCharCode(character);
-      newStr +='\u200B';
-    }
-    return newStr;
+String wrapString(String str) {
+  String newStr = "";
+  for (var character in str.runes) {
+    newStr += String.fromCharCode(character);
+    newStr += '\u200B';
+  }
+  return newStr;
 }

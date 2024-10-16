@@ -1,20 +1,22 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart'
-    as _virtualKeyboardBackspaceEventPeriod;
+    as _virtual_keyboard_backspace_event_period;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:pionixbox/data/models/ev_info.dart';
 import 'package:pionixbox/mqtt.dart';
-import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/utils/enums.dart';
 import 'package:pionixbox/utils/globals.dart';
 import 'package:pionixbox/utils/number_tools.dart';
 import 'package:pionixbox/utils/routing/app_router.dart';
+import 'package:pionixbox/widgets/layout.dart';
 
 import '../main.dart';
-import '../theme/app_text_styles.dart';
 import '../utils/constants/helper.dart';
 import '../utils/constants/keys.dart';
 import 'buttons.dart';
@@ -153,16 +155,21 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   @override
   Widget build(BuildContext context) {
     String currentSliderLabel = widget.current.toStringAsFixed(1);
-    //Change the snapping behavior below is sufficient.
+    //Changing the snapping behavior below is sufficient.
+    double snapped = 300; //Width of left side when unsnapped
+    double offset = 20; //This is to accommodate Padding
+    double threshold = 180; //The minimum width of the right side when snapped
     NumberSnap carSideWidth = NumberSnap(
-      parameter: MediaQuery.of(context).size.width - adjustScale(300),
-      snapped: adjustScale(280),
-      threshold: adjustScale(150),
+      parameter: MediaQuery.of(context).size.width - adjustScale(snapped),
+      snapped: adjustScale(snapped - offset),
+      threshold: adjustScale(threshold),
     );
+    const scaler = TextScaler.linear(1.7);
+
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: adjustScale(10),
+          horizontal: adjustScale(offset / 2),
         ),
         child: Wrap(
           crossAxisAlignment: WrapCrossAlignment.start,
@@ -187,53 +194,46 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               alignment: Alignment.topLeft,
                               child: Text(
                                 'status'.tr(),
-                                style: AppTextStyles.subTitle4,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
                               ),
                             ),
                             Text(
                               chargingStateTitle(widget.state).toUpperCase(),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
-                              style:
-                                  AppTextStyles.heading6.copyWith(fontSize: 32),
+                              style: Theme.of(context).textTheme.displayLarge,
                             ),
                           ],
                         ),
                         _buildImageWidget(context),
                         if (widget.chargingMode == ChargingMode.unknown ||
                             widget.chargingMode == ChargingMode.basicAC)
-                          SizedBox(
-                            height: adjustScale(60),
-                            child: (widget.state == ChargingState.charging)
-                                ? SecondaryButton(
-                                    title: 'pause'.tr(),
-                                    onPressed: widget.onPauseCharging,
-                                    textColor: AppColors.primaryAmber)
-                                : (pauseOrResumeChargingTitle(widget.state) !=
-                                            ChargingState.charging &&
-                                        widget.state !=
-                                            ChargingState.authRequired &&
-                                        pauseOrResumeChargingTitle(
-                                                widget.state) !=
-                                            '')
-                                    ? PrimaryButton(
-                                        title: 'resume'.tr(),
-                                        onPressed: widget.onResumeCharging,
-                                        textColor: Colors.white,
-                                      )
-                                    : Container(),
-                          ),
+                          makeChargeControlButton(
+                              context, carSideWidth.snapNumber()),
                         if (widget.state != ChargingState.authRequired &&
                             widget.current >= widget.minCurrentA &&
                             widget.current <= widget.maxCurrentA)
                           Column(
-                            //mainAxisSize: MainAxisSize.min,
                             children: [
                               Wrap(
                                 children: [
                                   Text(
                                     'charge_upto'.tr() + ' ',
-                                    style: AppTextStyles.heading3,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall
+                                        ?.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground,
+                                        ),
                                   ),
                                   Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -241,53 +241,59 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                       Text(
                                         currentSliderLabel,
                                         textAlign: TextAlign.start,
-                                        style: AppTextStyles.digitsHeading3,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall
+                                            ?.copyWith(
+                                          fontFeatures: [
+                                            const FontFeature.tabularFigures(),
+                                          ],
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground,
+                                        ),
                                       ),
-                                      const Text(
+                                      Text(
                                         ' A',
                                         textAlign: TextAlign.end,
-                                        style: AppTextStyles.digitsHeading3,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onBackground,
+                                            ),
                                       ),
                                     ],
                                   ),
                                 ],
                               ),
                               Slider(
-                                  min: widget.minCurrentA,
-                                  max: widget.maxCurrentA,
-                                  label: currentSliderLabel,
-                                  activeColor: AppColors.primaryAmber,
-                                  inactiveColor: Colors.grey,
-                                  onChanged: (val) {
-                                    setState(() {});
-                                    widget.onCurrentChanged(val);
-                                  },
-                                  value: widget.current),
+                                min: widget.minCurrentA,
+                                max: widget.maxCurrentA,
+                                label: currentSliderLabel,
+                                activeColor:
+                                    Theme.of(context).colorScheme.secondary,
+                                inactiveColor: Colors.grey,
+                                onChanged: (val) {
+                                  setState(() {});
+                                  widget.onCurrentChanged(val);
+                                },
+                                value: widget.current,
+                              ),
                             ],
                           ),
                       ],
                     ),
                   ),
-                  //TODO fix err "Null check operator used on a null value"
-                  if (carSideWidth.isSnapped())
-                    SizedBox(
-                      height: adjustScale(350),
-                      child: VerticalDivider(
-                        thickness: adjustScale(2),
-                        color: Colors.grey,
-                      ),
-                    ),
                 ],
               ),
             ),
-            if (!carSideWidth.isSnapped())
-              Divider(
-                thickness: adjustScale(2),
-                color: Colors.grey,
-              ),
             SizedBox(
-              width:
-                  carSideWidth.snapNumber(ovrSnapped: carSideWidth.parameter),
+              width: carSideWidth.snapNumber(
+                ovrSnapped: carSideWidth.parameter,
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,244 +305,164 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                     child: widget.state == ChargingState.authRequired
                         ? Text(
                             'swipe_your_card_please'.tr(),
-                            style: AppTextStyles.subTitle4,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
+                                ),
                           )
                         : Text(
                             widget.state == 'unplugged'.tr()
                                 ? 'last_session'.tr()
                                 : 'current_session'.tr(),
-                            style: AppTextStyles.subTitle4,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
+                                ),
                           ),
                   ),
-                  widget.state == ChargingState.authRequired
+                  (widget.state == ChargingState.authRequired)
                       ? Container()
-                      : GestureDetector(
-                          onTap: widget.seeMorePressed,
-                          behavior: HitTestBehavior.opaque,
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                              minWidth: adjustScale(150),
-                            ),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 2,
-                                    color: AppColors.primaryBlue,
-                                  ),
-                                  borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(12),
-                                    topLeft: Radius.circular(12),
+                      : SizedBox(
+                          width: double.infinity,
+                          child: InfoLayout(
+                            children: [
+                              SizedBox(
+                                width: double.infinity,
+                                child: TextButton(
+                                  onPressed: widget.seeMorePressed,
+                                  child: _buildInfoCards(
+                                    chargerModelName: widget.chargerModelName,
+                                    width: (carSideWidth.isSnapped())
+                                        ? (MediaQuery.of(context).size.width -
+                                                carSideWidth.snapNumber()) /
+                                            14
+                                        : null,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 18),
                                   ),
                                 ),
-                                child: Wrap(
-                                  alignment: WrapAlignment.spaceEvenly,
-                                  children:
-                                      _buildInfoCards(widget.chargerModelName),
+                              ),
+                              (widget.chargerModelName !=
+                                      ChargerModelName.microMegaWattCharger)
+                                  ? null
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 5,
+                                      ),
+                                      child: Wrap(
+                                        runSpacing: 10,
+                                        spacing: 10,
+                                        children: [
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/pause_charging",
+                                                  "1");
+                                            },
+                                            child: const Text(
+                                              "Pause",
+                                              textScaler: scaler,
+                                            ),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/resume_charging",
+                                                  "1");
+                                            },
+                                            child: const Text(
+                                              "Resume",
+                                              textScaler: scaler,
+                                            ),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/stop_transaction",
+                                                  "1");
+                                            },
+                                            child: const Text(
+                                              "Stop transaction",
+                                              textScaler: scaler,
+                                            ),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/emergency_stop",
+                                                  "1");
+                                            },
+                                            child: const Text(
+                                              "Emerg.Stp",
+                                              textScaler: scaler,
+                                            ),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/evse_malfunction",
+                                                  "1");
+                                            },
+                                            child: const Text(
+                                              "EVSE malf",
+                                              textScaler: scaler,
+                                            ),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/evse_utility_int",
+                                                  "1");
+                                            },
+                                            child: const Text(
+                                              "EVSEutil int",
+                                              textScaler: scaler,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: TextButton(
+                                  onPressed: () async {
+                                    await Navigator.of(context).pushNamed(
+                                        AppRoutes.hlcLogScreen,
+                                        arguments: {}).then((value) {
+                                      setState(() {});
+                                    });
+                                  },
+                                  child: Text(
+                                    "See HLC comm log", //TODO Localisation
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall
+                                        ?.copyWith(
+                                          color: Colors.grey,
+                                        ),
+                                    softWrap: true,
+                                    maxLines: 4,
+                                  ),
                                 ),
-                              ),
-                            ),
+                              )
+                            ],
                           ),
                         ),
-                  Container(
-                    transform: Matrix4.translationValues(0, -2, 0),
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        left: BorderSide(
-                          color: AppColors.primaryBlue,
-                          width: 2,
-                        ),
-                        bottom: BorderSide(
-                          color: AppColors.primaryBlue,
-                          width: 2,
-                        ),
-                        right: BorderSide(
-                          color: AppColors.primaryBlue,
-                          width: 2,
-                        ),
-                        top: BorderSide(
-                          color: AppColors.primaryBlue,
-                          width: 2,
-                        ),
-                      ),
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(12),
-                        bottomLeft: Radius.circular(12),
-                      ),
-                    ),
-                    child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: GestureDetector(
-                          onTap: () async {
-                            /*final result = */ await Navigator.of(context)
-                                .pushNamed(AppRoutes.hlcLogScreen,
-                                    arguments: {}).then((value) {
-                              setState(() {});
-                            });
-                          },
-                          behavior: HitTestBehavior.opaque,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "See HLC comm log", //TODO Localisation
-                              style:
-                                  AppTextStyles.horizontalMenuButton.copyWith(
-                                color: Colors.grey,
-                              ),
-                              softWrap: true,
-                              maxLines: 4,
-                            ),
-                          ),
-                        )),
-                  ),
-                  if (widget.chargerModelName == ChargerModelName.microMegaWattCharger)
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: PrimaryButton(
-                            color: AppColors.primaryAmber,
-                            onPressed: () {
-                              mqtt.publish(
-                                  "everest_external/nodered/1/cmd/pause_charging",
-                                  "1");
-                            },
-                            title: "Pause",
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: PrimaryButton(
-                            color: AppColors.primaryAmber,
-                            onPressed: () {
-                              mqtt.publish(
-                                  "everest_external/nodered/1/cmd/resume_charging",
-                                  "1");
-                            },
-                            title: "Resume",
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: PrimaryButton(
-                            color: AppColors.primaryAmber,
-                            onPressed: () {
-                              mqtt.publish(
-                                  "everest_external/nodered/1/cmd/stop_transaction",
-                                  "1");
-                            },
-                            title: "Stop transaction",
-                          ),
-                        ),
-                      ],
-                    )
-                  else if (widget.chargerModelName == ChargerModelName.microMegaWattCar)
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: PrimaryButton(
-                            color: AppColors.primaryAmber,
-                            onPressed: () {
-                              mqtt.publish(Topic.modifyChargingSessionTopic,
-                                  Payloads.isoPause);
-                            },
-                            title: 'pause'.tr(),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: PrimaryButton(
-                            color: AppColors.primaryAmber,
-                            onPressed: () {
-                              mqtt.publish(Topic.modifyChargingSessionTopic,
-                                  Payloads.isoResumeAC); // FIXME: only resumes AC sessions, resume DC here when we're DC charging
-                            },
-                            title: 'resume'.tr(),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: PrimaryButton(
-                            color: AppColors.primaryAmber,
-                            onPressed: () {
-                              mqtt.publish(Topic.modifyChargingSessionTopic,
-                                  Payloads.isoStop);
-                            },
-                            title: 'stop'.tr(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  if (widget.chargerModelName == ChargerModelName.microMegaWattCharger)
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: PrimaryButton(
-                            color: AppColors.primaryAmber,
-                            onPressed: () {
-                              mqtt.publish(
-                                  "everest_external/nodered/1/cmd/emergency_stop",
-                                  "1");
-                            },
-                            title: "Emerg.Stp",
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: PrimaryButton(
-                            color: AppColors.primaryAmber,
-                            onPressed: () {
-                              mqtt.publish(
-                                  "everest_external/nodered/1/cmd/evse_malfunction",
-                                  "1");
-                            },
-                            title: "EVSE malf",
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: PrimaryButton(
-                            color: AppColors.primaryAmber,
-                            onPressed: () {
-                              mqtt.publish(
-                                  "everest_external/nodered/1/cmd/evse_utility_int",
-                                  "1");
-                            },
-                            title: "EVSEutil int",
-                          ),
-                        ),
-                      ],
-                    )
-                  else if (widget.chargerModelName == ChargerModelName.microMegaWattCar)
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: PrimaryButton(
-                            color: AppColors.primaryAmber,
-                            onPressed: () {
-                              mqtt.publish(Topic.modifyChargingSessionTopic,
-                                  Payloads.isoStartAC);
-                            },
-                            title: 'start_ac'.tr(),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: PrimaryButton(
-                            color: AppColors.primaryAmber,
-                            onPressed: () {
-                              mqtt.publish(Topic.modifyChargingSessionTopic,
-                                  Payloads.isoStartDC);
-                            },
-                            title: 'start_dc'.tr(),
-                          ),
-                        )
-                      ],
-                    )
                 ],
               ),
             ),
@@ -546,7 +472,249 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     );
   }
 
-  Widget _buildSessionInfoCard(String? iconPath, String value, String label) {
+  Widget makeChargeControlButton(BuildContext context, double? width) {
+    var isChargingState = widget.state == ChargingState.charging;
+    var showResumeButton =
+        pauseOrResumeChargingTitle(widget.state) != ChargingState.charging &&
+            widget.state != ChargingState.authRequired &&
+            pauseOrResumeChargingTitle(widget.state) != '';
+    if (!isChargingState && !showResumeButton) {
+      return SizedBox(
+        width: width,
+      );
+    }
+    return SizedBox(
+      height: adjustScale(60),
+      width: width,
+      child: (isChargingState)
+          ? OutlinedButton(
+              child: Text(
+                'pause'.tr(),
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              onPressed: widget.onPauseCharging,
+            )
+          : (showResumeButton)
+              ? FilledButton(
+                  child: Text(
+                    'resume'.tr(),
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  onPressed: widget.onResumeCharging,
+                )
+              : Container(),
+    );
+  }
+
+  Widget _buildInfoCards({
+    required String chargerModelName,
+    double? width,
+    TextStyle? style,
+  }) {
+    if (chargerModelName == ChargerModelName.microMegaWattCharger) {
+      List<Text> titles = [
+        Text(
+          'Output Voltage : ',
+          style: style,
+        ),
+        Text(
+          'Relais : ',
+          style: style,
+        ),
+        Text(
+          'PWM DC : ',
+          style: style,
+        ),
+        Text(
+          'CP Hi : ',
+          style: style,
+        ),
+        Text(
+          'CP Lo : ',
+          style: style,
+        ),
+        Text(
+          'State : ',
+          style: style,
+        ),
+      ];
+      List<Text> values = [
+        Text(
+          outputVoltage.toStringAsFixed(2) + ' V',
+          style: style
+              ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
+        ),
+        Text(
+          relaisState,
+          style: style,
+        ),
+        Text(
+          pwmDc.toStringAsFixed(0) + ' %',
+          style: style
+              ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
+        ),
+        Text(
+          cpHi.toStringAsFixed(2),
+          style: style
+              ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
+        ),
+        Text(
+          cpLo.toStringAsFixed(2),
+          style: style
+              ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
+        ),
+        Text(
+          stateString,
+          style: style,
+        ),
+      ];
+      double maxWidth = 0.0;
+      for (int i = 0; i < min(titles.length, values.length); i++) {
+        TextPainter tp = TextPainter(
+          text: TextSpan(
+            text: titles[i].data,
+            style: titles[i].style,
+          ),
+          textDirection: TextDirection.ltr,
+        );
+        tp.layout();
+        double w = tp.width;
+        tp = TextPainter(
+          text: TextSpan(
+            text: values[i].data,
+            style: values[i].style,
+          ),
+          textDirection: TextDirection.rtl,
+        );
+        tp.layout();
+        w += tp.width + 20;
+        maxWidth = max(maxWidth, w);
+      }
+      Color? aColor = Color.lerp(Theme.of(context).colorScheme.background,
+              Theme.of(context).colorScheme.onBackground, 0.2)
+          ?.withAlpha(160);
+      Color? bColor = Color.lerp(Theme.of(context).colorScheme.background,
+              Theme.of(context).colorScheme.onBackground, 0.4)
+          ?.withAlpha(160);
+      List<Widget> infos = [];
+      for (int i = 0; i < min(titles.length, values.length); i++) {
+        infos.add(_buildTextInfo(
+            (i % 2 == 0) ? aColor : bColor, values[i], titles[i], maxWidth));
+      }
+      return Wrap(
+        alignment: WrapAlignment.start,
+        children: infos,
+      );
+    } else if (chargerModelName == ChargerModelName.microMegaWattCar) {
+      Text ampereLabel = Text(
+        (targetCurrent).toStringAsFixed(2) + ' A',
+        style:
+            style?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
+      );
+      TextPainter tp = TextPainter(
+        text: TextSpan(
+          text: ampereLabel.data! + "Current Demand",
+          style: ampereLabel.style,
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      double ampereWidth = tp.width;
+      return Column(children: [
+        Text(
+          'battery_percentage'.tr(),
+          style: const TextStyle(fontSize: 20),
+        ),
+        LinearGauge(
+          start: 0,
+          steps: 10,
+          end: 100,
+          customLabels: const [
+            CustomRulerLabel(text: "0", value: 0),
+            CustomRulerLabel(text: "10", value: 10),
+            CustomRulerLabel(text: "20", value: 20),
+            CustomRulerLabel(text: "30", value: 30),
+            CustomRulerLabel(text: "40", value: 40),
+            CustomRulerLabel(text: "50", value: 50),
+            CustomRulerLabel(text: "60", value: 60),
+            CustomRulerLabel(text: "70", value: 70),
+            CustomRulerLabel(text: "80", value: 80),
+            CustomRulerLabel(text: "90", value: 90),
+            CustomRulerLabel(text: "100", value: 100)
+          ],
+          valueBar: [
+            ValueBar(
+              value: batteryPercentage,
+              valueBarThickness: 10,
+            )
+          ],
+          rulers: RulerStyle(
+              rulerPosition: RulerPosition.bottom,
+              textStyle: TextStyle(fontSize: 20)),
+        ),
+        Wrap(
+          alignment: WrapAlignment.spaceAround,
+          children: [
+            _buildTextInfo(
+              null,
+              ampereLabel,
+              Text(
+                'Current Demand : ',
+                style: style,
+              ),
+              ampereWidth,
+            ),
+            _buildTextInfo(
+              null,
+              Text(
+                (targetCurrent * targetVoltage).toStringAsFixed(2) + ' W',
+                style: style,
+              ),
+              Text(
+                'Current Demand : ',
+                style: style,
+              ),
+              ampereWidth,
+            )
+          ],
+        ),
+      ]);
+    } else {
+      return Wrap(
+        alignment: WrapAlignment.spaceAround,
+        spacing: (width == null)
+            ? 0
+            : (MediaQuery.of(context).size.width - width) / 14,
+        children: [
+          _buildIconInfo('assets/icons/icon_power.svg',
+              widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
+          _buildIconInfo('assets/icons/icon_energy.svg',
+              widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
+          _buildIconInfo('assets/icons/icon_charging_duration.svg',
+              widget.duration + ' h', 'duration'.tr())
+        ],
+      );
+    }
+  }
+
+  Widget _buildTextInfo(
+      Color? background, Text value, Text title, double width) {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      color: background,
+      child: SizedBox(
+        width: width,
+        child: Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          children: [
+            title,
+            value,
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIconInfo(String iconPath, String value, String label) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: adjustScale(10),
@@ -555,116 +723,122 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text(label, style: AppTextStyles.digitsHeading3),
-          if (iconPath != null)
-            SizedBox(
-              height: adjustScale(10.0),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
             ),
-          if (iconPath != null)
-            SvgPicture.asset(
+            child: SvgPicture.asset(
               iconPath,
-              color: AppColors.primaryBlue,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
-          if (iconPath != null)
-            SizedBox(
-              height: adjustScale(10),
-            ),
+          ),
           Text(
             value,
-            style: AppTextStyles.digitsHeading3
-                .copyWith(color: AppColors.primaryBlue),
-          ),
-          if (iconPath == null)
-            SizedBox(
-              height: adjustScale(10),
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              fontFeatures: [
+                const FontFeature.tabularFigures(),
+              ],
             ),
+          ),
         ],
       ),
     );
   }
 
-  List<Widget> _buildInfoCards(String chargerModelName) {
-    if (chargerModelName == ChargerModelName.microMegaWattCharger) {
-      return [
-        _buildSessionInfoCard(
-            null, outputVoltage.toStringAsFixed(2) + ' V', 'Output Voltage'),
-        _buildSessionInfoCard(null, relaisState, 'Relais'),
-        _buildSessionInfoCard(null, pwmDc.toStringAsFixed(0) + ' %', 'PWM DC'),
-        _buildSessionInfoCard(null, cpHi.toStringAsFixed(2), 'CP Hi'),
-        _buildSessionInfoCard(null, cpLo.toStringAsFixed(2), 'CP Lo'),
-        _buildSessionInfoCard(null, stateString, 'State'),
-      ];
-    }
-    if (chargerModelName == ChargerModelName.microMegaWattCar) {
-      return [
-        Column(children: [
-          Text(
-            'battery_percentage'.tr(),
-            style: const TextStyle(fontSize: 20),
-          ),
-          LinearGauge(
-            start: 0,
-            steps: 10,
-            end: 100,
-            customLabels: const [
-              CustomRulerLabel(text: "0", value: 0),
-              CustomRulerLabel(text: "10", value: 10),
-              CustomRulerLabel(text: "20", value: 20),
-              CustomRulerLabel(text: "30", value: 30),
-              CustomRulerLabel(text: "40", value: 40),
-              CustomRulerLabel(text: "50", value: 50),
-              CustomRulerLabel(text: "60", value: 60),
-              CustomRulerLabel(text: "70", value: 70),
-              CustomRulerLabel(text: "80", value: 80),
-              CustomRulerLabel(text: "90", value: 90),
-              CustomRulerLabel(text: "100", value: 100)
-            ],
-            valueBar: [
-              ValueBar(
-                value: batteryPercentage,
-                valueBarThickness: 10,
-              )
-            ],
-            rulers: RulerStyle(
-                rulerPosition: RulerPosition.bottom,
-                textStyle: TextStyle(fontSize: 20)),
-          ),
-          Row(
-            children: [
-              _buildSessionInfoCard(null,
-                  (targetCurrent).toStringAsFixed(2) + ' A', 'CurrentDemand'),
-              _buildSessionInfoCard(
-                  null,
-                  (targetCurrent * targetVoltage).toStringAsFixed(2) + ' W',
-                  'CurrentDemand')
-            ],
-          ),
-        ])
-      ];
-    }
-    return [
-      _buildSessionInfoCard('assets/icons/icon_power.svg',
-          widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
-      _buildSessionInfoCard('assets/icons/icon_energy.svg',
-          widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
-      _buildSessionInfoCard('assets/icons/icon_charging_duration.svg',
-          widget.duration + ' h', 'duration'.tr())
-    ];
-  }
+  // VERY UNSURE WHAT TODO HERE :( the method had two different implementations and i went for the one from bd-ui-refactor branch
+
+  // List<Widget> _buildInfoCards(String chargerModelName) {
+  //   if (chargerModelName == ChargerModelName.microMegaWattCharger) {
+  //     return [
+  //       _buildSessionInfoCard(
+  //           null, outputVoltage.toStringAsFixed(2) + ' V', 'Output Voltage'),
+  //       _buildSessionInfoCard(null, relaisState, 'Relais'),
+  //       _buildSessionInfoCard(null, pwmDc.toStringAsFixed(0) + ' %', 'PWM DC'),
+  //       _buildSessionInfoCard(null, cpHi.toStringAsFixed(2), 'CP Hi'),
+  //       _buildSessionInfoCard(null, cpLo.toStringAsFixed(2), 'CP Lo'),
+  //       _buildSessionInfoCard(null, stateString, 'State'),
+  //     ];
+  //   }
+  //   if (chargerModelName == ChargerModelName.microMegaWattCar) {
+  //     return [
+  //       Column(children: [
+  //         Text(
+  //           'battery_percentage'.tr(),
+  //           style: const TextStyle(fontSize: 20),
+  //         ),
+  //         LinearGauge(
+  //           start: 0,
+  //           steps: 10,
+  //           end: 100,
+  //           customLabels: const [
+  //             CustomRulerLabel(text: "0", value: 0),
+  //             CustomRulerLabel(text: "10", value: 10),
+  //             CustomRulerLabel(text: "20", value: 20),
+  //             CustomRulerLabel(text: "30", value: 30),
+  //             CustomRulerLabel(text: "40", value: 40),
+  //             CustomRulerLabel(text: "50", value: 50),
+  //             CustomRulerLabel(text: "60", value: 60),
+  //             CustomRulerLabel(text: "70", value: 70),
+  //             CustomRulerLabel(text: "80", value: 80),
+  //             CustomRulerLabel(text: "90", value: 90),
+  //             CustomRulerLabel(text: "100", value: 100)
+  //           ],
+  //           valueBar: [
+  //             ValueBar(
+  //               value: batteryPercentage,
+  //               valueBarThickness: 10,
+  //             )
+  //           ],
+  //           rulers: RulerStyle(
+  //               rulerPosition: RulerPosition.bottom,
+  //               textStyle: TextStyle(fontSize: 20)),
+  //         ),
+  //         Row(
+  //           children: [
+  //             _buildSessionInfoCard(null,
+  //                 (targetCurrent).toStringAsFixed(2) + ' A', 'CurrentDemand'),
+  //             _buildSessionInfoCard(
+  //                 null,
+  //                 (targetCurrent * targetVoltage).toStringAsFixed(2) + ' W',
+  //                 'CurrentDemand')
+  //           ],
+  //         ),
+  //       ])
+  //     ];
+  //   }
+  //   return [
+  //     _buildSessionInfoCard('assets/icons/icon_power.svg',
+  //         widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
+  //     _buildSessionInfoCard('assets/icons/icon_energy.svg',
+  //         widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
+  //     _buildSessionInfoCard('assets/icons/icon_charging_duration.svg',
+  //         widget.duration + ' h', 'duration'.tr())
+  //   ];
+  // }
 
   Widget _buildImageWidget(BuildContext context) {
     return SizedBox(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          //is this stack still required?
           Stack(
             alignment: Alignment.bottomRight,
             children: [
               Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                  child: getChargingSessionWidgetByState(widget.state,
-                      adjustScale(96), adjustScale(320), widget.soc)),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: getChargingSessionWidgetByState(
+                  context,
+                  widget.state,
+                  adjustScale(96),
+                  adjustScale(320),
+                  widget.soc,
+                ),
+              ),
               // if (widget.state == 'ChargingPausedEVSE' ||
               //     widget.state == 'ChargingPausedEV')
               // SvgPicture.asset(
@@ -682,8 +856,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   }
 }
 
-Widget getChargingSessionWidgetByState(
-    String state, double height, double width, double? soc) {
+Widget getChargingSessionWidgetByState(BuildContext context, String state,
+    double height, double width, double? soc) {
   if (state == 'Charging') {
     return Stack(alignment: Alignment.bottomCenter, children: <Widget>[
       ChargingAnimationWidget(),
@@ -697,14 +871,14 @@ Widget getChargingSessionWidgetByState(
                 foreground: Paint()
                   ..style = PaintingStyle.stroke
                   ..strokeWidth = 8
-                  ..color = AppColors.primaryBlue,
+                  ..color = Theme.of(context).colorScheme.onBackground,
               ),
             ),
             Text(
               soc.toStringAsFixed(0) + "%",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 60,
-                color: AppColors.white,
+                color: Theme.of(context).colorScheme.surface,
               ),
             ),
           ],
@@ -714,7 +888,7 @@ Widget getChargingSessionWidgetByState(
     return SvgPicture.asset(
       getChargingSessionIconByState(state),
       height: height,
-      width: width,
+      //width: width,
     );
   }
 }

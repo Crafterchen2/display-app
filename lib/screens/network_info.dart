@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pionixbox/data/models/network_device_info.dart';
 import 'package:pionixbox/data/providers/hostname_provider.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
@@ -75,53 +73,44 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
     }
     return Scaffold(
       //floatingActionButton: const PionixCloseButton(),
-      body: Container(
-        color: Colors.white,
-        child: Stack(
-          children: [
-            _showProgress
-                ? const Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.primaryBlue,
-                    ),
-                  )
-                : Column(
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal:
-                                  MediaQuery.of(context).size.width * 0.02),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.03),
-                                Row(children: [
-                                  Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8),
-                                      child: Text(
-                                        'Hostname: $hostnameString',
-                                        style: AppTextStyles.subTitle4.copyWith(
-                                            color: AppColors.primaryBlue),
-                                      ))
-                                ])
-                              ])),
-                      Expanded(
-                        child: ListView.builder(
-                            padding: const EdgeInsets.only(bottom: 100),
-                            itemCount: devices.length,
-                            itemBuilder: (builder, index) {
-                              return NetworkDeviceInfoWidget(
-                                info: devices[index],
-                              );
-                            }),
-                      ),
-                    ],
+      body: Stack(
+        children: [
+          _showProgress
+              ? Center(
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.primary,
                   ),
-          ],
-        ),
+                )
+              : Column(
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(
+                            left: 8,
+                            right: 8,
+                            top: 15,
+                          ),
+                      child: Text(
+                        'Hostname: $hostnameString',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.only(bottom: 100),
+                        itemCount: devices.length,
+                        itemBuilder: (builder, index) {
+                          return NetworkDeviceInfoWidget(
+                            info: devices[index],
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+        ],
       ),
     );
   }
@@ -135,81 +124,89 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: screenHeight * 0.03),
-          Row(
-            children: [
-              Container(
-                height: 1,
-                width: screenWidth * 0.1,
-                color: AppColors.primaryBlue,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text(
-                  "network_interface".tr() + ": ${info.interface}",
-                  style: AppTextStyles.heading3
-                      .copyWith(color: AppColors.primaryBlue),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 15,
+            ),
+            child: Row(
+              children: [
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(
+                    "network_interface".tr() + ": ${info.interface}",
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  height: 1,
-                  color: AppColors.primaryBlue,
+                Expanded(
+                  child: Container(
+                    height: 1,
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          SizedBox(height: screenHeight * 0.03),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 8,
+              right: 8,
+              top: 15,
+            ),
+            child: ListView.builder(
+              physics: const ClampingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: info.ipv4.length,
+              itemBuilder: (builder, index) {
+                if (info.ipv4[index].isNotEmpty) {
+                  return Text(
+                    'IPv4: ${info.ipv4[index]}',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: ListView.builder(
-                physics: const ClampingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: info.ipv4.length,
-                itemBuilder: (builder, index) {
-                  if (info.ipv4[index].isNotEmpty) {
-                    return Text(
-                      'IPv4: ${info.ipv4[index]}',
-                      style: AppTextStyles.subTitle4
-                          .copyWith(color: AppColors.primaryBlue),
-                    );
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                }),
+              physics: const ClampingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: info.ipv6.length,
+              itemBuilder: (builder, index) {
+                if (info.ipv6[index].isNotEmpty) {
+                  return Text(
+                    'IPv6: ${info.ipv6[index]}',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: ListView.builder(
-                physics: const ClampingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: info.ipv6.length,
-                itemBuilder: (builder, index) {
-                  if (info.ipv6[index].isNotEmpty) {
-                    return Text(
-                      'IPv6: ${info.ipv6[index]}',
-                      style: AppTextStyles.subTitle4
-                          .copyWith(color: AppColors.primaryBlue),
-                    );
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                }),
+            child: Text(
+              'MAC: ${info.mac}',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
           ),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                'MAC: ${info.mac}',
-                style: AppTextStyles.subTitle4
-                    .copyWith(color: AppColors.primaryBlue),
-              )),
         ],
       ),
     );

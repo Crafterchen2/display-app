@@ -7,7 +7,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pionixbox/data/models/application_info.dart';
 import 'package:pionixbox/main.dart';
 import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
@@ -99,34 +98,19 @@ class _InitializingScreenState extends State<InitializingScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             const Expanded(
-                              child:
-                                  SizedBox.expand(child: EverestLogoWidget()),
+                              child: EverestLogoWidget(),
                             ),
-                            Column(
-                              children: [
-                                Divider(
-                                  thickness: adjustScale(2),
-                                  color: Colors.grey,
-                                  height: adjustScale(50),
-                                  indent: adjustScale(20),
-                                  endIndent: adjustScale(20),
-                                ),
-                                LinearProgressIndicator(
-                                  color: AppColors.primaryBlue,
-                                  minHeight: adjustScale(10),
-                                  backgroundColor: Colors.grey.shade300,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    top: screenHeight * 0.02,
-                                  ),
-                                  child: Text(
-                                    progressMessage.toUpperCase(),
-                                    style: AppTextStyles.subTitle4
-                                        .copyWith(fontWeight: FontWeight.w700),
-                                  ),
-                                ),
-                              ],
+                            Divider(
+                              height: adjustScale(20),
+                              indent: adjustScale(20),
+                              endIndent: adjustScale(20),
+                            ),
+                            LinearProgressIndicator(
+                              minHeight: adjustScale(10),
+                            ),
+                            Text(
+                              progressMessage.toUpperCase(),
+                              style: Theme.of(context).textTheme.headlineLarge,
                             ),
                           ],
                         ),
@@ -135,30 +119,68 @@ class _InitializingScreenState extends State<InitializingScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
                           children: [
-                            SquareButtonWidget(
-                                iconUrl: 'assets/icons/icon_wifi.svg',
-                                text: 'wifi'.tr(),
+                            Expanded(
+                              child: OutlinedButton(
                                 onPressed: () {
                                   Navigator.of(context).pushNamed(
-                                      AppRoutes.wifiSetupScreen,
-                                      arguments: {
-                                        'init': true,
-                                      });
-                                }),
-                            SquareButtonWidget(
-                                iconUrl: 'assets/icons/icon_lan.svg',
-                                text: 'lan'.tr(),
+                                    AppRoutes.wifiSetupScreen,
+                                    arguments: {
+                                      'init': true,
+                                    },
+                                  );
+                                },
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/icons/icon_wifi.svg',
+                                    ),
+                                    Text(
+                                      'wifi'.tr(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displayLarge,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const VerticalDivider(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: OutlinedButton(
                                 onPressed: () {
                                   Navigator.of(context).pushNamed(
-                                      AppRoutes.lanInfoScreen,
-                                      arguments: {
-                                        'init': true,
-                                      });
-                                })
+                                    AppRoutes.lanInfoScreen,
+                                    arguments: {
+                                      'init': true,
+                                    },
+                                  );
+                                },
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/icons/icon_lan.svg',
+                                    ),
+                                    Text(
+                                      'lan'.tr(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displayLarge,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         ),
-                      )
+                      ),
               ],
             ),
           ),
@@ -240,52 +262,6 @@ class _InitializingScreenState extends State<InitializingScreen> {
   }
 }
 
-class SquareButtonWidget extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-  final double height;
-  final double width;
-  final String iconUrl;
-
-  const SquareButtonWidget({
-    Key? key,
-    required this.text,
-    required this.onPressed,
-    this.height = 200,
-    this.width = 200,
-    required this.iconUrl,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: SizedBox(
-        height: screenWidth * 0.4,
-        width: screenWidth * 0.4,
-        child: Material(
-          elevation: 3,
-          color: AppColors.white,
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SvgPicture.asset(
-                iconUrl,
-                height: screenWidth * 0.2,
-                width: screenWidth * 0.2,
-              ),
-              Text(text,
-                  style: AppTextStyles.heading6
-                      .copyWith(color: AppColors.primaryBlue)),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class InitializingProgressWidget extends StatelessWidget {
   final double? progress;
   final String message;
@@ -296,28 +272,25 @@ class InitializingProgressWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     return Padding(
-      padding: EdgeInsets.only(top: height * 0.3),
+      padding: const EdgeInsets.only(top: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(
-              width: height * 0.5,
-              child: LinearProgressIndicator(
-                value: progress,
-                color: Colors.greenAccent,
-                backgroundColor: Colors.grey.shade300,
-              )),
-          SizedBox(height: height * 0.01),
+          Expanded(
+            child: LinearProgressIndicator(
+              value: progress,
+              color: Theme.of(context).colorScheme.tertiaryContainer,
+              backgroundColor: Theme.of(context).colorScheme.onTertiaryContainer,
+            ),
+          ),
           Padding(
-            padding: EdgeInsets.only(
-              top: height * 0.02,
+            padding: const EdgeInsets.only(
+              top: 15,
             ),
             child: Text(
-              message.toUpperCase(),
-              style:
-                  AppTextStyles.subTitle4.copyWith(fontWeight: FontWeight.w700),
+              'initializing'.tr(),
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
           ),
         ],

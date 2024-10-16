@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:pionixbox/widgets/dialogs.dart';
-import 'package:pionixbox/theme/app_colors.dart';
 import 'package:pionixbox/widgets/buttons.dart';
 import 'package:pionixbox/widgets/restart_widget.dart';
 import 'package:pionixbox/widgets/settings_menu.dart';
@@ -9,6 +8,7 @@ import 'package:pionixbox/widgets/settings_menu.dart';
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
 
+@Deprecated("The Settings have been made obsolete by the NavigationDrawer.")
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({
     Key? key,
@@ -46,10 +46,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         inverted: true,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      backgroundColor: AppColors.primaryBlue,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: SettingsMenu(
-        setup_wifi: setupWifi,
-        setup_simulation: setupSimulation,
+        setupWifi: setupWifi,
+        setupSimulation: setupSimulation,
         localization: localization,
         resetInitialised: resetConfirmationDialog,
         rebootCharger: rebootConfirmationDialog,
@@ -77,22 +77,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
     BuildContext context,
   ) async {
     showDialog(
-        context: context,
-        builder: (ctz) {
-          return BasicDialog(
-              title: 'reset_app_to_factory_defaults'.tr(),
-              positiveText: 'reset'.tr(),
-              negativeText: 'cancel'.tr(),
-              content: 'reset_app_to_factory_defaults_explanation'.tr(),
-              onPositivePressed: () {
-                Navigator.pop(context);
-                resetInitialised();
-              },
-              onNegativePressed: () {
-                Navigator.pop(context);
-              },
-          );
-        });
+      context: context,
+      builder: (ctz) {
+        return BasicDialog(
+          title: 'reset_app_to_factory_defaults'.tr(),
+          positiveText: 'reset'.tr(),
+          negativeText: 'cancel'.tr(),
+          content: 'reset_app_to_factory_defaults_explanation'.tr(),
+          onPositivePressed: () {
+            Navigator.pop(context);
+            resetInitialised();
+          },
+          onNegativePressed: () {
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
   }
 
   Future<void> rebootConfirmationDialog(
@@ -102,10 +103,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
         context: context,
         builder: (ctz) {
           return BasicDialog(
-              title: 'reboot_charger'.tr(),
+              //No reference to model name, but this is deprecated anyway. --> WONTFIX
+              title: 'reboot_belaybox'.tr(),
               positiveText: 'reboot'.tr(),
               negativeText: 'cancel'.tr(),
-              content: 'reboot_charger_explanation'.tr(),
+              //No reference to model name, but this is deprecated anyway. --> WONTFIX
+              content: 'reboot_belaybox_explanation'.tr(),
               onPositivePressed: () {
                 Navigator.pop(context);
                 reboot();

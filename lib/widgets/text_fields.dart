@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pionixbox/theme/app_colors.dart';
-import 'package:pionixbox/theme/app_text_styles.dart';
 
 class IconTextField extends StatefulWidget {
   final Icon icon;
@@ -55,16 +53,19 @@ class _IconTextFieldState extends State<IconTextField> {
               onTap: widget.onTap,
               controller: widget.controller,
               focusNode: widget.focusNode,
-              style: AppTextStyles.heading3.copyWith(
-                color: AppColors.primaryBlue,
-              ),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
               decoration: InputDecoration(
-                  alignLabelWithHint: true,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  hintText: widget.hintText,
-                  hintStyle: AppTextStyles.heading3
-                      .copyWith(color: Colors.grey.shade400)),
+                alignLabelWithHint: true,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                hintText: widget.hintText,
+                hintStyle: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(color: Colors.grey.shade400),
+              ),
             ),
           ),
           widget.hidden

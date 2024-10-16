@@ -14,7 +14,7 @@ enum PionixVirtualKeyboardKeyAction {
   Space,
   SwitchLanguage,
   SwitchToSpecialCharacters,
-  SwitchFromSpecialCharacters
+  SwitchFromSpecialCharacters,
 }
 
 class PionixVirtualKeyboardKey {
@@ -73,18 +73,7 @@ class VirtualKeyboardPionixLayoutKeys extends VirtualKeyboardLayoutKeys {
 /// Keys for Virtual Keyboard's rows.
 const List<List> _defaultEnglishLayout = [
   // Row 1
-  [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '0',
-  ],
+  ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
   // Row 2
   [
     'q',
@@ -135,24 +124,13 @@ const List<List> _defaultEnglishLayout = [
     '@',
     PionixVirtualKeyboardKeyAction.Space,
     '&',
-    '_',
-  ]
+    '_'
+  ],
 ];
 
 const List<List> _defaultSpecialCharactersLayout = [
   // Row 1
-  [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '0',
-  ],
+  ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
   // Row 2
   [
     '@',
@@ -203,8 +181,8 @@ const List<List> _defaultSpecialCharactersLayout = [
     '<',
     PionixVirtualKeyboardKeyAction.Space,
     '>',
-    '_',
-  ]
+    '_'
+  ],
 ];
 
 /// The default keyboard height. Can be overridden by passing
@@ -283,6 +261,7 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
   VirtualKeyboardType type = VirtualKeyboardType.Alphanumeric;
   Function? onKeyPress;
   TextEditingController textController = TextEditingController();
+
   /// The builder function will be called for each Key object.
   Widget Function(BuildContext context, PionixVirtualKeyboardKey key)? builder;
   late double height;
@@ -292,6 +271,7 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
   late bool alwaysCaps;
   late bool reverseLayout;
   late VirtualKeyboardPionixLayoutKeys customLayoutKeys;
+
   /// Text Style for keys.
   late TextStyle textStyle;
 
@@ -483,21 +463,23 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
   /// Creates default UI element for keyboard Key.
   Widget _keyboardDefaultKey(PionixVirtualKeyboardKey key) {
     return Expanded(
-        child: InkWell(
-      onTap: () {
-        _onKeyPress(key);
-      },
-      child: SizedBox(
-        height: height / customLayoutKeys.activeLayout.length,
-        child: Center(
+      child: InkWell(
+        onTap: () {
+          _onKeyPress(key);
+        },
+        child: SizedBox(
+          height: height / customLayoutKeys.activeLayout.length,
+          child: Center(
             child: Text(
-          alwaysCaps
-              ? key.capsText!
-              : (isShiftEnabled ? key.capsText! : key.text!),
-          style: textStyle,
-        )),
+              alwaysCaps
+                  ? key.capsText!
+                  : (isShiftEnabled ? key.capsText! : key.text!),
+              style: textStyle,
+            ),
+          ),
+        ),
       ),
-    ));
+    );
   }
 
   /// Creates default UI element for keyboard Action Key.
@@ -509,39 +491,47 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
     switch (key.action!) {
       case PionixVirtualKeyboardKeyAction.Backspace:
         actionKey = GestureDetector(
-            onLongPress: () {
-              longPress = true;
-              // Start sending backspace key events while longPress is true
-              Timer.periodic(
-                  const Duration(
-                      milliseconds: _virtualKeyboardBackspaceEventPeriod),
-                  (timer) {
+          onLongPress: () {
+            longPress = true;
+            // Start sending backspace key events while longPress is true
+            Timer.periodic(
+              const Duration(
+                  milliseconds: _virtualKeyboardBackspaceEventPeriod),
+              (timer) {
                 if (longPress) {
                   _onKeyPress(key);
                 } else {
                   // Cancel timer.
                   timer.cancel();
                 }
-              });
-            },
-            onLongPressUp: () {
-              // Cancel event loop
-              longPress = false;
-            },
-            child: SizedBox(
-              height: double.infinity,
-              width: double.infinity,
-              child: Icon(
-                Icons.backspace,
-                color: textColor,
-              ),
-            ));
+              },
+            );
+          },
+          onLongPressUp: () {
+            // Cancel event loop
+            longPress = false;
+          },
+          child: SizedBox(
+            height: double.infinity,
+            width: double.infinity,
+            child: Icon(
+              Icons.backspace,
+              color: textColor,
+            ),
+          ),
+        );
         break;
       case PionixVirtualKeyboardKeyAction.Shift:
-        actionKey = Icon(Icons.arrow_upward, color: textColor);
+        actionKey = Icon(
+          Icons.arrow_upward,
+          color: textColor,
+        );
         break;
       case PionixVirtualKeyboardKeyAction.Space:
-        actionKey = actionKey = Icon(Icons.space_bar, color: textColor);
+        actionKey = actionKey = Icon(
+          Icons.space_bar,
+          color: textColor,
+        );
         break;
       case PionixVirtualKeyboardKeyAction.Return:
         actionKey = Icon(
@@ -551,40 +541,47 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
         break;
       case PionixVirtualKeyboardKeyAction.SwitchLanguage:
         actionKey = GestureDetector(
-            onTap: () {
-              setState(() {
+          onTap: () {
+            setState(
+              () {
                 customLayoutKeys.switchLanguage();
-              });
-            },
-            child: SizedBox(
-              height: double.infinity,
-              width: double.infinity,
-              child: Icon(
-                Icons.language,
-                color: textColor,
-              ),
-            ));
+              },
+            );
+          },
+          child: SizedBox(
+            height: double.infinity,
+            width: double.infinity,
+            child: Icon(
+              Icons.language,
+              color: textColor,
+            ),
+          ),
+        );
         break;
       case PionixVirtualKeyboardKeyAction.SwitchToSpecialCharacters:
         actionKey = GestureDetector(
             onTap: () {
-              setState(() {
-                // widget.specialCharacters = true;
-                isSpecialCharactersEnabled = true;
-                customLayoutKeys
-                    .switchSpecialCharacters(isSpecialCharactersEnabled);
-              });
+              setState(
+                () {
+                  // widget.specialCharacters = true;
+                  isSpecialCharactersEnabled = true;
+                  customLayoutKeys
+                      .switchSpecialCharacters(isSpecialCharactersEnabled);
+                },
+              );
             },
             child: SizedBox(child: Text("?123", style: textStyle)));
         break;
       case PionixVirtualKeyboardKeyAction.SwitchFromSpecialCharacters:
         actionKey = GestureDetector(
             onTap: () {
-              setState(() {
-                isSpecialCharactersEnabled = false;
-                customLayoutKeys
-                    .switchSpecialCharacters(isSpecialCharactersEnabled);
-              });
+              setState(
+                () {
+                  isSpecialCharactersEnabled = false;
+                  customLayoutKeys
+                      .switchSpecialCharacters(isSpecialCharactersEnabled);
+                },
+              );
             },
             child: SizedBox(child: Text("ABC", style: textStyle)));
         break;
@@ -594,9 +591,11 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
       onTap: () {
         if (key.action == PionixVirtualKeyboardKeyAction.Shift) {
           if (!alwaysCaps) {
-            setState(() {
-              isShiftEnabled = !isShiftEnabled;
-            });
+            setState(
+              () {
+                isShiftEnabled = !isShiftEnabled;
+              },
+            );
           }
         }
 

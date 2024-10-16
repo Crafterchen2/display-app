@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  ///replaced by Theme.of(context).colorscheme.primary
+  @Deprecated('replaced by Theme.of(context).colorscheme.primary')
   static const Color primaryBlue = Color(0xFF092551);
+
+  ///replaced by Theme.of(context).colorscheme.secondary
+  @Deprecated('replaced by Theme.of(context).colorscheme.secondary')
   static const Color primaryAmber = Color(0xFFFFAC02);
   static const Color chartTomato = Color(0xFFf7654b);
   static const Color chartFuchsiaRose = Color(0xffbf3a6d);
