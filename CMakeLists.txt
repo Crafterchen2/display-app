@@ -42,25 +42,25 @@ message("Running flutter doctor using ${FLUTTER_BINARY}")
 
 execute_process(COMMAND "${FLUTTER_BINARY}" "doctor")
 
-set(pionixbox_SOURCE_DIR "${PROJECT_SOURCE_DIR}")
+set(display_app_SOURCE_DIR "${PROJECT_SOURCE_DIR}")
 
-message("Building pionixbox asset bundle from ${pionixbox_SOURCE_DIR}")
+message("Building display_app asset bundle from ${display_app_SOURCE_DIR}")
 
 add_custom_target(
-    build_pionixbox_asset_bundle ALL
+    build_display_app_asset_bundle ALL
     COMMAND "${FLUTTER_BINARY}" "build" "bundle"
-    WORKING_DIRECTORY "${pionixbox_SOURCE_DIR}"
+    WORKING_DIRECTORY "${display_app_SOURCE_DIR}"
 )
 
 set(DART_BINARY "${flutter_SOURCE_DIR}/bin/dart")
 set(DART_FRONTEND_SERVER_DART_SNAPSHOT "${flutter_SOURCE_DIR}/bin/cache/dart-sdk/bin/snapshots/frontend_server.dart.snapshot")
 set(FLUTTER_PATCHED_SDK_PRODUCT "${flutter_SOURCE_DIR}/bin/cache/artifacts/engine/common/flutter_patched_sdk_product")
 
-message("Building pionixbox kernel snapshot using dart ${DART_BINARY}")
+message("Building display_app kernel snapshot using dart ${DART_BINARY}")
 
 add_custom_target(
-    build_pionixbox_kernel_snapshot ALL
-    DEPENDS build_pionixbox_asset_bundle
+    build_display_app_kernel_snapshot ALL
+    DEPENDS build_display_app_asset_bundle
     COMMAND
     "${DART_BINARY}"
     "${DART_FRONTEND_SERVER_DART_SNAPSHOT}"
@@ -73,16 +73,16 @@ add_custom_target(
     "--output-dill=build/kernel_snapshot.dill"
     "--verbose"
     "--depfile=build/kernel_snapshot.d"
-    "package:pionixbox/main.dart"
-    WORKING_DIRECTORY "${pionixbox_SOURCE_DIR}"
+    "package:display_app/main.dart"
+    WORKING_DIRECTORY "${display_app_SOURCE_DIR}"
 )
 
 set(GEN_SNAPSHOT_BINARY "${flutter_engine_binaries_SOURCE_DIR}/arm/gen_snapshot_linux_x64_release")
-message("Building pionixbox app.so using ${GEN_SNAPSHOT_BINARY}")
+message("Building display_app app.so using ${GEN_SNAPSHOT_BINARY}")
 
 add_custom_target(
-    build_pionixbox_app_so ALL
-    DEPENDS build_pionixbox_kernel_snapshot
+    build_display_app_app_so ALL
+    DEPENDS build_display_app_kernel_snapshot
     COMMAND
     "${GEN_SNAPSHOT_BINARY}"
     "--deterministic"
@@ -91,10 +91,10 @@ add_custom_target(
     "--strip"
     "--sim-use-hardfp"
     "build/kernel_snapshot.dill"
-    WORKING_DIRECTORY "${pionixbox_SOURCE_DIR}"
+    WORKING_DIRECTORY "${display_app_SOURCE_DIR}"
 )
 
 
-install(DIRECTORY "${pionixbox_SOURCE_DIR}/build/flutter_assets/"
+install(DIRECTORY "${display_app_SOURCE_DIR}/build/flutter_assets/"
         DESTINATION flutter_assets
 )

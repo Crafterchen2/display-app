@@ -1,5 +1,5 @@
-name: pionixbox
-description: Flutter app for pionix charging box (Linux OS)
+name: display_app
+description: Display App for Pionix chargers / simulators (Linux OS)
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

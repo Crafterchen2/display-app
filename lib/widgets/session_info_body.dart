@@ -8,13 +8,13 @@ import 'package:easy_localization/easy_localization.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
-import 'package:pionixbox/data/models/ev_info.dart';
-import 'package:pionixbox/mqtt.dart';
-import 'package:pionixbox/utils/enums.dart';
-import 'package:pionixbox/utils/globals.dart';
-import 'package:pionixbox/utils/number_tools.dart';
-import 'package:pionixbox/utils/routing/app_router.dart';
-import 'package:pionixbox/widgets/layout.dart';
+import 'package:display_app/data/models/ev_info.dart';
+import 'package:display_app/mqtt.dart';
+import 'package:display_app/utils/enums.dart';
+import 'package:display_app/utils/globals.dart';
+import 'package:display_app/utils/number_tools.dart';
+import 'package:display_app/utils/routing/app_router.dart';
+import 'package:display_app/widgets/layout.dart';
 
 import '../main.dart';
 import '../utils/constants/helper.dart';

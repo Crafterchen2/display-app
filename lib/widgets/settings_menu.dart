@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pionixbox/main.dart';
-import 'package:pionixbox/utils/routing/app_router.dart';
-import 'package:pionixbox/widgets/settings_menu_button.dart';
+import 'package:display_app/main.dart';
+import 'package:display_app/utils/routing/app_router.dart';
+import 'package:display_app/widgets/settings_menu_button.dart';
 
 import '../utils/routing/param_args.dart';
 

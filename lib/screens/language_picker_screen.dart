@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pionixbox/widgets/buttons.dart';
+import 'package:display_app/widgets/buttons.dart';
 
 import '../data/models/application_info.dart';
 import '../mqtt.dart';

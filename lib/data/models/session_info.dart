@@ -2,8 +2,8 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:pionixbox/data/models/active_enable_disable_source.dart';
-import 'package:pionixbox/data/models/error.dart';
+import 'package:display_app/data/models/active_enable_disable_source.dart';
+import 'package:display_app/data/models/error.dart';
 
 part 'session_info.g.dart';
 

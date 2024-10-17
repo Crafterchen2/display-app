@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/data/models/config_paths.dart';
-import 'package:pionixbox/data/providers/application_info_provider.dart';
-import 'package:pionixbox/main.dart';
-import 'package:pionixbox/data/providers/connector_provider.dart';
-import 'package:pionixbox/mqtt.dart';
-import 'package:pionixbox/utils/constants/helper.dart';
-import 'package:pionixbox/widgets/buttons.dart';
+import 'package:display_app/data/models/config_paths.dart';
+import 'package:display_app/data/providers/application_info_provider.dart';
+import 'package:display_app/main.dart';
+import 'package:display_app/data/providers/connector_provider.dart';
+import 'package:display_app/mqtt.dart';
+import 'package:display_app/utils/constants/helper.dart';
+import 'package:display_app/widgets/buttons.dart';
 
 class AnimatedLinearProgressIndicator extends StatefulWidget {
   const AnimatedLinearProgressIndicator({super.key});

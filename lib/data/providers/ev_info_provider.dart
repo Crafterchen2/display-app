@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/data/models/ev_info.dart';
-import 'package:pionixbox/data/providers/connector_provider.dart';
-import 'package:pionixbox/mqtt.dart';
+import 'package:display_app/data/models/ev_info.dart';
+import 'package:display_app/data/providers/connector_provider.dart';
+import 'package:display_app/mqtt.dart';
 
 EvInfo parseEvInfo(String evInfo) {
   return EvInfo.fromJson(jsonDecode(evInfo));

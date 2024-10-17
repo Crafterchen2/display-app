@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pionixbox/widgets/dialogs.dart';
-import 'package:pionixbox/widgets/buttons.dart';
-import 'package:pionixbox/widgets/restart_widget.dart';
-import 'package:pionixbox/widgets/settings_menu.dart';
+import 'package:display_app/widgets/dialogs.dart';
+import 'package:display_app/widgets/buttons.dart';
+import 'package:display_app/widgets/restart_widget.dart';
+import 'package:display_app/widgets/settings_menu.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/data/models/hlc_log.dart';
+import 'package:display_app/data/models/hlc_log.dart';
 import 'dart:io';
 
-import 'package:pionixbox/data/providers/selected_protocol_provider.dart';
+import 'package:display_app/data/providers/selected_protocol_provider.dart';
 
-import 'package:pionixbox/utils/globals.dart';
+import 'package:display_app/utils/globals.dart';
 
-import 'package:pionixbox/widgets/buttons.dart';
-import 'package:pionixbox/widgets/keyboard.dart';
-import 'package:pionixbox/widgets/text_fields.dart';
+import 'package:display_app/widgets/buttons.dart';
+import 'package:display_app/widgets/keyboard.dart';
+import 'package:display_app/widgets/text_fields.dart';
 import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 
 import '../main.dart';

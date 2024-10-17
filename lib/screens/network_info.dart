@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/data/models/network_device_info.dart';
-import 'package:pionixbox/data/providers/hostname_provider.dart';
+import 'package:display_app/data/models/network_device_info.dart';
+import 'package:display_app/data/providers/hostname_provider.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';

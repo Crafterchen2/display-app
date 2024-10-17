@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/mqtt.dart';
+import 'package:display_app/mqtt.dart';
 
 const String connectorDefault = "evse_manager";
 

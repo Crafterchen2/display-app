@@ -4,7 +4,7 @@ import 'package:convert/convert.dart';
 import 'package:cryptography/cryptography.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pionixbox/utils/constants/keys.dart';
+import 'package:display_app/utils/constants/keys.dart';
 
 String getChargingSessionIconByState(String state) {
   String base = 'assets/icons/';

@@ -1,13 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/data/models/limits.dart';
-import 'package:pionixbox/data/models/power_meter.dart';
-import 'package:pionixbox/data/providers/limits_provider.dart';
-import 'package:pionixbox/data/providers/powermeter_provider.dart';
-import 'package:pionixbox/main.dart';
-import 'package:pionixbox/screens/general_detail_screen.dart';
-import 'package:pionixbox/utils/circular_queue.dart';
+import 'package:display_app/data/models/limits.dart';
+import 'package:display_app/data/models/power_meter.dart';
+import 'package:display_app/data/providers/limits_provider.dart';
+import 'package:display_app/data/providers/powermeter_provider.dart';
+import 'package:display_app/main.dart';
+import 'package:display_app/screens/general_detail_screen.dart';
+import 'package:display_app/utils/circular_queue.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/info_cards.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pionixbox/theme/simple_color_scheme.dart';
+import 'package:display_app/theme/simple_color_scheme.dart';
 
 class PionixThemeProvider {
   SimpleColorScheme? schemeSrc;

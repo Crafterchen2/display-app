@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/data/providers/connector_provider.dart';
-import 'package:pionixbox/mqtt.dart';
+import 'package:display_app/data/providers/connector_provider.dart';
+import 'package:display_app/mqtt.dart';
 
 final selectedProtocolStreamProvider = StreamProvider<String>((ref) async* {
   final mqtt = MQTT();

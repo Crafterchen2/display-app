@@ -1,8 +1,8 @@
 // import 'dart:async';
 //
 // import 'package:flutter/material.dart';
-// import 'package:pionixbox/data/models/available_network.dart';
-// import 'package:pionixbox/data/models/configured_network.dart';
+// import 'package:display_app/data/models/available_network.dart';
+// import 'package:display_app/data/models/configured_network.dart';
 //
 // import '../local/db_helper.dart';
 // import 'app_repo.dart';

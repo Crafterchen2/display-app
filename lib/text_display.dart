@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pionixbox/theme/pionix_theme_provider.dart';
+import 'package:display_app/theme/pionix_theme_provider.dart';
 
 void main() async {
   runApp(const DisplayTester());

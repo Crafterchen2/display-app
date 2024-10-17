@@ -4,11 +4,11 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/data/models/network_device_info.dart';
-import 'package:pionixbox/data/models/release_component.dart';
-import 'package:pionixbox/data/models/release_info.dart';
-import 'package:pionixbox/data/providers/application_info_provider.dart';
-import 'package:pionixbox/main.dart';
+import 'package:display_app/data/models/network_device_info.dart';
+import 'package:display_app/data/models/release_component.dart';
+import 'package:display_app/data/models/release_info.dart';
+import 'package:display_app/data/providers/application_info_provider.dart';
+import 'package:display_app/main.dart';
 
 class About extends ConsumerStatefulWidget {
   const About({

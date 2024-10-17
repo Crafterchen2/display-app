@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:pionixbox/screens/charging_dashboard_screen.dart';
-import 'package:pionixbox/screens/hlc_log.dart';
-import 'package:pionixbox/screens/lan_info_screen.dart';
-import 'package:pionixbox/screens/landing_screen.dart';
-import 'package:pionixbox/screens/language_picker_screen.dart';
-import 'package:pionixbox/screens/session_detail.dart';
-import 'package:pionixbox/screens/settings_screen.dart';
-import 'package:pionixbox/widgets/simulation_panel.dart';
-import 'package:pionixbox/screens/system_info.dart';
-import 'package:pionixbox/screens/wifi_setup_screen.dart';
+import 'package:display_app/screens/charging_dashboard_screen.dart';
+import 'package:display_app/screens/hlc_log.dart';
+import 'package:display_app/screens/lan_info_screen.dart';
+import 'package:display_app/screens/landing_screen.dart';
+import 'package:display_app/screens/language_picker_screen.dart';
+import 'package:display_app/screens/session_detail.dart';
+import 'package:display_app/screens/settings_screen.dart';
+import 'package:display_app/widgets/simulation_panel.dart';
+import 'package:display_app/screens/system_info.dart';
+import 'package:display_app/screens/wifi_setup_screen.dart';
 
 class AppRoutes {
   static const languagePickerScreen = '/language_picker_screen';

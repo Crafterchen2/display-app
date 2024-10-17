@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/data/models/locale/locale_state.dart';
-import 'package:pionixbox/data/models/locale/platform_locale/platform_locale_interface.dart';
+import 'package:display_app/data/models/locale/locale_state.dart';
+import 'package:display_app/data/models/locale/platform_locale/platform_locale_interface.dart';
 
 /// Platform Locale Provider
 /// Returns the locale of the Platform.localeName

@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:pionixbox/data/models/application_info.dart';
-import 'package:pionixbox/main.dart';
-import 'package:pionixbox/theme/app_colors.dart';
+import 'package:display_app/data/models/application_info.dart';
+import 'package:display_app/main.dart';
+import 'package:display_app/theme/app_colors.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';

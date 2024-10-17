@@ -4,10 +4,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/screens/initializing_screen.dart';
-import 'package:pionixbox/theme/pionix_theme_provider.dart';
-import 'package:pionixbox/utils/routing/app_router.dart';
-import 'package:pionixbox/widgets/restart_widget.dart';
+import 'package:display_app/screens/initializing_screen.dart';
+import 'package:display_app/theme/pionix_theme_provider.dart';
+import 'package:display_app/utils/routing/app_router.dart';
+import 'package:display_app/widgets/restart_widget.dart';
 import 'package:auto_orientation/auto_orientation.dart';
 
 /// [uiScale] should be used to determine any kind of manual size adjustment of
