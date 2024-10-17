@@ -8,7 +8,6 @@ import 'package:pionixbox/data/models/network_device_info.dart';
 import 'package:pionixbox/data/models/release_component.dart';
 import 'package:pionixbox/data/models/release_info.dart';
 import 'package:pionixbox/data/providers/application_info_provider.dart';
-import 'package:pionixbox/main.dart';
 
 class About extends ConsumerStatefulWidget {
   const About({

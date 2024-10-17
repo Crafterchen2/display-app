@@ -84,12 +84,11 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
               : Column(
                   children: [
                     Padding(
-                      padding:
-                          const EdgeInsets.only(
-                            left: 8,
-                            right: 8,
-                            top: 15,
-                          ),
+                      padding: const EdgeInsets.only(
+                        left: 8,
+                        right: 8,
+                        top: 15,
+                      ),
                       child: Text(
                         'Hostname: $hostnameString',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(

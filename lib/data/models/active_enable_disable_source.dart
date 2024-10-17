@@ -12,7 +12,8 @@ class ActiveEnableDisableSource {
 
   ActiveEnableDisableSource(this.priority, this.source, this.state);
 
-  factory ActiveEnableDisableSource.fromJson(Map<String, dynamic> json) => _$ActiveEnableDisableSourceFromJson(json);
+  factory ActiveEnableDisableSource.fromJson(Map<String, dynamic> json) =>
+      _$ActiveEnableDisableSourceFromJson(json);
 
   Map<String, dynamic> toJson() => _$ActiveEnableDisableSourceToJson(this);
 }

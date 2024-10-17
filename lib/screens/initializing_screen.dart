@@ -281,7 +281,8 @@ class InitializingProgressWidget extends StatelessWidget {
             child: LinearProgressIndicator(
               value: progress,
               color: Theme.of(context).colorScheme.tertiaryContainer,
-              backgroundColor: Theme.of(context).colorScheme.onTertiaryContainer,
+              backgroundColor:
+                  Theme.of(context).colorScheme.onTertiaryContainer,
             ),
           ),
           Padding(

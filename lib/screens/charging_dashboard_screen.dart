@@ -193,8 +193,10 @@ class _ChargingDashboardScreenState
         ref.watch(telemetryStreamProvider).whenOrNull(data: (data) => data);
     if (telemetry != null) {
       bufferedTelemetry.fanRPM.add(telemetry.fan_rpm);
-      bufferedTelemetry.rcdCurrent.add(telemetry.rcd_current == null ? 0 : telemetry.rcd_current!);
-      bufferedTelemetry.relaisOn.add(telemetry.relais_on == null ? false : telemetry.relais_on!);
+      bufferedTelemetry.rcdCurrent
+          .add(telemetry.rcd_current == null ? 0 : telemetry.rcd_current!);
+      bufferedTelemetry.relaisOn
+          .add(telemetry.relais_on == null ? false : telemetry.relais_on!);
       bufferedTelemetry.supplyVoltage12V.add(telemetry.supply_voltage_12V);
       bufferedTelemetry.supplyMinusVoltage12V
           .add(telemetry.supply_voltage_minus_12V);
@@ -488,18 +490,19 @@ class _ChargingDashboardScreenState
                   context: context,
                   builder: (ctz) {
                     return BasicDialog(
-                      title: ((getChargerModelName() == ChargerModelName.microMegaWattCharger)
+                      title: ((getChargerModelName() ==
+                                  ChargerModelName.microMegaWattCharger)
                               ? 'reboot_umwc'
                               : 'reboot_belaybox')
                           .tr(),
                       positiveText: 'reboot'.tr(),
                       negativeText: 'cancel'.tr(),
-                      content:
-                          (((getChargerModelName() == ChargerModelName.microMegaWattCharger)
-                                      ? 'reboot_umwc'
-                                      : 'reboot_belaybox') +
-                                  '_explanation')
-                              .tr(),
+                      content: (((getChargerModelName() ==
+                                      ChargerModelName.microMegaWattCharger)
+                                  ? 'reboot_umwc'
+                                  : 'reboot_belaybox') +
+                              '_explanation')
+                          .tr(),
                       onPositivePressed: () {
                         Navigator.pop(context);
                         mqtt.publish(Topic.reboot, '');
@@ -756,7 +759,8 @@ class _ChargingDashboardScreenState
           "everest_api/setup/var/supported_setup_features", parseConfigInfo);
       checkOnlineStatus();
       mqtt.subscribe("everest_api/setup/var/online_status", parseOnlineStatus);
-      mqtt.subscribe("everest_api/ev_manager/var/session_info", parseEvManagerSessionInfo);
+      mqtt.subscribe(
+          "everest_api/ev_manager/var/session_info", parseEvManagerSessionInfo);
     } catch (e) {
       debugPrint(e.toString());
       _status = 'Connection Error';
