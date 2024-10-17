@@ -1,10 +1,10 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:pionixbox/data/models/energy_wh_import.dart';
-import 'package:pionixbox/data/models/frequency_hz.dart';
-import 'package:pionixbox/data/models/power_w.dart';
-import 'package:pionixbox/data/models/voltage_v.dart';
+import 'package:display_app/data/models/energy_wh_import.dart';
+import 'package:display_app/data/models/frequency_hz.dart';
+import 'package:display_app/data/models/power_w.dart';
+import 'package:display_app/data/models/voltage_v.dart';
 
 import 'current_a.dart';
 

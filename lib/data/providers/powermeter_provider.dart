@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/data/models/power_meter.dart';
-import 'package:pionixbox/data/providers/connector_provider.dart';
-import 'package:pionixbox/mqtt.dart';
+import 'package:display_app/data/models/power_meter.dart';
+import 'package:display_app/data/providers/connector_provider.dart';
+import 'package:display_app/mqtt.dart';
 
 PowerMeter parsePowermeter(String powermeter) {
   return PowerMeter.fromJson(jsonDecode(powermeter));

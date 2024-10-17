@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pionixbox/data/models/network_device_info.dart';
-import 'package:pionixbox/screens/landing_screen.dart';
-import 'package:pionixbox/widgets/buttons.dart';
+import 'package:display_app/data/models/network_device_info.dart';
+import 'package:display_app/screens/landing_screen.dart';
+import 'package:display_app/widgets/buttons.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';

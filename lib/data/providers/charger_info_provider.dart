@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/data/models/charger_info.dart';
-import 'package:pionixbox/mqtt.dart';
+import 'package:display_app/data/models/charger_info.dart';
+import 'package:display_app/mqtt.dart';
 
 ChargerInfo parseChargerInfo(String chargerInfo) {
   return ChargerInfo.fromJson(jsonDecode(chargerInfo));

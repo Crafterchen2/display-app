@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:pionixbox/main.dart';
-import 'package:pionixbox/widgets/buttons.dart';
+import 'package:display_app/main.dart';
+import 'package:display_app/widgets/buttons.dart';
 
 import '../mqtt.dart';
 import '../screens/initializing_screen.dart';
@@ -12,7 +12,8 @@ import '../utils/routing/app_router.dart';
 
 const everestLogo = 'assets/icons/everest_horizontal_color_logo.svg';
 const rpiLogo = 'assets/icons/powered_by_raspberry_pi_logo_black.svg';
-final targetPlatform = Platform.environment['PIONIXBOX_TARGET_PLATFORM'] ?? '';
+final targetPlatform =
+    Platform.environment['DISPLAY_APP_TARGET_PLATFORM'] ?? '';
 
 const labelStyle = TextStyle(fontSize: 28);
 

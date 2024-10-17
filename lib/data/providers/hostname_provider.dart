@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/mqtt.dart';
+import 'package:display_app/mqtt.dart';
 
 final hostnameStreamProvider = StreamProvider<String>((ref) async* {
   final mqtt = MQTT();

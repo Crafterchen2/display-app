@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pionixbox/main.dart';
+import 'package:display_app/main.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';

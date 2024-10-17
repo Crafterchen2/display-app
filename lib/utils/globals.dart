@@ -1,7 +1,7 @@
-library pionixbox.globals;
+library display_app.globals;
 
 import 'package:flutter/material.dart';
-import 'package:pionixbox/data/models/hlc_log.dart';
+import 'package:display_app/data/models/hlc_log.dart';
 
 List<HlcLog> hlcLogList = [];
 

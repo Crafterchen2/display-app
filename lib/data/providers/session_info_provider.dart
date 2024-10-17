@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pionixbox/data/models/session_info.dart';
-import 'package:pionixbox/data/providers/connector_provider.dart';
-import 'package:pionixbox/mqtt.dart';
+import 'package:display_app/data/models/session_info.dart';
+import 'package:display_app/data/providers/connector_provider.dart';
+import 'package:display_app/mqtt.dart';
 
 SessionInfo parseSessionInfo(String sessionInfo) {
   return SessionInfo.fromJson(jsonDecode(sessionInfo));

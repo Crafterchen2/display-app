@@ -18,8 +18,8 @@ class MQTT {
 
   MQTT._internal()
       : _client = MqttServerClient.withPort(
-            Platform.environment['PIONIXBOX_HOST'] ?? 'localhost',
-            "pionixbox",
+            Platform.environment['DISPLAY_APP_HOST'] ?? 'localhost',
+            "display_app",
             1883) {
     _client.onConnected = () {
       _subscriptionController.stream.listen((topic) {

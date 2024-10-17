@@ -2,7 +2,7 @@
 //
 // import 'package:flutter/cupertino.dart';
 // import 'package:path/path.dart';
-// import 'package:pionixbox/data/models/configured_network.dart';
+// import 'package:display_app/data/models/configured_network.dart';
 // import 'package:sqflite/sqflite.dart';
 //
 // import '../models/available_network.dart';

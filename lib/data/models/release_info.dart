@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:pionixbox/data/models/release_component.dart';
+import 'package:display_app/data/models/release_component.dart';
 
 part 'release_info.g.dart';
 

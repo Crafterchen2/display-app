@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pionixbox/widgets/keyboard.dart';
+import 'package:display_app/widgets/keyboard.dart';
 import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 
 import '../widgets/buttons.dart';

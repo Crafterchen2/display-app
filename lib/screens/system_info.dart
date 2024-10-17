@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pionixbox/data/models/network_device_info.dart';
-import 'package:pionixbox/screens/about.dart';
-import 'package:pionixbox/screens/control.dart';
-import 'package:pionixbox/screens/network_info.dart';
+import 'package:display_app/data/models/network_device_info.dart';
+import 'package:display_app/screens/about.dart';
+import 'package:display_app/screens/control.dart';
+import 'package:display_app/screens/network_info.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';

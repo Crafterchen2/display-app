@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pionixbox/main.dart';
-import 'package:pionixbox/screens/session_detail_graphs.dart';
-import 'package:pionixbox/screens/session_detail_screen.dart';
-import 'package:pionixbox/widgets/buttons.dart';
+import 'package:display_app/main.dart';
+import 'package:display_app/screens/session_detail_graphs.dart';
+import 'package:display_app/screens/session_detail_screen.dart';
+import 'package:display_app/widgets/buttons.dart';
 
 class SessionDetail extends StatefulWidget {
   const SessionDetail({
