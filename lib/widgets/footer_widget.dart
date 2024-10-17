@@ -83,6 +83,7 @@ class _FooterState extends State<Footer> {
                 Text(
                   dateTimeFormat.format(DateTime.now()),
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
                     fontFeatures: [
                       const FontFeature.tabularFigures(),
                     ],
