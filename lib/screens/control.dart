@@ -78,7 +78,8 @@ class _ControlState extends ConsumerState<Control> {
     try {
       await mqtt.connect();
       mqtt.subscribe("everest_api/control/var/config_paths", parseConfigPaths);
-      mqtt.subscribe("everest_api/control/var/selected_config", parseSelectedConfig);
+      mqtt.subscribe(
+          "everest_api/control/var/selected_config", parseSelectedConfig);
 
       mqtt.publish("everest_api/control/cmd/get_config_paths", "0");
       mqtt.publish("everest_api/control/cmd/get_selected_config", "0");
@@ -122,13 +123,14 @@ class _ControlState extends ConsumerState<Control> {
     lastConfigLoad = DateTime.now();
     Map<String, String> changeConfig = {};
     changeConfig["config_path"] = config;
-    mqtt.publish("everest_api/control/cmd/change_config", json.encode(changeConfig).toString());
+    mqtt.publish("everest_api/control/cmd/change_config",
+        json.encode(changeConfig).toString());
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
           elevation: 20,
           duration: const Duration(days: 1),
           content: Column(children: [
-            Text('loading_config'.tr() +': $config'),
+            Text('loading_config'.tr() + ': $config'),
             const AnimatedLinearProgressIndicator()
           ])),
     );
@@ -136,7 +138,9 @@ class _ControlState extends ConsumerState<Control> {
 
   @override
   Widget build(BuildContext context) {
-    final appInfo = ref.watch(applicationInfoStreamProvider).whenOrNull(data: (data) => data);
+    final appInfo = ref
+        .watch(applicationInfoStreamProvider)
+        .whenOrNull(data: (data) => data);
     // if (appInfo != null) {
     //   if (appInfo.release_metadata_file != null &&
     //       appInfo.release_metadata_file != releaseMetadataFile) {
@@ -189,7 +193,9 @@ class _ControlState extends ConsumerState<Control> {
                         ),
                         child: PrimaryButton(
                           onPressed: () {
-                            mqtt.publish("everest_api/control/cmd/restart_display_app", "1");
+                            mqtt.publish(
+                                "everest_api/control/cmd/restart_display_app",
+                                "1");
                           },
                           child: const Text("Restart display-app.service"),
                         ),
@@ -266,8 +272,8 @@ class ConfigInfoWidget extends StatelessWidget {
               child: Text(
                 header,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
-                ),
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
               ),
             ),
             Expanded(

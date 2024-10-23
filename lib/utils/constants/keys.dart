@@ -83,10 +83,14 @@ class Payloads {
   static const String enableSimulation = 'true';
   static const String disableSimulation = 'false';
   static const String isoPause = 'iso_pause_charging;iso_wait_for_resume';
-  static const String isoStop = 'iso_stop_charging;iso_wait_v2g_session_stopped;unplug';
-  static const String isoResumeAC = 'iso_start_bcb_toggle 3;iso_wait_pwm_is_running;iso_start_v2g_session AC;iso_wait_pwr_ready;iso_draw_power_regulated 16,3;sleep 36000';
-  static const String isoStartAC = 'sleep 1;iso_wait_slac_matched;iso_start_v2g_session AC;iso_wait_pwr_ready;iso_draw_power_regulated 16,3;sleep 36000';
-  static const String isoStartDC = 'sleep 1;iso_wait_slac_matched;iso_start_v2g_session DC;iso_wait_pwr_ready;sleep 36000';
+  static const String isoStop =
+      'iso_stop_charging;iso_wait_v2g_session_stopped;unplug';
+  static const String isoResumeAC =
+      'iso_start_bcb_toggle 3;iso_wait_pwm_is_running;iso_start_v2g_session AC;iso_wait_pwr_ready;iso_draw_power_regulated 16,3;sleep 36000';
+  static const String isoStartAC =
+      'sleep 1;iso_wait_slac_matched;iso_start_v2g_session AC;iso_wait_pwr_ready;iso_draw_power_regulated 16,3;sleep 36000';
+  static const String isoStartDC =
+      'sleep 1;iso_wait_slac_matched;iso_start_v2g_session DC;iso_wait_pwr_ready;sleep 36000';
 }
 
 class ChargerModelName {

@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'dart:convert';
 
@@ -649,7 +648,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
           ],
           rulers: RulerStyle(
               rulerPosition: RulerPosition.bottom,
-              textStyle: TextStyle(fontSize: 20)),
+              textStyle: const TextStyle(fontSize: 20)),
         ),
         Wrap(
           alignment: WrapAlignment.spaceAround,

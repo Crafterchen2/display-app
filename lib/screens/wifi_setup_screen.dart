@@ -302,6 +302,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     if (passwordController.text.isEmpty) {
       debugPrint('Please enter password'); // FIXME: add a dialog here
     } else {
+
       // first try to remove an existing network
       {
         final savedNetwork = getSavedNetworkFromSSID(_selectedSSID);

@@ -97,7 +97,7 @@
   "private_mode_ok": "Enable private mode",
   "private_mode_explanation": "In private charging station mode you can modify settings, change network configuration, reboot the station, etc.",
   "public_mode": "Public charging station mode",
-  "public_mode_ok": "Enable private mode",
+  "public_mode_ok": "Enable public mode",
   "public_mode_explanation": "In public charging station mode your display application will be locked down and you will only be able to change the language. This setting cannot be reversed via the application and requires manual intervention. Do you really want to enable public charging station mode?",
   "session_details": "Session details",
   "session_details_graphs": "Diagrams",

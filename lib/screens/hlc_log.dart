@@ -146,9 +146,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                 child: Text(
                   buildHlcLogString(hlcLog),
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onPrimary,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                   softWrap: true,
                 ),
@@ -190,7 +188,8 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
               backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => autoscroll = !autoscroll,
-              heroTag: "pauseHero", //prevent "Same hero tag error"; doesn't change functionality
+              heroTag:
+                  "pauseHero", //prevent "Same hero tag error"; doesn't change functionality
               child: autoscroll
                   ? const Icon(Icons.pause)
                   : const Icon(Icons.play_arrow),
@@ -199,14 +198,16 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
               backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => hlcLogList.clear(),
-              heroTag: "clearHero", //prevent "Same hero tag error"; doesn't change functionality
+              heroTag:
+                  "clearHero", //prevent "Same hero tag error"; doesn't change functionality
               child: const Icon(Icons.delete),
             ),
             FloatingActionButton(
               backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => annotateButtonPressed(),
-              heroTag: "annotateHero", //prevent "Same hero tag error"; doesn't change functionality
+              heroTag:
+                  "annotateHero", //prevent "Same hero tag error"; doesn't change functionality
               child: const Icon(Icons.message),
             ),
             const PionixCloseButton(
@@ -251,8 +252,9 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
               ],
             ),
           ),
-          !_showKeyboard ? Container() :
-              OrientationBuilder(
+          !_showKeyboard
+              ? Container()
+              : OrientationBuilder(
                   builder: (context, orientation) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -267,8 +269,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                           visible: true,
                           hidden: false,
                           decoration: BoxDecoration(
-                            color:
-                                Theme.of(context).colorScheme.onPrimary,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           icon: Icon(
                             Icons.message,
@@ -279,8 +280,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                         ),
                         orientation == Orientation.landscape
                             ? Container(
-                                color:
-                                    Theme.of(context).colorScheme.secondary,
+                                color: Theme.of(context).colorScheme.secondary,
                                 child: PionixVirtualKeyboard(
                                     height: 300,
                                     fontSize: 32,
@@ -293,8 +293,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                                     onKeyPress: (key) => _onKeyPress(key)),
                               )
                             : Container(
-                                color:
-                                    Theme.of(context).colorScheme.secondary,
+                                color: Theme.of(context).colorScheme.secondary,
                                 child: PionixVirtualKeyboard(
                                   height: 500,
                                   fontSize: 32,
