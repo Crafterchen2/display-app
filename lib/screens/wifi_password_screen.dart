@@ -165,9 +165,12 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
     } else if (key.keyType == VirtualKeyboardKeyType.Action) {
       switch (key.action) {
         case PionixVirtualKeyboardKeyAction.Return:
+          widget.passwordController.text =
+              widget.passwordController.text.replaceAll("\n", "");
           setState(() {
             _showKeyboard = false;
           });
+          widget.onConnectPressed();
 
           debugPrint('Enter key pressed');
           break;

@@ -252,11 +252,14 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
             visible: bannerVisible,
             child: Padding(
               padding: const EdgeInsets.all(8),
-              child: Text(
-                bannerText,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.background,
-                    ),
+              child: Container(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  bannerText,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.background,
+                      ),
+                ),
               ),
             ),
           ),
@@ -302,7 +305,6 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
     if (passwordController.text.isEmpty) {
       debugPrint('Please enter password'); // FIXME: add a dialog here
     } else {
-
       // first try to remove an existing network
       {
         final savedNetwork = getSavedNetworkFromSSID(_selectedSSID);
@@ -324,6 +326,13 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
         final payloadSelectNetwork =
             "{\"interface\": \"${savedNetwork.interface}\", \"network_id\": ${savedNetwork.network_id}}";
         selectNetwork(payloadSelectNetwork);
+        Future.delayed(const Duration(seconds: 5), () {
+          if (!configuredNetworks
+              .firstWhereOrNull((element) => element.ssid == _selectedSSID)!
+              .isConnected) {
+            showBanner("network_unavailable".tr());
+          }
+        });
       }
     }
   }
