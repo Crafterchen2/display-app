@@ -41,71 +41,71 @@ class _FooterState extends State<Footer> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Divider(
-          thickness: 3,
-          color: Theme.of(context).colorScheme.surfaceVariant,
-          height: 4,
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceVariant,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
-        Row(
-          children: [
-            Expanded(
-              child: Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                runAlignment: WrapAlignment.spaceBetween,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: widget.isOnline
-                            ? Theme.of(context).colorScheme.tertiaryContainer
-                            : Theme.of(context).colorScheme.errorContainer,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              runAlignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: widget.isOnline
+                          ? Theme.of(context).colorScheme.tertiaryContainer
+                          : Theme.of(context).colorScheme.errorContainer,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 4,
+                        horizontal: 12,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 4,
-                          horizontal: 12,
+                      child: Text(
+                        widget.isOnline ? 'online'.tr() : 'offline'.tr(),
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          color: widget.isOnline
+                              ? Theme.of(context).colorScheme.onTertiaryContainer
+                              : Theme.of(context).colorScheme.onErrorContainer,
                         ),
-                        child: Text(
-                          widget.isOnline ? 'online'.tr() : 'offline'.tr(),
-                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                            color: widget.isOnline
-                                ? Theme.of(context).colorScheme.onTertiaryContainer
-                                : Theme.of(context).colorScheme.onErrorContainer,
-                          ),
-                        ),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      widget.selectedProtocolString,
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
-                      ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    widget.selectedProtocolString,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      dateTimeFormat.format(DateTime.now()),
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        fontFeatures: [const FontFeature.tabularFigures()],
-                      ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    dateTimeFormat.format(DateTime.now()),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
+                      fontFeatures: [const FontFeature.tabularFigures()],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }
