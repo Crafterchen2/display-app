@@ -165,6 +165,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     );
     const scaler = TextScaler.linear(1.7);
 
+    var s = MediaQuery.of(context).size;
+    //debugPrint(s.toString());
+
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -339,11 +342,6 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                   onPressed: widget.seeMorePressed,
                                   child: _buildInfoCards(
                                     chargerModelName: widget.chargerModelName,
-                                    width: (carSideWidth.isSnapped())
-                                        ? (MediaQuery.of(context).size.width -
-                                                carSideWidth.snapNumber()) /
-                                            14
-                                        : null,
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium
@@ -507,7 +505,6 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
 
   Widget _buildInfoCards({
     required String chargerModelName,
-    double? width,
     TextStyle? style,
   }) {
     if (chargerModelName == ChargerModelName.microMegaWattCharger) {
@@ -680,9 +677,6 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     } else {
       return Wrap(
         alignment: WrapAlignment.spaceAround,
-        spacing: (width == null)
-            ? 0
-            : (MediaQuery.of(context).size.width - width) / 14,
         children: [
           _buildIconInfo('assets/icons/icon_power.svg',
               widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
