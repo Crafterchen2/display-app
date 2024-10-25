@@ -87,7 +87,7 @@ class _FooterState extends State<Footer> {
                   child: Text(
                     widget.selectedProtocolString,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ),
@@ -96,7 +96,7 @@ class _FooterState extends State<Footer> {
                   child: Text(
                     dateTimeFormat.format(DateTime.now()),
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontFeatures: [const FontFeature.tabularFigures()],
                     ),
                   ),
