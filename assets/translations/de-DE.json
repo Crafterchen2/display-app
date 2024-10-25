@@ -112,5 +112,6 @@
   "start_ac": "Start.AC",
   "start_dc": "Start.DC",
   "loading_config": "Lade Config",
-  "battery_percentage": "Batterie %"
+  "battery_percentage": "Batterie %",
+  "network_unavailable": "Dieses Netzwerk ist nicht verfügbar"
 }
