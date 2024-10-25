@@ -1,15 +1,18 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/datetime_formats.dart';
 
 class Footer extends StatefulWidget {
   final bool isOnline;
+  final String selectedProtocolString;
 
   const Footer({
     Key? key,
     this.isOnline = true,
+    this.selectedProtocolString = "this_is_a_protocol",
   }) : super(key: key);
 
   @override
@@ -38,62 +41,71 @@ class _FooterState extends State<Footer> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          const Spacer(),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  widget.isOnline ? 'Online' : 'Offline',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+    return Column(
+      children: [
+        Divider(
+          thickness: 3,
+          color: Theme.of(context).colorScheme.surfaceVariant,
+          height: 4,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                runAlignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
                         color: widget.isOnline
-                            ? Theme.of(context).colorScheme.onTertiaryContainer
-                            : Theme.of(context).colorScheme.onErrorContainer,
+                            ? Theme.of(context).colorScheme.tertiaryContainer
+                            : Theme.of(context).colorScheme.errorContainer,
                       ),
-                ),
-                const SizedBox(width: 8),
-                Container(
-                  height: 16,
-                  width: 16,
-                  margin: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                      color: widget.isOnline
-                          ? Theme.of(context).colorScheme.tertiaryContainer
-                          : Theme.of(context).colorScheme.errorContainer,
-                      shape: BoxShape.circle),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 18),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  dateTimeFormat.format(DateTime.now()),
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                    fontFeatures: [
-                      const FontFeature.tabularFigures(),
-                    ],
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                          horizontal: 12,
+                        ),
+                        child: Text(
+                          widget.isOnline ? 'online'.tr() : 'offline'.tr(),
+                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            color: widget.isOnline
+                                ? Theme.of(context).colorScheme.onTertiaryContainer
+                                : Theme.of(context).colorScheme.onErrorContainer,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 50),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      widget.selectedProtocolString,
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      dateTimeFormat.format(DateTime.now()),
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                        fontFeatures: [const FontFeature.tabularFigures()],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
+      ],
     );
   }
 }
