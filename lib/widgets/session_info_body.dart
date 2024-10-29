@@ -218,7 +218,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               context, carSideWidth.snapNumber()),
                         if (widget.state != ChargingState.authRequired &&
                             widget.current >= widget.minCurrentA &&
-                            widget.current <= widget.maxCurrentA)
+                            widget.current <= widget.maxCurrentA &&
+                            widget.chargerModelName != ChargerModelName.microMegaWattCharger)
                           Column(
                             children: [
                               Wrap(
