@@ -9,23 +9,23 @@ class NetworkCardWidget extends StatelessWidget {
   final String ssid;
   final bool isConnected;
   final bool isSaved;
-  final int? signalLevel;
+  final int signalLevel;
   final String strength;
   final Color strengthColor;
   final VoidCallback onPressed;
   final VoidCallback onSavedPressed;
 
-  const NetworkCardWidget(
-      {Key? key,
-      required this.ssid,
-      required this.onPressed,
-      required this.onSavedPressed,
-      this.isConnected = false,
-      this.isSaved = false,
-      this.strength = '',
-      this.strengthColor = AppColors.white,
-      this.signalLevel})
-      : super(key: key);
+  const NetworkCardWidget({
+    Key? key,
+    required this.ssid,
+    required this.onPressed,
+    required this.onSavedPressed,
+    required this.signalLevel,
+    this.isConnected = false,
+    this.isSaved = false,
+    this.strength = '',
+    this.strengthColor = AppColors.white,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class NetworkCardWidget extends StatelessWidget {
               children: [
                 ssid != 'Hidden SSID'
                     ? SvgPicture.asset(
-                        getWifiIcon(signalLevel ?? -50),
+                        getWifiIcon(signalLevel),
                         height: 40,
                         width: 40,
                         color: Theme.of(context).colorScheme.onBackground,

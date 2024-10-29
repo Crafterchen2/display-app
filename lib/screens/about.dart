@@ -8,7 +8,6 @@ import 'package:display_app/data/models/network_device_info.dart';
 import 'package:display_app/data/models/release_component.dart';
 import 'package:display_app/data/models/release_info.dart';
 import 'package:display_app/data/providers/application_info_provider.dart';
-import 'package:display_app/main.dart';
 
 class About extends ConsumerStatefulWidget {
   const About({

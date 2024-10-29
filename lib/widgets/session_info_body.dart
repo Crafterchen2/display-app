@@ -219,7 +219,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                         if (widget.state != ChargingState.authRequired &&
                             widget.current >= widget.minCurrentA &&
                             widget.current <= widget.maxCurrentA &&
-                            widget.chargerModelName != ChargerModelName.microMegaWattCharger)
+                            widget.chargerModelName !=
+                                ChargerModelName.microMegaWattCharger)
                           Column(
                             children: [
                               Wrap(

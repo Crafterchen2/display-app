@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:display_app/data/models/config_paths.dart';
 import 'package:display_app/data/providers/application_info_provider.dart';
-import 'package:display_app/main.dart';
 import 'package:display_app/data/providers/connector_provider.dart';
 import 'package:display_app/mqtt.dart';
 import 'package:display_app/utils/constants/helper.dart';
