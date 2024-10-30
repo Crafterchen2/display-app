@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:display_app/widgets/model_dependent.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,7 +37,7 @@ import '../widgets/restart_widget.dart';
 import '../widgets/session_info_body.dart';
 
 class ChargingDashboardScreen extends ConsumerStatefulWidget {
-  const ChargingDashboardScreen({Key? key}) : super(key: key);
+  const ChargingDashboardScreen({super.key});
 
   @override
   ConsumerState<ChargingDashboardScreen> createState() =>
@@ -216,7 +217,7 @@ class _ChargingDashboardScreenState
       _status = sessioninfo.state;
       _chargedEnergy = sessioninfo.charged_energy_wh / 1000.0;
       _latestTotalw = sessioninfo.latest_total_w / 1000.0;
-      _energyTotal = (_chargedEnergy.toStringAsFixed(1) + " kWh");
+      _energyTotal = ("${_chargedEnergy.toStringAsFixed(1)} kWh");
       _duration =
           durationFormat(Duration(seconds: sessioninfo.charging_duration_s));
     }
@@ -490,18 +491,20 @@ class _ChargingDashboardScreenState
                   context: context,
                   builder: (ctz) {
                     return BasicDialog(
-                      title: ((getChargerModelName() ==
-                                  ChargerModelName.microMegaWattCharger)
-                              ? 'reboot_umwc'
-                              : 'reboot_belaybox')
+                      title: (ModelDependent.on(
+                        chargerModel: getChargerModel(),
+                        onUMWC: 'reboot_umwc',
+                        defaultValue: 'reboot_belaybox',
+                      ) as String)
                           .tr(),
                       positiveText: 'reboot'.tr(),
                       negativeText: 'cancel'.tr(),
-                      content: (((getChargerModelName() ==
-                                      ChargerModelName.microMegaWattCharger)
-                                  ? 'reboot_umwc'
-                                  : 'reboot_belaybox') +
-                              '_explanation')
+                      content: ((ModelDependent.on(
+                                chargerModel: getChargerModel(),
+                                onUMWC: 'reboot_umwc',
+                                defaultValue: 'reboot_belaybox',
+                              ) +
+                              '_explanation') as String)
                           .tr(),
                       onPositivePressed: () {
                         Navigator.pop(context);
@@ -592,7 +595,7 @@ class _ChargingDashboardScreenState
               child: Container(
                 color: Theme.of(context)
                     .colorScheme
-                    .background, //Needed to block view of underlying UI
+                    .surface, //Needed to block view of underlying UI
                 child: const Center(
                   child: CircularProgressIndicator(),
                 ),
@@ -603,11 +606,8 @@ class _ChargingDashboardScreenState
     );
   }
 
-  String getChargerModelName() {
-    if (chargerInfo != null) {
-      return chargerInfo!.model_name ?? "";
-    }
-    return "";
+  ChargerModel getChargerModel() {
+    return chargerInfo?.model_name ?? ChargerModel.unknown;
   }
 
   StatefulWidget makeSessionInfoBody(BuildContext context) {
@@ -670,7 +670,7 @@ class _ChargingDashboardScreenState
       maxCurrentA: _maxCurrentA,
       minCurrentA: _minCurrentA,
       chargingMode: chargingMode,
-      chargerModelName: getChargerModelName(),
+      chargerModel: getChargerModel(),
     );
   }
 
@@ -830,7 +830,7 @@ class _ChargingDashboardScreenState
   }
 
   void pauseCharging() {
-    mqtt.publish("everest_api/" + connector + "/cmd/pause_charging", "");
+    mqtt.publish("everest_api/$connector/cmd/pause_charging", "");
   }
 
   void setMaxCurrent(double maxCurrent) {
@@ -838,7 +838,7 @@ class _ChargingDashboardScreenState
   }
 
   void resumeCharging() {
-    mqtt.publish("everest_api/" + connector + "/cmd/resume_charging", "");
+    mqtt.publish("everest_api/$connector/cmd/resume_charging", "");
   }
 
   void pauseByCar() {

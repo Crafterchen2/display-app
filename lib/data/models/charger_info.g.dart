@@ -7,7 +7,7 @@ part of 'charger_info.dart';
 // **************************************************************************
 
 ChargerInfo _$ChargerInfoFromJson(Map<String, dynamic> json) => ChargerInfo(
-      json['model_name'] as String?,
+      ChargerModel.fromString(json['model_name'] as String?),
       json['pcb_serial_number'] as String?,
       json['charger_serial_number'] as String?,
       json['firmware_version'] as String?,
