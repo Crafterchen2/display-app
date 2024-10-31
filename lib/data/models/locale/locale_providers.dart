@@ -8,9 +8,9 @@ import 'package:display_app/data/models/locale/platform_locale/platform_locale_i
 /// Returns the locale of the Platform.localeName
 final platformLocaleProvider = Provider<Locale>((_) {
   // Get the platform language using platform specific implementations
-  Locale _platformLocale = PlatformLocale().getPlatformLocale();
+  Locale platformLocale = PlatformLocale().getPlatformLocale();
 
-  return _platformLocale;
+  return platformLocale;
 });
 
 /// Supported Locales Provider

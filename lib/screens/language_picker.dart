@@ -6,18 +6,17 @@ import '../data/models/locale/locale_state.dart';
 import '../data/models/locale/locale_translate_name.dart';
 
 class LanguagePicker extends ConsumerWidget {
-  const LanguagePicker({Key? key}) : super(key: key);
+  const LanguagePicker({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Locale _currentLocale = ref.watch(localeProvider);
-    List<Locale> _supportedLocales = ref.read(supportedLocalesProvider);
+    Locale currentLocale = ref.watch(localeProvider);
+    List<Locale> supportedLocales = ref.read(supportedLocalesProvider);
 
     return DropdownButton<Locale>(
         isDense: true,
-        value: (!_supportedLocales.contains(_currentLocale))
-            ? null
-            : _currentLocale,
+        value:
+            (!supportedLocales.contains(currentLocale)) ? null : currentLocale,
         icon: const Icon(Icons.arrow_drop_down),
         underline: Container(
           height: 1,
@@ -27,7 +26,7 @@ class LanguagePicker extends ConsumerWidget {
           if (newLocale == null) {
             return;
           }
-          debugPrint("Selected " + newLocale.toString());
+          debugPrint("Selected $newLocale");
 
           // Set the locale (this will rebuild the app)
           ref.read(localeStateProvider.notifier).setLocale(newLocale);
@@ -35,7 +34,7 @@ class LanguagePicker extends ConsumerWidget {
           return;
         },
         // Create drop down items from our supported locales
-        items: _supportedLocales
+        items: supportedLocales
             .map<DropdownMenuItem<Locale>>(
               (locale) => DropdownMenuItem<Locale>(
                 value: locale,

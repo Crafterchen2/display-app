@@ -16,7 +16,7 @@ class WifiPasswordScreen extends StatefulWidget {
   final bool isSaved;
 
   const WifiPasswordScreen({
-    Key? key,
+    super.key,
     required this.passwordController,
     required this.passwordFocusNode,
     required this.onBackPressed,
@@ -24,7 +24,7 @@ class WifiPasswordScreen extends StatefulWidget {
     required this.onForgetPressed,
     required this.ssid,
     required this.isSaved,
-  }) : super(key: key);
+  });
 
   @override
   State<WifiPasswordScreen> createState() => _WifiPasswordScreenState();
@@ -36,7 +36,7 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -49,7 +49,7 @@ class _WifiPasswordScreenState extends State<WifiPasswordScreen> {
                   child: Text(
                     widget.ssid,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onBackground,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                   ),
                 ),

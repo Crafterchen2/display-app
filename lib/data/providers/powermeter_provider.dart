@@ -13,8 +13,7 @@ final powermeterStreamProvider = StreamProvider<PowerMeter>((ref) async* {
   final mqtt = MQTT();
   await mqtt.connect();
   final connector = ref.watch(connectorProvider);
-  final stream =
-      mqtt.subscribeStream("everest_api/" + connector + "/var/powermeter");
+  final stream = mqtt.subscribeStream("everest_api/$connector/var/powermeter");
   await for (final message in stream) {
     // debugPrint("Received a powermeter");
     yield parsePowermeter(message);

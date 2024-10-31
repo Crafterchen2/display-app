@@ -14,7 +14,7 @@ final sessionInfoStreamProvider = StreamProvider<SessionInfo>((ref) async* {
   await mqtt.connect();
   final connector = ref.watch(connectorProvider);
   final stream =
-      mqtt.subscribeStream("everest_api/" + connector + "/var/session_info");
+      mqtt.subscribeStream("everest_api/$connector/var/session_info");
   await for (final message in stream) {
     // debugPrint("Received session info");
     yield parseSessionInfo(message);

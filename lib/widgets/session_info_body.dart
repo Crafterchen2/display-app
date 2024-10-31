@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:display_app/widgets/model_dependent.dart';
 import 'package:easy_localization/easy_localization.dart'
-    as _virtual_keyboard_backspace_event_period;
+    as virtual_keyboard_backspace_event_period;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
@@ -44,7 +44,7 @@ class SessionInfoBody extends StatefulWidget {
   final ChargerModel chargerModel;
 
   const SessionInfoBody({
-    Key? key,
+    super.key,
     required this.energy,
     required this.duration,
     required this.totalEnergy,
@@ -63,7 +63,7 @@ class SessionInfoBody extends StatefulWidget {
     required this.chargingMode,
     this.soc,
     required this.chargerModel,
-  }) : super(key: key);
+  });
 
   @override
   State<SessionInfoBody> createState() => _SessionInfoBodyState();
@@ -200,7 +200,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                     ?.copyWith(
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .onBackground,
+                                          .onSurface,
                                     ),
                               ),
                             ),
@@ -227,14 +227,14 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 Wrap(
                                   children: [
                                     Text(
-                                      'charge_upto'.tr() + ' ',
+                                      '${'charge_upto'.tr()} ',
                                       style: Theme.of(context)
                                           .textTheme
                                           .headlineSmall
                                           ?.copyWith(
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .onBackground,
+                                                .onSurface,
                                           ),
                                     ),
                                     Row(
@@ -253,7 +253,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                             ],
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .onBackground,
+                                                .onSurface,
                                           ),
                                         ),
                                         Text(
@@ -265,7 +265,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                               ?.copyWith(
                                                 color: Theme.of(context)
                                                     .colorScheme
-                                                    .onBackground,
+                                                    .onSurface,
                                               ),
                                         ),
                                       ],
@@ -313,9 +313,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 .textTheme
                                 .titleLarge
                                 ?.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
                                 ),
                           )
                         : Text(
@@ -326,9 +325,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 .textTheme
                                 .titleLarge
                                 ?.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
                                 ),
                           ),
                   ),
@@ -355,7 +353,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                         ?.copyWith(
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .onBackground,
+                                                .onSurface,
                                             fontWeight: FontWeight.w600,
                                             fontSize: 18),
                                   ),
@@ -494,19 +492,19 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       width: width,
       child: (isChargingState)
           ? OutlinedButton(
+              onPressed: widget.onPauseCharging,
               child: Text(
                 'pause'.tr(),
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              onPressed: widget.onPauseCharging,
             )
           : (showResumeButton)
               ? FilledButton(
+                  onPressed: widget.onResumeCharging,
                   child: Text(
                     'resume'.tr(),
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
-                  onPressed: widget.onResumeCharging,
                 )
               : Container(),
     );
@@ -548,7 +546,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
         ];
         List<Text> values = [
           Text(
-            outputVoltage.toStringAsFixed(2) + ' V',
+            '${outputVoltage.toStringAsFixed(2)} V',
             style: style
                 ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
           ),
@@ -557,7 +555,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             style: style,
           ),
           Text(
-            pwmDc.toStringAsFixed(0) + ' %',
+            '${pwmDc.toStringAsFixed(0)} %',
             style: style
                 ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
           ),
@@ -598,11 +596,11 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
           w += tp.width + 20;
           maxWidth = max(maxWidth, w);
         }
-        Color? aColor = Color.lerp(Theme.of(context).colorScheme.background,
-                Theme.of(context).colorScheme.onBackground, 0.2)
+        Color? aColor = Color.lerp(Theme.of(context).colorScheme.surface,
+                Theme.of(context).colorScheme.onSurface, 0.2)
             ?.withAlpha(160);
-        Color? bColor = Color.lerp(Theme.of(context).colorScheme.background,
-                Theme.of(context).colorScheme.onBackground, 0.4)
+        Color? bColor = Color.lerp(Theme.of(context).colorScheme.surface,
+                Theme.of(context).colorScheme.onSurface, 0.4)
             ?.withAlpha(160);
         List<Widget> infos = [];
         for (int i = 0; i < min(titles.length, values.length); i++) {
@@ -616,13 +614,13 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       },
       onUMWCar: () {
         Text ampereLabel = Text(
-          (targetCurrent).toStringAsFixed(2) + ' A',
+          '${(targetCurrent).toStringAsFixed(2)} A',
           style: style
               ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
         );
         TextPainter tp = TextPainter(
           text: TextSpan(
-            text: ampereLabel.data! + "Current Demand",
+            text: "${ampereLabel.data!}Current Demand",
             style: ampereLabel.style,
           ),
           textDirection: TextDirection.ltr,
@@ -675,7 +673,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
               _buildTextInfo(
                 null,
                 Text(
-                  (targetCurrent * targetVoltage).toStringAsFixed(2) + ' W',
+                  '${(targetCurrent * targetVoltage).toStringAsFixed(2)} W',
                   style: style,
                 ),
                 Text(
@@ -696,11 +694,11 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
               : (MediaQuery.of(context).size.width - width) / 14,
           children: [
             _buildIconInfo('assets/icons/icon_power.svg',
-                widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
+                '${widget.power.toStringAsFixed(2)} kW', 'power'.tr()),
             _buildIconInfo('assets/icons/icon_energy.svg',
-                widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
+                '${widget.energy.toStringAsFixed(2)} kWh', 'energy'.tr()),
             _buildIconInfo('assets/icons/icon_charging_duration.svg',
-                widget.duration + ' h', 'duration'.tr())
+                '${widget.duration} h', 'duration'.tr())
           ],
         );
       },
@@ -744,7 +742,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             ),
             child: SvgPicture.asset(
               iconPath,
-              color: Theme.of(context).colorScheme.onBackground,
+              theme: SvgTheme(
+                currentColor: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
           ),
           Text(
@@ -876,17 +876,17 @@ Widget getChargingSessionWidgetByState(BuildContext context, String state,
         Stack(
           children: <Widget>[
             Text(
-              soc.toStringAsFixed(0) + "%",
+              "${soc.toStringAsFixed(0)}%",
               style: TextStyle(
                 fontSize: 60,
                 foreground: Paint()
                   ..style = PaintingStyle.stroke
                   ..strokeWidth = 8
-                  ..color = Theme.of(context).colorScheme.onBackground,
+                  ..color = Theme.of(context).colorScheme.onSurface,
               ),
             ),
             Text(
-              soc.toStringAsFixed(0) + "%",
+              "${soc.toStringAsFixed(0)}%",
               style: TextStyle(
                 fontSize: 60,
                 color: Theme.of(context).colorScheme.surface,

@@ -11,8 +11,8 @@ import 'package:display_app/data/providers/application_info_provider.dart';
 
 class About extends ConsumerStatefulWidget {
   const About({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   ConsumerState<About> createState() => _AboutState();
@@ -68,7 +68,7 @@ class _AboutState extends ConsumerState<About> {
               "EVerest ${releaseInfo.version} @ ${releaseInfo.channel} channel"
                   .tr(),
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
             ),
             Expanded(
@@ -92,8 +92,7 @@ class _AboutState extends ConsumerState<About> {
 class ReleaseComponentInfoWidget extends StatelessWidget {
   final ReleaseComponent component;
 
-  const ReleaseComponentInfoWidget({Key? key, required this.component})
-      : super(key: key);
+  const ReleaseComponentInfoWidget({super.key, required this.component});
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +112,7 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
               child: Text(
                 component.name,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
               ),
             ),
@@ -130,25 +129,25 @@ class ReleaseComponentInfoWidget extends StatelessWidget {
           child: Text(
             component.description,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Text(
-            "version".tr() + ": ${component.version}",
+            "${"version".tr()}: ${component.version}",
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Text(
-            "license".tr() + ": ${component.license}",
+            "${"license".tr()}: ${component.license}",
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
           ),
         ),

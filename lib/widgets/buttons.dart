@@ -28,7 +28,7 @@ class SecondaryButton extends StatelessWidget {
   final double borderThickness;
 
   const SecondaryButton({
-    Key? key,
+    super.key,
     required this.title,
     required this.onPressed,
     this.color,
@@ -36,7 +36,7 @@ class SecondaryButton extends StatelessWidget {
     this.highlightBorderColor,
     this.textColor,
     this.borderThickness = 4,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -118,11 +118,11 @@ class CircularLabeledIconButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const CircularLabeledIconButton({
-    Key? key,
+    super.key,
     required this.iconUrl,
     required this.label,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

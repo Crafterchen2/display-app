@@ -18,8 +18,8 @@ final hardwareCapabilitiesStreamProvider =
   final mqtt = MQTT();
   await mqtt.connect();
   final connector = ref.watch(connectorProvider);
-  final stream = mqtt.subscribeStream(
-      "everest_api/" + connector + "/var/hardware_capabilities");
+  final stream =
+      mqtt.subscribeStream("everest_api/$connector/var/hardware_capabilities");
   await for (final message in stream) {
     // debugPrint("Received hardware capabilities");
     yield parseHardwareCapabilities(message);

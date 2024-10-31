@@ -1,4 +1,4 @@
-library display_app.globals;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:display_app/data/models/hlc_log.dart';

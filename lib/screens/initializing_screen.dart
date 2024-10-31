@@ -14,8 +14,8 @@ import '../utils/routing/app_router.dart';
 
 class InitializingScreen extends StatefulWidget {
   const InitializingScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<InitializingScreen> createState() => _InitializingScreenState();
@@ -267,8 +267,7 @@ class InitializingProgressWidget extends StatelessWidget {
   final String message;
 
   const InitializingProgressWidget(
-      {Key? key, this.progress, this.message = 'INITIALIZING...'})
-      : super(key: key);
+      {super.key, this.progress, this.message = 'INITIALIZING...'});
 
   @override
   Widget build(BuildContext context) {
@@ -304,8 +303,7 @@ class EverestLogoWidget extends StatelessWidget {
   final double height;
   final double width;
 
-  const EverestLogoWidget({Key? key, this.height = 100, this.width = 200})
-      : super(key: key);
+  const EverestLogoWidget({super.key, this.height = 100, this.width = 200});
 
   @override
   Widget build(BuildContext context) {

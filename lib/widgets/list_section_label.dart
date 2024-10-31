@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ListSectionLabel extends StatelessWidget {
   final String label;
 
-  const ListSectionLabel({Key? key, required this.label}) : super(key: key);
+  const ListSectionLabel({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) {

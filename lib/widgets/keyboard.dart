@@ -193,7 +193,7 @@ const int _virtualKeyboardBackspaceEventPeriod = 250;
 
 /// Virtual Keyboard widget.
 class PionixVirtualKeyboard extends StatefulWidget {
-  /// Keyboard Type: Should be inited in creation time. //TODO: Typo in "inited"? maybe "initiated"?
+  /// Keyboard Type: Should be initiated in creation time.
   final VirtualKeyboardType type;
 
   /// Callback for Key press event. Called with pressed `Key` object.
@@ -234,7 +234,7 @@ class PionixVirtualKeyboard extends StatefulWidget {
   final List<VirtualKeyboardDefaultLayouts>? defaultLayouts;
 
   const PionixVirtualKeyboard(
-      {Key? key,
+      {super.key,
       required this.type,
       this.onKeyPress,
       this.builder,
@@ -247,8 +247,7 @@ class PionixVirtualKeyboard extends StatefulWidget {
       this.height = _virtualKeyboardDefaultHeight,
       this.textColor = Colors.black,
       this.fontSize = 14,
-      this.alwaysCaps = false})
-      : super(key: key);
+      this.alwaysCaps = false});
 
   @override
   State<StatefulWidget> createState() {
