@@ -333,7 +333,20 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           ),
                   ),
                   (widget.state == ChargingState.authRequired)
-                      ? Container()
+                      ? SizedBox(
+                          width: double.infinity,
+                          child: PrimaryButton(
+                            onPressed: () {
+                              mqtt.publish(
+                                  "everest_api/dummy_token_provider/cmd/provide",
+                                  "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
+                            },
+                            child: const Text(
+                              "Swipe RFID",
+                              textScaler: scaler,
+                            ),
+                          ),
+                        )
                       : SizedBox(
                           width: double.infinity,
                           child: InfoLayout(
@@ -436,6 +449,17 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                         },
                                         child: const Text(
                                           "EVSEutil int",
+                                          textScaler: scaler,
+                                        ),
+                                      ),
+                                      PrimaryButton(
+                                        onPressed: () {
+                                          mqtt.publish(
+                                              "everest_api/dummy_token_provider/cmd/provide",
+                                              "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
+                                        },
+                                        child: const Text(
+                                          "Swipe RFID",
                                           textScaler: scaler,
                                         ),
                                       ),
