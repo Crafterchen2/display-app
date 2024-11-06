@@ -546,29 +546,29 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       onUMWC: () {
         List<Text> titles = [
           Text(
-            'Voltage : ',
+            'Voltage: ',
             style: style,
           ),
           Text(
-            'Relais : ',
+            'Relais: ',
             style: style,
           ),
           Text(
-            'PWM DC : ',
+            'PWM: ',
             style: style,
           ),
           Text(
-            'CP Hi/Lo : ',
+            'CP: ',
             style: style,
           ),
           Text(
-            'State : ',
+            'State: ',
             style: style,
           ),
         ];
         List<Text> values = [
           Text(
-            outputVoltage.toStringAsFixed(2) + ' V',
+            outputVoltage.toStringAsFixed(0) + ' V',
             style: style
                 ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
           ),
