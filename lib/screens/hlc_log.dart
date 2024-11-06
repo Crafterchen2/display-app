@@ -164,7 +164,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
   Widget build(BuildContext context) {
     if (scrollController.hasClients && autoscroll) {
       scrollController.animateTo(scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
+          duration: const Duration(milliseconds: 100), curve: Curves.easeOut);
     }
     final selectedProtocol = ref
         .watch(selectedProtocolStreamProvider)
@@ -242,7 +242,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                       child: ListView.builder(
                         primary: false,
                         shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
+                        physics: const ClampingScrollPhysics(),
                         itemCount: logEntries.length,
                         itemBuilder: (context, index) => logEntries[index],
                       ),

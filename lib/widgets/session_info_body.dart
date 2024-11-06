@@ -546,7 +546,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       onUMWC: () {
         List<Text> titles = [
           Text(
-            'Output Voltage : ',
+            'Voltage : ',
             style: style,
           ),
           Text(
@@ -558,11 +558,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             style: style,
           ),
           Text(
-            'CP Hi : ',
-            style: style,
-          ),
-          Text(
-            'CP Lo : ',
+            'CP Hi/Lo : ',
             style: style,
           ),
           Text(
@@ -586,12 +582,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                 ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
           ),
           Text(
-            cpHi.toStringAsFixed(2),
-            style: style
-                ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
-          ),
-          Text(
-            cpLo.toStringAsFixed(2),
+            cpHi.toStringAsFixed(2) + 'V / ' + cpLo.toStringAsFixed(2) + ' V',
             style: style
                 ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
           ),
