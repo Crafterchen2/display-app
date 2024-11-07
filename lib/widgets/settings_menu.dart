@@ -15,7 +15,7 @@ class SettingsMenu extends StatefulWidget {
   final VoidCallback setParentState;
   final EdgeInsetsGeometry margin;
   const SettingsMenu({
-    super.key,
+    Key? key,
     required this.setupWifi,
     required this.setupSimulation,
     required this.localization,
@@ -23,7 +23,7 @@ class SettingsMenu extends StatefulWidget {
     required this.rebootCharger,
     required this.setParentState,
     this.margin = const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-  });
+  }) : super(key: key);
 
   @override
   State<SettingsMenu> createState() => _SettingsMenuState();

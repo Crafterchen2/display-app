@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:display_app/data/models/config_paths.dart';
+import 'package:display_app/data/providers/application_info_provider.dart';
 import 'package:display_app/data/providers/connector_provider.dart';
 import 'package:display_app/mqtt.dart';
 import 'package:display_app/utils/constants/helper.dart';
@@ -47,8 +48,8 @@ class _AnimatedLinearProgressIndicatorState
 
 class Control extends ConsumerStatefulWidget {
   const Control({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   ConsumerState<Control> createState() => _ControlState();
@@ -83,7 +84,8 @@ class _ControlState extends ConsumerState<Control> {
       mqtt.publish("everest_api/control/cmd/get_selected_config", "0");
 
       final connector = ref.watch(connectorProvider);
-      mqtt.subscribe("everest_api/$connector/var/datetime", handleDateTime);
+      mqtt.subscribe(
+          "everest_api/" + connector + "/var/datetime", handleDateTime);
 
       // mqtt.subscribe(
       //     "everest_api/setup/var/network_device_info", networkDeviceInfo);
@@ -127,7 +129,7 @@ class _ControlState extends ConsumerState<Control> {
           elevation: 20,
           duration: const Duration(days: 1),
           content: Column(children: [
-            Text('${'loading_config'.tr()}: $config'),
+            Text('loading_config'.tr() + ': $config'),
             const AnimatedLinearProgressIndicator()
           ])),
     );
@@ -135,9 +137,9 @@ class _ControlState extends ConsumerState<Control> {
 
   @override
   Widget build(BuildContext context) {
-    // final appInfo = ref
-    //     .watch(applicationInfoStreamProvider)
-    //     .whenOrNull(data: (data) => data);
+    final appInfo = ref
+        .watch(applicationInfoStreamProvider)
+        .whenOrNull(data: (data) => data);
     // if (appInfo != null) {
     //   if (appInfo.release_metadata_file != null &&
     //       appInfo.release_metadata_file != releaseMetadataFile) {
@@ -165,7 +167,7 @@ class _ControlState extends ConsumerState<Control> {
                         wrapString('Loaded config: $loadedConfig'),
                         softWrap: true,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
+                              color: Theme.of(context).colorScheme.onBackground,
                             ),
                       ),
                     ),
@@ -245,11 +247,11 @@ class ConfigInfoWidget extends StatelessWidget {
   final Function(String) loadConfig;
 
   const ConfigInfoWidget({
-    super.key,
+    Key? key,
     required this.header,
     required this.configPaths,
     required this.loadConfig,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -269,7 +271,7 @@ class ConfigInfoWidget extends StatelessWidget {
               child: Text(
                 header,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
               ),
             ),
@@ -294,7 +296,7 @@ class ConfigInfoWidget extends StatelessWidget {
                     if (header == "configs") {
                       loadConfig(value);
                     } else {
-                      loadConfig("$header/$value");
+                      loadConfig(header + "/" + value);
                     }
                   },
                   child: Text('load'.tr()),
@@ -307,7 +309,7 @@ class ConfigInfoWidget extends StatelessWidget {
                     wrapString(value),
                     softWrap: true,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
+                          color: Theme.of(context).colorScheme.onBackground,
                         ),
                   ),
                 ),

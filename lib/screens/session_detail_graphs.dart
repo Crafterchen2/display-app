@@ -22,8 +22,8 @@ class SessionDetailGraphs extends ConsumerStatefulWidget {
   OverlayEnum overlay = OverlayEnum.none;
 
   SessionDetailGraphs({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   ConsumerState<SessionDetailGraphs> createState() =>
@@ -355,16 +355,24 @@ class _SessionDetailGraphsState extends ConsumerState<SessionDetailGraphs> {
                 unit: '',
                 map: {
                   "fan".tr():
-                      "${bufferedTelemetry.fanRPM.last().toStringAsFixed(0)} RPM",
+                      bufferedTelemetry.fanRPM.last().toStringAsFixed(0) +
+                          " RPM",
                   "rcd_current".tr():
-                      "${bufferedTelemetry.rcdCurrent.last().toStringAsFixed(3)} A",
+                      bufferedTelemetry.rcdCurrent.last().toStringAsFixed(3) +
+                          " A",
                   "relais_on".tr(): bufferedTelemetry.relaisOn.last(),
-                  "supply_voltage_12V".tr():
-                      "${bufferedTelemetry.supplyVoltage12V.last().toStringAsFixed(2)} V",
-                  "supply_voltage_minus_12V".tr():
-                      "${bufferedTelemetry.supplyVoltage12V.last().toStringAsFixed(2)} V",
+                  "supply_voltage_12V".tr(): bufferedTelemetry.supplyVoltage12V
+                          .last()
+                          .toStringAsFixed(2) +
+                      " V",
+                  "supply_voltage_minus_12V".tr(): bufferedTelemetry
+                          .supplyVoltage12V
+                          .last()
+                          .toStringAsFixed(2) +
+                      " V",
                   "temperature".tr():
-                      "${bufferedTelemetry.temperature.last().toStringAsFixed(1)} °C",
+                      bufferedTelemetry.temperature.last().toStringAsFixed(1) +
+                          " °C",
                 },
               ),
             ),

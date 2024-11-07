@@ -47,66 +47,66 @@ class PionixThemeProvider {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
+          backgroundColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.disabled)) {
               return scheme.onSurface.withOpacity(backgroundDisabledOpacity);
             }
             return scheme.primary;
           }),
-          foregroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
+          foregroundColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.disabled)) {
               return scheme.onSurface.withOpacity(foregroundDisabledOpacity);
             }
-            if (states.contains(WidgetState.hovered)) {
+            if (states.contains(MaterialState.hovered)) {
               return scheme.onPrimary;
             }
             return scheme.secondary;
           }),
           surfaceTintColor:
-              WidgetStateProperty.resolveWith((states) => Colors.transparent),
-          elevation: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) return 0;
-            if (states.contains(WidgetState.pressed)) return 2;
-            if (states.contains(WidgetState.hovered)) return 10;
+              MaterialStateProperty.resolveWith((states) => Colors.transparent),
+          elevation: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.disabled)) return 0;
+            if (states.contains(MaterialState.pressed)) return 2;
+            if (states.contains(MaterialState.hovered)) return 10;
             return 5;
           }),
-          shape: WidgetStateProperty.resolveWith((states) => buttonShape),
+          shape: MaterialStateProperty.resolveWith((states) => buttonShape),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: ButtonStyle(
-          shape: WidgetStateProperty.resolveWith((states) => buttonShape),
-          elevation: WidgetStateProperty.resolveWith((states) => 0),
-          backgroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
+          shape: MaterialStateProperty.resolveWith((states) => buttonShape),
+          elevation: MaterialStateProperty.resolveWith((states) => 0),
+          backgroundColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.disabled)) {
               return scheme.onSurface.withOpacity(backgroundDisabledOpacity);
             }
             return scheme.secondary;
           }),
-          foregroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
+          foregroundColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.disabled)) {
               return scheme.onSurface.withOpacity(foregroundDisabledOpacity);
             }
             return scheme.primary;
           }),
           surfaceTintColor:
-              WidgetStateProperty.resolveWith((states) => Colors.transparent),
+              MaterialStateProperty.resolveWith((states) => Colors.transparent),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
-          shape: WidgetStateProperty.resolveWith((states) => buttonShape),
-          side: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
+          shape: MaterialStateProperty.resolveWith((states) => buttonShape),
+          side: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.disabled)) {
               return BorderSide(
                   width: 1,
                   color:
                       scheme.onSurface.withOpacity(backgroundDisabledOpacity));
             }
-            if (states.contains(WidgetState.pressed)) {
+            if (states.contains(MaterialState.pressed)) {
               return BorderSide(width: 1, color: scheme.primary);
             }
-            if (states.contains(WidgetState.hovered)) {
+            if (states.contains(MaterialState.hovered)) {
               return BorderSide(width: 4, color: scheme.primary);
             }
             return BorderSide(width: 2, color: scheme.primary);
@@ -115,7 +115,7 @@ class PionixThemeProvider {
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          shape: WidgetStateProperty.resolveWith((states) => buttonShape),
+          shape: MaterialStateProperty.resolveWith((states) => buttonShape),
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -124,21 +124,21 @@ class PionixThemeProvider {
         focusElevation: 10,
         foregroundColor: scheme.onPrimary,
       ),
-      switchTheme:
-          SwitchThemeData(thumbColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.disabled)) {
+      switchTheme: SwitchThemeData(
+          thumbColor: MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.disabled)) {
           return scheme.onSurface.withOpacity(foregroundDisabledOpacity);
         }
-        if (states.contains(WidgetState.selected)) {
+        if (states.contains(MaterialState.selected)) {
           return scheme.onPrimary;
         }
-        if (states.contains(WidgetState.hovered)) {
+        if (states.contains(MaterialState.hovered)) {
           return scheme.onSurfaceVariant;
         }
         return scheme.primary;
       })),
       scrollbarTheme: ScrollbarThemeData(
-        thumbVisibility: WidgetStateProperty.resolveWith((states) => true),
+        thumbVisibility: MaterialStateProperty.resolveWith((states) => true),
       ),
       navigationDrawerTheme: NavigationDrawerThemeData(
         backgroundColor: scheme.primaryContainer,
@@ -155,7 +155,7 @@ class PionixThemeProvider {
       ),
       tabBarTheme: TabBarTheme(
         overlayColor:
-            WidgetStateProperty.resolveWith((states) => Colors.transparent),
+            MaterialStateProperty.resolveWith((states) => Colors.transparent),
         labelColor: scheme.onPrimary,
         unselectedLabelColor: scheme.primaryContainer,
         indicatorColor: scheme.secondary,

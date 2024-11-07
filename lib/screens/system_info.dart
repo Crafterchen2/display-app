@@ -13,8 +13,8 @@ import '../widgets/buttons.dart';
 
 class SystemInfo extends StatefulWidget {
   const SystemInfo({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<SystemInfo> createState() => _SystemInfoState();

@@ -6,23 +6,23 @@ import 'platform_locale_interface.dart';
 class PlatformLocaleMobile implements PlatformLocale {
   @override
   Locale getPlatformLocale() {
-    String platformLocaleName = Platform.localeName;
+    String _platformLocaleName = Platform.localeName;
     // print("Platform Locale Name (Mobile): " + _platformLocaleName);
 
     // Language code only
-    if (platformLocaleName.length == 2) {
-      return Locale.fromSubtags(languageCode: platformLocaleName);
+    if (_platformLocaleName.length == 2) {
+      return Locale.fromSubtags(languageCode: _platformLocaleName);
     }
 
     // Language and country codes
-    String languageCode =
-        platformLocaleName.substring(0, platformLocaleName.indexOf('_'));
-    String countryCode =
-        platformLocaleName.substring(platformLocaleName.indexOf('_') + 1);
+    String _languageCode =
+        _platformLocaleName.substring(0, _platformLocaleName.indexOf('_'));
+    String _countryCode =
+        _platformLocaleName.substring(_platformLocaleName.indexOf('_') + 1);
 
     return Locale.fromSubtags(
-      languageCode: languageCode,
-      countryCode: countryCode,
+      languageCode: _languageCode,
+      countryCode: _countryCode,
     );
   }
 }

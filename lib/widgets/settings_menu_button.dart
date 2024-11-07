@@ -8,12 +8,12 @@ class SettingMenuButton extends StatelessWidget {
   final TextStyle? style;
 
   const SettingMenuButton({
-    super.key,
+    Key? key,
     required this.icon,
     required this.title,
     required this.onPressed,
     this.style,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

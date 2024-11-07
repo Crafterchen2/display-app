@@ -29,33 +29,30 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl: ">=0.18.0"
+  intl: ^0.18.0
   json_annotation: ^4.8.0
   auto_orientation: ^2.3.1
-  flutter_riverpod: ^2.6.1
-  rxdart: ^0.28.0
-  state_notifier: ^1.0.0
-  flutter_svg: ^2.0.10+1
+  flutter_riverpod: ^1.0.3
+  rxdart: ^0.27.3
+  state_notifier: ^0.7.2+1
+  flutter_svg: ^1.0.3
   virtual_keyboard_multi_language:
     git:
       url: https://github.com/hassaanalansary/virtual_keyboard_multi_language.git
       ref: 1664495de69b16761dbcf9a8da285883706a4375
-  cryptography: ^2.7.0
-  convert: ^3.1.2
+  cryptography: 2.0.5
+  convert: 3.0.1
   get: ^4.6.5
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
   # mqtt client
-  mqtt_client: ^10.5.1
+  mqtt_client: 9.6.6
   easy_localization: ^3.0.0
   freezed_annotation: ^2.2.0
-  fl_chart: ^0.69.0
+  fl_chart: 0.62.0
   geekyants_flutter_gauges: ^1.0.4
-  collection: ^1.18.0
-  shared_preferences:
-    path: packages/shared_preferences
 
 dependency_overrides:
   shared_preferences:
@@ -64,7 +61,7 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^1.0.0
   build_runner: ^2.3.3
   json_serializable: ^6.6.0
   freezed: ^2.3.2

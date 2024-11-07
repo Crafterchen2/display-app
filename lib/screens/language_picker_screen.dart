@@ -10,8 +10,8 @@ import '../utils/constants/keys.dart';
 
 class LanguagePickerScreen extends StatefulWidget {
   const LanguagePickerScreen({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<LanguagePickerScreen> createState() => _LanguagePickerScreenState();

@@ -26,12 +26,13 @@ class Header extends StatelessWidget {
   final bool localization;
 
   Header(
-      {super.key,
+      {Key? key,
       required this.setupWifi,
       required this.setupSimulation,
       required this.localization,
       this.showSettingsIcon = false,
-      this.privateMode = true});
+      this.privateMode = true})
+      : super(key: key);
 
   void resetInitialised() {
     mqtt.publish(Topic.resetInitialized, '');

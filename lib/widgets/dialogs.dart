@@ -25,7 +25,8 @@ showPionixBottomSheet({
 }) {
   showModalBottomSheet(
     context: context,
-    backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.surface,
+    backgroundColor:
+        backgroundColor ?? Theme.of(context).colorScheme.background,
     barrierLabel: barrierLabel,
     elevation: elevation ?? 20,
     shape: shape ??
@@ -69,14 +70,14 @@ class BasicDialog extends StatelessWidget {
   final VoidCallback onNegativePressed;
 
   const BasicDialog({
-    super.key,
+    Key? key,
     required this.title,
     this.content = '',
     required this.positiveText,
     required this.negativeText,
     required this.onPositivePressed,
     required this.onNegativePressed,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,14 +85,14 @@ class BasicDialog extends StatelessWidget {
       title: Text(
         title,
         style: TextStyle(
-          color: Theme.of(context).colorScheme.onSurface,
+          color: Theme.of(context).colorScheme.onBackground,
           fontSize: 40,
         ),
       ),
       content: Text(
         content,
         style: TextStyle(
-          color: Theme.of(context).colorScheme.onSurface,
+          color: Theme.of(context).colorScheme.onBackground,
           fontSize: 30,
         ),
       ),
@@ -102,7 +103,8 @@ class BasicDialog extends StatelessWidget {
           child: Text(
             negativeText,
             style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface, fontSize: 36),
+                color: Theme.of(context).colorScheme.onBackground,
+                fontSize: 36),
           ),
         ),
         const SizedBox(

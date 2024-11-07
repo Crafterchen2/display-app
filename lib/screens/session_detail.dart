@@ -7,8 +7,8 @@ import 'package:display_app/widgets/buttons.dart';
 
 class SessionDetail extends StatefulWidget {
   const SessionDetail({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<SessionDetail> createState() => _SessionDetailState();

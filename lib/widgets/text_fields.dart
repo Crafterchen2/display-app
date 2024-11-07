@@ -15,7 +15,7 @@ class IconTextField extends StatefulWidget {
   );
 
   IconTextField(
-      {super.key,
+      {Key? key,
       required this.icon,
       required this.controller,
       this.hintText = '',
@@ -24,7 +24,8 @@ class IconTextField extends StatefulWidget {
       this.onTap,
       this.visible = false,
       this.decoration,
-      this.hidden = true});
+      this.hidden = true})
+      : super(key: key);
 
   @override
   State<IconTextField> createState() => _IconTextFieldState();
@@ -53,7 +54,7 @@ class _IconTextFieldState extends State<IconTextField> {
               controller: widget.controller,
               focusNode: widget.focusNode,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
               decoration: InputDecoration(
                 alignLabelWithHint: true,

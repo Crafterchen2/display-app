@@ -13,7 +13,8 @@ final telemetryStreamProvider = StreamProvider<Telemetry>((ref) async* {
   final mqtt = MQTT();
   await mqtt.connect();
   final connector = ref.watch(connectorProvider);
-  final stream = mqtt.subscribeStream("everest_api/$connector/var/telemetry");
+  final stream =
+      mqtt.subscribeStream("everest_api/" + connector + "/var/telemetry");
   await for (final message in stream) {
     // debugPrint("Received telemetry");
     yield parseTelemetry(message);

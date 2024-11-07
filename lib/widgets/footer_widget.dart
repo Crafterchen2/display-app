@@ -8,9 +8,9 @@ class Footer extends StatefulWidget {
   final bool isOnline;
 
   const Footer({
-    super.key,
+    Key? key,
     this.isOnline = true,
-  });
+  }) : super(key: key);
 
   @override
   State<Footer> createState() => _FooterState();

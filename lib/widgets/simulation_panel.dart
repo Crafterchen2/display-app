@@ -7,8 +7,8 @@ import 'buttons.dart';
 
 class SimulationPanel extends StatefulWidget {
   const SimulationPanel({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<SimulationPanel> createState() => _SimulationPanelState();
@@ -52,32 +52,32 @@ class _SimulationPanelState extends State<SimulationPanel> {
   List<Widget> makeMenuButtons() {
     return [
       FilledButton(
-        onPressed: plugIn,
         child: const Text('Plug In'),
+        onPressed: plugIn,
       ),
       FilledButton(
-        onPressed: plugOut,
         child: const Text('Plug Out'),
+        onPressed: plugOut,
       ),
       FilledButton(
-        onPressed: resumeByCar,
         child: const Text('Resume by car'),
+        onPressed: resumeByCar,
       ),
       FilledButton(
-        onPressed: pauseByCar,
         child: const Text('Pause by car'),
+        onPressed: pauseByCar,
       ),
       FilledButton(
-        onPressed: enableSimulation,
         child: const Text('Enable Simulation'),
+        onPressed: enableSimulation,
       ),
       FilledButton(
-        onPressed: disableSimulation,
         child: const Text('Disable Simulation'),
+        onPressed: disableSimulation,
       ),
       FilledButton(
-        onPressed: chargingSimulation,
         child: const Text('Charging Simulation'),
+        onPressed: chargingSimulation,
       ),
     ];
   }

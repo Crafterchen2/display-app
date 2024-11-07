@@ -23,8 +23,8 @@ import 'landing_screen.dart';
 
 class WifiSetupScreen extends ConsumerStatefulWidget {
   const WifiSetupScreen({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   ConsumerState<WifiSetupScreen> createState() => _WifiSetupScreenState();
@@ -183,7 +183,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       }
     }
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.background,
       floatingActionButton:
           !_showPasswordScreen ? const PionixCloseButton() : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
@@ -199,11 +199,12 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                       horizontal: 30,
                     ),
                     child: PrimaryButton(
+                      child: const Text('Add LAN'),
                       style: Theme.of(context)
                           .elevatedButtonTheme
                           .style
                           ?.copyWith(
-                            backgroundColor: WidgetStateProperty.resolveWith(
+                            backgroundColor: MaterialStateProperty.resolveWith(
                               (states) =>
                                   Theme.of(context).colorScheme.errorContainer,
                             ),
@@ -216,15 +217,15 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                           },
                         );
                       },
-                      child: const Text('Add LAN'),
                     ),
                   ),
                   PrimaryButton(
+                    child: const Text('Done with SETUP'),
                     style: Theme.of(context)
                         .elevatedButtonTheme
                         .style
                         ?.copyWith(
-                          backgroundColor: WidgetStateProperty.resolveWith(
+                          backgroundColor: MaterialStateProperty.resolveWith(
                             (states) =>
                                 Theme.of(context).colorScheme.tertiaryContainer,
                           ),
@@ -236,7 +237,6 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                         return const LandingScreen();
                       }), (Route<dynamic> route) => false);
                     },
-                    child: const Text('Done with SETUP'),
                   ),
                 ],
               ),
@@ -259,7 +259,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
                 child: Text(
                   bannerText,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.surface,
+                        color: Theme.of(context).colorScheme.background,
                       ),
                 ),
               ),
@@ -648,7 +648,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
               child: Text(
                 'please_enable_wifi'.tr(),
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
               ),
             ),

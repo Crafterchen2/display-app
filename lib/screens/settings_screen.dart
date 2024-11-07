@@ -11,15 +11,13 @@ import '../utils/constants/keys.dart';
 @Deprecated("The Settings have been made obsolete by the NavigationDrawer.")
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-// as is obviously belongs to the deprecated Screen
-//ignore: deprecated_member_use_from_same_package
 class _SettingsScreenState extends State<SettingsScreen> {
   final mqtt = MQTT();
   bool localization = false;

@@ -108,9 +108,10 @@ class _ChargingDashboardScreenState
     try {
       await mqtt.connect();
       final connector = ref.watch(connectorProvider);
-      mqtt.subscribe("everest_api/$connector/var/hlc_log", parseHlcLogMsg);
       mqtt.subscribe(
-          "everest_api/$connector/var/logging_path", parseLoggingPathMsg);
+          "everest_api/" + connector + "/var/hlc_log", parseHlcLogMsg);
+      mqtt.subscribe("everest_api/" + connector + "/var/logging_path",
+          parseLoggingPathMsg);
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
     }
@@ -464,7 +465,7 @@ class _ChargingDashboardScreenState
                 );
               },
               style: Theme.of(context).filledButtonTheme.style?.copyWith(
-                  backgroundColor: WidgetStateProperty.resolveWith(
+                  backgroundColor: MaterialStateProperty.resolveWith(
                       (states) => Theme.of(context).colorScheme.error)),
               label: Text(
                 tr('reset'),
@@ -517,7 +518,7 @@ class _ChargingDashboardScreenState
                 );
               },
               style: Theme.of(context).filledButtonTheme.style?.copyWith(
-                  backgroundColor: WidgetStateProperty.resolveWith(
+                  backgroundColor: MaterialStateProperty.resolveWith(
                       (states) => Theme.of(context).colorScheme.error)),
               label: Text(
                 tr('reboot'),

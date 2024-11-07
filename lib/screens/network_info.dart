@@ -11,8 +11,8 @@ import '../utils/constants/keys.dart';
 
 class NetworkInfo extends ConsumerStatefulWidget {
   const NetworkInfo({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   ConsumerState<NetworkInfo> createState() => _NetworkInfoState();
@@ -92,7 +92,7 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
                       child: Text(
                         'Hostname: $hostnameString',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
+                              color: Theme.of(context).colorScheme.onBackground,
                             ),
                       ),
                     ),
@@ -118,7 +118,8 @@ class _NetworkInfoState extends ConsumerState<NetworkInfo> {
 class NetworkDeviceInfoWidget extends StatelessWidget {
   final NetworkDeviceInfo info;
 
-  const NetworkDeviceInfoWidget({super.key, required this.info});
+  const NetworkDeviceInfoWidget({Key? key, required this.info})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -137,16 +138,16 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
-                    "${"network_interface".tr()}: ${info.interface}",
+                    "network_interface".tr() + ": ${info.interface}",
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
+                          color: Theme.of(context).colorScheme.onBackground,
                         ),
                   ),
                 ),
                 Expanded(
                   child: Container(
                     height: 1,
-                    color: Theme.of(context).colorScheme.onSurface,
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
                 ),
               ],
@@ -167,7 +168,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                   return Text(
                     'IPv4: ${info.ipv4[index]}',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
+                          color: Theme.of(context).colorScheme.onBackground,
                         ),
                   );
                 } else {
@@ -187,7 +188,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
                   return Text(
                     'IPv6: ${info.ipv6[index]}',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
+                          color: Theme.of(context).colorScheme.onBackground,
                         ),
                   );
                 } else {
@@ -201,7 +202,7 @@ class NetworkDeviceInfoWidget extends StatelessWidget {
             child: Text(
               'MAC: ${info.mac}',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
             ),
           ),
