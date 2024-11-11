@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'dart:convert';
 
+import 'package:display_app/widgets/errors_widget.dart';
 import 'package:display_app/widgets/model_dependent.dart';
 import 'package:easy_localization/easy_localization.dart'
     as _virtual_keyboard_backspace_event_period;
@@ -288,6 +289,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               ],
                             ),
                           ),
+                        const ErrorsWidget(),
                       ],
                     ),
                   ),
