@@ -48,6 +48,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
   void initState() {
     inLogScreen = true;
     super.initState();
+    refresh();
   }
 
   @override
@@ -67,6 +68,11 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
     setState(() {});
   }
 
+  // periodically refresh to update logs
+  void refresh() async {
+    setState(() {});
+    Future.delayed(const Duration(seconds: 1)).whenComplete(refresh);
+  }
   // void parseHlcLogMsg(String message) {
   //   // debugPrint("Parsing $message");
   //   HlcLog log = parseHlcLog(message);
@@ -187,7 +193,11 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
             FloatingActionButton(
               backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
-              onPressed: () => autoscroll = !autoscroll,
+              onPressed: () {
+                setState(() {
+                  autoscroll = !autoscroll;
+                });
+              },
               heroTag:
                   "pauseHero", //prevent "Same hero tag error"; doesn't change functionality
               child: autoscroll
@@ -225,29 +235,26 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: adjustScale(10)),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(padding: EdgeInsets.only(top: adjustScale(10))),
-                    SingleInfoCard(
-                        title: 'Selected protocol',
-                        value: selectedProtocolString),
-                    const Divider(
-                      color: Colors.white10,
-                      thickness: 2,
+                Padding(padding: EdgeInsets.only(top: adjustScale(10))),
+                SingleInfoCard(
+                    title: 'Selected protocol', value: selectedProtocolString),
+                const Divider(
+                  color: Colors.white10,
+                  thickness: 2,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    child: ListView.builder(
+                      primary: false,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: logEntries.length,
+                      itemBuilder: (context, index) => logEntries[index],
                     ),
-                    SingleChildScrollView(
-                      controller: scrollController,
-                      child: ListView.builder(
-                        primary: false,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: logEntries.length,
-                        itemBuilder: (context, index) => logEntries[index],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),

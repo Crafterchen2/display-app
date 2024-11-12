@@ -95,8 +95,12 @@ class _ChargingDashboardScreenState
 
   void parseHlcLogMsg(String message) {
     // debugPrint("Parsing $message");
-    HlcLog log = parseHlcLog(message);
-    hlcLogList.add(log);
+    try{
+      HlcLog log = parseHlcLog(message);
+      hlcLogList.add(log);
+    } catch (e) {
+      debugPrint("error while parsing Hlc log: $e");
+    }
   }
 
   void parseLoggingPathMsg(String message) {
