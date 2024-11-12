@@ -335,7 +335,20 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           ),
                   ),
                   (widget.state == ChargingState.authRequired)
-                      ? Container()
+                      ? SizedBox(
+                          width: double.infinity,
+                          child: PrimaryButton(
+                            onPressed: () {
+                              mqtt.publish(
+                                  "everest_api/dummy_token_provider/cmd/provide",
+                                  "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
+                            },
+                            child: const Text(
+                              "Swipe RFID",
+                              textScaler: scaler,
+                            ),
+                          ),
+                        )
                       : SizedBox(
                           width: double.infinity,
                           child: InfoLayout(
@@ -441,6 +454,17 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                           textScaler: scaler,
                                         ),
                                       ),
+                                      PrimaryButton(
+                                        onPressed: () {
+                                          mqtt.publish(
+                                              "everest_api/dummy_token_provider/cmd/provide",
+                                              "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
+                                        },
+                                        child: const Text(
+                                          "Swipe RFID",
+                                          textScaler: scaler,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -524,33 +548,29 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       onUMWC: () {
         List<Text> titles = [
           Text(
-            'Output Voltage : ',
+            'Voltage: ',
             style: style,
           ),
           Text(
-            'Relais : ',
+            'Relais: ',
             style: style,
           ),
           Text(
-            'PWM DC : ',
+            'PWM: ',
             style: style,
           ),
           Text(
-            'CP Hi : ',
+            'CP: ',
             style: style,
           ),
           Text(
-            'CP Lo : ',
-            style: style,
-          ),
-          Text(
-            'State : ',
+            'State: ',
             style: style,
           ),
         ];
         List<Text> values = [
           Text(
-            outputVoltage.toStringAsFixed(2) + ' V',
+            outputVoltage.toStringAsFixed(0) + ' V',
             style: style
                 ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
           ),
@@ -564,12 +584,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                 ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
           ),
           Text(
-            cpHi.toStringAsFixed(2),
-            style: style
-                ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
-          ),
-          Text(
-            cpLo.toStringAsFixed(2),
+            cpHi.toStringAsFixed(2) + 'V / ' + cpLo.toStringAsFixed(2) + ' V',
             style: style
                 ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
           ),
