@@ -601,7 +601,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             style: style,
           ),
         ];
-        double maxWidth = 0.0;
+        double maxWidth = 200;
         for (int i = 0; i < min(titles.length, values.length); i++) {
           TextPainter tp = TextPainter(
             text: TextSpan(
