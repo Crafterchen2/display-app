@@ -15,6 +15,7 @@ import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.
 import '../main.dart';
 import '../mqtt.dart';
 import '../widgets/info_cards.dart';
+import 'package:async/async.dart';
 
 class HlcLogScreen extends ConsumerStatefulWidget {
   const HlcLogScreen({
@@ -40,6 +41,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
   bool autoscroll = true;
   bool _showKeyboard = false;
   TextEditingController annotateController = TextEditingController();
+  late CancelableOperation<void> refresh;
 
   // List<Widget> logEntries = [];
   // List<HlcLog> hlcLogList = [];
@@ -48,12 +50,13 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
   void initState() {
     inLogScreen = true;
     super.initState();
-    refresh();
+    refresh = CancelableOperation.fromFuture(refreshLoop());
   }
 
   @override
   void dispose() {
     inLogScreen = false;
+    refresh.cancel();
     super.dispose();
   }
 
@@ -69,9 +72,11 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
   }
 
   // periodically refresh to update logs
-  void refresh() async {
-    setState(() {});
-    Future.delayed(const Duration(seconds: 1)).whenComplete(refresh);
+  Future<void> refreshLoop() async {
+    while (true) {
+      setState(() {});
+      await Future.delayed(const Duration(seconds: 1));
+    }
   }
   // void parseHlcLogMsg(String message) {
   //   // debugPrint("Parsing $message");

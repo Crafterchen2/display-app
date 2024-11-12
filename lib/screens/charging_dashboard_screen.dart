@@ -95,7 +95,7 @@ class _ChargingDashboardScreenState
 
   void parseHlcLogMsg(String message) {
     // debugPrint("Parsing $message");
-    try{
+    try {
       HlcLog log = parseHlcLog(message);
       hlcLogList.add(log);
     } catch (e) {
@@ -359,11 +359,12 @@ class _ChargingDashboardScreenState
             ),
             child: FilledButton.icon(
               onPressed: () async {
-                await Navigator.of(context).pushNamed(AppRoutes.hlcLogScreen);
+                await Navigator.of(context)
+                    .pushNamed(AppRoutes.configSelectionScreen);
               },
-              icon: const Icon(Icons.compare_arrows),
+              icon: const Icon(Icons.file_open_outlined),
               label: Text(
-                "HLC log", //TODO Localisation
+                "config", //TODO Localisation
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),

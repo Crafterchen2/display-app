@@ -114,7 +114,12 @@ class _ControlState extends ConsumerState<Control> {
     if (lastConfigLoad
         .add(const Duration(seconds: 3))
         .isBefore(DateTime.now())) {
-      ScaffoldMessenger.of(context).clearSnackBars();
+      try {
+        ScaffoldMessenger.of(context)
+            .clearSnackBars(); // this is sometimes called on an unmounted widget state but we just ignore this edgecase
+      } catch (e) {
+        // TODO investigate on how to prevent this error
+      }
     }
   }
 
