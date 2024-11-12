@@ -335,17 +335,20 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           ),
                   ),
                   (widget.state == ChargingState.authRequired)
-                      ? SizedBox(
-                          width: double.infinity,
-                          child: PrimaryButton(
-                            onPressed: () {
-                              mqtt.publish(
-                                  "everest_api/dummy_token_provider/cmd/provide",
-                                  "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
-                            },
-                            child: const Text(
-                              "Swipe RFID",
-                              textScaler: scaler,
+                      ? ModelDependent(
+                          platforms: const [ChargerModel.microMegaWattCharger],
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: PrimaryButton(
+                              onPressed: () {
+                                mqtt.publish(
+                                    "everest_api/dummy_token_provider/cmd/provide",
+                                    "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
+                              },
+                              child: const Text(
+                                "Swipe RFID",
+                                textScaler: scaler,
+                              ),
                             ),
                           ),
                         )
@@ -454,15 +457,20 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                           textScaler: scaler,
                                         ),
                                       ),
-                                      PrimaryButton(
-                                        onPressed: () {
-                                          mqtt.publish(
-                                              "everest_api/dummy_token_provider/cmd/provide",
-                                              "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
-                                        },
-                                        child: const Text(
-                                          "Swipe RFID",
-                                          textScaler: scaler,
+                                      ModelDependent(
+                                        platforms: const [
+                                          ChargerModel.microMegaWattCharger
+                                        ],
+                                        child: PrimaryButton(
+                                          onPressed: () {
+                                            mqtt.publish(
+                                                "everest_api/dummy_token_provider/cmd/provide",
+                                                "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
+                                          },
+                                          child: const Text(
+                                            "Swipe RFID",
+                                            textScaler: scaler,
+                                          ),
                                         ),
                                       ),
                                     ],
