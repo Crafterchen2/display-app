@@ -289,7 +289,11 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                               ],
                             ),
                           ),
-                        const ErrorsWidget(),
+                        ValueListenableBuilder(
+                          valueListenable: ValueNotifier(activeErrorsHash),
+                          builder: (context, value, child) =>
+                              ErrorsWidget(activeErrors),
+                        ),
                       ],
                     ),
                   ),

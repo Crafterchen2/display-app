@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:display_app/mqtt.dart';
 import 'package:display_app/screens/errors_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,15 @@ const String receiveErrorsTopic =
 const String pollErrorsTopic =
     "basecamp/api/1.0/error_history_consumer/error_history_api/m2b/active_errors";
 
+/// a list of all reported errors
 List<BasecampError> activeErrors = [];
 
+/// the hash of all active Errors -> if this changes errors changed
+int activeErrorsHash = 0;
+
 class ErrorsWidget extends StatefulWidget {
-  const ErrorsWidget({super.key});
+  final List<BasecampError> errors;
+  const ErrorsWidget(this.errors, {super.key});
 
   @override
   State<ErrorsWidget> createState() => _ErrorsWidgetState();
@@ -40,7 +46,7 @@ class _ErrorsWidgetState extends State<ErrorsWidget> {
     pollErrorLoop = CancelableOperation.fromFuture(
       pollErrors(),
       onCancel: () {
-        debugPrint("stopped ppolling for errors");
+        debugPrint("stopped polling for errors");
       },
     );
   }
@@ -61,6 +67,7 @@ class _ErrorsWidgetState extends State<ErrorsWidget> {
       for (var error in activeErrorsJson) {
         activeErrors.add(BasecampError.fromJson(error));
       }
+      activeErrorsHash = ListEquality().hash(activeErrors);
     } catch (e, strace) {
       debugPrint("$e, $strace");
     }
@@ -68,15 +75,19 @@ class _ErrorsWidgetState extends State<ErrorsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return activeErrors.isEmpty
+    return widget.errors.isEmpty
         ? const SizedBox.shrink()
-        : IconButton.filled(
+        : IconButton(
+            color: Theme.of(context).colorScheme.error,
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ErrorsScreen(activeErrors),
+                builder: (context) => ErrorsScreen(widget.errors),
               ));
             },
-            icon: const Icon(Icons.error));
+            icon: Icon(
+              Icons.error,
+              size: 80,
+            ));
   }
 }
 
@@ -114,5 +125,24 @@ class BasecampError {
       "ClearedByModule": BasecampErrorState.clearedByModule,
       "ClearedByReboot": BasecampErrorState.clearedByReboot,
     }[json["state"]]!;
+  }
+
+  /// two errors are equal if all their properties are equal
+  @override
+  int get hashCode => (type.hashCode +
+      subType.hashCode +
+      description.hashCode +
+      message.hashCode +
+      severity.hashCode +
+      timestamp.hashCode +
+      uuid.hashCode +
+      state.hashCode +
+      origin["module_id"].hashCode +
+      origin["implementation_id"].hashCode);
+
+  /// implementing hashCode requires to also implement ==
+  @override
+  bool operator ==(Object other) {
+    return (other is BasecampError) && hashCode == other.hashCode;
   }
 }
