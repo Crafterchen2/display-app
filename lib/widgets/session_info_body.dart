@@ -606,30 +606,10 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
           Text(
             stateString,
             style: style,
+            overflow: TextOverflow.ellipsis,
           ),
         ];
         double maxWidth = 200;
-        for (int i = 0; i < min(titles.length, values.length); i++) {
-          TextPainter tp = TextPainter(
-            text: TextSpan(
-              text: titles[i].data,
-              style: titles[i].style,
-            ),
-            textDirection: TextDirection.ltr,
-          );
-          tp.layout();
-          double w = tp.width;
-          tp = TextPainter(
-            text: TextSpan(
-              text: values[i].data,
-              style: values[i].style,
-            ),
-            textDirection: TextDirection.rtl,
-          );
-          tp.layout();
-          w += tp.width + 20;
-          maxWidth = max(maxWidth, w);
-        }
         Color? aColor = Color.lerp(Theme.of(context).colorScheme.background,
                 Theme.of(context).colorScheme.onBackground, 0.2)
             ?.withAlpha(160);
