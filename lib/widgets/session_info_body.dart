@@ -167,6 +167,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     );
     const scaler = TextScaler.linear(1.7);
 
+    var s = MediaQuery.of(context).size;
+    //debugPrint(s.toString());
+
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -765,7 +768,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
         children: [
           Text(
             label,
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -779,6 +784,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
           Text(
             value,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onBackground,
               fontFeatures: [
                 const FontFeature.tabularFigures(),
               ],

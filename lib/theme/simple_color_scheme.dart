@@ -96,8 +96,8 @@ class SimpleColorScheme {
       outlineVariant: lightGrey,
       shadow: blackSeed,
       scrim: blackSeed,
-      inverseSurface: darkGrey,
-      onInverseSurface: onPrimary,
+      inverseSurface: blackSeed,
+      onInverseSurface: lighterGrey,
       inversePrimary: onPrimary,
       surfaceTint: primarySeed,
     );
@@ -133,7 +133,7 @@ class SimpleColorScheme {
       shadow: blackSeed,
       scrim: blackSeed,
       inverseSurface: lighterGrey,
-      onInverseSurface: primarySeed,
+      onInverseSurface: blackSeed,
       inversePrimary: primarySeed,
       surfaceTint: onPrimary,
     );

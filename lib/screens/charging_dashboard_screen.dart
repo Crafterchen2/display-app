@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:display_app/widgets/footer_widget.dart';
 import 'package:display_app/widgets/model_dependent.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,6 @@ import 'package:display_app/main.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
-import '../utils/datetime_formats.dart';
 import '../utils/routing/app_router.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/header_widget.dart';
@@ -592,7 +592,10 @@ class _ChargingDashboardScreenState
                 privateMode: privateMode,
               ),
               BorderLayoutSlot.center: makeSessionInfoBody(context),
-              BorderLayoutSlot.south: makeFooterBar(),
+              BorderLayoutSlot.south: Footer(
+                isOnline: _online,
+                selectedProtocolString: selectedProtocolString,
+              ),
             },
           ),
           if (_showProgressBar)
@@ -676,65 +679,6 @@ class _ChargingDashboardScreenState
       minCurrentA: _minCurrentA,
       chargingMode: chargingMode,
       chargerModel: getChargerModel(),
-    );
-  }
-
-  Column makeFooterBar() {
-    return Column(
-      children: [
-        Divider(
-          thickness: 3,
-          color: Colors.grey.shade300,
-          height: 4,
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                runAlignment: WrapAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: _online
-                            ? Theme.of(context).colorScheme.tertiaryContainer
-                            : Theme.of(context).colorScheme.errorContainer,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 4,
-                          horizontal: 12,
-                        ),
-                        child: Text(
-                          _online ? 'online'.tr() : 'offline'.tr(),
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      selectedProtocolString,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      dateTimeFormat.format(DateTime.now()),
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 
