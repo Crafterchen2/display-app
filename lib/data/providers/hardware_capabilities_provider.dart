@@ -6,6 +6,10 @@ import 'package:display_app/data/providers/connector_provider.dart';
 import 'package:display_app/mqtt.dart';
 
 HardwareCapabilities parseHardwareCapabilities(String hardwareCapabilities) {
+  /// provide dummy data on an empty string as an error occurs otherwise
+  if (hardwareCapabilities == "") {
+    return HardwareCapabilities(0, 0, 0, 0, 0, 0, 0, 0, false);
+  }
   return HardwareCapabilities.fromJson(jsonDecode(hardwareCapabilities));
 }
 

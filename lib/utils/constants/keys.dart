@@ -93,10 +93,25 @@ class Payloads {
       'sleep 1;iso_wait_slac_matched;iso_start_v2g_session DC;iso_wait_pwr_ready;sleep 36000';
 }
 
-class ChargerModelName {
-  static const String belayBox = 'BelayBox';
-  static const String microMegaWattCharger = 'MicroMegaWattCharger';
-  static const String microMegaWattCar = 'MicroMegaWattCar';
+/// a enum representing the different platforms the app should run on
+enum ChargerModel {
+  belayBox("BelayBox"),
+  microMegaWattCharger("MicroMegaWattCharger"),
+  microMegaWattCar("MicroMegaWattCar"),
+  unknown(""); // as a safe fallback
+
+  /// the representation of the Model as a Sting for Json compatibility
+  final String asString;
+  const ChargerModel(this.asString);
+
+  /// creates a ChargerModel from a String representation and returns [ChargerModel.unknown] if unknown
+  factory ChargerModel.fromString(String? from) =>
+      {
+        "BelayBox": ChargerModel.belayBox,
+        "MicroMegaWattCharger": ChargerModel.microMegaWattCharger,
+        "MicroMegaWattCar": ChargerModel.microMegaWattCar,
+      }[from] ??
+      ChargerModel.unknown;
 }
 
 class AppAssets {

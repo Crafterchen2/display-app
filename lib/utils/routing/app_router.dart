@@ -21,6 +21,7 @@ class AppRoutes {
   static const systemInfo = '/system_info';
   static const sessionDetailScreen = '/session_detail_screen';
   static const hlcLogScreen = '/hlc_log_screen';
+  static const configSelectionScreen = '/config_selection_screen';
   static const chargingDashboardScreen = '/charging_dashboard_screen';
 }
 
@@ -74,6 +75,12 @@ class AppRouter {
       case AppRoutes.hlcLogScreen:
         return MaterialPageRoute<dynamic>(
           builder: (_) => const HlcLogScreen(),
+          settings: settings,
+          fullscreenDialog: true,
+        );
+      case AppRoutes.configSelectionScreen:
+        return MaterialPageRoute<dynamic>(
+          builder: (_) => const SystemInfo(initialTab: 2),
           settings: settings,
           fullscreenDialog: true,
         );

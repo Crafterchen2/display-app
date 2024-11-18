@@ -1,12 +1,13 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:display_app/utils/constants/keys.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'charger_info.g.dart';
 
 @JsonSerializable()
 class ChargerInfo {
-  final String? model_name;
+  final ChargerModel? model_name;
   final String? pcb_serial_number;
   final String? charger_serial_number;
   final String? firmware_version;

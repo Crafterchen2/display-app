@@ -15,6 +15,7 @@ import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.
 import '../main.dart';
 import '../mqtt.dart';
 import '../widgets/info_cards.dart';
+import 'package:async/async.dart';
 
 class HlcLogScreen extends ConsumerStatefulWidget {
   const HlcLogScreen({
@@ -40,6 +41,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
   bool autoscroll = true;
   bool _showKeyboard = false;
   TextEditingController annotateController = TextEditingController();
+  late CancelableOperation<void> refresh;
 
   // List<Widget> logEntries = [];
   // List<HlcLog> hlcLogList = [];
@@ -48,11 +50,13 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
   void initState() {
     inLogScreen = true;
     super.initState();
+    refresh = CancelableOperation.fromFuture(refreshLoop());
   }
 
   @override
   void dispose() {
     inLogScreen = false;
+    refresh.cancel();
     super.dispose();
   }
 
@@ -67,6 +71,13 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
     setState(() {});
   }
 
+  // periodically refresh to update logs
+  Future<void> refreshLoop() async {
+    while (true) {
+      setState(() {});
+      await Future.delayed(const Duration(seconds: 1));
+    }
+  }
   // void parseHlcLogMsg(String message) {
   //   // debugPrint("Parsing $message");
   //   HlcLog log = parseHlcLog(message);
@@ -187,7 +198,11 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
             FloatingActionButton(
               backgroundColor: Theme.of(context).colorScheme.onPrimary,
               foregroundColor: Theme.of(context).colorScheme.primary,
-              onPressed: () => autoscroll = !autoscroll,
+              onPressed: () {
+                setState(() {
+                  autoscroll = !autoscroll;
+                });
+              },
               heroTag:
                   "pauseHero", //prevent "Same hero tag error"; doesn't change functionality
               child: autoscroll
@@ -226,29 +241,26 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: adjustScale(10)),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(padding: EdgeInsets.only(top: adjustScale(10))),
-                    SingleInfoCard(
-                        title: 'Selected protocol',
-                        value: selectedProtocolString),
-                    const Divider(
-                      color: Colors.white10,
-                      thickness: 2,
+                Padding(padding: EdgeInsets.only(top: adjustScale(10))),
+                SingleInfoCard(
+                    title: 'Selected protocol', value: selectedProtocolString),
+                const Divider(
+                  color: Colors.white10,
+                  thickness: 2,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    child: ListView.builder(
+                      primary: false,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: logEntries.length,
+                      itemBuilder: (context, index) => logEntries[index],
                     ),
-                    SingleChildScrollView(
-                      controller: scrollController,
-                      child: ListView.builder(
-                        primary: false,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: logEntries.length,
-                        itemBuilder: (context, index) => logEntries[index],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),

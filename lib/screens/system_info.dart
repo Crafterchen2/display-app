@@ -12,7 +12,9 @@ import '../utils/constants/keys.dart';
 import '../widgets/buttons.dart';
 
 class SystemInfo extends StatefulWidget {
+  final int initialTab;
   const SystemInfo({
+    this.initialTab = 0,
     Key? key,
   }) : super(key: key);
 
@@ -63,6 +65,7 @@ class _SystemInfoState extends State<SystemInfo> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
+      initialIndex: widget.initialTab,
       length: 3,
       child: Scaffold(
         floatingActionButton: const PionixCloseButton(),

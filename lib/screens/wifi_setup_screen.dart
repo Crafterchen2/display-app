@@ -41,6 +41,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
   String _selectedSSID = '';
   List<AvailableNetwork> availableNetworks = [];
   List<ConfiguredNetwork> configuredNetworks = [];
+  List<AvailableNetwork> allNetworks = [];
   TextEditingController passwordController = TextEditingController();
   FocusNode passwordFocusNode = FocusNode();
   List<NetworkDeviceInfo> devices = [];
@@ -143,6 +144,7 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
       availableNetworks
           .add(AvailableNetwork(n['ssid'], n["frequency"], n['signal_level']));
     }
+    allNetworks = List.from(availableNetworks);
     filterAvailableNetworks();
     if (mounted) {
       setState(() {});
@@ -475,6 +477,10 @@ class _WifiSetupScreenState extends ConsumerState<WifiSetupScreen> {
           NetworkCardWidget(
             ssid: cn.ssid.isNotEmpty ? cn.ssid : 'Hidden SSID',
             isConnected: cn.isConnected,
+            signalLevel: allNetworks
+                    .firstWhereOrNull((network) => network.ssid == cn.ssid)
+                    ?.signal_level ??
+                -100,
             isSaved: getSavedNetworkFromSSID(cn.ssid) != null,
             onPressed: () async {
               _selectedSSID = cn.ssid;

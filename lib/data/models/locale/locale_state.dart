@@ -20,7 +20,7 @@ final localeStateProvider =
         (ref) => LocaleStateNotifier(ref));
 
 @freezed
-class LocaleState with _$LocaleState, PersistentState<LocaleState> {
+class LocaleState extends PersistentState<LocaleState> with _$LocaleState {
   const factory LocaleState({
     @LocaleJsonConverter() @Default(fallbackLocale) Locale locale,
   }) = _LocaleState;

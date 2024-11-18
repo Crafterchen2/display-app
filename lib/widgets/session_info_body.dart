@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'dart:convert';
 
+import 'package:display_app/widgets/errors_widget.dart';
+import 'package:display_app/widgets/model_dependent.dart';
 import 'package:easy_localization/easy_localization.dart'
     as _virtual_keyboard_backspace_event_period;
 import 'package:flutter/material.dart';
@@ -40,7 +42,7 @@ class SessionInfoBody extends StatefulWidget {
   final ValueChanged onCurrentChanged;
   final ChargingMode chargingMode;
   final double? soc;
-  final String chargerModelName;
+  final ChargerModel chargerModel;
 
   const SessionInfoBody({
     Key? key,
@@ -61,7 +63,7 @@ class SessionInfoBody extends StatefulWidget {
     required this.stateInfo,
     required this.chargingMode,
     this.soc,
-    required this.chargerModelName,
+    required this.chargerModel,
   }) : super(key: key);
 
   @override
@@ -222,70 +224,79 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                         if (widget.state != ChargingState.authRequired &&
                             widget.current >= widget.minCurrentA &&
                             widget.current <= widget.maxCurrentA)
-                          Column(
-                            children: [
-                              Wrap(
-                                children: [
-                                  Text(
-                                    'charge_upto'.tr() + ' ',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall
-                                        ?.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onBackground,
+                          ModelDependent(
+                            platforms: const [ChargerModel.belayBox],
+                            child: Column(
+                              children: [
+                                Wrap(
+                                  children: [
+                                    Text(
+                                      'charge_upto'.tr() + ' ',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall
+                                          ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground,
+                                          ),
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          currentSliderLabel,
+                                          textAlign: TextAlign.start,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall
+                                              ?.copyWith(
+                                            fontFeatures: [
+                                              const FontFeature
+                                                  .tabularFigures(),
+                                            ],
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground,
+                                          ),
                                         ),
-                                  ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        currentSliderLabel,
-                                        textAlign: TextAlign.start,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineSmall
-                                            ?.copyWith(
-                                          fontFeatures: [
-                                            const FontFeature.tabularFigures(),
-                                          ],
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onBackground,
+                                        Text(
+                                          ' A',
+                                          textAlign: TextAlign.end,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall
+                                              ?.copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onBackground,
+                                              ),
                                         ),
-                                      ),
-                                      Text(
-                                        ' A',
-                                        textAlign: TextAlign.end,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineSmall
-                                            ?.copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onBackground,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Slider(
-                                min: widget.minCurrentA,
-                                max: widget.maxCurrentA,
-                                label: currentSliderLabel,
-                                activeColor:
-                                    Theme.of(context).colorScheme.secondary,
-                                inactiveColor: Colors.grey,
-                                onChanged: (val) {
-                                  setState(() {});
-                                  widget.onCurrentChanged(val);
-                                },
-                                value: widget.current,
-                              ),
-                            ],
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Slider(
+                                  min: widget.minCurrentA,
+                                  max: widget.maxCurrentA,
+                                  label: currentSliderLabel,
+                                  activeColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  inactiveColor: Colors.grey,
+                                  onChanged: (val) {
+                                    setState(() {});
+                                    widget.onCurrentChanged(val);
+                                  },
+                                  value: widget.current,
+                                ),
+                              ],
+                            ),
                           ),
+                        ValueListenableBuilder(
+                          valueListenable: ValueNotifier(activeErrorsHash),
+                          builder: (context, value, child) =>
+                              ErrorsWidget(activeErrors),
+                        ),
                       ],
                     ),
                   ),
@@ -331,7 +342,23 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                           ),
                   ),
                   (widget.state == ChargingState.authRequired)
-                      ? Container()
+                      ? ModelDependent(
+                          platforms: const [ChargerModel.microMegaWattCharger],
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: PrimaryButton(
+                              onPressed: () {
+                                mqtt.publish(
+                                    "everest_api/dummy_token_provider/cmd/provide",
+                                    "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
+                              },
+                              child: const Text(
+                                "Swipe RFID",
+                                textScaler: scaler,
+                              ),
+                            ),
+                          ),
+                        )
                       : SizedBox(
                           width: double.infinity,
                           child: InfoLayout(
@@ -341,7 +368,12 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 child: TextButton(
                                   onPressed: widget.seeMorePressed,
                                   child: _buildInfoCards(
-                                    chargerModelName: widget.chargerModelName,
+                                    chargerModel: widget.chargerModel,
+                                    width: (carSideWidth.isSnapped())
+                                        ? (MediaQuery.of(context).size.width -
+                                                carSideWidth.snapNumber()) /
+                                            14
+                                        : null,
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium
@@ -354,86 +386,104 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                   ),
                                 ),
                               ),
-                              (widget.chargerModelName !=
-                                      ChargerModelName.microMegaWattCharger)
-                                  ? null
-                                  : Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 5,
+                              ModelDependent(
+                                platforms: const [
+                                  ChargerModel.microMegaWattCharger
+                                ],
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 5,
+                                  ),
+                                  child: Wrap(
+                                    runSpacing: 10,
+                                    spacing: 10,
+                                    children: [
+                                      PrimaryButton(
+                                        onPressed: () {
+                                          mqtt.publish(
+                                              "everest_external/nodered/1/cmd/pause_charging",
+                                              "1");
+                                        },
+                                        child: const Text(
+                                          "Pause",
+                                          textScaler: scaler,
+                                        ),
                                       ),
-                                      child: Wrap(
-                                        runSpacing: 10,
-                                        spacing: 10,
-                                        children: [
-                                          PrimaryButton(
-                                            onPressed: () {
-                                              mqtt.publish(
-                                                  "everest_external/nodered/1/cmd/pause_charging",
-                                                  "1");
-                                            },
-                                            child: const Text(
-                                              "Pause",
-                                              textScaler: scaler,
-                                            ),
-                                          ),
-                                          PrimaryButton(
-                                            onPressed: () {
-                                              mqtt.publish(
-                                                  "everest_external/nodered/1/cmd/resume_charging",
-                                                  "1");
-                                            },
-                                            child: const Text(
-                                              "Resume",
-                                              textScaler: scaler,
-                                            ),
-                                          ),
-                                          PrimaryButton(
-                                            onPressed: () {
-                                              mqtt.publish(
-                                                  "everest_external/nodered/1/cmd/stop_transaction",
-                                                  "1");
-                                            },
-                                            child: const Text(
-                                              "Stop transaction",
-                                              textScaler: scaler,
-                                            ),
-                                          ),
-                                          PrimaryButton(
-                                            onPressed: () {
-                                              mqtt.publish(
-                                                  "everest_external/nodered/1/cmd/emergency_stop",
-                                                  "1");
-                                            },
-                                            child: const Text(
-                                              "Emerg.Stp",
-                                              textScaler: scaler,
-                                            ),
-                                          ),
-                                          PrimaryButton(
-                                            onPressed: () {
-                                              mqtt.publish(
-                                                  "everest_external/nodered/1/cmd/evse_malfunction",
-                                                  "1");
-                                            },
-                                            child: const Text(
-                                              "EVSE malf",
-                                              textScaler: scaler,
-                                            ),
-                                          ),
-                                          PrimaryButton(
-                                            onPressed: () {
-                                              mqtt.publish(
-                                                  "everest_external/nodered/1/cmd/evse_utility_int",
-                                                  "1");
-                                            },
-                                            child: const Text(
-                                              "EVSEutil int",
-                                              textScaler: scaler,
-                                            ),
-                                          ),
+                                      PrimaryButton(
+                                        onPressed: () {
+                                          mqtt.publish(
+                                              "everest_external/nodered/1/cmd/resume_charging",
+                                              "1");
+                                        },
+                                        child: const Text(
+                                          "Resume",
+                                          textScaler: scaler,
+                                        ),
+                                      ),
+                                      PrimaryButton(
+                                        onPressed: () {
+                                          mqtt.publish(
+                                              "everest_external/nodered/1/cmd/stop_transaction",
+                                              "1");
+                                        },
+                                        child: const Text(
+                                          "Stop transaction",
+                                          textScaler: scaler,
+                                        ),
+                                      ),
+                                      PrimaryButton(
+                                        onPressed: () {
+                                          mqtt.publish(
+                                              "everest_external/nodered/1/cmd/emergency_stop",
+                                              "1");
+                                        },
+                                        child: const Text(
+                                          "Emerg.Stp",
+                                          textScaler: scaler,
+                                        ),
+                                      ),
+                                      PrimaryButton(
+                                        onPressed: () {
+                                          mqtt.publish(
+                                              "everest_external/nodered/1/cmd/evse_malfunction",
+                                              "1");
+                                        },
+                                        child: const Text(
+                                          "EVSE malf",
+                                          textScaler: scaler,
+                                        ),
+                                      ),
+                                      PrimaryButton(
+                                        onPressed: () {
+                                          mqtt.publish(
+                                              "everest_external/nodered/1/cmd/evse_utility_int",
+                                              "1");
+                                        },
+                                        child: const Text(
+                                          "EVSEutil int",
+                                          textScaler: scaler,
+                                        ),
+                                      ),
+                                      ModelDependent(
+                                        platforms: const [
+                                          ChargerModel.microMegaWattCharger
                                         ],
+                                        child: PrimaryButton(
+                                          onPressed: () {
+                                            mqtt.publish(
+                                                "everest_api/dummy_token_provider/cmd/provide",
+                                                "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
+                                          },
+                                          child: const Text(
+                                            "Swipe RFID",
+                                            textScaler: scaler,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                               SizedBox(
                                 width: double.infinity,
                                 child: TextButton(
@@ -504,189 +554,189 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   }
 
   Widget _buildInfoCards({
-    required String chargerModelName,
+    required ChargerModel chargerModel,
+    double? width,
     TextStyle? style,
   }) {
-    if (chargerModelName == ChargerModelName.microMegaWattCharger) {
-      List<Text> titles = [
-        Text(
-          'Output Voltage : ',
-          style: style,
-        ),
-        Text(
-          'Relais : ',
-          style: style,
-        ),
-        Text(
-          'PWM DC : ',
-          style: style,
-        ),
-        Text(
-          'CP Hi : ',
-          style: style,
-        ),
-        Text(
-          'CP Lo : ',
-          style: style,
-        ),
-        Text(
-          'State : ',
-          style: style,
-        ),
-      ];
-      List<Text> values = [
-        Text(
-          outputVoltage.toStringAsFixed(2) + ' V',
+    return ModelDependent.on(
+      chargerModel: chargerModel,
+      onUMWC: () {
+        List<Text> titles = [
+          Text(
+            'Voltage: ',
+            style: style,
+          ),
+          Text(
+            'Relais: ',
+            style: style,
+          ),
+          Text(
+            'PWM: ',
+            style: style,
+          ),
+          Text(
+            'CP: ',
+            style: style,
+          ),
+          Text(
+            'State: ',
+            style: style,
+          ),
+        ];
+        List<Text> values = [
+          Text(
+            outputVoltage.toStringAsFixed(0) + ' V',
+            style: style
+                ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
+          ),
+          Text(
+            relaisState,
+            style: style,
+          ),
+          Text(
+            pwmDc.toStringAsFixed(0) + ' %',
+            style: style
+                ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
+          ),
+          Text(
+            cpHi.toStringAsFixed(2) + 'V / ' + cpLo.toStringAsFixed(2) + ' V',
+            style: style
+                ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
+          ),
+          Text(
+            stateString,
+            style: style,
+          ),
+        ];
+        double maxWidth = 200;
+        for (int i = 0; i < min(titles.length, values.length); i++) {
+          TextPainter tp = TextPainter(
+            text: TextSpan(
+              text: titles[i].data,
+              style: titles[i].style,
+            ),
+            textDirection: TextDirection.ltr,
+          );
+          tp.layout();
+          double w = tp.width;
+          tp = TextPainter(
+            text: TextSpan(
+              text: values[i].data,
+              style: values[i].style,
+            ),
+            textDirection: TextDirection.rtl,
+          );
+          tp.layout();
+          w += tp.width + 20;
+          maxWidth = max(maxWidth, w);
+        }
+        Color? aColor = Color.lerp(Theme.of(context).colorScheme.background,
+                Theme.of(context).colorScheme.onBackground, 0.2)
+            ?.withAlpha(160);
+        Color? bColor = Color.lerp(Theme.of(context).colorScheme.background,
+                Theme.of(context).colorScheme.onBackground, 0.4)
+            ?.withAlpha(160);
+        List<Widget> infos = [];
+        for (int i = 0; i < min(titles.length, values.length); i++) {
+          infos.add(_buildTextInfo(
+              (i % 2 == 0) ? aColor : bColor, values[i], titles[i], maxWidth));
+        }
+        return Wrap(
+          alignment: WrapAlignment.start,
+          children: infos,
+        );
+      },
+      onUMWCar: () {
+        Text ampereLabel = Text(
+          (targetCurrent).toStringAsFixed(2) + ' A',
           style: style
               ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
-        ),
-        Text(
-          relaisState,
-          style: style,
-        ),
-        Text(
-          pwmDc.toStringAsFixed(0) + ' %',
-          style: style
-              ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
-        ),
-        Text(
-          cpHi.toStringAsFixed(2),
-          style: style
-              ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
-        ),
-        Text(
-          cpLo.toStringAsFixed(2),
-          style: style
-              ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
-        ),
-        Text(
-          stateString,
-          style: style,
-        ),
-      ];
-      double maxWidth = 0.0;
-      for (int i = 0; i < min(titles.length, values.length); i++) {
+        );
         TextPainter tp = TextPainter(
           text: TextSpan(
-            text: titles[i].data,
-            style: titles[i].style,
+            text: ampereLabel.data! + "Current Demand",
+            style: ampereLabel.style,
           ),
           textDirection: TextDirection.ltr,
-        );
-        tp.layout();
-        double w = tp.width;
-        tp = TextPainter(
-          text: TextSpan(
-            text: values[i].data,
-            style: values[i].style,
+        )..layout();
+        double ampereWidth = tp.width;
+        return Column(children: [
+          Text(
+            'battery_percentage'.tr(),
+            style: const TextStyle(fontSize: 20),
           ),
-          textDirection: TextDirection.rtl,
-        );
-        tp.layout();
-        w += tp.width + 20;
-        maxWidth = max(maxWidth, w);
-      }
-      Color? aColor = Color.lerp(Theme.of(context).colorScheme.background,
-              Theme.of(context).colorScheme.onBackground, 0.2)
-          ?.withAlpha(160);
-      Color? bColor = Color.lerp(Theme.of(context).colorScheme.background,
-              Theme.of(context).colorScheme.onBackground, 0.4)
-          ?.withAlpha(160);
-      List<Widget> infos = [];
-      for (int i = 0; i < min(titles.length, values.length); i++) {
-        infos.add(_buildTextInfo(
-            (i % 2 == 0) ? aColor : bColor, values[i], titles[i], maxWidth));
-      }
-      return Wrap(
-        alignment: WrapAlignment.start,
-        children: infos,
-      );
-    } else if (chargerModelName == ChargerModelName.microMegaWattCar) {
-      Text ampereLabel = Text(
-        (targetCurrent).toStringAsFixed(2) + ' A',
-        style:
-            style?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
-      );
-      TextPainter tp = TextPainter(
-        text: TextSpan(
-          text: ampereLabel.data! + "Current Demand",
-          style: ampereLabel.style,
-        ),
-        textDirection: TextDirection.ltr,
-      )..layout();
-      double ampereWidth = tp.width;
-      return Column(children: [
-        Text(
-          'battery_percentage'.tr(),
-          style: const TextStyle(fontSize: 20),
-        ),
-        LinearGauge(
-          start: 0,
-          steps: 10,
-          end: 100,
-          customLabels: const [
-            CustomRulerLabel(text: "0", value: 0),
-            CustomRulerLabel(text: "10", value: 10),
-            CustomRulerLabel(text: "20", value: 20),
-            CustomRulerLabel(text: "30", value: 30),
-            CustomRulerLabel(text: "40", value: 40),
-            CustomRulerLabel(text: "50", value: 50),
-            CustomRulerLabel(text: "60", value: 60),
-            CustomRulerLabel(text: "70", value: 70),
-            CustomRulerLabel(text: "80", value: 80),
-            CustomRulerLabel(text: "90", value: 90),
-            CustomRulerLabel(text: "100", value: 100)
-          ],
-          valueBar: [
-            ValueBar(
-              value: batteryPercentage,
-              valueBarThickness: 10,
-            )
-          ],
-          rulers: RulerStyle(
-              rulerPosition: RulerPosition.bottom,
-              textStyle: const TextStyle(fontSize: 20)),
-        ),
-        Wrap(
+          LinearGauge(
+            start: 0,
+            steps: 10,
+            end: 100,
+            customLabels: const [
+              CustomRulerLabel(text: "0", value: 0),
+              CustomRulerLabel(text: "10", value: 10),
+              CustomRulerLabel(text: "20", value: 20),
+              CustomRulerLabel(text: "30", value: 30),
+              CustomRulerLabel(text: "40", value: 40),
+              CustomRulerLabel(text: "50", value: 50),
+              CustomRulerLabel(text: "60", value: 60),
+              CustomRulerLabel(text: "70", value: 70),
+              CustomRulerLabel(text: "80", value: 80),
+              CustomRulerLabel(text: "90", value: 90),
+              CustomRulerLabel(text: "100", value: 100)
+            ],
+            valueBar: [
+              ValueBar(
+                value: batteryPercentage,
+                valueBarThickness: 10,
+              )
+            ],
+            rulers: RulerStyle(
+                rulerPosition: RulerPosition.bottom,
+                textStyle: const TextStyle(fontSize: 20)),
+          ),
+          Wrap(
+            alignment: WrapAlignment.spaceAround,
+            children: [
+              _buildTextInfo(
+                null,
+                ampereLabel,
+                Text(
+                  'Current Demand : ',
+                  style: style,
+                ),
+                ampereWidth,
+              ),
+              _buildTextInfo(
+                null,
+                Text(
+                  (targetCurrent * targetVoltage).toStringAsFixed(2) + ' W',
+                  style: style,
+                ),
+                Text(
+                  'Current Demand : ',
+                  style: style,
+                ),
+                ampereWidth,
+              )
+            ],
+          ),
+        ]);
+      },
+      defaultValue: () {
+        return Wrap(
           alignment: WrapAlignment.spaceAround,
+          spacing: (width == null)
+              ? 0
+              : (MediaQuery.of(context).size.width - width) / 14,
           children: [
-            _buildTextInfo(
-              null,
-              ampereLabel,
-              Text(
-                'Current Demand : ',
-                style: style,
-              ),
-              ampereWidth,
-            ),
-            _buildTextInfo(
-              null,
-              Text(
-                (targetCurrent * targetVoltage).toStringAsFixed(2) + ' W',
-                style: style,
-              ),
-              Text(
-                'Current Demand : ',
-                style: style,
-              ),
-              ampereWidth,
-            )
+            _buildIconInfo('assets/icons/icon_power.svg',
+                widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
+            _buildIconInfo('assets/icons/icon_energy.svg',
+                widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
+            _buildIconInfo('assets/icons/icon_charging_duration.svg',
+                widget.duration + ' h', 'duration'.tr())
           ],
-        ),
-      ]);
-    } else {
-      return Wrap(
-        alignment: WrapAlignment.spaceAround,
-        children: [
-          _buildIconInfo('assets/icons/icon_power.svg',
-              widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
-          _buildIconInfo('assets/icons/icon_energy.svg',
-              widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
-          _buildIconInfo('assets/icons/icon_charging_duration.svg',
-              widget.duration + ' h', 'duration'.tr())
-        ],
-      );
-    }
+        );
+      },
+    )(); // runs the functions provided for each platform
   }
 
   Widget _buildTextInfo(
