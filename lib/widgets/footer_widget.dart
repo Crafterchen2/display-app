@@ -12,7 +12,7 @@ class Footer extends StatefulWidget {
   const Footer({
     Key? key,
     this.isOnline = true,
-    this.selectedProtocolString = "this_is_a_protocol",
+    this.selectedProtocolString = "",
   }) : super(key: key);
 
   @override

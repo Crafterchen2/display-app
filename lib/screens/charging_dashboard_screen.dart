@@ -595,6 +595,7 @@ class _ChargingDashboardScreenState
               BorderLayoutSlot.center: makeSessionInfoBody(context),
               BorderLayoutSlot.south: Footer(
                 isOnline: _online,
+                selectedProtocolString: selectedProtocolString,
               ),
             },
           ),
