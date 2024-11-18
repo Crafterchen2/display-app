@@ -30,7 +30,6 @@ import 'package:display_app/main.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
-import '../utils/datetime_formats.dart';
 import '../utils/routing/app_router.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/header_widget.dart';
