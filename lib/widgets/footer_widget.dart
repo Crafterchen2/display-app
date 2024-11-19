@@ -10,10 +10,10 @@ class Footer extends StatefulWidget {
   final String selectedProtocolString;
 
   const Footer({
-    Key? key,
+    super.key,
     this.isOnline = true,
     this.selectedProtocolString = "",
-  }) : super(key: key);
+  });
 
   @override
   State<Footer> createState() => _FooterState();
@@ -40,10 +40,16 @@ class _FooterState extends State<Footer> {
   }
 
   @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -73,11 +79,16 @@ class _FooterState extends State<Footer> {
                       ),
                       child: Text(
                         widget.isOnline ? 'online'.tr() : 'offline'.tr(),
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: widget.isOnline
-                              ? Theme.of(context).colorScheme.onTertiaryContainer
-                              : Theme.of(context).colorScheme.onErrorContainer,
-                        ),
+                        style:
+                            Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  color: widget.isOnline
+                                      ? Theme.of(context)
+                                          .colorScheme
+                                          .onTertiaryContainer
+                                      : Theme.of(context)
+                                          .colorScheme
+                                          .onErrorContainer,
+                                ),
                       ),
                     ),
                   ),
@@ -87,8 +98,8 @@ class _FooterState extends State<Footer> {
                   child: Text(
                     widget.selectedProtocolString,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                   ),
                 ),
                 Padding(

@@ -12,8 +12,8 @@ import '../utils/routing/app_router.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<LandingScreen> createState() => _LandingScreenState();
@@ -222,9 +222,9 @@ class InitializingProgressWidget extends StatelessWidget {
   final double? progress;
 
   const InitializingProgressWidget({
-    Key? key,
+    super.key,
     this.progress,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -259,8 +259,7 @@ class EverestLogoWidget extends StatelessWidget {
   final double height;
   final double width;
 
-  const EverestLogoWidget({Key? key, this.height = 100, this.width = 200})
-      : super(key: key);
+  const EverestLogoWidget({super.key, this.height = 100, this.width = 200});
 
   @override
   Widget build(BuildContext context) {

@@ -97,7 +97,7 @@ class InfoLayout extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(
           width: width,
-          color: color ?? Theme.of(context).colorScheme.onBackground,
+          color: color ?? Theme.of(context).colorScheme.onSurface,
         ),
         borderRadius: BorderRadius.all(Radius.circular(radius)),
       ),
@@ -119,7 +119,7 @@ class InfoLayout extends StatelessWidget {
         } else {
           rv.add(
             Divider(
-              color: color ?? Theme.of(context).colorScheme.onBackground,
+              color: color ?? Theme.of(context).colorScheme.onSurface,
               endIndent: 0,
               height: width,
               indent: 0,

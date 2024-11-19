@@ -58,12 +58,12 @@ class LocaleState extends PersistentState<LocaleState> with _$LocaleState {
   @override
   Future<LocaleState?> fromStorage() async {
     try {
-      var _value = await JsonLocalSync.get(key: _localStorageKey);
-      if (_value == null) {
+      var value = await JsonLocalSync.get(key: _localStorageKey);
+      if (value == null) {
         return null;
       }
-      var _data = LocaleState.fromJson(_value);
-      return _data;
+      var data = LocaleState.fromJson(value);
+      return data;
     } catch (e) {
       rethrow;
     }
@@ -84,11 +84,11 @@ class LocaleStateNotifier extends StateNotifier<LocaleState> {
   /// 2. IF no locale in storage, attempts to set local from the platform settings
   Future<void> initLocale() async {
     // Attempt to restore from storage
-    bool _fromStorageSuccess =
+    bool fromStorageSuccess =
         await ref.read(localeStateProvider.notifier).restoreFromStorage();
 
     // If storage restore did not work, set from platform
-    if (!_fromStorageSuccess) {
+    if (!fromStorageSuccess) {
       ref
           .read(localeStateProvider.notifier)
           .setLocale(ref.read(platformLocaleProvider));
@@ -100,10 +100,10 @@ class LocaleStateNotifier extends StateNotifier<LocaleState> {
   /// IF NOT: get the first locale that matches our language code and set that
   /// ELSE: do nothing.
   void setLocale(Locale locale) {
-    List<Locale> _supportedLocales = ref.read(supportedLocalesProvider);
+    List<Locale> supportedLocales = ref.read(supportedLocalesProvider);
 
     // Set the locale if it's in our list of supported locales
-    if (_supportedLocales.contains(locale)) {
+    if (supportedLocales.contains(locale)) {
       // Update state
       state = state.copyWith(locale: locale);
 
@@ -113,12 +113,12 @@ class LocaleStateNotifier extends StateNotifier<LocaleState> {
     }
 
     // Get the closest language locale and set that instead
-    Locale? _closestLocale = _supportedLocales.firstWhereOrNull(
+    Locale? closestLocale = supportedLocales.firstWhereOrNull(
         (supportedLocale) =>
             supportedLocale.languageCode == locale.languageCode);
-    if (_closestLocale != null) {
+    if (closestLocale != null) {
       // Update state
-      state = state.copyWith(locale: _closestLocale);
+      state = state.copyWith(locale: closestLocale);
 
       // Save to persistence
       state.localSave();
@@ -134,17 +134,17 @@ class LocaleStateNotifier extends StateNotifier<LocaleState> {
     try {
       // print("Restoring LocaleState from storage.");
       // Attempt to get the user from storage
-      LocaleState? _state = await state.fromStorage();
+      LocaleState? localeState = await state.fromStorage();
 
       // If user is null, there is no user to restore
-      if (_state == null) {
+      if (localeState == null) {
         return false;
       }
 
       // print("State found in storage: " + _state.toJson().toString());
 
       // Set state
-      state = _state;
+      state = localeState;
 
       return true;
     } catch (e) {

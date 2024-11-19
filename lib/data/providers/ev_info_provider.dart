@@ -13,8 +13,7 @@ final evInfoStreamProvider = StreamProvider<EvInfo>((ref) async* {
   final mqtt = MQTT();
   await mqtt.connect();
   final connector = ref.watch(connectorProvider);
-  final stream =
-      mqtt.subscribeStream("everest_api/" + connector + "/var/ev_info");
+  final stream = mqtt.subscribeStream("everest_api/$connector/var/ev_info");
   await for (final message in stream) {
     // debugPrint("Received EvInfo");
     yield parseEvInfo(message);

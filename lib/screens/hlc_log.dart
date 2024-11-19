@@ -19,8 +19,8 @@ import 'package:async/async.dart';
 
 class HlcLogScreen extends ConsumerStatefulWidget {
   const HlcLogScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   ConsumerState<HlcLogScreen> createState() => _HlcLogScreenState();
@@ -96,7 +96,7 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
   // }
 
   String buildHlcLogString(HlcLog log) {
-    String logString = log.origin + " ";
+    String logString = "${log.origin} ";
     if (log.iso15118) {
       logString += "ISO ";
     }
@@ -345,10 +345,8 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
           });
 
           if (loggingPath != "") {
-            String annotationPath = loggingPath +
-                "/annotation_" +
-                DateTime.now().toUtc().toIso8601String() +
-                ".txt";
+            String annotationPath =
+                "$loggingPath/annotation_${DateTime.now().toUtc().toIso8601String()}.txt";
             final File file = File(annotationPath);
             await file.create(recursive: true, exclusive: false);
             await file.writeAsString(annotateController.text);

@@ -1,9 +1,9 @@
 ---
 flutter:
   git: https://github.com/flutter/flutter.git
-  git_tag: 3.19.0
+  git_tag: 3.24.4
   options: []
 flutter_engine_binaries:
   git: https://github.com/ardera/flutter-engine-binaries-for-arm.git
-  git_tag: bc5c3c99c1274ba79da6c62eb740e93c487bbc5b
+  git_tag: 9ece9ff9613b45ae578630d4259cad43765f039d
   options: []

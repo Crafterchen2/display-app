@@ -12,8 +12,8 @@ import '../utils/routing/app_router.dart';
 
 class LanInfoScreen extends StatefulWidget {
   const LanInfoScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<LanInfoScreen> createState() => _LanInfoScreenState();
@@ -75,7 +75,7 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 20,
@@ -106,9 +106,8 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                 horizontal: 30,
               ),
               child: PrimaryButton(
-                child: const Text('Add WIFI'),
                 style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-                      backgroundColor: MaterialStateProperty.resolveWith(
+                      backgroundColor: WidgetStateProperty.resolveWith(
                         (states) =>
                             Theme.of(context).colorScheme.errorContainer,
                       ),
@@ -119,12 +118,12 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                     'init': true,
                   });
                 },
+                child: const Text('Add WIFI'),
               ),
             ),
             PrimaryButton(
-              child: const Text('Done with SETUP'),
               style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-                    backgroundColor: MaterialStateProperty.resolveWith(
+                    backgroundColor: WidgetStateProperty.resolveWith(
                       (states) =>
                           Theme.of(context).colorScheme.tertiaryContainer,
                     ),
@@ -136,6 +135,7 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
                   return const LandingScreen();
                 }), (Route<dynamic> route) => false);
               },
+              child: const Text('Done with SETUP'),
             ),
           ],
         ),
@@ -167,8 +167,7 @@ class _LanInfoScreenState extends State<LanInfoScreen> {
 class NetworkDeviceInfoWidget extends StatelessWidget {
   final NetworkDeviceInfo info;
 
-  const NetworkDeviceInfoWidget({Key? key, required this.info})
-      : super(key: key);
+  const NetworkDeviceInfoWidget({super.key, required this.info});
 
   @override
   Widget build(BuildContext context) {

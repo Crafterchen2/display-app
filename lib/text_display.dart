@@ -6,7 +6,7 @@ void main() async {
 }
 
 class DisplayTester extends StatelessWidget {
-  const DisplayTester({Key? key}) : super(key: key);
+  const DisplayTester({super.key});
 
   @override
   Widget build(BuildContext context) {

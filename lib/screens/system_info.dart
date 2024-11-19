@@ -15,8 +15,8 @@ class SystemInfo extends StatefulWidget {
   final int initialTab;
   const SystemInfo({
     this.initialTab = 0,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<SystemInfo> createState() => _SystemInfoState();

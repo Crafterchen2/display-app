@@ -13,8 +13,7 @@ final limitsStreamProvider = StreamProvider<Limits>((ref) async* {
   final mqtt = MQTT();
   await mqtt.connect();
   final connector = ref.watch(connectorProvider);
-  final stream =
-      mqtt.subscribeStream("everest_api/" + connector + "/var/limits");
+  final stream = mqtt.subscribeStream("everest_api/$connector/var/limits");
   await for (final message in stream) {
     // debugPrint("Received limits");
     yield parseLimits(message);

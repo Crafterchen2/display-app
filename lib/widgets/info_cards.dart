@@ -26,7 +26,7 @@ class SessionDetailCardWidget extends StatelessWidget {
   final double stretchSensitivity;
 
   const SessionDetailCardWidget({
-    Key? key,
+    super.key,
     required this.sectionTitle,
     required this.expandContent,
     this.cardWidth = 240,
@@ -34,7 +34,7 @@ class SessionDetailCardWidget extends StatelessWidget {
     this.stretchSensitivity = 36,
     this.expanded = false,
     this.onExpendPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -103,8 +103,7 @@ class SingleInfoCard extends StatelessWidget {
   final String title;
   final String value;
 
-  const SingleInfoCard({Key? key, required this.title, required this.value})
-      : super(key: key);
+  const SingleInfoCard({super.key, required this.title, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -215,7 +214,7 @@ class _LineChartCardContent extends State<LineChartCardContent> {
     String text = value.toStringAsFixed(1);
 
     if (widget.unit.isNotEmpty) {
-      text += " " + widget.unit;
+      text += " ${widget.unit}";
     }
 
     if (bufferedPowerMeter.ac) {
@@ -309,7 +308,7 @@ class _LineChartCardContent extends State<LineChartCardContent> {
             show: true,
           ),
         ),
-        swapAnimationDuration: Duration.zero,
+        duration: Duration.zero,
       ),
     );
 
@@ -340,8 +339,7 @@ class _LineChartCardContent extends State<LineChartCardContent> {
             TextButton(
               onPressed: widget.onShowOverlayPressed,
               style: const ButtonStyle(
-                overlayColor:
-                    MaterialStatePropertyAll<Color>(Colors.transparent),
+                overlayColor: WidgetStatePropertyAll<Color>(Colors.transparent),
               ),
               child: Container(
                 height: chart.height,

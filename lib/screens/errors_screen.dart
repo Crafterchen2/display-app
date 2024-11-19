@@ -5,10 +5,10 @@ import 'package:collection/collection.dart';
 
 class ErrorsScreen extends StatefulWidget {
   final List<BasecampError> errors;
-  const ErrorsScreen(this.errors, {Key? key}) : super(key: key);
+  const ErrorsScreen(this.errors, {super.key});
 
   @override
-  _ErrorsScreenState createState() => _ErrorsScreenState();
+  State<ErrorsScreen> createState() => _ErrorsScreenState();
 }
 
 class _ErrorsScreenState extends State<ErrorsScreen> {
@@ -77,10 +77,10 @@ class _ErrorsScreenState extends State<ErrorsScreen> {
 
 class ErrorWidget extends StatefulWidget {
   final BasecampError error;
-  const ErrorWidget(this.error, {Key? key}) : super(key: key);
+  const ErrorWidget(this.error, {super.key});
 
   @override
-  _ErrorWidgetState createState() => _ErrorWidgetState();
+  State<ErrorWidget> createState() => _ErrorWidgetState();
 }
 
 class _ErrorWidgetState extends State<ErrorWidget> {

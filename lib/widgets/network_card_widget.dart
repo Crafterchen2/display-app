@@ -16,7 +16,7 @@ class NetworkCardWidget extends StatelessWidget {
   final VoidCallback onSavedPressed;
 
   const NetworkCardWidget({
-    Key? key,
+    super.key,
     required this.ssid,
     required this.onPressed,
     required this.onSavedPressed,
@@ -25,7 +25,7 @@ class NetworkCardWidget extends StatelessWidget {
     this.isSaved = false,
     this.strength = '',
     this.strengthColor = AppColors.white,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +42,16 @@ class NetworkCardWidget extends StatelessWidget {
                         getWifiIcon(signalLevel),
                         height: 40,
                         width: 40,
-                        color: Theme.of(context).colorScheme.onBackground,
+                        theme: SvgTheme(
+                          currentColor: Theme.of(context).colorScheme.onSurface,
+                        ),
                       )
                     : Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Icon(
                           Icons.block_rounded,
                           size: 40,
-                          color: Theme.of(context).colorScheme.onBackground,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                 const SizedBox(
@@ -62,7 +64,7 @@ class NetworkCardWidget extends StatelessWidget {
                       Text(
                         ssid,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.onBackground,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                       ),
                       (isSaved)
@@ -76,7 +78,7 @@ class NetworkCardWidget extends StatelessWidget {
                                     ?.copyWith(
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .onBackground,
+                                          .onSurface,
                                     ),
                               ),
                             )
@@ -140,7 +142,7 @@ class NetworkCardWidget extends StatelessWidget {
                             alignment: Alignment.center,
                             child: Icon(
                               Icons.settings,
-                              color: Theme.of(context).colorScheme.onBackground,
+                              color: Theme.of(context).colorScheme.onSurface,
                               size: 48,
                             ),
                           ),
@@ -151,7 +153,7 @@ class NetworkCardWidget extends StatelessWidget {
                         child: Icon(
                           Icons.chevron_right,
                           size: 40,
-                          color: Theme.of(context).colorScheme.onBackground,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
               ],
@@ -161,7 +163,7 @@ class NetworkCardWidget extends StatelessWidget {
           Container(
             height: 0.2,
             width: double.infinity,
-            color: Theme.of(context).colorScheme.onBackground,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ],
       ),
