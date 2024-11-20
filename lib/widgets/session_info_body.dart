@@ -700,10 +700,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       },
       defaultValue: () {
         return Wrap(
-          alignment: WrapAlignment.spaceAround,
-          spacing: (width == null)
-              ? 0
-              : (MediaQuery.of(context).size.width - width) / 14,
+          alignment: WrapAlignment.spaceBetween,
           children: [
             _buildIconInfo('assets/icons/icon_power.svg',
                 '${widget.power.toStringAsFixed(2)} kW', 'power'.tr()),
@@ -736,39 +733,49 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   }
 
   Widget _buildIconInfo(String iconPath, String value, String label) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: adjustScale(10),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Text(
-            label,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
+    return Container(
+      constraints: BoxConstraints(maxWidth: 140),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: adjustScale(10),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Text(
+              label,
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+              ),
+              child: SvgPicture.asset(
+                iconPath,
+                theme: SvgTheme(
+                  currentColor: Theme.of(context).colorScheme.onSurface,
                 ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 10,
+              ),
             ),
-            child: SvgPicture.asset(
-              iconPath,
-              color: Theme.of(context).colorScheme.onSurface,
+            ConstrainedBox(
+              constraints: BoxConstraints(minWidth: 103),
+              child: Center(
+                child: Text(
+                  value,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontFeatures: [
+                      const FontFeature.tabularFigures(),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-          Text(
-            value,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface,
-              fontFeatures: [
-                const FontFeature.tabularFigures(),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
