@@ -125,6 +125,7 @@ class SingleInfoCard extends StatelessWidget {
                 textAlign: TextAlign.start,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Theme.of(context).colorScheme.onPrimary,
+                      fontFamily: "RobotoMono"
                     ),
               ),
             ],

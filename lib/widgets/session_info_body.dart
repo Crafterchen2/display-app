@@ -380,7 +380,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                                 .colorScheme
                                                 .onSurface,
                                             fontWeight: FontWeight.w600,
-                                            fontSize: 18),
+                                            fontSize: 16,
+                                            fontFamily: "RobotoMono"),
                                   ),
                                 ),
                               ),
@@ -755,6 +756,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
               ),
               child: SvgPicture.asset(
                 iconPath,
+                height: 50,
                 theme: SvgTheme(
                   currentColor: Theme.of(context).colorScheme.onSurface,
                 ),
@@ -765,12 +767,12 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
               child: Center(
                 child: Text(
                   value,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontFeatures: [
-                      const FontFeature.tabularFigures(),
-                    ],
-                  ),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontFeatures: [
+                        const FontFeature.tabularFigures(),
+                      ],
+                      fontFamily: "RobotoMono"),
                 ),
               ),
             ),
