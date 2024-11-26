@@ -729,7 +729,7 @@ class _ChargingDashboardScreenState
         <String, dynamic>{}) as Map;
     privateMode = i["private_mode"] ?? false;
     if (!privateMode) {
-      debugPrint("Entering public mode");
+      // debugPrint("Entering public mode");
       updateCurrentLanguage();
       // _status = 'AuthRequired';
     }

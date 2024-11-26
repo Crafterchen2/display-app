@@ -1,3 +1,4 @@
+import 'package:display_app/screens/ask_root_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:display_app/screens/charging_dashboard_screen.dart';
 import 'package:display_app/screens/hlc_log.dart';
@@ -23,6 +24,7 @@ class AppRoutes {
   static const hlcLogScreen = '/hlc_log_screen';
   static const configSelectionScreen = '/config_selection_screen';
   static const chargingDashboardScreen = '/charging_dashboard_screen';
+  static const askRootPasswordScreen = "/ask_root_password_screen";
 }
 
 class AppRouter {
@@ -96,6 +98,11 @@ class AppRouter {
           settings: settings,
           fullscreenDialog: true,
         );
+      case AppRoutes.askRootPasswordScreen:
+        return MaterialPageRoute(
+            builder: (_) => AskRootPasswordScreen(),
+            settings: settings,
+            fullscreenDialog: true);
       // case AppRoutes.entryPage:
       //   final mapArgs = args as Map<String, dynamic>;
       //   final job = mapArgs['job'] as Job;
