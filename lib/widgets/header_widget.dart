@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:display_app/widgets/restart_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:display_app/main.dart';
@@ -82,10 +83,10 @@ class Header extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: AspectRatio(
-              aspectRatio: 1,
-              child: Center(
-                child: (privateMode)
-                    ? FloatingActionButton(
+              aspectRatio: privateMode ? 1 : 2,
+              child: (privateMode)
+                  ? Center(
+                      child: FloatingActionButton(
                         heroTag: PionixCloseButton.getHeroTag(),
                         elevation: 20,
                         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -97,23 +98,48 @@ class Header extends StatelessWidget {
                           color: Theme.of(context).colorScheme.onPrimary,
                           size: 48,
                         ),
-                      )
-                    : FloatingActionButton(
-                        heroTag: PionixCloseButton.getHeroTag(),
-                        elevation: 20,
-                        onPressed: () async {
-                          await Navigator.of(context).pushNamed(
-                            AppRoutes.languagePickerScreen,
-                          );
-                        },
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        child: Icon(
-                          Icons.language,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          size: 48,
-                        ),
                       ),
-              ),
+                    )
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        FloatingActionButton(
+                          elevation: 20,
+                          onPressed: () async {
+                            var result = await Navigator.of(context)
+                                .pushNamed(AppRoutes.askRootPasswordScreen);
+                            debugPrint(result.toString());
+                            if (result is bool && result) {
+                              setMode("private");
+                              RestartWidget.restartApp(context);
+                            }
+                          },
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          child: Icon(Icons.key),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(4, 0, 8, 0),
+                          child: FloatingActionButton(
+                            heroTag: PionixCloseButton.getHeroTag(),
+                            elevation: 20,
+                            onPressed: () async {
+                              await Navigator.of(context).pushNamed(
+                                AppRoutes.languagePickerScreen,
+                              );
+                            },
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            child: Icon(
+                              Icons.language,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              size: 48,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
             ),
           ),
         ],
