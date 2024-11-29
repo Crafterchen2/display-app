@@ -28,13 +28,14 @@ class ModelDependent extends ConsumerWidget {
     final ChargerInfo chargerInfo =
         ref.watch(chargerInfoStreamProvider).whenOrNull(data: (data) => data) ??
             ChargerInfo(
-              ChargerModel.microMegaWattCharger,
+              ChargerModel.unknown,
               null,
               null,
               null,
               null,
             );
-    if (chargerInfo.model_name == ChargerModel.unknown) {
+    if (chargerInfo.model_name == ChargerModel.unknown &&
+        !platforms.contains(ChargerModel.unknown)) {
       debugPrint("Charger Model unknown");
       return unknownChild;
     }

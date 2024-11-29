@@ -82,6 +82,13 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   double targetVoltage = 0;
   double targetCurrent = 0;
   EvInfo? evManagerInfo;
+  late double currentSliderValue;
+
+  @override
+  void initState() {
+    currentSliderValue = widget.current;
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -225,7 +232,10 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                             widget.current >= widget.minCurrentA &&
                             widget.current <= widget.maxCurrentA)
                           ModelDependent(
-                            platforms: const [ChargerModel.belayBox],
+                            platforms: const [
+                              ChargerModel.belayBox,
+                              ChargerModel.unknown
+                            ], // TODO remove this when the belaybox reports its devicetype via mqtt
                             child: Column(
                               children: [
                                 Wrap(
@@ -284,10 +294,12 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                       Theme.of(context).colorScheme.secondary,
                                   inactiveColor: Colors.grey,
                                   onChanged: (val) {
-                                    setState(() {});
+                                    setState(() {
+                                      currentSliderValue = val;
+                                    });
                                     widget.onCurrentChanged(val);
                                   },
-                                  value: widget.current,
+                                  value: currentSliderValue,
                                 ),
                               ],
                             ),

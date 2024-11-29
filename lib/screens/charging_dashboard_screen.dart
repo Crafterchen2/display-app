@@ -670,7 +670,6 @@ class _ChargingDashboardScreenState
       onResumeCharging: () => performAction(resumeCharging),
       onCurrentChanged: (value) {
         _current = value;
-        setState(() {});
         setMaxCurrent(value);
       },
       current: _current,
