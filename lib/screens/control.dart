@@ -129,12 +129,15 @@ class _ControlState extends ConsumerState<Control> {
         json.encode(changeConfig).toString());
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-          elevation: 20,
-          duration: const Duration(seconds: 5),
-          content: Column(children: [
+        elevation: 20,
+        duration: const Duration(seconds: 5),
+        content: Column(
+          children: [
             Text('${'loading_config'.tr()}: $config'),
-            const AnimatedLinearProgressIndicator()
-          ])),
+            const AnimatedLinearProgressIndicator(),
+          ],
+        ),
+      ),
     );
   }
 
