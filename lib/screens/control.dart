@@ -54,6 +54,9 @@ class Control extends ConsumerStatefulWidget {
   ConsumerState<Control> createState() => _ControlState();
 }
 
+bool isAc = false; //TODO adjust default value to current config
+ValueNotifier<bool> isAcNotifier = ValueNotifier(isAc);
+
 class _ControlState extends ConsumerState<Control> {
   final mqtt = MQTT();
   Map<String, List<String>> configInfo = {};
@@ -164,6 +167,18 @@ class _ControlState extends ConsumerState<Control> {
         ),
         child: Column(
           children: [
+            Row(
+              children: [
+                Text("AC mode: "),
+                Switch(
+                  value: isAc,
+                  onChanged: (value) => setState(() {
+                    isAc = !isAc;
+                    isAcNotifier.value = isAc;
+                  }),
+                ),
+              ],
+            ),
             Row(
               children: [
                 Flexible(
