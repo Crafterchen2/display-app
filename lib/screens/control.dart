@@ -116,7 +116,7 @@ class _ControlState extends ConsumerState<Control> {
         ScaffoldMessenger.of(context)
             .clearSnackBars(); // this is sometimes called on an unmounted widget state but we just ignore this edgecase
       } catch (e) {
-        // TODO investigate on how to prevent this error
+        // this happens if one closes the config screen before the snackbar disappears
       }
     }
   }
@@ -130,7 +130,7 @@ class _ControlState extends ConsumerState<Control> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
           elevation: 20,
-          duration: const Duration(days: 1),
+          duration: const Duration(seconds: 5),
           content: Column(children: [
             Text('${'loading_config'.tr()}: $config'),
             const AnimatedLinearProgressIndicator()
