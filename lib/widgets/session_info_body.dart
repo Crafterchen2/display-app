@@ -339,7 +339,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                 ),
                           )
                         : Text(
-                            widget.state == 'unplugged'.tr()
+                            widget.state == ChargingState.unplugged
                                 ? 'last_session'.tr()
                                 : 'current_session'.tr(),
                             style: Theme.of(context)
