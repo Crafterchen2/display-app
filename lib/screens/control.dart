@@ -159,85 +159,81 @@ class _ControlState extends ConsumerState<Control> {
           right: 10,
           left: 10,
         ),
-        child: Stack(
+        child: Column(
           children: [
-            Column(
+            Row(
               children: [
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        wrapString('Loaded config: $loadedConfig'),
-                        softWrap: true,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 5,
-                    bottom: 20,
-                  ),
-                  child: Row(
-                    children: [
-                      PrimaryButton(
-                        onPressed: () {
-                          mqtt.publish("everest_api/control/cmd/restart", "1");
-                        },
-                        child: const Text("Restart basecamp-control.service"),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 8,
+                Flexible(
+                  child: Text(
+                    wrapString('Loaded config: $loadedConfig'),
+                    softWrap: true,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
-                        child: PrimaryButton(
-                          onPressed: () {
-                            mqtt.publish(
-                                "everest_api/control/cmd/restart_display_app",
-                                "1");
-                          },
-                          child: const Text("Restart display-app.service"),
-                        ),
-                      ),
-                    ],
                   ),
-                ),
-                Text(
-                  "EVerest configurations",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: configInfo.length,
-                  itemBuilder: (builder, index) {
-                    String header = configInfo.keys.elementAt(index);
-                    return ConfigInfoWidget(
-                      header: header,
-                      configPaths: configInfo.values.elementAt(index),
-                      loadConfig: loadConfig,
-                    );
-                  },
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: configDirInfo.length,
-                  itemBuilder: (builder, index) {
-                    String header = configDirInfo.keys.elementAt(index);
-                    return ConfigInfoWidget(
-                      header: header,
-                      configPaths: configDirInfo.values.elementAt(index),
-                      loadConfig: loadConfig,
-                    );
-                  },
                 ),
               ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 5,
+                bottom: 20,
+              ),
+              child: Row(
+                children: [
+                  PrimaryButton(
+                    onPressed: () {
+                      mqtt.publish("everest_api/control/cmd/restart", "1");
+                    },
+                    child: const Text("Restart basecamp-control.service"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 8,
+                    ),
+                    child: PrimaryButton(
+                      onPressed: () {
+                        mqtt.publish(
+                            "everest_api/control/cmd/restart_display_app",
+                            "1");
+                      },
+                      child: const Text("Restart display-app.service"),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Text(
+              "EVerest configurations",
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: configInfo.length,
+              itemBuilder: (builder, index) {
+                String header = configInfo.keys.elementAt(index);
+                return ConfigInfoWidget(
+                  header: header,
+                  configPaths: configInfo.values.elementAt(index),
+                  loadConfig: loadConfig,
+                );
+              },
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: configDirInfo.length,
+              itemBuilder: (builder, index) {
+                String header = configDirInfo.keys.elementAt(index);
+                return ConfigInfoWidget(
+                  header: header,
+                  configPaths: configDirInfo.values.elementAt(index),
+                  loadConfig: loadConfig,
+                );
+              },
             ),
           ],
         ),
