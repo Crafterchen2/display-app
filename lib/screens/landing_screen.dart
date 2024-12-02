@@ -194,24 +194,28 @@ class _LandingScreenState extends State<LandingScreen> {
     showDialog(
       context: context,
       builder: (ctz) {
-        return BasicDialog(
-          title: 'public_mode'.tr(),
-          positiveText: 'public_mode_ok'.tr(),
-          negativeText: 'cancel'.tr(),
-          content: 'public_mode_explanation'.tr(),
-          onPositivePressed: () {
-            Navigator.pop(context);
-            setMode('public');
-            Navigator.of(context).pushNamed(
-              AppRoutes.chargingDashboardScreen,
-              arguments: {
-                'private_mode': false,
-              },
-            );
-          },
-          onNegativePressed: () {
-            Navigator.pop(context);
-          },
+        return AlertDialog(
+          title: Text('public_mode'.tr()),
+          content: SingleChildScrollView(
+            child: Text('public_mode_explanation'.tr()),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('cancel'.tr())),
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  setMode('public');
+                  Navigator.of(context)
+                      .pushNamed(AppRoutes.chargingDashboardScreen, arguments: {
+                    'private_mode': false,
+                  });
+                },
+                child: Text('public_mode_ok'.tr()))
+          ],
         );
       },
     );

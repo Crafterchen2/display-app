@@ -294,31 +294,34 @@ class ConfigInfoWidget extends StatelessWidget {
           itemCount: configPaths.length,
           itemBuilder: (builder, index) {
             String value = configPaths.elementAt(index);
-            return Row(
-              children: [
-                PrimaryButton(
-                  onPressed: () {
-                    if (header == "configs") {
-                      loadConfig(value);
-                    } else {
-                      loadConfig("$header/$value");
-                    }
-                  },
-                  child: Text('load'.tr()),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 5,
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0),
+              child: Row(
+                children: [
+                  PrimaryButton(
+                    onPressed: () {
+                      if (header == "configs") {
+                        loadConfig(value);
+                      } else {
+                        loadConfig("$header/$value");
+                      }
+                    },
+                    child: Text('load'.tr()),
                   ),
-                  child: Text(
-                    wrapString(value),
-                    softWrap: true,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 5,
+                    ),
+                    child: Text(
+                      wrapString(value),
+                      softWrap: true,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           },
         ),
