@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:display_app/utils/constants/keys.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +9,8 @@ import 'package:display_app/data/providers/connector_provider.dart';
 import 'package:display_app/mqtt.dart';
 import 'package:display_app/utils/constants/helper.dart';
 import 'package:display_app/widgets/buttons.dart';
+
+import '../widgets/ac_dc_dependent.dart';
 
 class AnimatedLinearProgressIndicator extends StatefulWidget {
   const AnimatedLinearProgressIndicator({super.key});
@@ -53,9 +56,6 @@ class Control extends ConsumerStatefulWidget {
   @override
   ConsumerState<Control> createState() => _ControlState();
 }
-
-bool isAc = false; //TODO adjust default value to current config
-ValueNotifier<bool> isAcNotifier = ValueNotifier(isAc);
 
 class _ControlState extends ConsumerState<Control> {
   final mqtt = MQTT();
@@ -171,10 +171,9 @@ class _ControlState extends ConsumerState<Control> {
               children: [
                 Text("AC mode: "),
                 Switch(
-                  value: isAc,
+                  value: acDcNotifier.value == AcDcMode.ac,
                   onChanged: (value) => setState(() {
-                    isAc = !isAc;
-                    isAcNotifier.value = isAc;
+                    acDcNotifier.value = (acDcNotifier.value == AcDcMode.ac) ? AcDcMode.dc : AcDcMode.ac;
                   }),
                 ),
               ],

@@ -117,3 +117,9 @@ enum ChargerModel {
 class AppAssets {
   static const String everestLogo = 'assets/images/everest_logo.png';
 }
+
+///An enum representing the mode we're in.
+enum AcDcMode {
+  ac,
+  dc,
+}
