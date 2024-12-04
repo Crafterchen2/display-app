@@ -109,7 +109,6 @@ class Header extends StatelessWidget {
                           onPressed: () async {
                             var result = await Navigator.of(context)
                                 .pushNamed(AppRoutes.askRootPasswordScreen);
-                            debugPrint(result.toString());
                             if (result is bool && result) {
                               setMode("private");
                               RestartWidget.restartApp(context);
