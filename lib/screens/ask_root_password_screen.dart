@@ -81,7 +81,7 @@ class _AskRootPasswordScreenState extends State<AskRootPasswordScreen> {
     });
     // this creates a script which prints the password to be used as ssh_akspass. this is no security issue however as this file can only be written or executed as root user and if we have an malicious root user we have other problems (eg runnning passwd (as root one does not need to input the current password))
     final String command =
-        'touch /tmp/tmpscript.sh; chmod 300 /tmp/tmpscript.sh; echo "echo \'$input\'" > /tmp/tmpscript.sh;  SSH_ASKPASS="/tmp/tmpscript.sh" SSH_ASKPASS_REQUIRE=force ssh root@localhost "echo Password check"'; // this was the only way to check as a root user if one types in the right password
+        'touch /tmp/tmpscript.sh; chmod 300 /tmp/tmpscript.sh; echo "echo \'$input\'" > /tmp/tmpscript.sh;  SSH_ASKPASS="/tmp/tmpscript.sh" SSH_ASKPASS_REQUIRE=force ssh -o StrictHostKeyChecking=no root@localhost "echo Password check"'; // this was the only way to check as a root user if one types in the right password
     final ProcessResult process = await Process.run(
       'bash',
       ['-c', command],
