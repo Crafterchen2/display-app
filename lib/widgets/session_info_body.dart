@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'dart:convert';
 
+import 'package:display_app/widgets/ac_dc_dependent.dart';
 import 'package:display_app/widgets/errors_widget.dart';
 import 'package:display_app/widgets/model_dependent.dart';
 import 'package:easy_localization/easy_localization.dart'
@@ -372,155 +373,145 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                       : SizedBox(
                           width: double.infinity,
                           child: InfoLayout(
-                            children: [
-                              SizedBox(
-                                width: double.infinity,
-                                child: TextButton(
-                                  onPressed: widget.seeMorePressed,
-                                  child: _buildInfoCards(
-                                    chargerModel: widget.chargerModel,
-                                    width: (carSideWidth.isSnapped())
-                                        ? (MediaQuery.of(context).size.width -
-                                                carSideWidth.snapNumber()) /
-                                            14
-                                        : null,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium
-                                        ?.copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurface,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16,
-                                            fontFamily: "RobotoMono"),
+                                children: [
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: TextButton(
+                                      onPressed: widget.seeMorePressed,
+                                      child: _buildInfoCards(
+                                        chargerModel: widget.chargerModel,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16,
+                                                fontFamily: "RobotoMono"),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              ModelDependent(
-                                platforms: const [
-                                  ChargerModel.microMegaWattCharger
-                                ],
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 5,
-                                  ),
-                                  child: Wrap(
-                                    runSpacing: 10,
-                                    spacing: 10,
-                                    children: [
-                                      PrimaryButton(
-                                        onPressed: () {
-                                          mqtt.publish(
-                                              "everest_external/nodered/1/cmd/pause_charging",
-                                              "1");
-                                        },
-                                        child: const Text(
-                                          "Pause",
-                                          textScaler: scaler,
-                                        ),
-                                      ),
-                                      PrimaryButton(
-                                        onPressed: () {
-                                          mqtt.publish(
-                                              "everest_external/nodered/1/cmd/resume_charging",
-                                              "1");
-                                        },
-                                        child: const Text(
-                                          "Resume",
-                                          textScaler: scaler,
-                                        ),
-                                      ),
-                                      PrimaryButton(
-                                        onPressed: () {
-                                          mqtt.publish(
-                                              "everest_external/nodered/1/cmd/stop_transaction",
-                                              "1");
-                                        },
-                                        child: const Text(
-                                          "Stop transaction",
-                                          textScaler: scaler,
-                                        ),
-                                      ),
-                                      PrimaryButton(
-                                        onPressed: () {
-                                          mqtt.publish(
-                                              "everest_external/nodered/1/cmd/emergency_stop",
-                                              "1");
-                                        },
-                                        child: const Text(
-                                          "Emerg.Stp",
-                                          textScaler: scaler,
-                                        ),
-                                      ),
-                                      PrimaryButton(
-                                        onPressed: () {
-                                          mqtt.publish(
-                                              "everest_external/nodered/1/cmd/evse_malfunction",
-                                              "1");
-                                        },
-                                        child: const Text(
-                                          "EVSE malf",
-                                          textScaler: scaler,
-                                        ),
-                                      ),
-                                      PrimaryButton(
-                                        onPressed: () {
-                                          mqtt.publish(
-                                              "everest_external/nodered/1/cmd/evse_utility_int",
-                                              "1");
-                                        },
-                                        child: const Text(
-                                          "EVSEutil int",
-                                          textScaler: scaler,
-                                        ),
-                                      ),
-                                      ModelDependent(
-                                        platforms: const [
-                                          ChargerModel.microMegaWattCharger
-                                        ],
-                                        child: PrimaryButton(
-                                          onPressed: () {
-                                            mqtt.publish(
-                                                "everest_api/dummy_token_provider/cmd/provide",
-                                                "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
-                                          },
-                                          child: const Text(
-                                            "Swipe RFID",
-                                            textScaler: scaler,
-                                          ),
-                                        ),
-                                      ),
+                                  ModelDependent(
+                                    platforms: const [
+                                      ChargerModel.microMegaWattCharger
                                     ],
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 5,
+                                      ),
+                                      child: Wrap(
+                                        runSpacing: 10,
+                                        spacing: 10,
+                                        children: [
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/pause_charging",
+                                                  "1");
+                                            },
+                                            child: const Text(
+                                              "Pause",
+                                              textScaler: scaler,
+                                            ),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/resume_charging",
+                                                  "1");
+                                            },
+                                            child: const Text(
+                                              "Resume",
+                                              textScaler: scaler,
+                                            ),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/stop_transaction",
+                                                  "1");
+                                            },
+                                            child: const Text(
+                                              "Stop transaction",
+                                              textScaler: scaler,
+                                            ),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/emergency_stop",
+                                                  "1");
+                                            },
+                                            child: const Text(
+                                              "Emerg.Stp",
+                                              textScaler: scaler,
+                                            ),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/evse_malfunction",
+                                                  "1");
+                                            },
+                                            child: const Text(
+                                              "EVSE malf",
+                                              textScaler: scaler,
+                                            ),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish(
+                                                  "everest_external/nodered/1/cmd/evse_utility_int",
+                                                  "1");
+                                            },
+                                            child: const Text(
+                                              "EVSEutil int",
+                                              textScaler: scaler,
+                                            ),
+                                          ),
+                                          PrimaryButton(
+                                            onPressed: () {
+                                              mqtt.publish(
+                                                  "everest_api/dummy_token_provider/cmd/provide",
+                                                  "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
+                                            },
+                                            child: const Text(
+                                              "Swipe RFID",
+                                              textScaler: scaler,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: TextButton(
+                                      onPressed: () async {
+                                        await Navigator.of(context).pushNamed(
+                                            AppRoutes.hlcLogScreen,
+                                            arguments: {}).then((value) {
+                                          setState(() {});
+                                        });
+                                      },
+                                      child: Text(
+                                        "See HLC comm log", //TODO Localisation
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall
+                                            ?.copyWith(
+                                              color: Colors.grey,
+                                            ),
+                                        softWrap: true,
+                                        maxLines: 4,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                width: double.infinity,
-                                child: TextButton(
-                                  onPressed: () async {
-                                    await Navigator.of(context).pushNamed(
-                                        AppRoutes.hlcLogScreen,
-                                        arguments: {}).then((value) {
-                                      setState(() {});
-                                    });
-                                  },
-                                  child: Text(
-                                    "See HLC comm log", //TODO Localisation
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall
-                                        ?.copyWith(
-                                          color: Colors.grey,
-                                        ),
-                                    softWrap: true,
-                                    maxLines: 4,
-                                  ),
-                                ),
-                              )
-                            ],
                           ),
-                        ),
                 ],
               ),
             ),
@@ -566,17 +557,16 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
 
   Widget _buildInfoCards({
     required ChargerModel chargerModel,
-    double? width,
     TextStyle? style,
   }) {
     return ModelDependent.on(
       chargerModel: chargerModel,
       onUMWC: () {
-        List<Text> titles = [
-          Text(
+        List<Text?> titles = [
+          acDcNotifier.value == AcDcMode.dc ? Text(
             'Voltage: ',
             style: style,
-          ),
+          ) : null,
           Text(
             'Relais: ',
             style: style,
@@ -594,12 +584,12 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             style: style,
           ),
         ];
-        List<Text> values = [
-          Text(
+        List<Text?> values = [
+          acDcNotifier.value == AcDcMode.dc ? Text(
             '${outputVoltage.toStringAsFixed(0)} V',
             style: style
                 ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
-          ),
+          ) : null,
           Text(
             relaisState,
             style: style,
@@ -629,8 +619,9 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             ?.withAlpha(160);
         List<Widget> infos = [];
         for (int i = 0; i < min(titles.length, values.length); i++) {
+          if (values[i] == null || titles[i] == null) continue;
           infos.add(_buildTextInfo(
-              (i % 2 == 0) ? aColor : bColor, values[i], titles[i], maxWidth));
+              (i % 2 == 0) ? aColor : bColor, values[i]!, titles[i]!, maxWidth));
         }
         return Wrap(
           alignment: WrapAlignment.start,
