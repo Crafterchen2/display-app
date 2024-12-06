@@ -17,8 +17,8 @@ class AcDcDependent extends StatelessWidget {
   AcDcDependent({
     super.key,
     this.ovrValueListenable,
-    required this.onAc,
-    required this.onDc,
+    this.onAc,
+    this.onDc,
     this.fallback = const Empty(),
   }) {
     valueListenable = ovrValueListenable ?? acDcNotifier;
