@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 import '../utils/constants/keys.dart';
+import 'empty.dart';
 
 class AcDcDependent extends StatelessWidget {
 
@@ -18,7 +19,7 @@ class AcDcDependent extends StatelessWidget {
     this.ovrValueListenable,
     required this.onAc,
     required this.onDc,
-    this.fallback = const SizedBox.shrink(),
+    this.fallback = const Empty(),
   }) {
     valueListenable = ovrValueListenable ?? acDcNotifier;
   }
