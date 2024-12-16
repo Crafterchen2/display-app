@@ -35,8 +35,8 @@ class AcDcDependent extends StatelessWidget {
   }
 }
 
-ValueNotifier<AcDcMode> acDcNotifier = ValueNotifier(getDefaultState());
+final ValueNotifier<AcDcMode> acDcNotifier = ValueNotifier(getDefaultState());
 
 AcDcMode getDefaultState() {
-  return AcDcMode.ac; //TODO adjust default value to current config
+  return AcDcMode.ac; //Once this info can be read from configs, we can change the initial value here.
 }
