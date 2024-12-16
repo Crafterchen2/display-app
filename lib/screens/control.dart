@@ -169,11 +169,15 @@ class _ControlState extends ConsumerState<Control> {
           children: [
             Row(
               children: [
-                Text("AC mode: "),
+                Text("AC mode: ",
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
                 Switch(
-                  value: acDcNotifier.value == AcDcMode.ac,
-                  onChanged: (value) => setState(() {
-                    acDcNotifier.value = (acDcNotifier.value == AcDcMode.ac) ? AcDcMode.dc : AcDcMode.ac;
+                  value: acDcNotifier.value.isAc,
+                  onChanged: (acDcNotifier.value.isFix) ? null : (value) => setState(() {
+                    acDcNotifier.value = acDcNotifier.value.opposite();
                   }),
                 ),
               ],

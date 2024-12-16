@@ -29,13 +29,14 @@ class AcDcDependent extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: valueListenable,
       builder: (context, value, child) {
-        return switch(value) {
-          AcDcMode.ac => onAc ?? fallback,
-          AcDcMode.dc => onDc ?? fallback,
-        };
+        return ((value.isAc) ? onAc : onDc) ?? fallback;
       },
     );
   }
 }
 
-ValueNotifier<AcDcMode> acDcNotifier = ValueNotifier(AcDcMode.ac); //TODO adjust default value to current config
+ValueNotifier<AcDcMode> acDcNotifier = ValueNotifier(getDefaultState());
+
+AcDcMode getDefaultState() {
+  return AcDcMode.ac; //TODO adjust default value to current config
+}
