@@ -29,10 +29,25 @@ class AcDcDependent extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: valueListenable,
       builder: (context, value, child) {
-        return ((value.isAc) ? onAc : onDc) ?? fallback;
+        return on(
+          acDcMode: value,
+          fallback: fallback,
+          onAc: onAc,
+          onDc: onDc,
+        );
       },
     );
   }
+
+  static dynamic on({
+    required AcDcMode acDcMode,
+    dynamic onAc,
+    dynamic onDc,
+    dynamic fallback,
+  }){
+    return ((acDcMode.isAc) ? onAc : onDc) ?? fallback;
+  }
+
 }
 
 final ValueNotifier<AcDcMode> acDcNotifier = ValueNotifier(getDefaultState());
