@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'dart:convert';
 
+import 'package:display_app/widgets/ac_dc_dependent.dart';
+import 'package:display_app/widgets/access_dependent.dart';
 import 'package:display_app/widgets/errors_widget.dart';
 import 'package:display_app/widgets/model_dependent.dart';
 import 'package:easy_localization/easy_localization.dart'
@@ -286,20 +288,22 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                     ),
                                   ],
                                 ),
-                                Slider(
-                                  min: widget.minCurrentA,
-                                  max: widget.maxCurrentA,
-                                  label: currentSliderLabel,
-                                  activeColor:
-                                      Theme.of(context).colorScheme.secondary,
-                                  inactiveColor: Colors.grey,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      currentSliderValue = val;
-                                    });
-                                    widget.onCurrentChanged(val);
-                                  },
-                                  value: currentSliderValue,
+                                AccessDependent(
+                                  onPrivate: Slider(
+                                    min: widget.minCurrentA,
+                                    max: widget.maxCurrentA,
+                                    label: currentSliderLabel,
+                                    activeColor:
+                                        Theme.of(context).colorScheme.secondary,
+                                    inactiveColor: Colors.grey,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        currentSliderValue = val;
+                                      });
+                                      widget.onCurrentChanged(val);
+                                    },
+                                    value: currentSliderValue,
+                                  ),
                                 ),
                               ],
                             ),
