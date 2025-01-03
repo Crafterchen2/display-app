@@ -544,30 +544,6 @@ class _ChargingDashboardScreenState
             ),
             child: FilledButton.icon(
               onPressed: () {
-                themeModeNotifier.value =
-                    (Theme.of(context).brightness == Brightness.light)
-                        ? ThemeMode.dark
-                        : ThemeMode.light;
-              },
-              label: Text(
-                (Theme.of(context).brightness == Brightness.light)
-                    ? "Dark mode"
-                    : "Light mode", //TODO: Localisation
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              icon: Icon((Theme.of(context).brightness == Brightness.light)
-                  ? Icons.dark_mode
-                  : Icons.light_mode),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 10,
-              bottom: 5,
-              right: 10,
-            ),
-            child: FilledButton.icon(
-              onPressed: () {
                 Navigator.of(context).pushNamed(AppRoutes.simulationScreen);
               },
               label: Text(
