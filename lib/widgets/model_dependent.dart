@@ -36,7 +36,6 @@ class ModelDependent extends ConsumerWidget {
             );
     if (chargerInfo.model_name == ChargerModel.unknown &&
         !platforms.contains(ChargerModel.unknown)) {
-      debugPrint("Charger Model unknown");
       return unknownChild;
     }
     return (platforms.contains(chargerInfo.model_name))
