@@ -350,21 +350,27 @@ class _ChargingDashboardScreenState
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 10,
-              bottom: 5,
-              right: 10,
-            ),
-            child: FilledButton.icon(
-              onPressed: () async {
-                await Navigator.of(context)
-                    .pushNamed(AppRoutes.configSelectionScreen);
-              },
-              icon: const Icon(Icons.file_open_outlined),
-              label: Text(
-                "config", //TODO Localisation
-                style: Theme.of(context).textTheme.titleLarge,
+          ModelDependent(
+            platforms: [
+              ChargerModel.microMegaWattCharger,
+              ChargerModel.microMegaWattCar
+            ],
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 10,
+                bottom: 5,
+                right: 10,
+              ),
+              child: FilledButton.icon(
+                onPressed: () async {
+                  await Navigator.of(context)
+                      .pushNamed(AppRoutes.configSelectionScreen);
+                },
+                icon: const Icon(Icons.file_open_outlined),
+                label: Text(
+                  "config", //TODO Localisation
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
               ),
             ),
           ),

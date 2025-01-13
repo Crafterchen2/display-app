@@ -1,37 +1,30 @@
 import 'dart:convert';
 
+import 'package:display_app/data/providers/charger_info_provider.dart';
+import 'package:display_app/widgets/model_dependent.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:display_app/data/models/network_device_info.dart';
 import 'package:display_app/screens/about.dart';
 import 'package:display_app/screens/control.dart';
 import 'package:display_app/screens/network_info.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';
 import '../widgets/buttons.dart';
 
-class SystemInfo extends StatefulWidget {
+class SystemInfo extends ConsumerWidget {
   final int initialTab;
-  const SystemInfo({
+
+  SystemInfo({
     this.initialTab = 0,
     super.key,
-  });
-
-  @override
-  State<SystemInfo> createState() => _SystemInfoState();
-}
-
-class _SystemInfoState extends State<SystemInfo> {
-  final mqtt = MQTT();
-  List<NetworkDeviceInfo> devices = [];
-
-  @override
-  void initState() {
-    _connect();
+  }) {
     scanWifi();
-    super.initState();
   }
+
+  final mqtt = MQTT();
 
   void scanWifi() {
     /// calling twice to make sure its going through all available frequencies
@@ -39,34 +32,20 @@ class _SystemInfoState extends State<SystemInfo> {
     mqtt.publish(Topic.scanWifi, '');
   }
 
-  void networkDeviceInfo(String message) {
-    final deviceInfo = jsonDecode(message);
-    devices.clear();
-    for (final d in deviceInfo) {
-      final device = NetworkDeviceInfo.fromJson(d);
-      devices.add(device);
-    }
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
-  void _connect() async {
-    try {
-      await mqtt.connect();
-      mqtt.subscribe(
-          "everest_api/setup/var/network_device_info", networkDeviceInfo);
-    } catch (e) {
-      debugPrint('Loading failed, Error: $e');
-    }
-    setState(() {});
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var chargerInfo =
+        ref.watch(chargerInfoStreamProvider).whenOrNull(data: (data) => data);
+    var supportsConfig = ModelDependent.on(
+      chargerModel: chargerInfo?.model_name ?? ChargerModel.unknown,
+      defaultValue: false,
+      onUMWC: true,
+      onUMWCar: true,
+    );
+
     return DefaultTabController(
-      initialIndex: widget.initialTab,
-      length: 3,
+      initialIndex: initialTab,
+      length: supportsConfig ? 3 : 2,
       child: Scaffold(
         floatingActionButton: const PionixCloseButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -83,18 +62,19 @@ class _SystemInfoState extends State<SystemInfo> {
                 icon: const Icon(Icons.network_wifi_sharp),
                 text: "network".tr(),
               ),
-              Tab(
-                icon: const Icon(Icons.tune),
-                text: "control".tr(),
-              ),
+              if (supportsConfig)
+                Tab(
+                  icon: const Icon(Icons.tune),
+                  text: "control".tr(),
+                ),
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
             About(),
             NetworkInfo(),
-            Control(),
+            if (supportsConfig) Control(),
           ],
         ),
       ),

@@ -82,7 +82,7 @@ class AppRouter {
         );
       case AppRoutes.configSelectionScreen:
         return MaterialPageRoute<dynamic>(
-          builder: (_) => const SystemInfo(initialTab: 2),
+          builder: (_) => SystemInfo(initialTab: 2),
           settings: settings,
           fullscreenDialog: true,
         );
@@ -94,7 +94,7 @@ class AppRouter {
         );
       case AppRoutes.systemInfo:
         return MaterialPageRoute<dynamic>(
-          builder: (_) => const SystemInfo(),
+          builder: (_) => SystemInfo(),
           settings: settings,
           fullscreenDialog: true,
         );
