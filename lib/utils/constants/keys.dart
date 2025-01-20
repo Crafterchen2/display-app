@@ -1,5 +1,3 @@
-import 'package:display_app/widgets/ac_dc_dependent.dart';
-
 class ChargingState {
   static const String charging = 'Charging';
   static const String preparing = 'Preparing';
