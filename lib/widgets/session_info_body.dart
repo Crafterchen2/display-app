@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'dart:convert';
 
-import 'package:display_app/widgets/ac_dc_dependent.dart';
 import 'package:display_app/widgets/errors_widget.dart';
 import 'package:display_app/widgets/model_dependent.dart';
 import 'package:easy_localization/easy_localization.dart'
