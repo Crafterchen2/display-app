@@ -561,7 +561,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     return ModelDependent.on(
       chargerModel: chargerModel,
       onUMWC: () {
-        List<Text?> titles = [
+        List<Text> titles = [
           Text(
             'Voltage: ',
             style: style,
@@ -583,7 +583,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             style: style,
           ),
         ];
-        List<Text?> values = [
+        List<Text> values = [
           Text(
             '${outputVoltage.toStringAsFixed(0)} V',
             style: style
@@ -618,9 +618,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             ?.withAlpha(160);
         List<Widget> infos = [];
         for (int i = 0; i < min(titles.length, values.length); i++) {
-          if (values[i] == null || titles[i] == null) continue;
           infos.add(_buildTextInfo(
-              (i % 2 == 0) ? aColor : bColor, values[i]!, titles[i]!, maxWidth));
+              (i % 2 == 0) ? aColor : bColor, values[i], titles[i], maxWidth));
         }
         return Wrap(
           alignment: WrapAlignment.start,
