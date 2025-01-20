@@ -563,10 +563,10 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       chargerModel: chargerModel,
       onUMWC: () {
         List<Text?> titles = [
-          acDcNotifier.value == AcDcMode.dc ? Text(
+          Text(
             'Voltage: ',
             style: style,
-          ) : null,
+          ),
           Text(
             'Relais: ',
             style: style,
@@ -585,11 +585,11 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
           ),
         ];
         List<Text?> values = [
-          acDcNotifier.value == AcDcMode.dc ? Text(
+          Text(
             '${outputVoltage.toStringAsFixed(0)} V',
             style: style
                 ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
-          ) : null,
+          ),
           Text(
             relaisState,
             style: style,

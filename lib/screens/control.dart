@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:display_app/utils/constants/keys.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,8 +8,6 @@ import 'package:display_app/data/providers/connector_provider.dart';
 import 'package:display_app/mqtt.dart';
 import 'package:display_app/utils/constants/helper.dart';
 import 'package:display_app/widgets/buttons.dart';
-
-import '../widgets/ac_dc_dependent.dart';
 
 class AnimatedLinearProgressIndicator extends StatefulWidget {
   const AnimatedLinearProgressIndicator({super.key});
@@ -167,21 +164,6 @@ class _ControlState extends ConsumerState<Control> {
         ),
         child: Column(
           children: [
-            Row(
-              children: [
-                Text("AC mode: ",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-                Switch(
-                  value: acDcNotifier.value.isAc,
-                  onChanged: (acDcNotifier.value.isFix) ? null : (value) => setState(() {
-                    acDcNotifier.value = acDcNotifier.value.opposite();
-                  }),
-                ),
-              ],
-            ),
             Row(
               children: [
                 Flexible(
