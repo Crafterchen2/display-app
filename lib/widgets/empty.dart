@@ -5,7 +5,7 @@ class Empty extends SingleChildRenderObjectWidget {
 
   ///This is an empty widget.
   ///It has a size of [Size.zero] and doesn't do or draw anything.
-  ///It is useful anyway as a "non-null null value", using [bool isEmpty = widget is Empty], see [checkForEmpty(Widget)].
+  ///It is useful anyway as a "non-null null value", using [bool isEmpty = widget is Empty], see [check(Widget? toTest)].
   const Empty ({super.key});
 
   @override
