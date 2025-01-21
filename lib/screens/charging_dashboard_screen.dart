@@ -26,7 +26,6 @@ import 'package:display_app/utils/constants/helper.dart';
 import 'package:display_app/utils/enums.dart';
 import 'package:display_app/utils/globals.dart';
 import 'package:display_app/widgets/layout.dart';
-import 'package:display_app/main.dart';
 
 import '../mqtt.dart';
 import '../utils/constants/keys.dart';

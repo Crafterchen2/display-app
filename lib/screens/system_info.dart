@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:display_app/data/providers/charger_info_provider.dart';
 import 'package:display_app/widgets/model_dependent.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:display_app/data/models/network_device_info.dart';
 import 'package:display_app/screens/about.dart';
 import 'package:display_app/screens/control.dart';
 import 'package:display_app/screens/network_info.dart';
