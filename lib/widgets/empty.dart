@@ -14,7 +14,7 @@ class Empty extends SingleChildRenderObjectWidget {
   }
 
   ///Returns true if and only if [toTest] is not null and an implementor of class [Empty].
-  static bool check(Widget? toTest) {
+  static bool check(dynamic toTest) {
     return toTest is Empty;
   }
 

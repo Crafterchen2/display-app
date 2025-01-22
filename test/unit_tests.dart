@@ -16,4 +16,12 @@ void main() {
     assert(Empty.check(Text("text")) is Empty == false);
   });
 
+  test("Empty.check(\"text\") => false", () {
+    assert(Empty.check("text") is Empty == false);
+  });
+
+  test("Empty.check(4) => false", () {
+    assert(Empty.check(4) is Empty == false);
+  });
+
 }
