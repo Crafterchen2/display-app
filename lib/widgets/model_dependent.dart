@@ -1,6 +1,7 @@
 import 'package:display_app/data/models/charger_info.dart';
 import 'package:display_app/data/providers/charger_info_provider.dart';
 import 'package:display_app/utils/constants/keys.dart';
+import 'package:display_app/widgets/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,7 +20,7 @@ class ModelDependent extends ConsumerWidget {
   const ModelDependent({
     required this.child,
     this.platforms = const <ChargerModel>[],
-    this.unknownChild = const SizedBox.shrink(),
+    this.unknownChild = const Empty(),
     super.key,
   });
 
@@ -36,11 +37,12 @@ class ModelDependent extends ConsumerWidget {
             );
     if (chargerInfo.model_name == ChargerModel.unknown &&
         !platforms.contains(ChargerModel.unknown)) {
+      //debugPrint("Charger Model unknown");
       return unknownChild;
     }
     return (platforms.contains(chargerInfo.model_name))
         ? child
-        : const SizedBox.shrink();
+        : const Empty();
   }
 
   static dynamic on({

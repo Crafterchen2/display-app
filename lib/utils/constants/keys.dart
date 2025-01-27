@@ -117,3 +117,29 @@ enum ChargerModel {
 class AppAssets {
   static const String everestLogo = 'assets/images/everest_logo.png';
 }
+
+///An enum representing the mode we're in.
+enum AcDcMode {
+  ac(false, true),
+  dc(false, false),
+  fixAc(true, true),
+  fixDc(true, false);
+
+  ///Fix, in this context, means that the user can't switch the mode on demand via the toggle.
+  final bool isFix;
+  ///Whether this mode is using AC charging.
+  final bool isAc;
+
+  const AcDcMode(this.isFix, this.isAc);
+
+  ///Returns the state with [this.isFix == opposite.isFix && this.isAc != opposite.isAc].
+  AcDcMode opposite() {
+    return switch(this) {
+      ac => dc,
+      dc => ac,
+      fixAc => fixDc,
+      fixDc => fixAc,
+    };
+  }
+
+}
