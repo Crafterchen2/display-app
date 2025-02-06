@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:display_app/widgets/access_dependent.dart';
 import 'package:display_app/widgets/footer_widget.dart';
 import 'package:display_app/widgets/model_dependent.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -716,6 +717,7 @@ class _ChargingDashboardScreenState
     setState(() {
       _showProgressBar = false;
     });
+    accessNotifier.value = (privateMode) ? AccessMode.private : AccessMode.public;
   }
 
   void updateCurrentLanguage() {

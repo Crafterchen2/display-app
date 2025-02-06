@@ -118,7 +118,7 @@ class AppAssets {
   static const String everestLogo = 'assets/images/everest_logo.png';
 }
 
-///An enum representing the mode we're in.
+///An enum representing the voltage mode we're in.
 enum AcDcMode {
   ac(false, true),
   dc(false, false),
@@ -139,6 +139,23 @@ enum AcDcMode {
       dc => ac,
       fixAc => fixDc,
       fixDc => fixAc,
+    };
+  }
+
+}
+
+///An enum representing the access mode we're in.
+enum AccessMode {
+  unset,
+  public,
+  private;
+
+  ///Returns the opposite of the current mode.
+  AccessMode opposite() {
+    return switch(this) {
+      public => private,
+      private => public,
+      _ => unset,
     };
   }
 
