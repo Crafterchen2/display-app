@@ -3,8 +3,8 @@ import 'dart:math';
 import 'dart:convert';
 
 import 'package:display_app/widgets/access_dependent.dart';
+import 'package:display_app/widgets/empty.dart';
 import 'package:display_app/widgets/hlc_log_widget.dart';
-import 'package:display_app/widgets/errors_widget.dart';
 import 'package:display_app/widgets/model_dependent.dart';
 import 'package:easy_localization/easy_localization.dart'
     as virtual_keyboard_backspace_event_period;
@@ -15,7 +15,6 @@ import 'package:display_app/data/models/ev_info.dart';
 import 'package:display_app/mqtt.dart';
 import 'package:display_app/utils/enums.dart';
 import 'package:display_app/utils/globals.dart';
-import 'package:display_app/utils/number_tools.dart';
 import 'package:display_app/widgets/layout.dart';
 
 import '../main.dart';
@@ -84,6 +83,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   double targetCurrent = 0;
   EvInfo? evManagerInfo;
   late double currentSliderValue;
+  ScrollController scrollController = ScrollController();
 
   /// This is a map of actions that can be performed on the charger.
   Map<Widget, void Function()> actions = {};
@@ -196,19 +196,10 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   Widget build(BuildContext context) {
     String currentSliderLabel = widget.current.toStringAsFixed(1);
     //Changing the snapping behavior below is sufficient.
-    double snapped = 300; //Width of left side when unsnapped
     double offset = 20; //This is to accommodate Padding
-    double threshold = 180; //The minimum width of the right side when snapped
-    NumberSnap carSideWidth = NumberSnap(
-      parameter: MediaQuery.of(context).size.width - adjustScale(snapped),
-      snapped: adjustScale(snapped - offset),
-      threshold: adjustScale(threshold),
-    );
-
-    var s = MediaQuery.of(context).size;
-    //debugPrint(s.toString());
 
     return SingleChildScrollView(
+      controller: scrollController,
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: adjustScale(offset / 2),
@@ -238,112 +229,106 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                   children: [
                     SizedBox(
                       width: MediaQuery.sizeOf(context).width - 40,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: adjustScale(5),
+                      child: SizedBox(
+                        height: 50,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom: adjustScale(5),
+                              ),
+                              child: widget.state == ChargingState.authRequired
+                                  ? Text(
+                                      'swipe_your_card_please'.tr(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge
+                                          ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
+                                    )
+                                  : Text(
+                                      widget.state == ChargingState.unplugged
+                                          ? 'last_session'.tr()
+                                          : 'current_session'.tr(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge
+                                          ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
+                                    ),
                             ),
-                            child: widget.state == ChargingState.authRequired
-                                ? Text(
-                                    'swipe_your_card_please'.tr(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge
-                                        ?.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
-                                        ),
-                                  )
-                                : Text(
-                                    widget.state == ChargingState.unplugged
-                                        ? 'last_session'.tr()
-                                        : 'current_session'.tr(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge
-                                        ?.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
-                                        ),
-                                  ),
-                          ),
-                          Spacer(),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                // _buildImageWidget(context),
-                                if (widget.chargingMode ==
-                                        ChargingMode.unknown ||
-                                    widget.chargingMode == ChargingMode.basicAC)
-                                  makeChargeControlButton(context, 150),
-                                if (widget.state !=
-                                        ChargingState.authRequired &&
-                                    widget.current >= widget.minCurrentA &&
-                                    widget.current <= widget.maxCurrentA)
-                                  ModelDependent(
-                                    platforms: const [
-                                      ChargerModel.belayBox,
-                                      ChargerModel.unknown
-                                    ], // TODO remove unknown when the belaybox reports its devicetype via mqtt
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          '${'charge_upto'.tr()} $currentSliderLabel A',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium
-                                              ?.copyWith(
-                                                color: Theme.of(context)
+                            Spacer(),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (widget.chargingMode ==
+                                          ChargingMode.unknown ||
+                                      widget.chargingMode ==
+                                          ChargingMode.basicAC)
+                                    makeChargeControlButton(context, 150),
+                                  if (widget.state !=
+                                          ChargingState.authRequired &&
+                                      widget.current >= widget.minCurrentA &&
+                                      widget.current <= widget.maxCurrentA)
+                                    ModelDependent(
+                                      platforms: const [
+                                        ChargerModel.belayBox,
+                                        ChargerModel.unknown
+                                      ], // TODO remove unknown when the belaybox reports its devicetype via mqtt
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            '${'charge_upto'.tr()} $currentSliderLabel A',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium
+                                                ?.copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurface,
+                                                ),
+                                          ),
+                                          AccessDependent(
+                                            onPrivate: SizedBox(
+                                              height: 30,
+                                              child: Slider(
+                                                min: widget.minCurrentA,
+                                                max: widget.maxCurrentA,
+                                                label: currentSliderLabel,
+                                                activeColor: Theme.of(context)
                                                     .colorScheme
-                                                    .onSurface,
+                                                    .secondary,
+                                                inactiveColor: Colors.grey,
+                                                onChanged: (val) {
+                                                  setState(() {
+                                                    currentSliderValue = val;
+                                                  });
+                                                  widget.onCurrentChanged(val);
+                                                },
+                                                value: currentSliderValue,
                                               ),
-                                        ),
-                                        AccessDependent(
-                                          onPrivate: SizedBox(
-                                            height: 30,
-                                            child: Slider(
-                                              min: widget.minCurrentA,
-                                              max: widget.maxCurrentA,
-                                              label: currentSliderLabel,
-                                              activeColor: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
-                                              inactiveColor: Colors.grey,
-                                              onChanged: (val) {
-                                                setState(() {
-                                                  currentSliderValue = val;
-                                                });
-                                                widget.onCurrentChanged(val);
-                                              },
-                                              value: currentSliderValue,
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          ValueListenableBuilder(
-                            valueListenable: ValueNotifier(activeErrorsHash),
-                            builder: (context, value, child) =>
-                                ErrorsWidget(activeErrors),
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
                                   "${'status'.tr()}: ",
                                   style: Theme.of(context)
                                       .textTheme
@@ -354,16 +339,18 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                             .onSurface,
                                       ),
                                 ),
-                              ),
-                              Text(
-                                chargingStateTitle(widget.state).toUpperCase(),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: Theme.of(context).textTheme.displayLarge,
-                              ),
-                            ],
-                          ),
-                        ],
+                                Text(
+                                  chargingStateTitle(widget.state)
+                                      .toUpperCase(),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style:
+                                      Theme.of(context).textTheme.displayLarge,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     (widget.state == ChargingState.authRequired)
@@ -438,18 +425,51 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                             child: const Text(
                                               "Resume",
                                             )),
-                                        DropdownButton(
-                                          icon: Icon(Icons.menu),
-                                          hint: Text("More Actions"),
-                                          items: actions.keys.map((e) {
-                                            return DropdownMenuItem(
-                                              value: e,
-                                              child: e,
-                                            );
-                                          }).toList(),
-                                          onChanged: (value) {
-                                            actions[value]?.call();
-                                          },
+                                        Container(
+                                          height: 32,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          child: DropdownButton(
+                                            elevation: 2,
+                                            underline: Empty(),
+                                            icon: Icon(Icons.menu),
+                                            hint: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8.0),
+                                              child: Text(
+                                                "More Actions",
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                ),
+                                              ),
+                                            ),
+                                            iconEnabledColor: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                            items: actions.keys.map((e) {
+                                              return DropdownMenuItem(
+                                                value: e,
+                                                child: e,
+                                              );
+                                            }).toList(),
+                                            onChanged: (value) {
+                                              actions[value]?.call();
+                                            },
+                                            dropdownColor: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                            ),
+                                            // color: Color.fromARGB(
+                                            //     255, 247, 5, 5)),
+                                          ),
                                         )
                                       ],
                                     ),
@@ -488,7 +508,14 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 4),
             ),
-            HlcLogWidget()
+            HlcLogWidget(
+              scrollDown: () {
+                scrollController.animateTo(
+                    scrollController.position.maxScrollExtent,
+                    duration: Duration(milliseconds: 100),
+                    curve: Curves.fastOutSlowIn);
+              },
+            )
           ],
         ),
       ),
@@ -507,7 +534,7 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       );
     }
     return SizedBox(
-      height: adjustScale(60),
+      height: 44,
       width: width,
       child: (isChargingState)
           ? OutlinedButton(
@@ -536,6 +563,14 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     return ModelDependent.on(
       chargerModel: chargerModel,
       onUMWC: () {
+        List<IconData?> icons = [
+          Icons.bolt,
+          Icons.power_settings_new,
+          Icons.bolt,
+          Icons.percent,
+          Icons.settings,
+          Icons.bolt,
+        ];
         List<Text> titles = [
           Text(
             'Voltage: ',
@@ -546,60 +581,93 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             style: style,
           ),
           Text(
-            'PWM: ',
+            'CP high: ',
             style: style,
           ),
           Text(
-            'CP: ',
+            'PWM: ',
             style: style,
           ),
           Text(
             'State: ',
             style: style,
           ),
+          Text(
+            "CP low: ",
+            style: style,
+          ),
         ];
         List<Text> values = [
           Text(
             '${outputVoltage.toStringAsFixed(0)} V',
-            style: style
-                ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
+            style: style,
           ),
           Text(
             relaisState,
             style: style,
           ),
           Text(
-            '${pwmDc.toStringAsFixed(0)} %',
-            style: style
-                ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
+            '${cpHi.toStringAsFixed(2)} V',
+            style: style,
           ),
           Text(
-            '${cpHi.toStringAsFixed(2)}V / ${cpLo.toStringAsFixed(2)} V',
-            style: style
-                ?.copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
+            '${pwmDc.toStringAsFixed(0)} %',
+            style: style,
           ),
           Text(
             stateString,
             style: style,
             overflow: TextOverflow.ellipsis,
           ),
+          Text(
+            "${cpLo.toStringAsFixed(2)} V",
+            style: style,
+          ),
         ];
-        double maxWidth = 200;
-        Color? aColor = Color.lerp(Theme.of(context).colorScheme.surface,
-                Theme.of(context).colorScheme.onSurface, 0.2)
-            ?.withAlpha(160);
-        Color? bColor = Color.lerp(Theme.of(context).colorScheme.surface,
-                Theme.of(context).colorScheme.onSurface, 0.4)
-            ?.withAlpha(160);
+        double maxWidth = 230;
         List<Widget> infos = [];
-        for (int i = 0; i < min(titles.length, values.length); i++) {
-          infos.add(_buildTextInfo(
-              (i % 2 == 0) ? aColor : bColor, values[i], titles[i], maxWidth));
+        // using the max value here instantly shows errors
+        for (int i = 0;
+            i < [titles.length, values.length, icons.length].reduce(max);
+            i++) {
+          infos.add(
+            _buildTextInfo(
+              values[i],
+              titles[i],
+              maxWidth,
+              icon: icons[i],
+            ),
+          );
         }
-        return Wrap(
-          alignment: WrapAlignment.start,
-          children: infos,
-        );
+        return LayoutBuilder(builder: (context, constraints) {
+          int itemsPerRow = constraints.maxWidth ~/ maxWidth;
+          int fillerCount = infos.length % itemsPerRow == 0
+              ? 0 // prevents adding a full row of empty widgets
+              : itemsPerRow - infos.length % itemsPerRow;
+          for (var i = 0; i < fillerCount; i++) {
+            infos.add(
+              SizedBox(
+                width: maxWidth,
+              ),
+            );
+          }
+          var seperator = Container(
+            width: 2,
+            height: 40,
+            color: Theme.of(context).colorScheme.primary,
+          );
+          List<Widget> seperatedInfos = [];
+          for (var i = 0; i < infos.length; i++) {
+            seperatedInfos.add(infos[i]);
+            if (i % itemsPerRow != itemsPerRow - 1) {
+              seperatedInfos.add(seperator);
+            }
+          }
+          return Wrap(
+            alignment: WrapAlignment.start,
+            children: seperatedInfos,
+          );
+        });
       },
       onUMWCar: () {
         Text ampereLabel = Text(
@@ -651,7 +719,6 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
             alignment: WrapAlignment.spaceAround,
             children: [
               _buildTextInfo(
-                null,
                 ampereLabel,
                 Text(
                   'Current Demand : ',
@@ -660,7 +727,6 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                 ampereWidth,
               ),
               _buildTextInfo(
-                null,
                 Text(
                   '${(targetCurrent * targetVoltage).toStringAsFixed(2)} W',
                   style: style,
@@ -691,17 +757,20 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     )(); // runs the functions provided for each platform
   }
 
-  Widget _buildTextInfo(
-      Color? background, Text value, Text title, double width) {
+  Widget _buildTextInfo(Text value, Text title, double width,
+      {IconData? icon}) {
     return Container(
       padding: const EdgeInsets.all(8.0),
-      color: background,
       child: SizedBox(
-        width: width,
-        child: Wrap(
-          alignment: WrapAlignment.spaceBetween,
+        width: width - 16, // adjusted for the padding
+        child: Row(
           children: [
+            if (icon != null)
+              Icon(
+                icon,
+              ),
             title,
+            Spacer(),
             value,
           ],
         ),

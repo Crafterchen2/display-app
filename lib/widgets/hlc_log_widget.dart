@@ -17,7 +17,9 @@ import 'info_cards.dart';
 import 'package:async/async.dart';
 
 class HlcLogWidget extends ConsumerStatefulWidget {
+  final void Function()? scrollDown;
   const HlcLogWidget({
+    this.scrollDown,
     super.key,
   });
 
@@ -277,6 +279,11 @@ class _HlcLogWidgetState extends ConsumerState<HlcLogWidget> {
                               setState(() {
                                 expanded = !expanded;
                               });
+                              if (expanded) {
+                                Future.delayed(Duration(milliseconds: 50), () {
+                                  widget.scrollDown?.call();
+                                });
+                              }
                             },
                             backgroundColor:
                                 Theme.of(context).colorScheme.onPrimary,

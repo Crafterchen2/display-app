@@ -85,8 +85,8 @@ class _ErrorsWidgetState extends State<ErrorsWidget> {
               ));
             },
             icon: Icon(
-              Icons.error,
-              size: 80,
+              Icons.report_problem,
+              size: 28,
             ));
   }
 }
