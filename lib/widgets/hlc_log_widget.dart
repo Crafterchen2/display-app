@@ -7,26 +7,25 @@ import 'package:display_app/data/providers/selected_protocol_provider.dart';
 
 import 'package:display_app/utils/globals.dart';
 
-import 'package:display_app/widgets/buttons.dart';
 import 'package:display_app/widgets/keyboard.dart';
 import 'package:display_app/widgets/text_fields.dart';
 import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 
 import '../main.dart';
 import '../mqtt.dart';
-import '../widgets/info_cards.dart';
+import 'info_cards.dart';
 import 'package:async/async.dart';
 
-class HlcLogScreen extends ConsumerStatefulWidget {
-  const HlcLogScreen({
+class HlcLogWidget extends ConsumerStatefulWidget {
+  const HlcLogWidget({
     super.key,
   });
 
   @override
-  ConsumerState<HlcLogScreen> createState() => _HlcLogScreenState();
+  ConsumerState<HlcLogWidget> createState() => _HlcLogWidgetState();
 }
 
-class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
+class _HlcLogWidgetState extends ConsumerState<HlcLogWidget> {
   final mqtt = MQTT();
   late HlcLog hlcLog;
   String selectedProtocolString = "Unknown";
@@ -42,6 +41,8 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
   bool _showKeyboard = false;
   TextEditingController annotateController = TextEditingController();
   late CancelableOperation<void> refresh;
+
+  bool expanded = false;
 
   // List<Widget> logEntries = [];
   // List<HlcLog> hlcLogList = [];
@@ -186,61 +187,21 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
 
     List<Widget> logEntries = makeHlcLog();
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(
-          left: 40,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            FloatingActionButton(
-              backgroundColor: Theme.of(context).colorScheme.onPrimary,
-              foregroundColor: Theme.of(context).colorScheme.primary,
-              onPressed: () {
-                setState(() {
-                  autoscroll = !autoscroll;
-                });
-              },
-              heroTag:
-                  "pauseHero", //prevent "Same hero tag error"; doesn't change functionality
-              child: autoscroll
-                  ? const Icon(Icons.pause)
-                  : const Icon(Icons.play_arrow),
-            ),
-            FloatingActionButton(
-              backgroundColor: Theme.of(context).colorScheme.onPrimary,
-              foregroundColor: Theme.of(context).colorScheme.primary,
-              onPressed: () => hlcLogList.clear(),
-              heroTag:
-                  "clearHero", //prevent "Same hero tag error"; doesn't change functionality
-              child: const Icon(Icons.delete),
-            ),
-            FloatingActionButton(
-              backgroundColor: Theme.of(context).colorScheme.onPrimary,
-              foregroundColor: Theme.of(context).colorScheme.primary,
-              onPressed: () => annotateButtonPressed(),
-              heroTag:
-                  "annotateHero", //prevent "Same hero tag error"; doesn't change functionality
-              child: const Icon(Icons.message),
-            ),
-            const PionixCloseButton(
-              inverted: true,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
-      bottomNavigationBar: BottomAppBar(
-        elevation: 0,
-        color: Theme.of(context).colorScheme.primary,
-      ),
-      body: Stack(
+    return Container(
+      color: Theme.of(context).colorScheme.primary,
+      alignment: Alignment.center,
+      width: MediaQuery.sizeOf(context).width - 40,
+      height: expanded
+          ? MediaQuery.sizeOf(context).height -
+              130 // the height of the bottom bar and top bar
+          : MediaQuery.sizeOf(context).height -
+              (130 + 192), // additionally the height of the status info
+      child: Stack(
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: adjustScale(10)),
             child: Column(
+              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(padding: EdgeInsets.only(top: adjustScale(10))),
@@ -250,7 +211,8 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                   color: Colors.white10,
                   thickness: 2,
                 ),
-                Expanded(
+                Flexible(
+                  fit: FlexFit.tight,
                   child: SingleChildScrollView(
                     controller: scrollController,
                     child: ListView.builder(
@@ -260,6 +222,76 @@ class _HlcLogScreenState extends ConsumerState<HlcLogScreen> {
                       itemCount: logEntries.length,
                       itemBuilder: (context, index) => logEntries[index],
                     ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FloatingActionButton(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
+                        foregroundColor: Theme.of(context).colorScheme.primary,
+                        onPressed: () {
+                          setState(() {
+                            autoscroll = !autoscroll;
+                          });
+                        },
+                        heroTag:
+                            "pauseHero", //prevent "Same hero tag error"; doesn't change functionality
+                        child: autoscroll
+                            ? const Icon(Icons.pause)
+                            : const Icon(Icons.play_arrow),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          FloatingActionButton(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            onPressed: () => hlcLogList.clear(),
+                            heroTag:
+                                "clearHero", //prevent "Same hero tag error"; doesn't change functionality
+                            child: const Icon(Icons.delete),
+                          ),
+                          Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
+                          if (expanded)
+                            FloatingActionButton(
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.onPrimary,
+                              foregroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              onPressed: () => annotateButtonPressed(),
+                              heroTag:
+                                  "annotateHero", //prevent "Same hero tag error"; doesn't change functionality
+                              child: const Icon(Icons.message),
+                            ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 4),
+                          ),
+                          FloatingActionButton(
+                            onPressed: () {
+                              setState(() {
+                                expanded = !expanded;
+                              });
+                            },
+                            backgroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            child: Icon(expanded
+                                ? Icons.keyboard_arrow_up
+                                : Icons.keyboard_arrow_down),
+                          )
+                          // const PionixCloseButton(
+                          //   inverted: true,
+                          // ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ],

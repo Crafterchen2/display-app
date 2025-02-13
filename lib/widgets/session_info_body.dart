@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'dart:convert';
 
-import 'package:display_app/widgets/ac_dc_dependent.dart';
 import 'package:display_app/widgets/access_dependent.dart';
+import 'package:display_app/widgets/hlc_log_widget.dart';
 import 'package:display_app/widgets/errors_widget.dart';
 import 'package:display_app/widgets/model_dependent.dart';
 import 'package:easy_localization/easy_localization.dart'
@@ -16,7 +16,6 @@ import 'package:display_app/mqtt.dart';
 import 'package:display_app/utils/enums.dart';
 import 'package:display_app/utils/globals.dart';
 import 'package:display_app/utils/number_tools.dart';
-import 'package:display_app/utils/routing/app_router.dart';
 import 'package:display_app/widgets/layout.dart';
 
 import '../main.dart';
@@ -86,10 +85,41 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
   EvInfo? evManagerInfo;
   late double currentSliderValue;
 
+  /// This is a map of actions that can be performed on the charger.
+  Map<Widget, void Function()> actions = {};
+
   @override
   void initState() {
     currentSliderValue = widget.current;
     super.initState();
+    actions = {
+      const Text(
+        "Stop transaction",
+      ): () {
+        mqtt.publish("everest_external/nodered/1/cmd/stop_transaction", "1");
+      },
+      const Text(
+        "Emerg.Stp",
+      ): () {
+        mqtt.publish("everest_external/nodered/1/cmd/emergency_stop", "1");
+      },
+      const Text(
+        "EVSE malf",
+      ): () {
+        mqtt.publish("everest_external/nodered/1/cmd/evse_malfunction", "1");
+      },
+      const Text(
+        "EVSEutil int",
+      ): () {
+        mqtt.publish("everest_external/nodered/1/cmd/evse_utility_int", "1");
+      },
+      const Text(
+        "Swipe RFID",
+      ): () {
+        mqtt.publish("everest_api/dummy_token_provider/cmd/provide",
+            "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
+      },
+    };
   }
 
   @override
@@ -174,7 +204,6 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
       snapped: adjustScale(snapped - offset),
       threshold: adjustScale(threshold),
     );
-    const scaler = TextScaler.linear(1.7);
 
     var s = MediaQuery.of(context).size;
     //debugPrint(s.toString());
@@ -184,231 +213,214 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
         padding: EdgeInsets.symmetric(
           horizontal: adjustScale(offset / 2),
         ),
-        child: Wrap(
-          crossAxisAlignment: WrapCrossAlignment.start,
-          alignment: WrapAlignment.start,
-          runAlignment: WrapAlignment.start,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
+          // direction: Axis.horizontal,
           children: [
-            SizedBox(
-              width: carSideWidth.snapNumber(),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'status'.tr(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium
-                                    ?.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface,
-                                    ),
-                              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              // direction: Axis.horizontal,
+              // crossAxisAlignment: WrapCrossAlignment.start,
+              // alignment: WrapAlignment.start,
+              // runAlignment: WrapAlignment.start,
+              children: [
+                // SizedBox(
+                //   width: carSideWidth.snapNumber(),
+                //   child: Row(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [],
+                //   ),
+                // ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.sizeOf(context).width - 40,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: adjustScale(5),
                             ),
-                            Text(
-                              chargingStateTitle(widget.state).toUpperCase(),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: Theme.of(context).textTheme.displayLarge,
-                            ),
-                          ],
-                        ),
-                        _buildImageWidget(context),
-                        if (widget.chargingMode == ChargingMode.unknown ||
-                            widget.chargingMode == ChargingMode.basicAC)
-                          makeChargeControlButton(
-                              context, carSideWidth.snapNumber()),
-                        if (widget.state != ChargingState.authRequired &&
-                            widget.current >= widget.minCurrentA &&
-                            widget.current <= widget.maxCurrentA)
-                          ModelDependent(
-                            platforms: const [
-                              ChargerModel.belayBox,
-                              ChargerModel.unknown
-                            ], // TODO remove this when the belaybox reports its devicetype via mqtt
+                            child: widget.state == ChargingState.authRequired
+                                ? Text(
+                                    'swipe_your_card_please'.tr(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge
+                                        ?.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                        ),
+                                  )
+                                : Text(
+                                    widget.state == ChargingState.unplugged
+                                        ? 'last_session'.tr()
+                                        : 'current_session'.tr(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge
+                                        ?.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                        ),
+                                  ),
+                          ),
+                          Spacer(),
+                          Align(
+                            alignment: Alignment.centerRight,
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                Wrap(
-                                  children: [
-                                    Text(
-                                      '${'charge_upto'.tr()} ',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall
-                                          ?.copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurface,
-                                          ),
-                                    ),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
+                                // _buildImageWidget(context),
+                                if (widget.chargingMode ==
+                                        ChargingMode.unknown ||
+                                    widget.chargingMode == ChargingMode.basicAC)
+                                  makeChargeControlButton(context, 150),
+                                if (widget.state !=
+                                        ChargingState.authRequired &&
+                                    widget.current >= widget.minCurrentA &&
+                                    widget.current <= widget.maxCurrentA)
+                                  ModelDependent(
+                                    platforms: const [
+                                      ChargerModel.belayBox,
+                                      ChargerModel.unknown
+                                    ], // TODO remove unknown when the belaybox reports its devicetype via mqtt
+                                    child: Column(
                                       children: [
                                         Text(
-                                          currentSliderLabel,
-                                          textAlign: TextAlign.start,
+                                          '${'charge_upto'.tr()} $currentSliderLabel A',
                                           style: Theme.of(context)
                                               .textTheme
-                                              .headlineSmall
-                                              ?.copyWith(
-                                            fontFeatures: [
-                                              const FontFeature
-                                                  .tabularFigures(),
-                                            ],
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurface,
-                                          ),
-                                        ),
-                                        Text(
-                                          ' A',
-                                          textAlign: TextAlign.end,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headlineSmall
+                                              .bodyMedium
                                               ?.copyWith(
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .onSurface,
                                               ),
                                         ),
+                                        AccessDependent(
+                                          onPrivate: SizedBox(
+                                            height: 30,
+                                            child: Slider(
+                                              min: widget.minCurrentA,
+                                              max: widget.maxCurrentA,
+                                              label: currentSliderLabel,
+                                              activeColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                              inactiveColor: Colors.grey,
+                                              onChanged: (val) {
+                                                setState(() {
+                                                  currentSliderValue = val;
+                                                });
+                                                widget.onCurrentChanged(val);
+                                              },
+                                              value: currentSliderValue,
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                                AccessDependent(
-                                  onPrivate: Slider(
-                                    min: widget.minCurrentA,
-                                    max: widget.maxCurrentA,
-                                    label: currentSliderLabel,
-                                    activeColor:
-                                        Theme.of(context).colorScheme.secondary,
-                                    inactiveColor: Colors.grey,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        currentSliderValue = val;
-                                      });
-                                      widget.onCurrentChanged(val);
-                                    },
-                                    value: currentSliderValue,
                                   ),
-                                ),
                               ],
                             ),
                           ),
-                        ValueListenableBuilder(
-                          valueListenable: ValueNotifier(activeErrorsHash),
-                          builder: (context, value, child) =>
-                              ErrorsWidget(activeErrors),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              width: carSideWidth.snapNumber(
-                ovrSnapped: carSideWidth.parameter,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom: adjustScale(5),
-                    ),
-                    child: widget.state == ChargingState.authRequired
-                        ? Text(
-                            'swipe_your_card_please'.tr(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge
-                                ?.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface,
-                                ),
-                          )
-                        : Text(
-                            widget.state == ChargingState.unplugged
-                                ? 'last_session'.tr()
-                                : 'current_session'.tr(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge
-                                ?.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface,
-                                ),
+                          ValueListenableBuilder(
+                            valueListenable: ValueNotifier(activeErrorsHash),
+                            builder: (context, value, child) =>
+                                ErrorsWidget(activeErrors),
                           ),
-                  ),
-                  (widget.state == ChargingState.authRequired)
-                      ? ModelDependent(
-                          platforms: const [ChargerModel.microMegaWattCharger],
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: PrimaryButton(
-                              onPressed: () {
-                                mqtt.publish(
-                                    "everest_api/dummy_token_provider/cmd/provide",
-                                    "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
-                              },
-                              child: const Text(
-                                "Swipe RFID",
-                                textScaler: scaler,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  "${'status'.tr()}: ",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                      ),
+                                ),
+                              ),
+                              Text(
+                                chargingStateTitle(widget.state).toUpperCase(),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: Theme.of(context).textTheme.displayLarge,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    (widget.state == ChargingState.authRequired)
+                        ? ModelDependent(
+                            platforms: const [
+                              ChargerModel.microMegaWattCharger
+                            ],
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: PrimaryButton(
+                                onPressed: () {
+                                  mqtt.publish(
+                                      "everest_api/dummy_token_provider/cmd/provide",
+                                      "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
+                                },
+                                child: const Text(
+                                  "Swipe RFID",
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                      : SizedBox(
-                          width: double.infinity,
-                          child: InfoLayout(
-                                children: [
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: TextButton(
-                                      onPressed: widget.seeMorePressed,
-                                      child: _buildInfoCards(
-                                        chargerModel: widget.chargerModel,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium
-                                            ?.copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSurface,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16,
-                                                fontFamily: "RobotoMono"),
-                                      ),
-                                    ),
+                          )
+                        : SizedBox(
+                            width: MediaQuery.sizeOf(context).width - 40,
+                            child: InfoLayout(
+                              children: [
+                                TextButton(
+                                  onPressed: widget.seeMorePressed,
+                                  child: _buildInfoCards(
+                                    chargerModel: widget.chargerModel,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                            fontFamily: "RobotoMono"),
                                   ),
-                                  ModelDependent(
-                                    platforms: const [
-                                      ChargerModel.microMegaWattCharger
-                                    ],
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 5,
-                                      ),
-                                      child: Wrap(
-                                        runSpacing: 10,
-                                        spacing: 10,
-                                        children: [
-                                          PrimaryButton(
+                                ),
+                                ModelDependent(
+                                  platforms: const [
+                                    ChargerModel.microMegaWattCharger
+                                  ],
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 5,
+                                    ),
+                                    child: Wrap(
+                                      alignment: WrapAlignment.spaceAround,
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.center,
+                                      runSpacing: 10,
+                                      spacing: 10,
+                                      children: [
+                                        PrimaryButton(
                                             onPressed: () {
                                               mqtt.publish(
                                                   "everest_external/nodered/1/cmd/pause_charging",
@@ -416,10 +428,8 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                             },
                                             child: const Text(
                                               "Pause",
-                                              textScaler: scaler,
-                                            ),
-                                          ),
-                                          PrimaryButton(
+                                            )),
+                                        PrimaryButton(
                                             onPressed: () {
                                               mqtt.publish(
                                                   "everest_external/nodered/1/cmd/resume_charging",
@@ -427,97 +437,58 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                             },
                                             child: const Text(
                                               "Resume",
-                                              textScaler: scaler,
-                                            ),
-                                          ),
-                                          PrimaryButton(
-                                            onPressed: () {
-                                              mqtt.publish(
-                                                  "everest_external/nodered/1/cmd/stop_transaction",
-                                                  "1");
-                                            },
-                                            child: const Text(
-                                              "Stop transaction",
-                                              textScaler: scaler,
-                                            ),
-                                          ),
-                                          PrimaryButton(
-                                            onPressed: () {
-                                              mqtt.publish(
-                                                  "everest_external/nodered/1/cmd/emergency_stop",
-                                                  "1");
-                                            },
-                                            child: const Text(
-                                              "Emerg.Stp",
-                                              textScaler: scaler,
-                                            ),
-                                          ),
-                                          PrimaryButton(
-                                            onPressed: () {
-                                              mqtt.publish(
-                                                  "everest_external/nodered/1/cmd/evse_malfunction",
-                                                  "1");
-                                            },
-                                            child: const Text(
-                                              "EVSE malf",
-                                              textScaler: scaler,
-                                            ),
-                                          ),
-                                          PrimaryButton(
-                                            onPressed: () {
-                                              mqtt.publish(
-                                                  "everest_external/nodered/1/cmd/evse_utility_int",
-                                                  "1");
-                                            },
-                                            child: const Text(
-                                              "EVSEutil int",
-                                              textScaler: scaler,
-                                            ),
-                                          ),
-                                          PrimaryButton(
-                                            onPressed: () {
-                                              mqtt.publish(
-                                                  "everest_api/dummy_token_provider/cmd/provide",
-                                                  "{\"authorization_type\": \"RFID\", \"id_token\": {\"type\": \"ISO14443\", \"value\": \"DEADBEEFUI\"}}");
-                                            },
-                                            child: const Text(
-                                              "Swipe RFID",
-                                              textScaler: scaler,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                            )),
+                                        DropdownButton(
+                                          icon: Icon(Icons.menu),
+                                          hint: Text("More Actions"),
+                                          items: actions.keys.map((e) {
+                                            return DropdownMenuItem(
+                                              value: e,
+                                              child: e,
+                                            );
+                                          }).toList(),
+                                          onChanged: (value) {
+                                            actions[value]?.call();
+                                          },
+                                        )
+                                      ],
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: TextButton(
-                                      onPressed: () async {
-                                        await Navigator.of(context).pushNamed(
-                                            AppRoutes.hlcLogScreen,
-                                            arguments: {}).then((value) {
-                                          setState(() {});
-                                        });
-                                      },
-                                      child: Text(
-                                        "See HLC comm log", //TODO Localisation
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall
-                                            ?.copyWith(
-                                              color: Colors.grey,
-                                            ),
-                                        softWrap: true,
-                                        maxLines: 4,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                                // SizedBox(
+                                //   width: double.infinity,
+                                //   child: TextButton(
+                                //     onPressed: () async {
+                                //       await Navigator.of(context).pushNamed(
+                                //           AppRoutes.hlcLogScreen,
+                                //           arguments: {}).then((value) {
+                                //         setState(() {});
+                                //       });
+                                //     },
+                                //     child: Text(
+                                //       "See HLC comm log", //TODO Localisation
+                                //       style: Theme.of(context)
+                                //           .textTheme
+                                //           .displaySmall
+                                //           ?.copyWith(
+                                //             color: Colors.grey,
+                                //           ),
+                                //       softWrap: true,
+                                //       maxLines: 4,
+                                //     ),
+                                //   ),
+                                // )
+                              ],
+                            ),
                           ),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 4),
+            ),
+            HlcLogWidget()
           ],
         ),
       ),

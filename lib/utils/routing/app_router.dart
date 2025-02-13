@@ -2,7 +2,7 @@ import 'package:display_app/screens/ask_root_password_screen.dart';
 import 'package:display_app/screens/configure_cloud_connection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:display_app/screens/charging_dashboard_screen.dart';
-import 'package:display_app/screens/hlc_log.dart';
+import 'package:display_app/widgets/hlc_log_widget.dart';
 import 'package:display_app/screens/lan_info_screen.dart';
 import 'package:display_app/screens/landing_screen.dart';
 import 'package:display_app/screens/language_picker_screen.dart';
@@ -79,7 +79,7 @@ class AppRouter {
         );
       case AppRoutes.hlcLogScreen:
         return MaterialPageRoute<dynamic>(
-          builder: (_) => const HlcLogScreen(),
+          builder: (_) => const HlcLogWidget(),
           settings: settings,
           fullscreenDialog: true,
         );

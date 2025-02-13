@@ -102,6 +102,7 @@ class InfoLayout extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(radius)),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: makeSeparatedList(context),
       ),
     );
