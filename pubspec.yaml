@@ -46,7 +46,7 @@ dependencies:
   mqtt_client: ^10.5.1
   easy_localization: ^3.0.0
   freezed_annotation: ^2.2.0
-  fl_chart: ^0.69.0
+  fl_chart: ^0.70.2
   geekyants_flutter_gauges: ^1.0.4
   collection: ^1.18.0
   shared_preferences:

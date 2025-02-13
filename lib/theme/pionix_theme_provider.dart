@@ -49,13 +49,15 @@ class PionixThemeProvider {
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
-              return scheme.onSurface.withOpacity(backgroundDisabledOpacity);
+              return scheme.onSurface
+                  .withValues(alpha: backgroundDisabledOpacity);
             }
             return scheme.primary;
           }),
           foregroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
-              return scheme.onSurface.withOpacity(foregroundDisabledOpacity);
+              return scheme.onSurface
+                  .withValues(alpha: foregroundDisabledOpacity);
             }
             if (states.contains(WidgetState.hovered)) {
               return scheme.onPrimary;
@@ -79,13 +81,15 @@ class PionixThemeProvider {
           elevation: WidgetStateProperty.resolveWith((states) => 0),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
-              return scheme.onSurface.withOpacity(backgroundDisabledOpacity);
+              return scheme.onSurface
+                  .withValues(alpha: backgroundDisabledOpacity);
             }
             return scheme.secondary;
           }),
           foregroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
-              return scheme.onSurface.withOpacity(foregroundDisabledOpacity);
+              return scheme.onSurface
+                  .withValues(alpha: foregroundDisabledOpacity);
             }
             return scheme.primary;
           }),
@@ -100,8 +104,8 @@ class PionixThemeProvider {
             if (states.contains(WidgetState.disabled)) {
               return BorderSide(
                   width: 1,
-                  color:
-                      scheme.onSurface.withOpacity(backgroundDisabledOpacity));
+                  color: scheme.onSurface
+                      .withValues(alpha: backgroundDisabledOpacity));
             }
             if (states.contains(WidgetState.pressed)) {
               return BorderSide(width: 1, color: scheme.primary);
@@ -127,7 +131,7 @@ class PionixThemeProvider {
       switchTheme:
           SwitchThemeData(thumbColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
-          return scheme.onSurface.withOpacity(foregroundDisabledOpacity);
+          return scheme.onSurface.withValues(alpha: foregroundDisabledOpacity);
         }
         if (states.contains(WidgetState.selected)) {
           return scheme.onPrimary;
