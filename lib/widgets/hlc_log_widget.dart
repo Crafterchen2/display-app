@@ -46,9 +46,6 @@ class _HlcLogWidgetState extends ConsumerState<HlcLogWidget> {
 
   bool expanded = false;
 
-  // List<Widget> logEntries = [];
-  // List<HlcLog> hlcLogList = [];
-
   @override
   void initState() {
     inLogScreen = true;
@@ -81,22 +78,6 @@ class _HlcLogWidgetState extends ConsumerState<HlcLogWidget> {
       await Future.delayed(const Duration(seconds: 1));
     }
   }
-  // void parseHlcLogMsg(String message) {
-  //   // debugPrint("Parsing $message");
-  //   HlcLog log = parseHlcLog(message);
-  //   hlcLogList.add(log);
-  // }
-
-  // void _connect() async {
-  //   try {
-  //     await mqtt.connect();
-  //     final connector = ref.watch(connectorProvider);
-  //     mqtt.subscribe(
-  //         "everest_api/" + connector + "/var/hlc_log", parseHlcLogMsg);
-  //   } catch (e) {
-  //     debugPrint('Loading failed, Error: $e');
-  //   }
-  // }
 
   String buildHlcLogString(HlcLog log) {
     String logString = "${log.origin} ";
@@ -293,9 +274,6 @@ class _HlcLogWidgetState extends ConsumerState<HlcLogWidget> {
                                 ? Icons.keyboard_arrow_up
                                 : Icons.keyboard_arrow_down),
                           )
-                          // const PionixCloseButton(
-                          //   inverted: true,
-                          // ),
                         ],
                       ),
                     ],

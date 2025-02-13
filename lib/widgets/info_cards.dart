@@ -344,14 +344,6 @@ class _LineChartCardContent extends State<LineChartCardContent> {
                 height: chart.height,
               ),
             ),
-          //FloatingActionButton(onPressed: (){debugPrint("test");}),
-          //SizedBox(
-          //  height: 100,
-          //  child: GestureDetector(
-          //    onTap: () => (false) ? widget.onShowOverlayPressed : (){debugPrint("test");},
-          //    //behavior: HitTestBehavior.opaque,
-          //  ),
-          //),
         ],
       ),
     );

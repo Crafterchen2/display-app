@@ -127,6 +127,7 @@ enum AcDcMode {
 
   ///Fix, in this context, means that the user can't switch the mode on demand via the toggle.
   final bool isFix;
+
   ///Whether this mode is using AC charging.
   final bool isAc;
 
@@ -134,14 +135,13 @@ enum AcDcMode {
 
   ///Returns the state with [this.isFix == opposite.isFix && this.isAc != opposite.isAc].
   AcDcMode opposite() {
-    return switch(this) {
+    return switch (this) {
       ac => dc,
       dc => ac,
       fixAc => fixDc,
       fixDc => fixAc,
     };
   }
-
 }
 
 ///An enum representing the access mode we're in.
@@ -152,11 +152,10 @@ enum AccessMode {
 
   ///Returns the opposite of the current mode.
   AccessMode opposite() {
-    return switch(this) {
+    return switch (this) {
       public => private,
       private => public,
       _ => unset,
     };
   }
-
 }

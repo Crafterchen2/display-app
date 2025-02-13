@@ -43,6 +43,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
   void dispose() {
     _timer.cancel();
     _reconnectTimer?.cancel();
+    _reconnectMessageTimer?.cancel();
     super.dispose();
   }
 
@@ -71,7 +72,9 @@ class _InitializingScreenState extends State<InitializingScreen> {
     try {
       progressMessage = 'initializing'.tr();
       await mqtt.connect();
-      getAppInfo(context, mqtt);
+      if (context.mounted) {
+        getAppInfo(context, mqtt);
+      }
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
       progressMessage = 'connection_failed'.tr();

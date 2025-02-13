@@ -717,7 +717,8 @@ class _ChargingDashboardScreenState
     setState(() {
       _showProgressBar = false;
     });
-    accessNotifier.value = (privateMode) ? AccessMode.private : AccessMode.public;
+    accessNotifier.value =
+        (privateMode) ? AccessMode.private : AccessMode.public;
   }
 
   void updateCurrentLanguage() {

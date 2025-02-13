@@ -6,7 +6,6 @@ import '../utils/constants/keys.dart';
 import 'empty.dart';
 
 class AcDcDependent extends StatelessWidget {
-
   late final ValueListenable<AcDcMode> valueListenable;
 
   final ValueListenable<AcDcMode>? ovrValueListenable;
@@ -44,14 +43,14 @@ class AcDcDependent extends StatelessWidget {
     dynamic onAc,
     dynamic onDc,
     dynamic fallback,
-  }){
+  }) {
     return ((acDcMode.isAc) ? onAc : onDc) ?? fallback;
   }
-
 }
 
 final ValueNotifier<AcDcMode> acDcNotifier = ValueNotifier(getDefaultState());
 
 AcDcMode getDefaultState() {
-  return AcDcMode.ac; //Once this info can be read from configs, we can change the initial value here.
+  return AcDcMode
+      .ac; //Once this info can be read from configs, we can change the initial value here.
 }

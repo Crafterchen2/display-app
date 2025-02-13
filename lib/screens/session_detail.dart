@@ -54,10 +54,6 @@ class _SessionDetailState extends State<SessionDetail>
       vsync: this,
     );
     controller.addListener(() {
-      //setState(() {
-      //  _selectedIndex = _controller.index;
-      //});
-      //tabController.index = tabController.index;
       graphs.resetOverlay();
     });
     return controller;

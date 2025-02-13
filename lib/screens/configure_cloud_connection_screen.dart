@@ -73,7 +73,7 @@ class _ConfigureCloudConnectionScreenState
   late Widget enrollmentUsernameInputField;
   late Widget enrollmentPasswordInputField;
   late Widget manufacturerIdInputField;
-  late TextEditingController chargerIdcontroller;
+  late Widget Function(bool) chargerIdInputField;
 
   static const double height = 56;
   double additionalScrollDownLenght = height * 6;
@@ -172,8 +172,16 @@ class _ConfigureCloudConnectionScreenState
         onTap: openKeyboardAndScrollDownTo(height * 4),
       );
 
-      chargerIdcontroller = TextEditingController(
-        text: config!.chargerId ?? "currently_not_defined",
+      chargerIdInputField = PionixInputField.disableable(
+        icon: Icons.numbers,
+        label:
+            "id for this charger (make sure this is unique or bad stuff will happen)",
+        onSaved: (value) {
+          config!.chargerId = value;
+        },
+        initialText: config!.chargerId ?? "currently_not_defined",
+        validator: noSpacesAllowedValidator,
+        onTap: openKeyboardAndScrollDownTo(height * 6),
       );
     } catch (e) {
       config = null;
@@ -220,18 +228,7 @@ class _ConfigureCloudConnectionScreenState
                               });
                             }),
                       ),
-                      PionixInputField(
-                        icon: Icons.numbers,
-                        label:
-                            "id for this charger (make sure this is unique or bad stuff will happen)",
-                        enabled: overrideId,
-                        onSaved: (value) {
-                          config!.chargerId = value;
-                        },
-                        validator: noSpacesAllowedValidator,
-                        onTap: openKeyboardAndScrollDownTo(height * 6),
-                        providedController: chargerIdcontroller,
-                      ),
+                      chargerIdInputField(overrideId),
                       ElevatedButton(
                         onPressed: _formKey.currentState?.validate() ?? false
                             ? () {

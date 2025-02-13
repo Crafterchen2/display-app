@@ -144,18 +144,6 @@ class _ControlState extends ConsumerState<Control> {
 
   @override
   Widget build(BuildContext context) {
-    // final appInfo = ref
-    //     .watch(applicationInfoStreamProvider)
-    //     .whenOrNull(data: (data) => data);
-    // if (appInfo != null) {
-    //   if (appInfo.release_metadata_file != null &&
-    //       appInfo.release_metadata_file != releaseMetadataFile) {
-    //     releaseMetadataFile =
-    //         appInfo.release_metadata_file ?? releaseMetadataFile;
-    //     debugPrint("metadata file: $releaseMetadataFile");
-    //     _read();
-    //   }
-    // }
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.only(

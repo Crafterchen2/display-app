@@ -59,7 +59,9 @@ class _LanguagePickerScreenState extends State<LanguagePickerScreen> {
   void _connect(BuildContext context) async {
     try {
       await mqtt.connect();
-      getAppInfo(context, mqtt);
+      if (context.mounted) {
+        getAppInfo(context, mqtt);
+      }
     } catch (e) {
       debugPrint('Loading failed, Error: $e');
       setState(() {
@@ -98,12 +100,6 @@ class _LanguagePickerScreenState extends State<LanguagePickerScreen> {
                           );
                         }),
                   ),
-                  // child: Column(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     ...languageButtons(context),
-                  //   ],
-                  // ),
                 )
               : Expanded(
                   child: Center(

@@ -117,7 +117,7 @@ class _$_LocaleState extends _LocaleState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_LocaleState &&

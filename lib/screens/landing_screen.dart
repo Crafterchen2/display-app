@@ -125,12 +125,6 @@ class _LandingScreenState extends State<LandingScreen> {
       updateDefaultLanguage();
       updateCurrentLanguage();
     }
-    if (_appInfo.initialized) {
-      // Navigator.of(context).pushAndRemoveUntil(
-      //     MaterialPageRoute(builder: (context) {
-      //   return const PrivateChargerScreenDemo();
-      // }), (Route<dynamic> route) => false);
-    }
 
     if (mounted) {
       setState(() {

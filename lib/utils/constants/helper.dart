@@ -174,10 +174,6 @@ String durationFormat(Duration duration) {
   return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
 }
 
-// String signalStrength(int ) {
-//   return;
-// }
-
 String wrapString(String str) {
   String newStr = "";
   for (var character in str.runes) {

@@ -11,6 +11,34 @@ class PionixInputField extends StatefulWidget {
   final void Function(TextEditingController)? onTap;
   late final TextEditingController controller;
   final bool mulitLine;
+
+  static PionixInputField Function(bool) disableable({
+    required IconData icon,
+    required String label,
+    String textHint = "",
+    FormFieldValidator<String>? validator,
+    String? initialText,
+    ValueChanged<String>? onSaved,
+    void Function(TextEditingController)? onTap,
+    TextEditingController? providedController,
+    bool multiline = false,
+  }) {
+    var constantEditingController =
+        providedController ?? TextEditingController(text: initialText);
+    PionixInputField inner(bool enabled) => PionixInputField(
+          enabled: enabled,
+          icon: icon,
+          label: label,
+          mulitLine: multiline,
+          onSaved: onSaved,
+          onTap: onTap,
+          providedController: constantEditingController,
+          textHint: textHint,
+          validator: validator,
+        );
+    return inner;
+  }
+
   PionixInputField({
     super.key,
     required this.icon,

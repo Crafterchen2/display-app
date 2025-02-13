@@ -71,8 +71,6 @@ class Header extends StatelessWidget {
                             aspectRatio: 2,
                             child: SvgPicture.asset(
                               rpiLogo, // FIXME: make this configurable at build time!
-                              //width: 72,
-                              //height: 36,
                             ),
                           ),
                         )

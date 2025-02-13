@@ -21,7 +21,8 @@ import '../main.dart';
 import '../utils/constants/helper.dart';
 import '../utils/constants/keys.dart';
 import 'buttons.dart';
-import 'charging_animation_widget.dart';
+// remove if _buildImageWidget() is not used again
+// import 'charging_animation_widget.dart';
 
 class SessionInfoBody extends StatefulWidget {
   final double energy;
@@ -206,23 +207,10 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
-          // direction: Axis.horizontal,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              // direction: Axis.horizontal,
-              // crossAxisAlignment: WrapCrossAlignment.start,
-              // alignment: WrapAlignment.start,
-              // runAlignment: WrapAlignment.start,
               children: [
-                // SizedBox(
-                //   width: carSideWidth.snapNumber(),
-                //   child: Row(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [],
-                //   ),
-                // ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -467,37 +455,12 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                                   .colorScheme
                                                   .secondary,
                                             ),
-                                            // color: Color.fromARGB(
-                                            //     255, 247, 5, 5)),
                                           ),
                                         )
                                       ],
                                     ),
                                   ),
                                 ),
-                                // SizedBox(
-                                //   width: double.infinity,
-                                //   child: TextButton(
-                                //     onPressed: () async {
-                                //       await Navigator.of(context).pushNamed(
-                                //           AppRoutes.hlcLogScreen,
-                                //           arguments: {}).then((value) {
-                                //         setState(() {});
-                                //       });
-                                //     },
-                                //     child: Text(
-                                //       "See HLC comm log", //TODO Localisation
-                                //       style: Theme.of(context)
-                                //           .textTheme
-                                //           .displaySmall
-                                //           ?.copyWith(
-                                //             color: Colors.grey,
-                                //           ),
-                                //       softWrap: true,
-                                //       maxLines: 4,
-                                //     ),
-                                //   ),
-                                // )
                               ],
                             ),
                           ),
@@ -827,146 +790,76 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     );
   }
 
-  // VERY UNSURE WHAT TODO HERE :( the method had two different implementations and i went for the one from bd-ui-refactor branch
-
-  // List<Widget> _buildInfoCards(String chargerModelName) {
-  //   if (chargerModelName == ChargerModelName.microMegaWattCharger) {
-  //     return [
-  //       _buildSessionInfoCard(
-  //           null, outputVoltage.toStringAsFixed(2) + ' V', 'Output Voltage'),
-  //       _buildSessionInfoCard(null, relaisState, 'Relais'),
-  //       _buildSessionInfoCard(null, pwmDc.toStringAsFixed(0) + ' %', 'PWM DC'),
-  //       _buildSessionInfoCard(null, cpHi.toStringAsFixed(2), 'CP Hi'),
-  //       _buildSessionInfoCard(null, cpLo.toStringAsFixed(2), 'CP Lo'),
-  //       _buildSessionInfoCard(null, stateString, 'State'),
-  //     ];
+// commented out as i am unsure if we want to re-add the images on some platforms
+//   Widget _buildImageWidget(BuildContext context) {
+//     return SizedBox(
+//       child: Column(
+//         mainAxisAlignment: MainAxisAlignment.start,
+//         children: [
+//           //is this stack still required?
+//           Stack(
+//             alignment: Alignment.bottomRight,
+//             children: [
+//               Padding(
+//                 padding: const EdgeInsets.symmetric(horizontal: 20),
+//                 child: getChargingSessionWidgetByState(
+//                   context,
+//                   widget.state,
+//                   adjustScale(96),
+//                   adjustScale(320),
+//                   widget.soc,
+//                 ),
+//               ),
+//               // if (widget.state == 'ChargingPausedEVSE' ||
+//               //     widget.state == 'ChargingPausedEV')
+//               // SvgPicture.asset(
+//               //   'assets/icons/icon_pausecharging.svg',
+//               //   height:
+//               //       widget.state == 'Unplugged' ? null : screenWidth * 0.15,
+//               //   width:
+//               //       widget.state == 'Unplugged' ? null : screenWidth * 0.15,
+//               // ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
   //   }
-  //   if (chargerModelName == ChargerModelName.microMegaWattCar) {
-  //     return [
-  //       Column(children: [
-  //         Text(
-  //           'battery_percentage'.tr(),
-  //           style: const TextStyle(fontSize: 20),
-  //         ),
-  //         LinearGauge(
-  //           start: 0,
-  //           steps: 10,
-  //           end: 100,
-  //           customLabels: const [
-  //             CustomRulerLabel(text: "0", value: 0),
-  //             CustomRulerLabel(text: "10", value: 10),
-  //             CustomRulerLabel(text: "20", value: 20),
-  //             CustomRulerLabel(text: "30", value: 30),
-  //             CustomRulerLabel(text: "40", value: 40),
-  //             CustomRulerLabel(text: "50", value: 50),
-  //             CustomRulerLabel(text: "60", value: 60),
-  //             CustomRulerLabel(text: "70", value: 70),
-  //             CustomRulerLabel(text: "80", value: 80),
-  //             CustomRulerLabel(text: "90", value: 90),
-  //             CustomRulerLabel(text: "100", value: 100)
+// }
+
+// Widget getChargingSessionWidgetByState(BuildContext context, String state,
+//     double height, double width, double? soc) {
+//   if (state == 'Charging') {
+//     return Stack(alignment: Alignment.bottomCenter, children: <Widget>[
+//       ChargingAnimationWidget(),
+//       if (soc != null)
+//         Stack(
+//           children: <Widget>[
+//             Text(
+//               "${soc.toStringAsFixed(0)}%",
+//               style: TextStyle(
+//                 fontSize: 60,
+//                 foreground: Paint()
+//                   ..style = PaintingStyle.stroke
+//                   ..strokeWidth = 8
+//                   ..color = Theme.of(context).colorScheme.onSurface,
+//               ),
+//             ),
+//             Text(
+//               "${soc.toStringAsFixed(0)}%",
+//               style: TextStyle(
+//                 fontSize: 60,
+//                 color: Theme.of(context).colorScheme.surface,
+//               ),
+//             ),
   //           ],
-  //           valueBar: [
-  //             ValueBar(
-  //               value: batteryPercentage,
-  //               valueBarThickness: 10,
-  //             )
-  //           ],
-  //           rulers: RulerStyle(
-  //               rulerPosition: RulerPosition.bottom,
-  //               textStyle: TextStyle(fontSize: 20)),
-  //         ),
-  //         Row(
-  //           children: [
-  //             _buildSessionInfoCard(null,
-  //                 (targetCurrent).toStringAsFixed(2) + ' A', 'CurrentDemand'),
-  //             _buildSessionInfoCard(
-  //                 null,
-  //                 (targetCurrent * targetVoltage).toStringAsFixed(2) + ' W',
-  //                 'CurrentDemand')
-  //           ],
-  //         ),
-  //       ])
-  //     ];
+//         )
+//     ]);
+//   } else {
+//     return SvgPicture.asset(
+//       getChargingSessionIconByState(state),
+//       height: height,
+//       //width: width,
+//     );
   //   }
-  //   return [
-  //     _buildSessionInfoCard('assets/icons/icon_power.svg',
-  //         widget.power.toStringAsFixed(2) + ' kW', 'power'.tr()),
-  //     _buildSessionInfoCard('assets/icons/icon_energy.svg',
-  //         widget.energy.toStringAsFixed(2) + ' kWh', 'energy'.tr()),
-  //     _buildSessionInfoCard('assets/icons/icon_charging_duration.svg',
-  //         widget.duration + ' h', 'duration'.tr())
-  //   ];
-  // }
-
-  Widget _buildImageWidget(BuildContext context) {
-    return SizedBox(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          //is this stack still required?
-          Stack(
-            alignment: Alignment.bottomRight,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: getChargingSessionWidgetByState(
-                  context,
-                  widget.state,
-                  adjustScale(96),
-                  adjustScale(320),
-                  widget.soc,
-                ),
-              ),
-              // if (widget.state == 'ChargingPausedEVSE' ||
-              //     widget.state == 'ChargingPausedEV')
-              // SvgPicture.asset(
-              //   'assets/icons/icon_pausecharging.svg',
-              //   height:
-              //       widget.state == 'Unplugged' ? null : screenWidth * 0.15,
-              //   width:
-              //       widget.state == 'Unplugged' ? null : screenWidth * 0.15,
-              // ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-Widget getChargingSessionWidgetByState(BuildContext context, String state,
-    double height, double width, double? soc) {
-  if (state == 'Charging') {
-    return Stack(alignment: Alignment.bottomCenter, children: <Widget>[
-      ChargingAnimationWidget(),
-      if (soc != null)
-        Stack(
-          children: <Widget>[
-            Text(
-              "${soc.toStringAsFixed(0)}%",
-              style: TextStyle(
-                fontSize: 60,
-                foreground: Paint()
-                  ..style = PaintingStyle.stroke
-                  ..strokeWidth = 8
-                  ..color = Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
-            Text(
-              "${soc.toStringAsFixed(0)}%",
-              style: TextStyle(
-                fontSize: 60,
-                color: Theme.of(context).colorScheme.surface,
-              ),
-            ),
-          ],
-        )
-    ]);
-  } else {
-    return SvgPicture.asset(
-      getChargingSessionIconByState(state),
-      height: height,
-      //width: width,
-    );
-  }
 }

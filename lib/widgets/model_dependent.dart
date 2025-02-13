@@ -40,9 +40,7 @@ class ModelDependent extends ConsumerWidget {
       //debugPrint("Charger Model unknown");
       return unknownChild;
     }
-    return (platforms.contains(chargerInfo.model_name))
-        ? child
-        : const Empty();
+    return (platforms.contains(chargerInfo.model_name)) ? child : const Empty();
   }
 
   static dynamic on({

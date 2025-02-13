@@ -2,11 +2,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 class Empty extends SingleChildRenderObjectWidget {
-
   ///This is an empty widget.
   ///It has a size of [Size.zero] and doesn't do or draw anything.
   ///It is useful anyway as a "non-null null value", using [bool isEmpty = widget is Empty], see [check(dynamic toTest)].
-  const Empty ({super.key});
+  const Empty({super.key});
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -17,5 +16,4 @@ class Empty extends SingleChildRenderObjectWidget {
   static bool check(dynamic toTest) {
     return toTest is Empty;
   }
-
 }

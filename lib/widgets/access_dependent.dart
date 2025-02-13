@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import '../utils/constants/keys.dart';
 
 class AccessDependent extends StatelessWidget {
-
   late final ValueListenable<AccessMode> valueListenable;
 
   final ValueListenable<AccessMode>? ovrValueListenable;
@@ -46,17 +45,18 @@ class AccessDependent extends StatelessWidget {
     dynamic onPrivate,
     dynamic onUnset,
     dynamic fallback,
-  }){
-    return switch(accessMode) {
-      AccessMode.public => onPublic,
-      AccessMode.private => onPrivate,
-      AccessMode.unset => onUnset,
-    } ?? fallback;
+  }) {
+    return switch (accessMode) {
+          AccessMode.public => onPublic,
+          AccessMode.private => onPrivate,
+          AccessMode.unset => onUnset,
+        } ??
+        fallback;
   }
-
 }
 
-final ValueNotifier<AccessMode> accessNotifier = ValueNotifier(getDefaultState());
+final ValueNotifier<AccessMode> accessNotifier =
+    ValueNotifier(getDefaultState());
 
 AccessMode getDefaultState() {
   return AccessMode.unset;

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-
   test("Empty.check(null) => false", () {
     assert(Empty.check(null) == false);
   });
@@ -23,5 +22,4 @@ void main() {
   test("Empty.check(4) => false", () {
     assert(Empty.check(4) is Empty == false);
   });
-
 }
