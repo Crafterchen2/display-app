@@ -14,8 +14,8 @@ class AskRootPasswordScreen extends StatefulWidget {
 class _AskRootPasswordScreenState extends State<AskRootPasswordScreen> {
   final TextEditingController _controller = TextEditingController();
   bool keyboardVisible = true;
-  bool wrong_password = false;
-  bool checking_password = false;
+  bool wrongPassword = false;
+  bool checkingPassword = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +31,7 @@ class _AskRootPasswordScreenState extends State<AskRootPasswordScreen> {
                 ?.copyWith(color: Theme.of(context).colorScheme.onSecondary),
           ),
           Visibility(
-              visible: checking_password,
+              visible: checkingPassword,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: CircularProgressIndicator(
@@ -46,7 +46,7 @@ class _AskRootPasswordScreenState extends State<AskRootPasswordScreen> {
           child: TextField(
             controller: _controller,
             decoration: InputDecoration(
-                error: wrong_password ? Text("wrong password") : null),
+                error: wrongPassword ? Text("wrong password") : null),
             onSubmitted: (input) {
               checkRootPassword(input, context);
             },
@@ -77,7 +77,7 @@ class _AskRootPasswordScreenState extends State<AskRootPasswordScreen> {
 
   void checkRootPassword(String input, BuildContext context) async {
     setState(() {
-      checking_password = true;
+      checkingPassword = true;
     });
     // this creates a script which prints the password to be used as ssh_akspass. this is no security issue however as this file can only be written or executed as root user and if we have an malicious root user we have other problems (eg runnning passwd (as root one does not need to input the current password))
     final String command =
@@ -87,14 +87,16 @@ class _AskRootPasswordScreenState extends State<AskRootPasswordScreen> {
       ['-c', command],
     );
     if (process.exitCode == 0) {
-      Navigator.of(context).pop(true);
+      if (context.mounted) {
+        Navigator.of(context).pop(true);
+      }
     } else {
       setState(() {
-        wrong_password = true;
+        wrongPassword = true;
       });
     }
     setState(() {
-      checking_password = false;
+      checkingPassword = false;
     });
   }
 }

@@ -56,9 +56,12 @@ class _InitializingScreenState extends State<InitializingScreen> {
             timer.cancel();
           });
         } else {
-          setState(() {
-            _progress = _progress + 0.01;
-          });
+          if (mounted) {
+            // needed or hot restart will fail :(
+            setState(() {
+              _progress = _progress + 0.01;
+            });
+          }
         }
       },
     );

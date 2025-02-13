@@ -26,9 +26,12 @@ class PionixVirtualKeyboardKey {
   PionixVirtualKeyboardKey(
       {this.text, this.capsText, required this.keyType, this.action}) {
     if (text == null && action != null) {
-      text = action == PionixVirtualKeyboardKeyAction.Space
-          ? ' '
-          : (action == PionixVirtualKeyboardKeyAction.Return ? '\n' : '');
+      text = '';
+      if (action == PionixVirtualKeyboardKeyAction.Space) {
+        text = " ";
+      } else if (action == PionixVirtualKeyboardKeyAction.Return) {
+        text = "\n";
+      }
     }
     if (capsText == null && action != null) {
       capsText = action == PionixVirtualKeyboardKeyAction.Space
@@ -197,7 +200,7 @@ class PionixVirtualKeyboard extends StatefulWidget {
   final VirtualKeyboardType type;
 
   /// Callback for Key press event. Called with pressed `Key` object.
-  final Function? onKeyPress;
+  final Function(PionixVirtualKeyboardKey)? onKeyPress;
 
   /// Virtual keyboard height. Default is 300
   final double height;
@@ -279,22 +282,37 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
   bool isSpecialCharactersEnabled = false;
 
   void _onKeyPress(PionixVirtualKeyboardKey key) {
-    if (key.keyType == VirtualKeyboardKeyType.String) {
-      textController.text += (isShiftEnabled ? key.capsText! : key.text!);
+    var charlist = textController.text.split('');
+    var editAt = textController.selection.baseOffset;
+    if (editAt < 0) {
+      editAt = textController.text.length;
+    }
+    if (key.keyType == VirtualKeyboardKeyType.String ||
+        key.action == PionixVirtualKeyboardKeyAction.Space ||
+        key.action == PionixVirtualKeyboardKeyAction.Return) {
+      charlist.insert(editAt, (isShiftEnabled ? key.capsText! : key.text!));
+      textController.text = charlist.join();
     } else if (key.keyType == VirtualKeyboardKeyType.Action) {
       switch (key.action) {
         case PionixVirtualKeyboardKeyAction.Backspace:
-          if (textController.text.isEmpty) return;
-          textController.text =
-              textController.text.substring(0, textController.text.length - 1);
-          break;
-        case PionixVirtualKeyboardKeyAction.Return:
-          textController.text += '\n';
-          break;
-        case PionixVirtualKeyboardKeyAction.Space:
-          textController.text += key.text!;
+          if (textController.text.isNotEmpty) {
+            charlist.removeAt(editAt - 1);
+            textController.text = charlist.join("");
+          }
           break;
         case PionixVirtualKeyboardKeyAction.Shift:
+          break;
+        case PionixVirtualKeyboardKeyAction.SwitchFromSpecialCharacters:
+          setState(() {
+            isSpecialCharactersEnabled = false;
+          });
+          customLayoutKeys.switchSpecialCharacters(isSpecialCharactersEnabled);
+          break;
+        case PionixVirtualKeyboardKeyAction.SwitchToSpecialCharacters:
+          setState(() {
+            isSpecialCharactersEnabled = true;
+          });
+          customLayoutKeys.switchSpecialCharacters(isSpecialCharactersEnabled);
           break;
         default:
       }
@@ -547,9 +565,7 @@ class _VirtualKeyboardState extends State<PionixVirtualKeyboard> {
               },
             );
           },
-          child: SizedBox(
-            height: double.infinity,
-            width: double.infinity,
+          child: SizedBox.expand(
             child: Icon(
               Icons.language,
               color: textColor,

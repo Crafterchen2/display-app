@@ -1,4 +1,5 @@
 import 'package:display_app/screens/ask_root_password_screen.dart';
+import 'package:display_app/screens/configure_cloud_connection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:display_app/screens/charging_dashboard_screen.dart';
 import 'package:display_app/screens/hlc_log.dart';
@@ -25,6 +26,8 @@ class AppRoutes {
   static const configSelectionScreen = '/config_selection_screen';
   static const chargingDashboardScreen = '/charging_dashboard_screen';
   static const askRootPasswordScreen = "/ask_root_password_screen";
+  static const configureCloudConnectionScreen =
+      "/configureCloudConnectionScreen";
 }
 
 class AppRouter {
@@ -103,6 +106,12 @@ class AppRouter {
             builder: (_) => AskRootPasswordScreen(),
             settings: settings,
             fullscreenDialog: true);
+      case AppRoutes.configureCloudConnectionScreen:
+        return MaterialPageRoute(
+            builder: (_) => ConfigureCloudConnectionScreen(),
+            settings: settings,
+            fullscreenDialog: true);
+
       // case AppRoutes.entryPage:
       //   final mapArgs = args as Map<String, dynamic>;
       //   final job = mapArgs['job'] as Job;

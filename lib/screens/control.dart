@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:display_app/utils/routing/app_router.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -191,17 +192,23 @@ class _ControlState extends ConsumerState<Control> {
                     child: const Text("Restart basecamp-control.service"),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
                     ),
                     child: PrimaryButton(
                       onPressed: () {
                         mqtt.publish(
-                            "everest_api/control/cmd/restart_display_app",
-                            "1");
+                            "everest_api/control/cmd/restart_display_app", "1");
                       },
                       child: const Text("Restart display-app.service"),
                     ),
+                  ),
+                  PrimaryButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, AppRoutes.configureCloudConnectionScreen);
+                    },
+                    child: const Text("configure cloud connection"),
                   ),
                 ],
               ),
