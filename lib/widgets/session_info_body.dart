@@ -461,6 +461,14 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                                     ),
                                   ),
                                 ),
+                                HlcLogWidget(
+                                  scrollDown: () {
+                                    scrollController.animateTo(
+                                        scrollController.position.maxScrollExtent,
+                                        duration: Duration(milliseconds: 100),
+                                        curve: Curves.fastOutSlowIn);
+                                  },
+                                ),
                               ],
                             ),
                           ),
@@ -468,17 +476,6 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 4),
-            ),
-            HlcLogWidget(
-              scrollDown: () {
-                scrollController.animateTo(
-                    scrollController.position.maxScrollExtent,
-                    duration: Duration(milliseconds: 100),
-                    curve: Curves.fastOutSlowIn);
-              },
-            )
           ],
         ),
       ),
