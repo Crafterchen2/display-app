@@ -220,7 +220,7 @@ class _SessionDetailGraphsState extends ConsumerState<SessionDetailGraphs> {
               widget.overlay = OverlayEnum.none;
             },
       expandContent: LineChartCardContent(
-        unit: 'A',
+        unit: 'V',
         values: values,
         showPopup: allowOverlay,
         onShowOverlayPressed: () {
