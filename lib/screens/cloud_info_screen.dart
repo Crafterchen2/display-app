@@ -1,0 +1,166 @@
+import 'package:display_app/screens/cloud_config_provider.dart';
+import 'package:display_app/widgets/buttons.dart';
+import 'package:flutter/material.dart';
+
+import '../utils/routing/app_router.dart';
+
+class CloudInfoScreen extends StatelessWidget {
+  const CloudInfoScreen({super.key});
+
+  Widget buildSelectionButton(BuildContext context, {
+    required String name,
+    required String desc,
+    required IconData icon,
+    required void Function() onPressed,
+  }){
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outline,
+            style: BorderStyle.solid,
+            width: 2,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: Text(name,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Center(
+                child: Text(desc,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                child: Icon(icon,
+                  size: 128,
+                ),
+              ),
+              ElevatedButton(
+                onPressed: onPressed,
+                child: Text("Connect to Cloud"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: PionixAppBar('Connect to Cloud'),
+      body: Row(
+        children: [
+          Expanded(
+            child: buildSelectionButton(context,
+              name: "OTP Enrollment",
+              desc: "Simple non-production enrollment using an OTP",
+              icon: Icons.timelapse_outlined,
+              onPressed: () => goToEnrollmentScreen(context, true),
+            ),
+          ),
+          Expanded(
+            child: buildSelectionButton(context,
+              name: "RFC 7030",
+              desc: "Advanced Production-Grade enrollment using RFC7030",
+              icon: Icons.lock_rounded,
+              onPressed: () {
+                if (configSupported) {
+                  goToEnrollmentScreen(context, false);
+                } else {
+                  Navigator.pushNamed(context, AppRoutes.advancedCloudConfigScreen);
+                }
+              },
+            ),
+          ),
+        ],
+      )
+    );
+  }
+
+  void goToEnrollmentScreen(BuildContext context, bool toOtp) {
+    final route = (toOtp) ? AppRoutes.simpleCloudConfigScreen : AppRoutes.advancedCloudConfigScreen;
+    if (checkFileExists("/etc/mosquitto/client.crt")) {
+      showGeneralDialog(
+        context: context,
+        barrierLabel: "otp_popup_barrier",
+        barrierDismissible: true,
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return Dialog(
+            child: SizedBox(
+              height: 300,
+              width: 500,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 24,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          icon: Icon(Icons.arrow_back),
+                        ),
+                        Expanded(
+                          child: Text(
+                            "Preexisting certificates found",
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          "Certificate files already exist. Do you want to (re)start the mqtt connection or request new certificates?",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, route, arguments: EnrollMode.restart);
+                      },
+                      child: Text("(re)start mqtt connection"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, route, arguments: EnrollMode.reEnroll);
+                      },
+                      child: Text("re-enroll charger"),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      Navigator.pushNamed(context, route, arguments: EnrollMode.normal);
+    }
+  }
+
+}
+
+enum EnrollMode {
+  normal,
+  restart,
+  reEnroll,
+}

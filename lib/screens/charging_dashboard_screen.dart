@@ -35,6 +35,7 @@ import '../widgets/dialogs.dart';
 import '../widgets/header_widget.dart';
 import '../widgets/restart_widget.dart';
 import '../widgets/session_info_body.dart';
+import 'cloud_config_provider.dart';
 
 class ChargingDashboardScreen extends ConsumerStatefulWidget {
   const ChargingDashboardScreen({super.key});
@@ -369,6 +370,27 @@ class _ChargingDashboardScreenState
                 icon: const Icon(Icons.file_open_outlined),
                 label: Text(
                   "config", //TODO Localisation
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: checkFileExists(scriptPath),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 10,
+                bottom: 5,
+                right: 10,
+              ),
+              child: FilledButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context, AppRoutes.configureCloudConnectionScreen);
+                },
+                icon: Icon(Icons.cloud),
+                label:  Text(
+                  "Cloud", //TODO Localisation
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),

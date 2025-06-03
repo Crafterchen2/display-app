@@ -63,6 +63,12 @@ class PionixCloudManager {
     }
 
     try {
+      //Are these still the correct keys? ANSWER: NO.
+      //Current issue: File decoded since the file at /etc/default/pionix-cloud
+      //does not contain these keys. Did they change? Therefore address and so on stay
+      //uninitialized, breaking every input field and preventing the affected pages from
+      //loading.
+      //FIXME: This needs to be fixed before RFC 7030 can be enabled!
       address = values["address"]!;
       hostname = values["hostname"]!;
       username = values["username"]!;
@@ -146,5 +152,10 @@ class PionixCloudManager {
     if (result.exitCode != 0) {
       debugPrint("Cloud enrollment failed: ${result.stderr}");
     }
+  }
+
+  @override
+  String toString() {
+    return 'PionixCloudManager{configContent: $configContent, address: $address, hostname: $hostname, username: $username, password: $password, manufacturerId: $manufacturerId, idFile: $idFile, idMac: $idMac, chargerId: $chargerId, valid: $valid}';
   }
 }

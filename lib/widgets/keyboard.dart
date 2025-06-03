@@ -192,6 +192,8 @@ const List<List> _defaultSpecialCharactersLayout = [
 ///  `height` argument to `VirtualKeyboard` widget.
 const double _virtualKeyboardDefaultHeight = 300;
 
+double get virtualKeyboardDefaultHeight => _virtualKeyboardDefaultHeight;
+
 const int _virtualKeyboardBackspaceEventPeriod = 250;
 
 /// Virtual Keyboard widget.

@@ -1,5 +1,6 @@
 import 'package:display_app/screens/ask_root_password_screen.dart';
-import 'package:display_app/screens/configure_cloud_connection_screen.dart';
+import 'package:display_app/screens/cloud_config_provider.dart';
+import 'package:display_app/screens/cloud_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:display_app/screens/charging_dashboard_screen.dart';
 import 'package:display_app/screens/lan_info_screen.dart';
@@ -23,6 +24,9 @@ class AppRoutes {
   static const askRootPasswordScreen = "/ask_root_password_screen";
   static const configureCloudConnectionScreen =
       "/configureCloudConnectionScreen";
+  static const simpleCloudConfigScreen = "/simple_cloud_config_screen";
+  static const simpleFurtherSettingsScreen = "/simple_further_settings_screen";
+  static const advancedCloudConfigScreen = "/advanced_cloud_config_screen";
 }
 
 class AppRouter {
@@ -91,7 +95,25 @@ class AppRouter {
             fullscreenDialog: true);
       case AppRoutes.configureCloudConnectionScreen:
         return MaterialPageRoute(
-            builder: (_) => ConfigureCloudConnectionScreen(),
+            builder: (_) => CloudInfoScreen(),
+            settings: settings,
+            fullscreenDialog: true);
+      case AppRoutes.simpleCloudConfigScreen:
+        final EnrollMode? mode = settings.arguments as EnrollMode?;
+        return MaterialPageRoute(
+            builder: (_) => SimpleConfigProvider(mode: mode ?? EnrollMode.normal),
+            settings: settings,
+            fullscreenDialog: true);
+      case AppRoutes.simpleFurtherSettingsScreen:
+        final config = settings.arguments as ConfigArgWrapper;
+        return MaterialPageRoute(
+            builder: (_) => SimpleFurtherSettings(config),
+            settings: settings,
+            fullscreenDialog: true);
+      case AppRoutes.advancedCloudConfigScreen:
+        final EnrollMode? mode = settings.arguments as EnrollMode?;
+        return MaterialPageRoute(
+            builder: (_) => AdvancedConfigProvider(mode: mode ?? EnrollMode.normal),
             settings: settings,
             fullscreenDialog: true);
 

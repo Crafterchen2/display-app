@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'empty.dart';
+
 class PrimaryButton extends ElevatedButton {
   const PrimaryButton({
     super.key,
@@ -150,4 +152,16 @@ class CircularLabeledIconButton extends StatelessWidget {
       ],
     );
   }
+}
+
+class PionixAppBar extends AppBar {
+
+  // leadingSize default value is the same as the default value of
+  // leadingWidth.
+  PionixAppBar(String title, {super.key, double leadingSize = 56.0, bool hideBackButton = false}) : super(
+    title: Text(title),
+    leadingWidth: leadingSize,
+    leading: (hideBackButton) ? Empty() : BackButton(),
+  );
+
 }

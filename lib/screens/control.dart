@@ -191,13 +191,6 @@ class _ControlState extends ConsumerState<Control> {
                       child: const Text("Restart display-app.service"),
                     ),
                   ),
-                  PrimaryButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, AppRoutes.configureCloudConnectionScreen);
-                    },
-                    child: const Text("configure cloud connection"),
-                  ),
                 ],
               ),
             ),

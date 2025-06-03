@@ -127,6 +127,7 @@ class PionixThemeProvider {
         backgroundColor: scheme.primary,
         focusElevation: 10,
         foregroundColor: scheme.onPrimary,
+        iconSize: 48,
       ),
       switchTheme:
           SwitchThemeData(thumbColor: WidgetStateProperty.resolveWith((states) {
@@ -166,6 +167,7 @@ class PionixThemeProvider {
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: scheme.primary,
+        foregroundColor: scheme.onPrimary,
         elevation: 20,
         surfaceTintColor: Colors.transparent,
         toolbarHeight: 70,
