@@ -1,5 +1,9 @@
 # Display App
 
+> [!IMPORTANT] 
+> The Display App was originally created as an early demo during the initial development of EVerest and has evolved over time. It is not intended as a reference implementation for designing display apps for BaseCamp chargers.
+> We’re currently considering developing a new reference project or framework that would serve as a better foundation. If you’re interested in something like this, feel free to get in touch with us.
+
 Flutter app for uMWC, BelayBox and uMWCar
 
 The app uses [fvm](https://github.com/leoafarias/fvm) so instead of every flutter command run `fvm flutter <subcommand>` to use the flutter version pinned in the [fvmrc](.fvmrc). The current version should be the same as the one used in the yocto image for the chargers
