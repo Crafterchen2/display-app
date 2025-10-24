@@ -52,7 +52,7 @@ class _InitializingScreenState extends State<InitializingScreen> {
     _timer = Timer.periodic(
       oneSec,
       (Timer timer) {
-        if (_progress == 1.0) {
+        if (_progress >= 1.0) {
           setState(() {
             timer.cancel();
           });

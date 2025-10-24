@@ -14,7 +14,6 @@ import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
 import 'package:display_app/data/models/ev_info.dart';
 import 'package:display_app/mqtt.dart';
 import 'package:display_app/utils/enums.dart';
-import 'package:display_app/utils/globals.dart';
 import 'package:display_app/widgets/layout.dart';
 
 import '../main.dart';
@@ -155,12 +154,16 @@ class _SessionInfoBodyState extends State<SessionInfoBody> {
     pwmDc = double.parse(message) * 100;
   }
 
+  String _prevState = "";
+
   void parseStateString(String message) {
     stateString = message;
-    if (stateString == "Idle") {
-      debugPrint("Idle, clearing HLC log");
-      clearHlcLog();
+    const stateToLeave = "Idle";
+    if (_prevState == stateToLeave && stateString != stateToLeave) {
+      debugPrint("Leaving $stateToLeave, clearing HLC log");
+      clearLog();
     }
+    _prevState = stateString;
   }
 
   void parseBatteryPercentage(String message) {

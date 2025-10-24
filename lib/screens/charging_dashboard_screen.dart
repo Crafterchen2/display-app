@@ -33,6 +33,7 @@ import '../utils/constants/keys.dart';
 import '../utils/routing/app_router.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/header_widget.dart';
+import '../widgets/hlc_log_widget.dart';
 import '../widgets/restart_widget.dart';
 import '../widgets/session_info_body.dart';
 import 'cloud_config_provider.dart';
@@ -98,7 +99,7 @@ class _ChargingDashboardScreenState
     // debugPrint("Parsing $message");
     try {
       HlcLog log = parseHlcLog(message);
-      hlcLogList.add(log);
+      addEntry(log);
     } catch (e) {
       debugPrint("error while parsing Hlc log: $e");
     }
@@ -284,7 +285,7 @@ class _ChargingDashboardScreenState
         backgroundColor: Theme.of(context).colorScheme.primary,
         surfaceTintColor: Colors.transparent,
         elevation: 20,
-        children: <Widget>[
+        children: [
           Padding(
             padding: const EdgeInsets.only(
               left: 10,
@@ -389,7 +390,7 @@ class _ChargingDashboardScreenState
                       context, AppRoutes.configureCloudConnectionScreen);
                 },
                 icon: Icon(Icons.cloud),
-                label:  Text(
+                label: Text(
                   "Cloud", //TODO Localisation
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
@@ -725,9 +726,12 @@ class _ChargingDashboardScreenState
   }
 
   void extractArguments(BuildContext context) {
-    setState(() {
-      _showProgressBar = true;
-    });
+    //This code does not need enough time to justify an update in order to show a progressBar.
+    //if (!_showProgressBar) {
+    //  setState(() {
+    //    _showProgressBar = true;
+    //  });
+    //}
     final i = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     privateMode = i["private_mode"] ?? false;
@@ -736,11 +740,12 @@ class _ChargingDashboardScreenState
       updateCurrentLanguage();
       // _status = 'AuthRequired';
     }
-    setState(() {
-      _showProgressBar = false;
-    });
-    accessNotifier.value =
-        (privateMode) ? AccessMode.private : AccessMode.public;
+    if (_showProgressBar) {
+      setState(() {
+        _showProgressBar = false;
+      });
+    }
+    accessNotifier.value = (privateMode) ? AccessMode.private : AccessMode.public;
   }
 
   void updateCurrentLanguage() {
@@ -750,13 +755,18 @@ class _ChargingDashboardScreenState
 
   void parseConfigInfo(String message) {
     final i = jsonDecode(message);
-    localization = i["localization"];
-    wifi = i["setup_wifi"];
-    simulation = i["setup_simulation"];
-    if (localization || simulation || wifi) {
-      showSettingsIcon = true;
-      if (mounted) {
-        setState(() {});
+    bool newLoc = i["localization"];
+    bool newWifi = i["setup_wifi"];
+    bool newSim = i["setup_simulation"];
+    if (newLoc != localization || newWifi != wifi || newSim != simulation) {
+      localization = newLoc;
+      wifi = newWifi;
+      simulation = newSim;
+      if (localization || simulation || wifi) {
+        showSettingsIcon = true;
+        if (mounted) {
+          setState(() {});
+        }
       }
     }
   }
