@@ -3,7 +3,7 @@
 > [!IMPORTANT] 
 > The Display App was originally created as an early demo during the initial development of EVerest and has evolved over time. It is not intended as a reference implementation for designing display apps for EVerest chargers.
 > 
-> We currently do not recommend building upon it without a substantial refactoring. Due to limited resources, active development is paused. If you are interested in sponsoring further development, please reach out!
+> We currently do not recommend building upon it without a substantial refactoring. The app communicates with EVerest via a deprecated API module, but we recommend using the stable APIs as the old module might be removed any time. Due to limited resources, active development is paused. If you are interested in sponsoring further development, please reach out!
 
 Flutter app for uMWC, BelayBox and uMWCar
 
