@@ -1,3 +1,16 @@
+# About this fork
+Hi! I helped develop this app during my time at Pionix and I have some things to share about this code base. The app has come a long way from the first version I ever saw to what it is now. This project had no main developer for a long time, which is why a lot of the code base is ... (How do I put this nicely?) _not very beautiful_. I refactored a lot of the original code, and fixed many issues, for example resizability. While a lot got fixed and improved, not every little thing could be adjusted. The next thing that needed to change next to layout related stuff was a consistent look and feel, which is why I added the Pionix theme and transitioned major parts of the app to use the theme instead of hard-coding specific colors for every button. Changing to dark mode is also supported and was always an intended feature (from me at least...). The feature to adjust the brightness was added, but at some point the button got removed. If you want to re-add the dark mode button, just add a button that changes the value of the `themeModeNotifier` ValueNotifier and the app changes to the selected mode. But because of the low priority given to dark mode adjustments, many colors might look off due to new stuff geting added or colors changing. I could talk a lot more about this here, but I think I'll leave it at that.
+All in all am I very thankful to Pionix for letting me proof my skills and work on this Project, even though I had never a line of dart code before starting this. Many thanks to Cornelius for introducing me to the project and Flutter in general, to Kai who was helped me getting to know the code base and EVerest and of course to Lukas, who guided me most of the way during this project. I don't know where I would be know without them and everyone at Pionix! It was a wonderful time, even if it ended a bit to soon.
+If there are ever questions or plans to continue this Project (even though I doubt that this will happen), I'll always have an open ear and be happy to help out or give advice. 
+
+🔵🟡PIONIX🟡🔵
+
+Thanks for reading all this,
+
+~ Crafterchen2
+
+
+(The rest of the README.md file is unchanged.)
 # Display App
 
 > [!IMPORTANT] 
